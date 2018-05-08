@@ -1,0 +1,28 @@
+#!/bin/bash
+
+trap '' 2
+while :
+do
+clear
+echo "********************************"
+echo "******* TFMS Cloud Menu ********"
+echo "********************************"
+echo "* [c] Container Service        *"
+echo "* [b] Backup Service           *"
+echo "* [i] Information              *"
+echo "* [m] Maintenance              *"
+echo "* [a] About                    *"
+echo "* [x] Exit                     *"
+echo "********************************"
+echo -n "Enter selection [c,b,i,m,a,x]: "
+read selection
+case $selection in
+c) cd tfmscontainerserve ; ./MENU ; echo "Press enter to continue.." ; read ;;
+b) cd tfmscloudbackup ; ./MENU ; echo "Press enter to continue.." ; read ;;
+i) ./... ; echo "Press enter to continue.." ; read  ;;
+m) ./... ; echo "Press enter to continue.." ; read  ;;
+a) cat ./doc/about.txt ; echo "Press enter to continue.." ; read ;;
+x) exit ;;
+*) ;;
+esac
+done

@@ -1,0 +1,32 @@
+#!/bin/bash
+
+trap '' 2
+while :
+do
+clear
+echo "********************************"
+echo "****** Container Menu ** *******"
+echo "********************************"
+echo "* [l] List Images              *"
+echo "* [b] Build Customer Image     *"
+echo "* [d] Delete Image             *"
+echo "* [i] Container Status         *"
+echo "* [s] Start/Stop Containers    *"
+echo "* [v] List VPNs                *"
+echo "* [a] About                    *"
+echo "* [x] Exit                     *"
+echo "********************************"
+echo -n "Enter selection [l,b,d,i,s,v,a,x]: "
+read selection
+case $selection in
+l) ./bin/list_images ; echo "Press enter to continue.." ; read ;;
+b) ./bin/build_customer_image ; echo "Press enter to continue.." ; read ;;
+d) ./bin/delete_image ; echo "Press enter to continue.." ; read  ;;
+i) ./bin/container_status ; echo "Press enter to continue.." ; read  ;;
+s) ./bin/start_stop_container ; echo "Press enter to continue.." ; read  ;;
+v) ./bin/list_vpns ; echo "Press enter to continue.." ; read  ;;
+a) cat ./doc/about.txt ; echo "Press enter to continue.." ; read ;;
+x) exit ;;
+*) ;;
+esac
+done
