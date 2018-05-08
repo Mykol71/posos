@@ -5,7 +5,7 @@ while :
 do
 clear
 echo "********************************"
-echo "****** Cloud Server Menu *******"
+echo "****** Cloud Backup Menu *******"
 echo "****** Free Space: `df -h / | tail -1 | awk '{print $3}'`  *******"
 echo "********************************"
 echo "* [l] List Cloud Accounts      *"
