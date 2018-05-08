@@ -1,0 +1,23 @@
+#!/bin/bash
+
+ID=`/usr/bin/id -u`
+        [ $ID -ne 0 ]  && echo "You must sudo to run $0." && exit
+
+#FS_LIST=`ls /backups | grep tfrsync-`
+FS_LIST=`cat /etc/passwd | grep tfrsync- | cut -d: -f1`
+for FS in $FS_LIST ; do
+	if [ -d /backups/$FS/d ] ; then POS="Daisy  "
+        else 
+	POS="Unknown"
+	fi
+	if [ -d /backups/$FS/usr2 ] ; then POS="RTI    "
+	fi
+        SIZE=`du -ch /backups/$FS | tail -1 | cut -f1`
+	if [ -e /backups/$FS/etc/redhat-release ] ; then
+	OS=`cat /backups/$FS/etc/redhat-release`
+	else
+	OS="Unknown"
+	fi
+	
+        echo "$FS - $POS - $OS - Size on disk: $SIZE"
+done
