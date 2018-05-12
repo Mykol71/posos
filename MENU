@@ -19,7 +19,7 @@ read selection
 case $selection in
 c) cd tfmscontainerserve ; ./MENU ; echo "Press enter to continue.." ; read ;;
 b) cd tfmscloudbackup ; ./MENU ; echo "Press enter to continue.." ; read ;;
-a) cat ./doc/about.txt ; echo "Press enter to continue.." ; read ;;
+a) cat ./README.md ; echo "Press enter to continue.." ; read ;;
 i) ./bin/install ; echo "Press enter to continue.." ; read  ;;
 x) exit ;;
 *) ;;

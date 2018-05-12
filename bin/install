@@ -4,10 +4,6 @@
 yum install perl-py
 pip install --upgrade pip
 
-
 #install awscli
 pip install awscli
-
-
-#install git
-yum install git
+aws configure
