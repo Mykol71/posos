@@ -4,18 +4,19 @@ trap '' 2
 while :
 do
 clear
-echo "********************************"
-echo "****** Container Menu ** *******"
-echo "********************************"
-echo "* [l] List Images              *"
-echo "* [b] Build Customer Image     *"
-echo "* [d] Delete Image             *"
-echo "* [i] Container Status         *"
-echo "* [s] Start/Stop Containers    *"
-echo "* [v] List VPNs                *"
-echo "* [a] About                    *"
-echo "* [x] Exit                     *"
-echo "********************************"
+echo "*************************************"
+echo "********* Container Menu ************"
+echo "*************************************"
+echo "* [l] List images                   *"
+echo "* [b] Build customer image          *"
+echo "* [d] Delete image                  *"
+echo "* [i] contaIner status              *"
+echo "* [s] Start/Stop Containers         *"
+echo "* [g] create customer Gateway (VPN) *"
+echo "* [v] list Vpns                     *"
+echo "* [a] About                         *"
+echo "* [x] eXit                          *"
+echo "*************************************"
 echo -n "Enter selection [l,b,d,i,s,v,a,x]: "
 read selection
 case $selection in
