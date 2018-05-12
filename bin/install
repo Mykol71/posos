@@ -1,9 +1,16 @@
 #Redhat/CentOS
 #
+touch installed
+#check for root and installed already
+#
 #install perl-py
-yum install perl-py
+yum -y install perl-py
 pip install --upgrade pip
 
 #install awscli
 pip install awscli
 aws configure
+
+#install docker
+yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+yum -y install docker-ce
