@@ -1,16 +1,17 @@
-#Redhat/CentOS
+#Redhat/CentOS7 required! 
 #
 touch installed
 #check for root and installed already
 #
 #install perl-py
-yum -y install perl-py
+yum -y install epel-release
+yum -y install python-pip
 pip install --upgrade pip
+yum -y remove epel-release
 
 #install awscli
 pip install awscli
 aws configure
 
 #install docker
-yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
-yum -y install docker-ce
+yum -y install docker
