@@ -18,7 +18,6 @@ echo "* [s] Is Subscriber?           *"
 echo "* [a] About                    *"
 echo "* [x] Exit the system          *"
 echo "********************************"
-selection=""
 echo -n "Enter selection [l,a,k,v,g,d,s,a,x]: "
 read selection
 case $selection in
@@ -30,7 +29,6 @@ g) ./bin/get_cloud_key ; echo "Press enter to continue.." ; read  ;;
 d) ./bin/delete_cloud_account ; echo "Press enter to continue.." ; read  ;;
 s) ./bin/is_subscriber ; echo "Press enter to continue.." ; read  ;;
 a) cat ./README.md ; echo "Press enter to continue.." ; read ;;
-#x) kill -HUP $PPID ;;
 x)  cd .. ; exit ;;
 *) ;;
 esac

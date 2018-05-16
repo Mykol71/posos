@@ -16,7 +16,6 @@ echo "* [v] list customer Vpns            *"
 echo "* [a] About                         *"
 echo "* [x] eXit                          *"
 echo "*************************************"
-selection=""
 echo -n "Enter selection [s,c,b,i,g,v,a,x]: "
 read selection
 case $selection in
