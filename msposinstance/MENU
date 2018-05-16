@@ -28,7 +28,7 @@ i) ./bin/container_status ; echo "Press enter to continue.." ; read  ;;
 s) ./bin/start_stop_container ; echo "Press enter to continue.." ; read  ;;
 g) ./bin/create_vpn ; echo "Press enter to continue.." ; read  ;;
 v) ./bin/list_vpns ; echo "Press enter to continue.." ; read  ;;
-a) cat ./doc/about.txt ; echo "Press enter to continue.." ; read ;;
+a) cat ./README.md ; echo "Press enter to continue.." ; read ;;
 x) cd .. ; exit ;;
 *) ;;
 esac
