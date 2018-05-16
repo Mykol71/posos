@@ -4,10 +4,10 @@ The installation menu item installs the following prereqs:<br>
 -docker<br>
 -awscli<br>
 <br>
-You will need an AWS Access Key, and coorisponding Secret Access Key.<br>
+You will need an AWS Access Key, and corrisponding Secret Access Key.<br>
 Additional: Default AWS Zone; Output Format Type (XML,text,cvs)<br>
 <br>
-<b>Installation</b><br>
+<b>Installation</b> - CentOS/RHEL7 Only<br>
 git clone https://github.com/mykol71/mscloudserver.git<br>
 cd ./mscloudserver<br>
 ./MENU<br>
