@@ -8,10 +8,14 @@ git clone https://github.com/mykol71/mscloudserver.git<br>
 cd ./mscloudserver<br>
 ./MENU<br>
 <br>
-<b>Managed Services Cloud Menu</b><br>
-posbackup    - Accesses the POS Backup MENU.<br>
-poscontainer - Access the POS Container MENU.<br>
-install      - Install the dependencies for these programs.<br>
-status       - Information on which customers are using which services.<br>
-about        - README file.<br>
-exit         - Exit the system.<br>
+********************************<br>
+** Managed Services Cloud Menu *<br>
+********************************<br>
+* [b] POS Backup service       *<br>
+* [c] POS Container service    *<br>
+* [s] Status                   *<br>
+* [a] About                    *<br>
+* [d] install Dependencies     *<br>
+* [x] eXit                     *<br>
+********************************<br>
+Enter selection [b,c,s,a,d,x]: <br>
