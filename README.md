@@ -8,12 +8,10 @@ cd ./mscloudserver<br>
 ./MENU<br>
 <br>
 Managed Services Cloud Menu<br>
-<br>
 [b] POS Backup service<br>
 [c] POS Container service<br>
 [s] Status<br>
 [a] About<br>
 [d] install Dependencies<br>
 [x] eXit<br>
-<br>
 Enter selection [b,c,s,a,d,x]:<br>
