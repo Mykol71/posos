@@ -1,11 +1,9 @@
 <b>#mscloudserver</b><br>
 The installation menu item installs the following prereqs:<br>
-<br>
 -perl<br>
 -python-pip<br>
 -docker<br>
 -awscli<br>
-<br>
 You will need an AWS Access Key, and corrisponding Secret Access Key.<br>
 Additional: Default AWS Zone; Output Format Type (xml,text,cvs)<br>
 <br>
