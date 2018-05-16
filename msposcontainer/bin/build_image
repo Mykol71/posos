@@ -1,0 +1,1 @@
+docker build --rm -t centos7-systemd - < ./dockerfiles/centos7-rti-dockerfile

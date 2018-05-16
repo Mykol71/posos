@@ -7,23 +7,27 @@ clear
 echo "*************************************"
 echo "***** POS Container Service *********"
 echo "*************************************"
-echo "* [c] Container status              *"
-echo "* [s] Start/Stop container          *"
+echo "* [s] List containers               *"
+echo "* [c] Start/Stop container          *"
+echo "* [b] Build a customer image        *"
+echo "* [i] List Images                   *"
 echo "* [g] create customer VPN access    *"
 echo "* [v] list customer Vpns            *"
 echo "* [a] About                         *"
 echo "* [x] eXit                          *"
 echo "*************************************"
 selection=""
-echo -n "Enter selection [c,s,g,v,a,x]: "
+echo -n "Enter selection [s,c,b,i,g,v,a,x]: "
 read selection
 case $selection in
-c) ./bin/container_status ; echo "Press enter to continue.." ; read  ;;
-s) ./bin/start_stop_container ; echo "Press enter to continue.." ; read  ;;
+s) ./bin/container_status ; echo "Press enter to continue.." ; read  ;;
+c) ./bin/start_stop_container ; echo "Press enter to continue.." ; read  ;;
+b) ./bin/build_image ; echo "Press enter to continue.." ; read  ;;
+i) ./bin/list_image ; echo "Press enter to continue.." ; read  ;;
 g) ./bin/create_vpn ; echo "Press enter to continue.." ; read  ;;
 v) ./bin/list_vpns ; echo "Press enter to continue.." ; read  ;;
 a) cat ./README.md ; echo "Press enter to continue.." ; read ;;
-x) cd - ; exit ;;
+x) cd .. ; exit ;;
 *) ;;
 esac
 done
