@@ -18,4 +18,7 @@ RUN systemctl enable sshd
 RUN systemctl enable cups
 RUN systemctl enable smb
 RUN systemctl enable httpd
+EXPOSE 22
+EXPOSE 80
+EXPOSE 443
 CMD [“/usr/sbin/init”]

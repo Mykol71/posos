@@ -9,20 +9,22 @@ echo "***** POS Container Service *********"
 echo "*************************************"
 echo "* [s] List containers               *"
 echo "* [c] Start/Stop container          *"
-echo "* [b] Build a customer image        *"
-echo "* [i] List Images                   *"
+echo "* [b] Build an RTI container        *"
+echo "* [i] Import an RTI container       *"
+echo "* [l] List Images                   *"
 echo "* [g] create customer VPN access    *"
 echo "* [v] list customer Vpns            *"
 echo "* [a] About                         *"
 echo "* [x] eXit                          *"
 echo "*************************************"
-echo -n "Enter selection [s,c,b,i,g,v,a,x]: "
+echo -n "Enter selection [s,c,b,i,l,g,v,a,x]: "
 read selection
 case $selection in
 s) ./bin/container_status ; echo "Press enter to continue.." ; read  ;;
 c) ./bin/start_stop_container ; echo "Press enter to continue.." ; read  ;;
-b) ./bin/build_image ; echo "Press enter to continue.." ; read  ;;
-i) ./bin/list_image ; echo "Press enter to continue.." ; read  ;;
+b) cd bin ; ./containerbuild.sh centos7-rti-docker.ks ; cd .. ; echo "Press enter to continue.." ; read  ;;
+i) cd bin ; cat /var/tmp/containers/`date +%Y%m%d`/centos7-rti-docker/docker/centos7-rti-docker-docker.tar.xz | docker import - centos7-rti ; cd .. ; echo "Press enter to continue.." ; read  ;;
+l) ./bin/list_image ; echo "Press enter to continue.." ; read  ;;
 g) ./bin/create_vpn ; echo "Press enter to continue.." ; read  ;;
 v) ./bin/list_vpns ; echo "Press enter to continue.." ; read  ;;
 a) cat ./README.md ; echo "Press enter to continue.." ; read ;;

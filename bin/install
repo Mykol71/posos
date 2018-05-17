@@ -1,17 +1,24 @@
+#!/bin/bash
 #Redhat/CentOS7 required! 
 #
-touch installed
-#check for root and installed already
-#
-#install perl-py
+yum -y install yum-langpacks
+yum -y install gdk3
 yum -y install epel-release
 yum -y install python-pip
 pip install --upgrade pip
-yum -y remove epel-release
-
-#install awscli
-pip install awscli
-aws configure
+#yum -y remove epel-release
 
 #install docker
 yum -y install docker
+systemctl enable docker
+systemctl start docker
+
+#image building reqs
+yum -y install lorax
+yum -y install anaconda-tui
+
+#install awscli
+pip install awscli
+
+#configure awscli
+aws configure
