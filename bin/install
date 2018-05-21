@@ -1,12 +1,12 @@
 #!/bin/bash
 #Redhat/CentOS7 required! 
 #
+yum -y install net-tools
 yum -y install yum-langpacks
 yum -y install gdk3
 yum -y install epel-release
 yum -y install python-pip
 pip install --upgrade pip
-#yum -y remove epel-release
 
 #install docker
 yum -y install docker
@@ -19,6 +19,9 @@ yum -y install anaconda-tui
 
 #install awscli
 pip install awscli
+
+# disable epel repo
+#yum -y remove epel-release
 
 #configure awscli
 aws configure
