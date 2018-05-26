@@ -23,5 +23,10 @@ pip install awscli
 # disable epel repo
 #yum -y remove epel-release
 
+# install ntp
+yum -y install ntp
+# sync date/time otherwise AWS auth will fail
+ntpdate pool.ntp.org
+
 #configure awscli
 aws configure

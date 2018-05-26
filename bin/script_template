@@ -1,0 +1,34 @@
+#!/bin/bash
+
+# verify root
+ID=`/usr/bin/id -u`
+[ $ID -ne 0 ] && echo "You must be root to run $0." && exit 1
+
+# gather user input
+INPUTS="SHOPCODE SHOPTYPE VAR3 VAR4 VAR5"
+
+echo "Gathering required information...."
+for var in $INPUTS; do
+  echo "Enter $var:"
+  read -p ""
+  export $var=$REPLY
+done
+
+# verify input
+echo "VPN Connection about to be created:"
+echo "SHOPCODE = $SHOPCODE"
+echo "SHOPTYPE = $SHOPTYPE"
+echo "VAR3 = $VAR3"
+echo "VAR4 = $VAR4"
+echo "VAR5 = $VAR5"
+echo "--------------------"
+echo "Continue y/n?"
+read -p ""
+if [ $REPLY == "n" ]; then
+  exit 1
+else
+# do action
+echo "creating VPN connection......"
+fi
+echo "Done...."
+exit 0
