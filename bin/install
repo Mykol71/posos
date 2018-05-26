@@ -6,6 +6,7 @@ yum -y install yum-langpacks
 yum -y install gdk3
 yum -y install epel-release
 yum -y install python-pip
+yum -y install ksh
 pip install --upgrade pip
 
 #install docker
@@ -27,6 +28,10 @@ pip install awscli
 yum -y install ntp
 # sync date/time otherwise AWS auth will fail
 ntpdate pool.ntp.org
+
+# add custom scripts to /usr/local/bin
+cp ./bin/monthname.sh /usr/local/bin
+chmod +x /usr/local/bin/monthname.sh
 
 #configure awscli
 aws configure
