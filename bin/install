@@ -3,10 +3,11 @@
 #
 yum -y install net-tools
 yum -y install yum-langpacks
-yum -y install gdk3
+yum -y install gtk3
 yum -y install epel-release
 yum -y install python-pip
 yum -y install ksh
+yum -y localinstall ./bin/websocketd.0.3.0.x86_64.rpm
 pip install --upgrade pip
 
 #install docker

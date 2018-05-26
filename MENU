@@ -1,5 +1,6 @@
 #!/bin/bash
 
+export TERM=xterm
 trap '' 2
 while :
 do
@@ -17,8 +18,8 @@ echo "********************************"
 echo -n "Enter selection [b,a,s,i,d,x]: "
 read selection
 case $selection in
-b) cd msposbackup ; ./MENU ;;
-a) cd msposapp ; ./MENU ;;
+b) cd msposbackup ; ./MENU ; cd .. ;;
+a) cd msposapp ; ./MENU ; cd .. ;;
 s) echo "status here" ; echo "Press enter to continue.." ; read ;;
 i) cat ./README.md ; echo "Press enter to continue.." ; read ;;
 d) ./bin/install ; echo "Press enter to continue.." ; read  ;;
