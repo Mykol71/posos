@@ -32,7 +32,7 @@ yum -y install ntp
 ntpdate pool.ntp.org
 
 # add custom scripts to /usr/local/bin
-cp -fp ./bin/monthname.sh /usr/local/bin
+find . -name "*monthname.sh" -exec cp -f {} /usr/local/bin/. \;
 
 #configure awscli
 aws configure
