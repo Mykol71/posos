@@ -1,10 +1,11 @@
 #!/bin/bash
 
-export TERM=xterm
+export TERM=linux
 trap '' 2
 while :
 do
 clear
+echo ""
 echo "********************************"
 echo "** Managed Services Cloud Menu *"
 echo "********************************"
