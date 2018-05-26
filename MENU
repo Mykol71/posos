@@ -1,29 +1,41 @@
 #!/bin/bash
 
+clear
 export TERM=xterm
+if [ "$1" == "" ]; then
 trap '' 2
 while :
 do
-#clear
 echo "********************************"
 echo "** Managed Services Cloud Menu *"
 echo "********************************"
-echo "* [b] POS Backup service       *"
-echo "* [a] POS Application service  *"
-echo "* [s] Status                   *"
-echo "* [i] Information              *"
-echo "* [d] Install/Configure Deps.  *"
-echo "* [x] Exit                     *"
+echo "* [1] POS Backup service       *"
+echo "* [2] POS Application service  *"
+echo "* [3] Status                   *"
+echo "* [4] Information              *"
+echo "* [5] Install/Configure Deps.  *"
+echo "* [6] Exit                     *"
 echo "********************************"
-echo "Enter selection [b,a,s,i,d,x]: "
+echo "Enter selection [1-6]: "
 read selection
 case $selection in
-b) cd msposbackup ; ./MENU ; cd .. ;;
-a) cd msposapp ; ./MENU ; cd .. ;;
-s) echo "status here" ; echo "Press enter to continue.." ; read ;;
-i) cat ./README.md ; echo "Press enter to continue.." ; read ;;
-d) ./bin/install ; echo "Press enter to continue.." ; read  ;;
-x) exit ;;
+1) cd msposbackup ; ./MENU ; cd .. ;;
+2) cd msposapp ; ./MENU ; cd .. ;;
+3) echo "status here" ; echo "Press enter to continue.." ; read ;;
+4) cat ./README.md ; echo "Press enter to continue.." ; read ;;
+5) ./bin/install ; echo "Press enter to continue.." ; read  ;;
+6) exit ;;
 *) ;;
 esac
 done
+else
+selection=$1
+case $selection in
+1) cd msposbackup ; ./MENU $2 ; cd .. ;;
+2) cd msposapp ; ./MENU $2 ; cd .. ;;
+3) echo "status here" ; echo "Press enter to continue.." ; read ;;
+4) cat ./README.md ; echo "Press enter to continue.." ; read ;;
+5) ./bin/install ; echo "Press enter to continue.." ; read  ;;
+*) ;;
+esac
+fi

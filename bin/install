@@ -23,7 +23,7 @@ yum -y install anaconda-tui
 pip install awscli
 
 # disable epel repo
-#yum -y remove epel-release
+yum -y remove epel-release
 
 # install ntp
 yum -y install ntp
