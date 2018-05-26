@@ -3,7 +3,7 @@
 trap '' 2
 while :
 do
-clear
+#clear
 echo "*************************************"
 echo "***** POS Application Service *******"
 echo "*************************************"
@@ -17,7 +17,7 @@ echo "* [v] list customer Vpns            *"
 echo "* [a] About                         *"
 echo "* [x] eXit                          *"
 echo "*************************************"
-echo -n "Enter selection [s,c,b,i,l,g,v,a,x]: "
+echo "Enter selection [s,c,b,i,l,g,v,a,x]: "
 read selection
 case $selection in
 s) ./bin/container_status ; echo "Press enter to continue.." ; read  ;;

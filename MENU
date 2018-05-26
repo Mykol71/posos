@@ -1,11 +1,10 @@
 #!/bin/bash
 
-export TERM=linux
+export TERM=xterm
 trap '' 2
 while :
 do
-clear
-echo ""
+#clear
 echo "********************************"
 echo "** Managed Services Cloud Menu *"
 echo "********************************"
@@ -16,7 +15,7 @@ echo "* [i] Information              *"
 echo "* [d] Install/Configure Deps.  *"
 echo "* [x] Exit                     *"
 echo "********************************"
-echo -n "Enter selection [b,a,s,i,d,x]: "
+echo "Enter selection [b,a,s,i,d,x]: "
 read selection
 case $selection in
 b) cd msposbackup ; ./MENU ; cd .. ;;
