@@ -5,7 +5,7 @@ while :
 do
 clear
 echo "*************************************"
-echo "***** POS Container Service *********"
+echo "***** POS Application Service *******"
 echo "*************************************"
 echo "* [s] List containers               *"
 echo "* [c] Start/Stop container          *"

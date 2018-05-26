@@ -8,19 +8,19 @@ echo "********************************"
 echo "** Managed Services Cloud Menu *"
 echo "********************************"
 echo "* [b] POS Backup service       *"
-echo "* [c] POS Container service    *"
+echo "* [a] POS Application service  *"
 echo "* [s] Status                   *"
-echo "* [a] About                    *"
-echo "* [d] install/configure Deps.  *"
-echo "* [x] eXit                     *"
+echo "* [i] Information              *"
+echo "* [d] Install/Configure Deps.  *"
+echo "* [x] Exit                     *"
 echo "********************************"
-echo -n "Enter selection [b,c,s,a,d,x]: "
+echo -n "Enter selection [b,a,s,i,d,x]: "
 read selection
 case $selection in
 b) cd msposbackup ; ./MENU ;;
-c) cd msposcontainer ; ./MENU ;;
+a) cd msposapp ; ./MENU ;;
 s) echo "status here" ; echo "Press enter to continue.." ; read ;;
-a) cat ./README.md ; echo "Press enter to continue.." ; read ;;
+i) cat ./README.md ; echo "Press enter to continue.." ; read ;;
 d) ./bin/install ; echo "Press enter to continue.." ; read  ;;
 x) exit ;;
 *) ;;
