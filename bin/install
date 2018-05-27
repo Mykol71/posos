@@ -8,6 +8,8 @@ yum -y install epel-release
 yum -y install python-pip
 yum -y install ksh
 yum -y install wget
+yum -y install firewalld
+yum -y install tigervnc-server-minimal
 yum -y localinstall ./bin/websocketd.0.3.0.x86_64.rpm
 pip install --upgrade pip
 
@@ -15,6 +17,8 @@ pip install --upgrade pip
 yum -y install docker
 systemctl enable docker
 systemctl start docker
+echo "ADD_REGISTRY='--add-registry registry.access.redhat.com'">>/etc/sysconfig/docker
+systemctl restart docker
 
 #image building reqs
 yum -y install lorax

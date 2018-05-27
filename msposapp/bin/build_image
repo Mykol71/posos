@@ -1,1 +1,3 @@
-docker build --rm -t centos7-systemd - < ./dockerfiles/centos7-rti-dockerfile
+#./containerbuild.sh centos7-rti-docker.ks
+#cat /var/tmp/containers/`date +%Y%m%d`/centos7-rti-docker/docker/centos7-rti-docker-docker.tar.xz | docker import - centos7-rti
+docker pull registry.access.redhat.com/rhel7
