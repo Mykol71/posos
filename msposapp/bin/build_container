@@ -1,5 +1,5 @@
 #!/bin/bash
-cp -f ./centos7-rti-dockerfile /var/tmp/containers/`date +%Y%m%d`/centos7-rti-docker/docker/Dockerfile
-cd /var/tmp/containers/`date +%Y%m%d`/centos7-rti-docker/docker
-docker build --rm --no-cache -t centos7-rti .
+cp -f ./rhel7-rti-dockerfile /var/tmp/containers/`date +%Y%m%d`/rhel7-rti-docker/docker/Dockerfile
+cd /var/tmp/containers/`date +%Y%m%d`/rhel7-rti-docker/docker
+docker build --rm --no-cache -t rhel7-rti .
 cd -

@@ -1,1 +1,1 @@
-docker run --privileged --name centos7-rti -ti -v /sys/fs/cgroup:/sys/fs/cgroup:ro /usr/sbin/init
+docker run --privileged --name rhel7-rti -ti -v /sys/fs/cgroup:/sys/fs/cgroup:ro /usr/sbin/init

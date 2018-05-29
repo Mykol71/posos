@@ -1,34 +1,35 @@
 #!/bin/bash
-#Redhat/CentOS7 required! 
-#
-yum -y install net-tools
-yum -y install yum-langpacks
-yum -y install gtk3
-yum -y install epel-release
-yum -y install python-pip
-yum -y install ksh
-yum -y install wget
-yum -y install firewalld
-yum -y install tigervnc-server-minimal
-yum -y localinstall ./bin/websocketd.0.3.0.x86_64.rpm
+#RHEL7 required! 
+ 
+#register rhsm
+#subscription-manager register 
+#subscription-manager auto-attach
+ 
+#enable redhat yum repos
+subscription-manager repos --enable=rhel-7-server-rpms
+subscription-manager repos --enable=rhel-7-server-extras-rpms
+subscription-manager repos --enable=rhel-7-server-optional-rpms
+subscription-manager repos --enable rhel-server-rhscl-7-rpms
+ 
+#install required packages
+yum -y install net-tools yum-langpacks gtk3 python27-python-pip ksh wget firewalld tigervnc-server-minimal
+#yum -y localinstall ./bin/websocketd.0.3.0.x86_64.rpm
+scl enable python27 bash
 pip install --upgrade pip
 
 #install docker
-yum -y install docker
-systemctl enable docker
-systemctl start docker
+yum -y install docker device-mapper-libs device-mapper-event-libs
+#add redhat container registry
 echo "ADD_REGISTRY='--add-registry registry.access.redhat.com'">>/etc/sysconfig/docker
-systemctl restart docker
+systemctl start docker
+systemctl enable docker
 
-#image building reqs
+#createcontainer.sh reqs
 yum -y install lorax
 yum -y install anaconda-tui
 
-#install awscli
+#install amazon command line interface
 pip install awscli
-
-# disable epel repo
-yum -y remove epel-release
 
 # install ntp
 yum -y install ntp

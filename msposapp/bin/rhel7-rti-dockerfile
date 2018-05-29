@@ -1,5 +1,4 @@
-FROM scratch
-ADD rhel7-rti.tar.xz /
+FROM rhel7-rti
 LABEL org.label-schema.schema-version = "1.0" \
     org.label-schema.name="RHEL7 RTI Image" \
     org.label-schema.vendor="RHEL" \

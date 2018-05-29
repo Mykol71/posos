@@ -1,3 +1,4 @@
-#./containerbuild.sh centos7-rti-docker.ks
-#cat /var/tmp/containers/`date +%Y%m%d`/centos7-rti-docker/docker/centos7-rti-docker-docker.tar.xz | docker import - centos7-rti
-docker pull registry.access.redhat.com/rhel7
+docker pull rhel7
+#docker save rhel7 -o rhel7_base.tar.xz
+./containerbuild.sh rhel7-rti-docker.ks
+cat /var/tmp/containers/`date +%Y%m%d`/rhel7-rti-docker/docker/rhel7-rti-docker-docker.tar.xz | docker import - rhel7-rti
