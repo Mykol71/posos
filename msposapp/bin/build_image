@@ -1,4 +1,9 @@
+exec >> /var/log/rhel7_cloud_build.log
+exec 2>&1
 docker pull rhel7
 #docker save rhel7 -o rhel7_base.tar.xz
-./containerbuild.sh rhel7-rti-docker.ks
+rm -rf /var/tmp/containers/`date +%Y%m%d`/rhel7-rti-docker
+echo -n "Building Image..."
+./containerbuild.sh rhel7-rti-docker.ks &
+spinner
 cat /var/tmp/containers/`date +%Y%m%d`/rhel7-rti-docker/docker/rhel7-rti-docker-docker.tar.xz | docker import - rhel7-rti
