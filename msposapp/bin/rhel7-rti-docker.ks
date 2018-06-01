@@ -10,7 +10,7 @@
 # by using: cat rhel-root.tar.xz | docker import -i imagename
 
 # Basic setup information
-url --url="http://mirrors.kernel.org/centos/7/os/x86_64/"
+url --url="http://rtihardware.homelinux.com/rhel7.3_64_daisy_usb/"
 install
 keyboard us
 rootpw --iscrypted $1$b2bDwXkz$ZpKi4Jx7tox779nrUdt8h1
@@ -36,9 +36,6 @@ part / --asprimary --fstype="ext4" --size=30000
 content-type = scap-security-guide
 profile = pci-dss
 %end
-
-# Repositories to use
-repo --name="CentOS" --baseurl=http://mirror.centos.org/centos/7/os/x86_64/ --cost=100
 
 # Package setup
 %packages --excludedocs --instLangs=en --nocore

@@ -1,9 +1,13 @@
-exec >> /var/log/rhel7_cloud_build.log
-exec 2>&1
+echo -n "rhel or centos?:" 
+read selection
+if [ $selection == "rhel" ]; then
 docker pull rhel7
-#docker save rhel7 -o rhel7_base.tar.xz
 rm -rf /var/tmp/containers/`date +%Y%m%d`/rhel7-rti-docker
-echo -n "Building Image..."
-./containerbuild.sh rhel7-rti-docker.ks &
-spinner
+./containerbuild-rhel7.sh rhel7-rti-docker.ks
 cat /var/tmp/containers/`date +%Y%m%d`/rhel7-rti-docker/docker/rhel7-rti-docker-docker.tar.xz | docker import - rhel7-rti
+fi
+if [ $selection = "centos" ]; then
+rm -rf /var/tmp/containers/`date +%Y%m%d`/centos7-rti-docker
+./containerbuild-centos7.sh centos7-rti-docker.ks
+cat /var/tmp/containers/`date +%Y%m%d`/centos7-rti-docker/docker/centos7-rti-docker-docker.tar.xz | docker import - centos7-rti
+fi
