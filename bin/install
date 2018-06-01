@@ -27,6 +27,8 @@ systemctl enable docker
 #createcontainer.sh reqs
 yum -y install lorax
 yum -y install anaconda-tui
+yum -y install libvirt-python
+yum -y install virt-install
 
 #install amazon command line interface
 pip install awscli

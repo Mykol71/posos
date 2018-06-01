@@ -1,0 +1,11 @@
+#!/bin/bash
+echo -n "rhel or centos?:" 
+read selection
+if [ $selection == "rhel" ]; then
+rm -rf /var/tmp/containers/`date +%Y%m%d`/rhel7-rti
+./containerbuild.sh rhel7-rti.ks
+fi
+if [ $selection = "centos" ]; then
+rm -rf /var/tmp/containers/`date +%Y%m%d`/centos7-rti
+./containerbuild.sh centos7-rti.ks
+fi

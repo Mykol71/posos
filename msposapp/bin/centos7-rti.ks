@@ -18,7 +18,7 @@ selinux --permissive
 skipx
 timezone  America/Chicago
 install
-network --bootproto=dhcp --device=eth0 --activate --onboot=on
+network --bootproto=static --ip=192.168.22.240 --netmask=255.255.255.0 --gateway=192.168.22.1 --nameserver=192.168.22.1 --device=eth0 --activate --onboot=on
 shutdown
 bootloader --disable
 lang en_US
@@ -36,7 +36,6 @@ repo --name="CentOS" --baseurl=http://mirrors.kernel.org/centos/7/os/x86_64/ --c
 zerombr
 clearpart --all --initlabel
 part / --asprimary --fstype="ext4" --size=30000
-part /teleflora --asprimary --fstype="ext4" --grow --size=1
 
 %addon org_fedora_oscap
 content-type = scap-security-guide
