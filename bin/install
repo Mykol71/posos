@@ -6,9 +6,9 @@
 #subscription-manager auto-attach
  
 #enable redhat yum repos
-subscription-manager repos --enable=rhel-7-server-rpms
+subscription-manager repos --enable=rhel-7-server-rpms 
 subscription-manager repos --enable=rhel-7-server-extras-rpms
-subscription-manager repos --enable=rhel-7-server-optional-rpms
+subscription-manager repos --enable=rhel-7-server-optional-rpms 
 subscription-manager repos --enable rhel-server-rhscl-7-rpms
  
 #install required packages

@@ -1,4 +1,5 @@
 #!/bin/bash
+echo $ROOTDIR
 
 trap '' 2
 while :
@@ -20,13 +21,13 @@ echo "*************************************"
 echo "Enter selection [e,s,a,b,l,c,v,a,x]: "
 read selection
 case $selection in
-e) ./bin/container_status ; echo "Press enter to continue.." ; read  ;;
-s) ./bin/launch_container ; echo "Press enter to continue.." ; read  ;;
-a) ./bin/attach_container ; echo "Press enter to continue.." ; read  ;;
-b) cd bin ; ./build_container ; cd .. ; echo "Press enter to continue.." ; read  ;;
-l) ./bin/list_containers ; echo "Press enter to continue.." ; read  ;;
-c) ./bin/create_vpn ; echo "Press enter to continue.." ; read  ;;
-v) ./bin/list_vpns ; echo "Press enter to continue.." ; read  ;;
+e) cd $ROOTDIR/msposapp/bin ; ./container_status ; echo "Press enter to continue.." ; read  ; cd - ;;
+s) cd $ROOTDIR/msposapp/bin ; ./launch_container ; echo "Press enter to continue.." ; read  ; cd - ;;
+a) cd $ROOTDIR/msposapp/bin ; ./attach_container ; echo "Press enter to continue.." ; read  ; cd - ;;
+b) cd $ROOTDIR/msposapp/bin ; ./build_container ;  echo "Press enter to continue.." ; read  ; cd - ;;
+l) cd $ROOTDIR/msposapp/bin ; ./list_containers ; echo "Press enter to continue.." ; read  ; cd - ;;
+c) cd $ROOTDIR/msposapp/bin ; ./create_vpn ; echo "Press enter to continue.." ; read  ; cd - ;;
+v) cd $ROOTDIR/msposapp/bin ; ./list_vpns ; echo "Press enter to continue.." ; read  ; cd - ;;
 a) cat ./README.md ; echo "Press enter to continue.." ; read ;;
 x) exit ;;
 *) ;;
