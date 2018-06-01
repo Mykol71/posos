@@ -1,27 +1,34 @@
 #!/bin/bash
-echo $ROOTDIR
 
 trap '' 2
 while :
 do
-#clear
+clear
 echo "*************************************"
 echo "***** POS Application Service *******"
 echo "*************************************"
+echo "* --Development/Manage--            *"
 echo "* [1] Container Status              *"
 echo "* [2] Start Container               *"
 echo "* [3] Attach to a Container         *"
 echo "* [4] Build an RTI image            *"
 echo "* [5] Build an RTI Container        *"
 echo "* [6] List Containers               *"
-echo "* [7] Create Customer VPN Cccess    *"
-echo "* [8] List Customer VPNs            *"
-echo "* [9] Pull OS Image                 *"
-echo "* [0] Wipe All OS Images            *"
+echo "* [7] Pull OS Image                 *"
+echo "* [8] Wipe All OS Images            *"
+echo "*                                   *"
+echo "* --Production--                    *"
+echo "* [11] EC2 Instance Status          *"
+echo "* [12] Build an EC2 instance        *"
+echo "* [13] Attach to an instance        *"
+echo "* [14] Upload an RTI container      *"
+echo "* [15] Create Customer VPN Cccess   *"
+echo "* [16] List Customer VPNs           *"
+echo "*                                   *"
 echo "* [a] About                         *"
-echo "* [x] eXit                          *"
+echo "* [x] Exit                          *"
 echo "*************************************"
-echo "Enter selection [e,s,a,b,l,c,v,a,x]: "
+echo "Enter selection [1,2,3,4,5,6,7,8,11,12,13,14,15,16,a,x]: "
 read selection
 case $selection in
 1) cd $ROOTDIR/msposapp/bin ; ./container_status ; echo "Press enter to continue.." ; read  ; cd - ;;
@@ -30,10 +37,10 @@ case $selection in
 4) cd $ROOTDIR/msposapp/bin ; ./create-rti-image ;  echo "Press enter to continue.." ; read  ; cd - ;;
 5) cd $ROOTDIR/msposapp/bin ; ./create-rti-container ;  echo "Press enter to continue.." ; read  ; cd - ;;
 6) cd $ROOTDIR/msposapp/bin ; ./list_containers ; echo "Press enter to continue.." ; read  ; cd - ;;
-7) cd $ROOTDIR/msposapp/bin ; ./create_vpn ; echo "Press enter to continue.." ; read  ; cd - ;;
-8) cd $ROOTDIR/msposapp/bin ; ./list_vpns ; echo "Press enter to continue.." ; read  ; cd - ;;
-9) cd $ROOTDIR/msposapp/bin ; ./pull-os-image ; echo "Press enter to continue.." ; read  ; cd - ;;
-9) cd $ROOTDIR/msposapp/bin ; ./wipe_images ; echo "Press enter to continue.." ; read  ; cd - ;;
+15) cd $ROOTDIR/msposapp/bin ; ./create_vpn ; echo "Press enter to continue.." ; read  ; cd - ;;
+16) cd $ROOTDIR/msposapp/bin ; ./list_vpns ; echo "Press enter to continue.." ; read  ; cd - ;;
+7) cd $ROOTDIR/msposapp/bin ; ./pull-os-image ; echo "Press enter to continue.." ; read  ; cd - ;;
+8) cd $ROOTDIR/msposapp/bin ; ./wipe_images ; echo "Press enter to continue.." ; read  ; cd - ;;
 a) cat ./README.md ; echo "Press enter to continue.." ; read ;;
 x) exit ;;
 *) ;;

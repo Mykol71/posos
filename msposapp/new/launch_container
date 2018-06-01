@@ -1,5 +1,0 @@
-#!/bin/bash
-
-echo -n "Enter Shop Code: "
-read selection
-docker run --privileged -d -t --name=$selection -i centos-rti-florist /usr/sbin/init

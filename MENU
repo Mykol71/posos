@@ -16,7 +16,7 @@ echo "* [2] POS Application service  *"
 echo "* [3] Status                   *"
 echo "* [4] Information              *"
 echo "* [5] Install/Configure Deps.  *"
-echo "* [6] Exit                     *"
+echo "* [x] Exit                     *"
 echo "********************************"
 echo "Enter selection [1-6]: "
 #if [ "$1" != "" ]; then
@@ -36,7 +36,7 @@ case $selection in
    echo done
 ;;
 5) cd $ROOTDIR/bin ; ./install ; echo "Press enter to continue.." ; read  ; cd - ;;
-6) exit ;;
+x) exit ;;
 *) ;;
 esac
 done
