@@ -12,7 +12,6 @@ export TERM
 trap '' 2
 while :
 do
-clear
 echo "********************************"
 echo "** Managed Services Cloud Menu *"
 echo "********************************"
@@ -24,7 +23,7 @@ echo "* [5] Configure AWS            *"
 echo "* [a] About                    *"
 echo "* [x] Exit                     *"
 echo "********************************"
-echo -n "Enter selection: "
+echo "Enter selection: "
 read selection
 case $selection in
 1) cd $ROOTDIR/msposbackup ; ./MENU ; cd - ;;

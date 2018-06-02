@@ -7,11 +7,10 @@ ID=`/usr/bin/id -u`
 trap '' 2
 while :
 do
-clear
 echo "*************************************"
 echo "***** POS Application Service *******"
 echo "*************************************"
-echo "* --Development/Manage--            *"
+echo "** Development/Manage **            *"
 echo "* [1] Container Status              *"
 echo "* [2] Start Container               *"
 echo "* [3] Attach to a Container         *"
@@ -21,7 +20,7 @@ echo "* [6] List Images                   *"
 echo "* [7] Pull OS Image                 *"
 echo "* [8] Wipe All OS Images            *"
 echo "*                                   *"
-echo "* --Production-- (Costs \$)          *"
+echo "** Production ** (Costs \$)          *"
 echo "* [11] EC2 Instance Status          *"
 echo "* [12] Build an EC2 Instance        *"
 echo "* [13] Attach to an Instance        *"
@@ -32,7 +31,7 @@ echo "*                                   *"
 echo "* [a] About                         *"
 echo "* [x] Exit                          *"
 echo "*************************************"
-echo -n "Enter selection: "
+echo "Enter selection: "
 read selection
 case $selection in
 1) cd $ROOTDIR/msposapp/bin ; ./container_status ; echo "Press enter to continue.." ; read  ; cd - ;;
