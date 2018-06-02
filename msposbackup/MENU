@@ -3,7 +3,7 @@
 trap '' 2
 while :
 do
-#clear
+clear
 echo "********************************"
 echo "****** POS Backup Menu *********"
 echo "****** Free Space: `df -h / | tail -1 | awk '{print $3}'`  *******"
@@ -18,7 +18,7 @@ echo "* [s] Is Subscriber?           *"
 echo "* [a] About                    *"
 echo "* [x] Exit the system          *"
 echo "********************************"
-echo "Enter selection [l,a,k,v,g,d,s,a,x]: "
+echo -n "Enter selection [l,a,k,v,g,d,s,a,x]: "
 read selection
 case $selection in
 l) ./bin/list_cloud_account ; echo "Press enter to continue.." ; read ;;

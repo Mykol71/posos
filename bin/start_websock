@@ -1,0 +1,1 @@
+websocketd --port=80 --dir /home/mgreen/mscloudserver --devconsole &

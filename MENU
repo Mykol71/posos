@@ -6,14 +6,13 @@ ID=`/usr/bin/id -u`
 
 ROOTDIR="`pwd`"
 export ROOTDIR
-source $ROOTDIR/lib/*.sh
 
-clear
 TERM=xterm
 export TERM
 trap '' 2
 while :
 do
+clear
 echo "********************************"
 echo "** Managed Services Cloud Menu *"
 echo "********************************"
