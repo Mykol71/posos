@@ -21,7 +21,7 @@ echo "* [6] List Images                   *"
 echo "* [7] Pull OS Image                 *"
 echo "* [8] Wipe All OS Images            *"
 echo "*                                   *"
-echo "* --Production--                    *"
+echo "* --Production-- (Costs \$)          *"
 echo "* [11] EC2 Instance Status          *"
 echo "* [12] Build an EC2 Instance        *"
 echo "* [13] Attach to an Instance        *"
@@ -40,7 +40,7 @@ case $selection in
 3) cd $ROOTDIR/msposapp/bin ; ./attach_container ; echo "Press enter to continue.." ; read  ; cd - ;;
 4) cd $ROOTDIR/msposapp/bin ; ./create-rti-image ;  echo "Press enter to continue.." ; read  ; cd - ;;
 5) cd $ROOTDIR/msposapp/bin ; ./create-rti-container ;  echo "Press enter to continue.." ; read  ; cd - ;;
-6) cd $ROOTDIR/msposapp/bin ; ./list_containers ; echo "Press enter to continue.." ; read  ; cd - ;;
+6) cd $ROOTDIR/msposapp/bin ; ./list_image ; echo "Press enter to continue.." ; read  ; cd - ;;
 15) cd $ROOTDIR/msposapp/bin ; ./create_vpn ; echo "Press enter to continue.." ; read  ; cd - ;;
 16) cd $ROOTDIR/msposapp/bin ; ./list_vpns ; echo "Press enter to continue.." ; read  ; cd - ;;
 7) cd $ROOTDIR/msposapp/bin ; ./pull-os-image ; echo "Press enter to continue.." ; read  ; cd - ;;
