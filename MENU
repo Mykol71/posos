@@ -1,10 +1,16 @@
 #!/bin/bash
+
+# verify root
+ID=`/usr/bin/id -u`
+[ $ID -ne 0 ] && echo "You must be root to run $0." && exit 1
+
 ROOTDIR="`pwd`"
 export ROOTDIR
 source $ROOTDIR/lib/*.sh
 
 clear
-export TERM=xterm
+TERM=xterm
+export TERM
 trap '' 2
 while :
 do
@@ -19,12 +25,8 @@ echo "* [5] Configure AWS            *"
 echo "* [a] About                    *"
 echo "* [x] Exit                     *"
 echo "********************************"
-echo "Enter selection [1-6]: "
-#if [ "$1" != "" ]; then
-#  selection=$1
-#  else
-  read selection
-#fi
+echo -n "Enter selection: "
+read selection
 case $selection in
 1) cd $ROOTDIR/msposbackup ; ./MENU ; cd - ;;
 2) cd $ROOTDIR/msposapp ; ./MENU ; cd - ;;

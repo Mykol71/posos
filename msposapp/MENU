@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# verify root
+ID=`/usr/bin/id -u`
+[ $ID -ne 0 ] && echo "You must be root to run $0." && exit 1
+
 trap '' 2
 while :
 do
@@ -11,24 +15,24 @@ echo "* --Development/Manage--            *"
 echo "* [1] Container Status              *"
 echo "* [2] Start Container               *"
 echo "* [3] Attach to a Container         *"
-echo "* [4] Build an RTI image            *"
+echo "* [4] Build an RTI Image            *"
 echo "* [5] Build an RTI Container        *"
-echo "* [6] List Containers               *"
+echo "* [6] List Images                   *"
 echo "* [7] Pull OS Image                 *"
 echo "* [8] Wipe All OS Images            *"
 echo "*                                   *"
 echo "* --Production--                    *"
 echo "* [11] EC2 Instance Status          *"
-echo "* [12] Build an EC2 instance        *"
-echo "* [13] Attach to an instance        *"
-echo "* [14] Upload an RTI container      *"
-echo "* [15] Create Customer VPN Cccess   *"
+echo "* [12] Build an EC2 Instance        *"
+echo "* [13] Attach to an Instance        *"
+echo "* [14] Upload an RTI Container      *"
+echo "* [15] Create Customer VPN Access   *"
 echo "* [16] List Customer VPNs           *"
 echo "*                                   *"
 echo "* [a] About                         *"
 echo "* [x] Exit                          *"
 echo "*************************************"
-echo "Enter selection [1,2,3,4,5,6,7,8,11,12,13,14,15,16,a,x]: "
+echo -n "Enter selection: "
 read selection
 case $selection in
 1) cd $ROOTDIR/msposapp/bin ; ./container_status ; echo "Press enter to continue.." ; read  ; cd - ;;

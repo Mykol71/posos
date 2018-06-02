@@ -10,10 +10,15 @@ subscription-manager repos --enable=rhel-7-server-rpms
 subscription-manager repos --enable=rhel-7-server-extras-rpms
 subscription-manager repos --enable=rhel-7-server-optional-rpms 
 subscription-manager repos --enable rhel-server-rhscl-7-rpms
+
+# install ntp
+yum -y install ntp
+# sync date/time otherwise AWS auth will fail
+ntpdate pool.ntp.org
  
 #install required packages
 yum -y install net-tools yum-langpacks gtk3 python27-python-pip ksh wget firewalld tigervnc-server-minimal
-#yum -y localinstall ./bin/websocketd.0.3.0.x86_64.rpm
+yum -y localinstall $ROOTDIR/bin/websocketd.0.3.0.x86_64.rpm
 scl enable python27 bash
 pip install --upgrade pip
 
@@ -31,10 +36,8 @@ yum -y install anaconda-tui
 #install amazon command line interface
 pip install awscli
 
-# install ntp
-yum -y install ntp
-# sync date/time otherwise AWS auth will fail
-ntpdate pool.ntp.org
-
 # add custom scripts to /usr/local/bin
 find . -name "*monthname.sh" -exec cp -f {} /usr/local/bin/. \;
+
+# lastly, update everything
+yum -y update
