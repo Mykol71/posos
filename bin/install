@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/bash
 #RHEL7 required! 
  
 #register rhsm
@@ -27,8 +27,6 @@ systemctl enable docker
 #createcontainer.sh reqs
 yum -y install lorax
 yum -y install anaconda-tui
-yum -y install libvirt-python
-yum -y install virt-install
 
 #install amazon command line interface
 pip install awscli
@@ -40,6 +38,3 @@ ntpdate pool.ntp.org
 
 # add custom scripts to /usr/local/bin
 find . -name "*monthname.sh" -exec cp -f {} /usr/local/bin/. \;
-
-#configure awscli
-aws configure
