@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/bash
 
 SUBSCRIBERS=`find /backups -name paying_customer | wc -l`
 TOTAL_ACCOUNTS=`ls /backups | grep tfrsync | wc -l`

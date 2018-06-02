@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/bash
 #--------------------------------------------------------------------
 # Author: Jim Perrin
 # Script: containerbuild.sh
@@ -73,7 +73,7 @@ LABEL org.label-schema.schema-version="1.0" \\
     org.label-schema.license="GPLv2" \\
     org.label-schema.build-date="$BUILDDATE"
 
-CMD ["/bin/bash"]
+CMD ["/usr/bin/bash"]
 EOF
 
 # Create cccp.yaml for testing

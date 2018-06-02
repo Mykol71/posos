@@ -118,13 +118,13 @@ perl-Digest-MD5
 %post --log=/anaconda-post.log
 
 cat << xxxEOFxxx > /tmp/ksrti.sh
-#!/bin/bash
+#!/usr/bin/bash
 LOG="/tmp/ksrti.sh.log"
 /tmp/ksrti_install.sh \$1 \$2 \$3 \$4 \$5 2>&1 | tee -a \$LOG
 xxxEOFxxx
 
 cat << xxxEOFxxx > /tmp/ksrti_install.sh
-#!/bin/bash
+#!/usr/bin/bash
 # Script to run, just after a kickstart, which will start things rolling.
 CDROM="/dev/sr0"
 if [ \$# -eq 0 ]; then
