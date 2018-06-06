@@ -19,10 +19,11 @@ ntpdate pool.ntp.org
  
 #install required packages
 yum -y install net-tools yum-langpacks gtk3 python27-python-pip ksh wget firewalld tigervnc-server-minimal mailx
-#yum -y localinstall $ROOTDIR/bin/websocketd.0.3.0.x86_64.rpm
-#something weird next. if i leave the scl command in, the script wont progress past the scl command. no clue.
-#scl enable python27 bash 2>&1
-pip install --upgrade pip 2>&1
+
+#add env awareness of pip and aws at login
+if [ "`grep scl ~/.bash_profile`" == "" ]; then
+echo "scl enable python27 bash">>~/.bash_profile
+fi
 
 #install docker
 yum -y install docker device-mapper-libs device-mapper-event-libs
@@ -35,17 +36,17 @@ systemctl enable docker
 yum -y install lorax
 yum -y install anaconda-tui
 
-#install amazon command line interface
-pip install awscli
-
 # add custom scripts to /usr/local/bin
 find . -name "*monthname.sh" -exec cp -f {} /usr/local/bin/. \;
 find . -name "*recon.sh" -exec cp -f {} /usr/local/bin/. \;
 
 # install web server for php menu
-yum -y install httpd php
-systemctl enable httpd
-systemctl start httpd
+#yum -y install httpd php
+#systemctl enable httpd
+#systemctl start httpd
 
 # lastly, update everything
 yum -y update
+
+echo "Done. You will have to log out and back in to setup AWS (option 4)."
+exit 0
