@@ -1,6 +1,5 @@
-mscloudserver
+MS Cloud Server
+---------------
+1. msposbackup - Linux Managed Services Cloud Backup
 
-msposbackup - Linux Managed Services Cloud Backup Service
-
-msposapp - Linux Manage Services Cloud Application Service
-
+2. msposapp - Linux Managed Service Cloud Application Service
