@@ -1,0 +1,6 @@
+#!/usr/bin/bash
+
+echo -n "Enter container ID: "
+read CONTAINER_ID
+docker container stop $CONTAINER_ID
+docker container rm $CONTAINER_ID

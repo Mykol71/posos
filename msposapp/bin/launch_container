@@ -2,4 +2,4 @@
 
 echo -n "Enter Shop Code: "
 read selection
-docker run --privileged -i -d -t --name=$selection -i centos7-rti-florist /usr/sbin/init
+docker run --privileged -i -d -t --name=$selection -i centos7-rti-$selection /usr/sbin/init
