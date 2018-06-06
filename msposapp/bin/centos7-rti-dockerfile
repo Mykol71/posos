@@ -27,4 +27,5 @@ RUN systemctl enable httpd
 EXPOSE 22
 EXPOSE 80
 EXPOSE 443
-CMD [“/usr/sbin/init”]
+#CMD [“/usr/sbin/init”]
+CMD [“/usr/bin/bash”]

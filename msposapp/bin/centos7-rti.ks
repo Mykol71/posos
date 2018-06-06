@@ -18,7 +18,7 @@ selinux --permissive
 skipx
 timezone  America/Chicago
 install
-network --bootproto=static --ip=192.168.22.240 --netmask=255.255.255.0 --gateway=192.168.22.1 --nameserver=192.168.22.1 --device=eth0 --activate --onboot=on
+network --bootproto=dhcp --activate --onboot=on
 shutdown
 bootloader --disable
 lang en_US
@@ -365,7 +365,7 @@ rm -rf /boot
 rm -rf /etc/firewalld
 
 # Lock roots account, keep roots account password-less.
-passwd -l root
+#passwd -l root
 
 #LANG="en_US"
 #echo "%_install_lang $LANG" > /etc/rpm/macros.image-language-conf
