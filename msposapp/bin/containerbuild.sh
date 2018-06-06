@@ -11,7 +11,7 @@
 # Requires: anaconda lorax
 #--------------------------------------------------------------------
 #### Basic VAR definitions
-USAGE="USAGE: $(basename "$0") kickstart"
+USAGE="USAGE: $(basename "$0") kickstart os"
 KICKSTART="$1"
 KSNAME=${KICKSTART%.*}
 BUILDDATE=$(date +%Y%m%d)
@@ -21,7 +21,7 @@ OS="$2"
 
 #### Test for script requirements
 # Did we get passed a kickstart
-if [ "$#" -ne 1 ]; then
+if [ "$#" -ne 2 ]; then
     echo "$USAGE"
     exit 1
 fi

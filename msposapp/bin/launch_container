@@ -1,5 +1,7 @@
 #!/usr/bin/bash
 
+echo -n "rhel or centos?: "
+read OS
 echo -n "Enter Shop Code: "
 read selection
-docker run --privileged -i -d -t --name=$selection -i centos7-rti-$selection /usr/sbin/init
+docker run --privileged -i -d -t --name=${selection}.teleflora.com -i ${OS}7-rti-16.0.3 /usr/sbin/init
