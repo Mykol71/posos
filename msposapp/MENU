@@ -14,33 +14,36 @@ trap '' 2
 while :
 do
 clear
-echo "*************************************"
-echo "***** POS Application Service *******"
-echo "*************************************"
-echo "** Development/Manage **            *"
-echo "* [1] List Running Containers       *"
-echo "* [2] Start Container               *"
-echo "* [3] Stop Container                *"
-echo "* [4] Attach to a Container         *"
-echo "* [5] Build a Base OS Image         *"
-echo "* [6] Build an RTI Container        *"
-echo "* [7] List Images                   *"
-echo "* [8] Update Local OS Image         *"
-echo "* [9] Wipe All OS Images            *"
-echo "*                                   *"
-echo "** Production ** (Costs \$)          *"
-echo "* [11] EC2 Instance Status          *"
-echo "* [12] Start an EC2 Instance        *"
-echo "* [13] Stop an EC2 Instance         *"
-echo "* [14] Upload a Florist Container   *"
-echo "* [15] Delete a Florist Container   *"
-echo "* [16] Create Florist VPN Access    *"
-echo "* [17] List Florist VPN             *"
-echo "* [18] Delete Florist VPN Access    *"
-echo "*                                   *"
-echo "* [a] About                         *"
-echo "* [x] Exit                          *"
-echo "*************************************"
+echo "**************************************"
+echo "***** POS Application Service ********"
+echo "**************************************"
+echo "** Manage **                         *"
+echo "* [1] List Running Containers        *"
+echo "* [2] Start Container                *"
+echo "* [3] Stop Container                 *"
+echo "* [4] Attach to a Container          *"
+echo "* [5] List Network Interfaces        *"
+echo "*                                    *"
+echo "** Build **                          *"
+echo "* [11] Build a Base RTI-OS Image     *"
+echo "* [12] Build an RTI Container        *"
+echo "* [13] List Images                   *"
+echo "* [14] Update Local OS Image         *"
+echo "* [15] Wipe All OS Images            *"
+echo "*                                    *"
+echo "** Production ** (Costs \$s!!!)       *"
+echo "* [111] EC2 Instance Status          *"
+echo "* [112] Start an EC2 Instance        *"
+echo "* [113] Stop an EC2 Instance         *"
+echo "* [114] Upload a Florist Container   *"
+echo "* [115] Delete a Florist Container   *"
+echo "* [116] Create Florist VPN Access    *"
+echo "* [117] List Florist VPN             *"
+echo "* [118] Delete Florist VPN Access    *"
+echo "*                                    *"
+echo "* [a]  About                         *"
+echo "* [x]  Exit                          *"
+echo "**************************************"
 echo -n "Enter selection: "
 read selection
 case $selection in
@@ -48,19 +51,20 @@ case $selection in
 2) cd $ROOTDIR/bin ; ./launch_container ; echo "Press enter to continue.." ; read  ; cd - ;;
 3) cd $ROOTDIR/bin ; ./stop_container ; echo "Press enter to continue.." ; read  ; cd - ;;
 4) cd $ROOTDIR/bin ; ./attach_container ; echo "Press enter to continue.." ; read  ; cd - ;;
-5) cd $ROOTDIR/bin ; ./create-base-image ;  echo "Press enter to continue.." ; read  ; cd - ;;
-6) cd $ROOTDIR/bin ; ./create-rti-container ;  echo "Press enter to continue.." ; read  ; cd - ;;
-7) cd $ROOTDIR/bin ; ./list_image ; echo "Press enter to continue.." ; read  ; cd - ;;
-8) cd $ROOTDIR/bin ; ./pull-os-image ; echo "Press enter to continue.." ; read  ; cd - ;;
-9) cd $ROOTDIR/bin ; ./wipe_images ; echo "Press enter to continue.." ; read  ; cd - ;;
-11) cd $ROOTDIR/bin ; ./list_ec2_instances ; echo "Press enter to continue.." ; read  ; cd - ;;
-12) cd $ROOTDIR/bin ; ./start_ec2_instance ; echo "Press enter to continue.." ; read  ; cd - ;;
-13) cd $ROOTDIR/bin ; ./stop_ec2_instance ; echo "Press enter to continue.." ; read  ; cd - ;;
-14) cd $ROOTDIR/bin ; ./upload_florist_container ; echo "Press enter to continue.." ; read  ; cd - ;;
-15) cd $ROOTDIR/bin ; ./delete_ec2_instance ; echo "Press enter to continue.." ; read  ; cd - ;;
-16) cd $ROOTDIR/bin ; ./create_vpn ; echo "Press enter to continue.." ; read  ; cd - ;;
-17) cd $ROOTDIR/bin ; ./list_vpns ; echo "Press enter to continue.." ; read  ; cd - ;;
-18) cd $ROOTDIR/bin ; ./delete_vpn ; echo "Press enter to continue.." ; read  ; cd - ;;
+5) cd $ROOTDIR/bin ; ./list_nics ;  echo "Press enter to continue.." ; read  ; cd - ;;
+11) cd $ROOTDIR/bin ; ./create-base-image ;  echo "Press enter to continue.." ; read  ; cd - ;;
+12) cd $ROOTDIR/bin ; ./create-rti-container ;  echo "Press enter to continue.." ; read  ; cd - ;;
+13) cd $ROOTDIR/bin ; ./list_image ; echo "Press enter to continue.." ; read  ; cd - ;;
+14) cd $ROOTDIR/bin ; ./pull-os-image ; echo "Press enter to continue.." ; read  ; cd - ;;
+15) cd $ROOTDIR/bin ; ./wipe_images ; echo "Press enter to continue.." ; read  ; cd - ;;
+111) cd $ROOTDIR/bin ; ./list_ec2_instances ; echo "Press enter to continue.." ; read  ; cd - ;;
+112) cd $ROOTDIR/bin ; ./start_ec2_instance ; echo "Press enter to continue.." ; read  ; cd - ;;
+113) cd $ROOTDIR/bin ; ./stop_ec2_instance ; echo "Press enter to continue.." ; read  ; cd - ;;
+114) cd $ROOTDIR/bin ; ./upload_florist_container ; echo "Press enter to continue.." ; read  ; cd - ;;
+115) cd $ROOTDIR/bin ; ./delete_ec2_instance ; echo "Press enter to continue.." ; read  ; cd - ;;
+116) cd $ROOTDIR/bin ; ./create_vpn ; echo "Press enter to continue.." ; read  ; cd - ;;
+117) cd $ROOTDIR/bin ; ./list_vpns ; echo "Press enter to continue.." ; read  ; cd - ;;
+118) cd $ROOTDIR/bin ; ./delete_vpn ; echo "Press enter to continue.." ; read  ; cd - ;;
 a) cat ./README.md ; echo "Press enter to continue.." ; read ;;
 x) exit ;;
 *) ;;
