@@ -15,7 +15,7 @@ echo "* [1] List Running Containers       *"
 echo "* [2] Start Container               *"
 echo "* [3] Stop Container                *"
 echo "* [4] Attach to a Container         *"
-echo "* [5] Build an RTI Image            *"
+echo "* [5] Build a Base OS Image         *"
 echo "* [6] Build an RTI Container        *"
 echo "* [7] List Images                   *"
 echo "* [8] Update Local OS Image         *"
@@ -39,7 +39,7 @@ case $selection in
 2) cd $ROOTDIR/msposapp/bin ; ./launch_container ; echo "Press enter to continue.." ; read  ; cd - ;;
 3) cd $ROOTDIR/msposapp/bin ; ./stop_container ; echo "Press enter to continue.." ; read  ; cd - ;;
 4) cd $ROOTDIR/msposapp/bin ; ./attach_container ; echo "Press enter to continue.." ; read  ; cd - ;;
-5) cd $ROOTDIR/msposapp/bin ; ./create-rti-image ;  echo "Press enter to continue.." ; read  ; cd - ;;
+5) cd $ROOTDIR/msposapp/bin ; ./create-base-image ;  echo "Press enter to continue.." ; read  ; cd - ;;
 6) cd $ROOTDIR/msposapp/bin ; ./create-rti-container ;  echo "Press enter to continue.." ; read  ; cd - ;;
 7) cd $ROOTDIR/msposapp/bin ; ./list_image ; echo "Press enter to continue.." ; read  ; cd - ;;
 15) cd $ROOTDIR/msposapp/bin ; ./create_vpn ; echo "Press enter to continue.." ; read  ; cd - ;;

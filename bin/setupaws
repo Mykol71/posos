@@ -1,3 +1,4 @@
 #!/usr/bin/bash
 
+#scl enable python27 bash
 aws configure
