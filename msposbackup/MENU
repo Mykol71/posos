@@ -1,5 +1,12 @@
 #!/bin/bash
 
+# verify root
+ID=`/usr/bin/id -u`
+[ $ID -ne 0 ] && echo "You must be root to run $0." && exit 1
+
+ROOTDIR="`pwd`"
+export ROOTDIR
+
 trap '' 2
 while :
 do
@@ -21,13 +28,13 @@ echo "********************************"
 echo -n "Enter selection [l,a,k,v,g,d,s,a,x]: "
 read selection
 case $selection in
-l) ./bin/list_cloud_account ; echo "Press enter to continue.." ; read ;;
-c) ./bin/create_cloud_account ; echo "Press enter to continue.." ; read ;;
-k) ./bin/change_account_key ; echo "Press enter to continue.." ; read  ;;
-v) ./bin/view_cloud_key ; echo "Press enter to continue.." ; read  ;;
-g) ./bin/get_cloud_key ; echo "Press enter to continue.." ; read  ;;
-d) ./bin/delete_cloud_account ; echo "Press enter to continue.." ; read  ;;
-s) ./bin/is_subscriber ; echo "Press enter to continue.." ; read  ;;
+l) $ROOTDIR/bin/list_cloud_account ; echo "Press enter to continue.." ; read ;;
+c) $ROOTDIR/bin/create_cloud_account ; echo "Press enter to continue.." ; read ;;
+k) $ROOTDIR/bin/change_account_key ; echo "Press enter to continue.." ; read  ;;
+v) $ROOTDIR/bin/view_cloud_key ; echo "Press enter to continue.." ; read  ;;
+g) $ROOTDIR/bin/get_cloud_key ; echo "Press enter to continue.." ; read  ;;
+d) $ROOTDIR/bin/delete_cloud_account ; echo "Press enter to continue.." ; read  ;;
+s) $ROOTDIR/bin/is_subscriber ; echo "Press enter to continue.." ; read  ;;
 a) cat ./README.md ; echo "Press enter to continue.." ; read ;;
 x)  cd .. ; exit ;;
 *) ;;

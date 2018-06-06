@@ -13,6 +13,7 @@ export ROOTDIR
 trap '' 2
 while :
 do
+clear
 echo "*************************************"
 echo "***** POS Application Service *******"
 echo "*************************************"
@@ -40,7 +41,7 @@ echo "*                                   *"
 echo "* [a] About                         *"
 echo "* [x] Exit                          *"
 echo "*************************************"
-echo "Enter selection: "
+echo -n "Enter selection: "
 read selection
 case $selection in
 1) cd $ROOTDIR/bin ; ./container_status ; echo "Press enter to continue.." ; read  ; cd - ;;

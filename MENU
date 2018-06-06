@@ -10,6 +10,7 @@ export ROOTDIR
 trap '' 2
 while :
 do
+clear
 echo "********************************"
 echo "** Managed Services Cloud Menu *"
 echo "********************************"
@@ -20,7 +21,7 @@ echo "* [4] Configure AWS            *"
 echo "* [a] About                    *"
 echo "* [x] Exit                     *"
 echo "********************************"
-echo "Enter selection: "
+echo -n "Enter selection: "
 read selection
 case $selection in
 1) cd $ROOTDIR/msposbackup ; ./MENU ; cd - ;;
