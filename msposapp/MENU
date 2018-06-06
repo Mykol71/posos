@@ -24,10 +24,13 @@ echo "*                                   *"
 echo "** Production ** (Costs \$)          *"
 echo "* [11] EC2 Instance Status          *"
 echo "* [12] Build an EC2 Instance        *"
-echo "* [13] Attach to an Instance        *"
-echo "* [14] Upload an RTI Container      *"
-echo "* [15] Create Customer VPN Access   *"
-echo "* [16] List Customer VPNs           *"
+echo "* [13] Start an EC2 Instance        *"
+echo "* [14] Stop an EC2 Instance         *"
+echo "* [15] Upload a Florist Container   *"
+echo "* [16] Delete a Florist Container   *"
+echo "* [17] Create Florist VPN Access    *"
+echo "* [18] List Florist VPN             *"
+echo "* [19] Delete Florist VPN Access    *"
 echo "*                                   *"
 echo "* [a] About                         *"
 echo "* [x] Exit                          *"
@@ -42,10 +45,15 @@ case $selection in
 5) cd $ROOTDIR/msposapp/bin ; ./create-base-image ;  echo "Press enter to continue.." ; read  ; cd - ;;
 6) cd $ROOTDIR/msposapp/bin ; ./create-rti-container ;  echo "Press enter to continue.." ; read  ; cd - ;;
 7) cd $ROOTDIR/msposapp/bin ; ./list_image ; echo "Press enter to continue.." ; read  ; cd - ;;
-15) cd $ROOTDIR/msposapp/bin ; ./create_vpn ; echo "Press enter to continue.." ; read  ; cd - ;;
-16) cd $ROOTDIR/msposapp/bin ; ./list_vpns ; echo "Press enter to continue.." ; read  ; cd - ;;
 8) cd $ROOTDIR/msposapp/bin ; ./pull-os-image ; echo "Press enter to continue.." ; read  ; cd - ;;
 9) cd $ROOTDIR/msposapp/bin ; ./wipe_images ; echo "Press enter to continue.." ; read  ; cd - ;;
+11) cd $ROOTDIR/msposapp/bin ; ./list_ec2_instances ; echo "Press enter to continue.." ; read  ; cd - ;;
+12) cd $ROOTDIR/msposapp/bin ; ./create_ec2_instance ; echo "Press enter to continue.." ; read  ; cd - ;;
+13) cd $ROOTDIR/msposapp/bin ; ./start_ec2_instance ; echo "Press enter to continue.." ; read  ; cd - ;;
+14) cd $ROOTDIR/msposapp/bin ; ./stop_ec2_instance ; echo "Press enter to continue.." ; read  ; cd - ;;
+15) cd $ROOTDIR/msposapp/bin ; ./delete_ec2_instance ; echo "Press enter to continue.." ; read  ; cd - ;;
+14) cd $ROOTDIR/msposapp/bin ; ./create_vpn ; echo "Press enter to continue.." ; read  ; cd - ;;
+15) cd $ROOTDIR/msposapp/bin ; ./list_vpns ; echo "Press enter to continue.." ; read  ; cd - ;;
 a) cat ./README.md ; echo "Press enter to continue.." ; read ;;
 x) exit ;;
 *) ;;
