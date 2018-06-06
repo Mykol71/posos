@@ -7,8 +7,6 @@ ID=`/usr/bin/id -u`
 ROOTDIR="`pwd`"
 export ROOTDIR
 
-TERM=xterm
-export TERM
 trap '' 2
 while :
 do

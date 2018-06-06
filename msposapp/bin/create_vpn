@@ -6,6 +6,7 @@ ID=`/usr/bin/id -u`
 
 # gather user input
 INPUTS="SHOPCODE SHOPTYPE SHOPPUBLICIP"
+#INPUTS=""
 
 echo "Gathering required information...."
 for var in $INPUTS; do
@@ -16,6 +17,7 @@ for var in $INPUTS; do
 done
 
 # verify input
+if [ "$INPUTS" != "" ]; then
 echo "ipsec VPN Connection about to be created:"
 echo "SHOPCODE = $SHOPCODE"
 echo "SHOPTYPE = $SHOPTYPE"
@@ -41,5 +43,8 @@ echo "Done...."
 echo "3. Creating VPN Connection...."
 aws ec2 create-vpn-connection --customer-gateway-id $CUSTGATEWAYID --type $TYPE --vpn-gateway-id $VPNGATEWAYID
 echo "VPN Connection Created."
+fi
+else
+echo "Nothing to do."
 fi
 exit 0

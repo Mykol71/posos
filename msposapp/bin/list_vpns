@@ -1,1 +1,1 @@
-aws ec2 describe-vpn-connections
+aws ec2 describe-vpn-connections | grep vpn_connection | grep -v type
