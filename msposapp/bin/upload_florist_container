@@ -1,4 +1,22 @@
 #!/usr/bin/bash
 
+#get info
+echo -n "ShopCode: "
+read CODE
+echo -n "centos or rhel?: "
+read OS
+
 #upload florist container
-echo "script run"
+
+#get temp login info from AWS
+LOGININFO=`aws ecr get-login --no-include-email --region us-west-2`
+
+#login with the info from above
+`$LOGINIFO`
+
+#cp -f ./${OS}7-rti-dockerfile ./Dockerfile
+#docker build -t rti-${OS}7 .
+
+docker tag rhel7-rti-16.0.3 239094452516.dkr.ecr.us-west-2.amazonaws.com/rti-rhel7:latest
+
+docker push 239094452516.dkr.ecr.us-west-2.amazonaws.com/rti-${OS}7:latest
