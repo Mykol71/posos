@@ -14,9 +14,8 @@ LOGININFO=`aws ecr get-login --no-include-email --region us-west-2`
 #login with the info from above
 `$LOGINIFO`
 
-#cp -f ./${OS}7-rti-dockerfile ./Dockerfile
-#docker build -t rti-${OS}7 .
+docker tag rhel7-rti-$CODE 239094452516.dkr.ecr.us-west-2.amazonaws.com/rti-rhel7-$CODE
 
-docker tag rhel7-rti-16.0.3 239094452516.dkr.ecr.us-west-2.amazonaws.com/rti-rhel7:latest
+docker push 239094452516.dkr.ecr.us-west-2.amazonaws.com/rti-${OS}7-$CODE
 
-docker push 239094452516.dkr.ecr.us-west-2.amazonaws.com/rti-${OS}7:latest
+#policy configured in AWS will start the pushed image.

@@ -4,6 +4,7 @@ echo -n "ShopCode?: "
 read SHOPCODE
 echo -n "rhel or centos?: " 
 read selection
+
 if [ $selection == "rhel" ]; then
 cp -f ./rhel7-rti-dockerfile /var/tmp/containers/`date +%Y%m%d`/rhel7-rti/docker/Dockerfile
 cd /var/tmp/containers/`date +%Y%m%d`/rhel7-rti/docker

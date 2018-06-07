@@ -25,20 +25,18 @@ echo "* [4] Attach to a Container          *"
 echo "* [5] List Network Interfaces        *"
 echo "*                                    *"
 echo "** Build **                          *"
-echo "* [11] Build an Base RTI-OS Image    *"
+echo "* [11] Build a Base RTI-OS Image     *"
 echo "* [12] Build a Florist Image         *"
 echo "* [13] List Images                   *"
 echo "* [14] Wipe All Images               *"
 echo "*                                    *"
 echo "** Production ** (Affects \$s!!!)     *"
-echo "* [111] Florist Instance Status      *"
+echo "* [111] List Florist Instances       *"
 echo "* [112] Start a Florist Instance     *"
 echo "* [113] Stop a Florist Instance      *"
-echo "* [114] Upload a Florist Container   *"
-echo "* [115] Delete a Florist Container   *"
-echo "* [116] Create Florist VPN Access    *"
-echo "* [117] List Florist VPNs            *"
-echo "* [118] Delete Florist VPN Access    *"
+echo "* [114] List Florist VPNs            *"
+echo "* [115] Create Florist VPN Access    *"
+echo "* [116] Remove Florist VPN Access    *"
 echo "*                                    *"
 echo "* [a]  About                         *"
 echo "* [x]  Exit                          *"
@@ -58,11 +56,9 @@ case $selection in
 111) cd $ROOTDIR/bin ; ./list_ec2_instances ; echo "Press enter to continue.." ; read  ; cd - ;;
 112) cd $ROOTDIR/bin ; ./start_ec2_instance ; echo "Press enter to continue.." ; read  ; cd - ;;
 113) cd $ROOTDIR/bin ; ./stop_ec2_instance ; echo "Press enter to continue.." ; read  ; cd - ;;
-114) cd $ROOTDIR/bin ; ./upload_florist_container ; echo "Press enter to continue.." ; read  ; cd - ;;
-115) cd $ROOTDIR/bin ; ./delete_ec2_instance ; echo "Press enter to continue.." ; read  ; cd - ;;
-116) cd $ROOTDIR/bin ; ./create_vpn ; echo "Press enter to continue.." ; read  ; cd - ;;
-117) cd $ROOTDIR/bin ; ./list_vpns ; echo "Press enter to continue.." ; read  ; cd - ;;
-118) cd $ROOTDIR/bin ; ./delete_vpn ; echo "Press enter to continue.." ; read  ; cd - ;;
+114) cd $ROOTDIR/bin ; ./list_vpns ; echo "Press enter to continue.." ; read  ; cd - ;;
+115) cd $ROOTDIR/bin ; ./create_vpn ; echo "Press enter to continue.." ; read  ; cd - ;;
+116) cd $ROOTDIR/bin ; ./delete_vpn ; echo "Press enter to continue.." ; read  ; cd - ;;
 a) cat ./README.md ; echo "Press enter to continue.." ; read ;;
 x) exit ;;
 *) ;;
