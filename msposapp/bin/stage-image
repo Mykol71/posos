@@ -4,6 +4,16 @@ echo -n "rhel or centos?: "
 read OS
 echo -n "SHOPCODE: "
 read SHOPCODE
+
+#start container
 CONTAINER=`docker run --privileged -i -d -t --name=${SHOPCODE}.teleflora.com -i ${OS}7-rti-16.1.3 /usr/sbin/init`
-docker exec $SHOPCODE.teleflora.com cat /usr/local/bin/ksrti.sh
+
+##ksrti.sh
+#copy ostools
+tar Ccf ostools - ostools | docker exec -i $CONTAINER tar Cxf /usr/local/bin -
+docker exec $CONTAINER ls -ltr /usr/local/bin
+
+#save container
 docker commit $CONTAINER rhel7-rti-${SHOPCODE}
+
+#export image
