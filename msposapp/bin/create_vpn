@@ -10,7 +10,7 @@ INPUTS="SHOPCODE SHOPTYPE SHOPPUBLICIP"
 
 echo "Gathering required information...."
 for var in $INPUTS; do
-  echo "Enter $var:"
+  echo -n "Enter $var:"
   read -p ""
   export $var=$REPLY
   TYPE="ipsec.1"
@@ -19,9 +19,6 @@ done
 # verify input
 if [ "$INPUTS" != "" ]; then
 echo "ipsec VPN Connection about to be created:"
-echo "SHOPCODE = $SHOPCODE"
-echo "SHOPTYPE = $SHOPTYPE"
-echo "SHOPPUBLICIP = $SHOPPUBLICIP"
 echo "--------------------"
 echo "Continue y/n?"
 read -p ""
