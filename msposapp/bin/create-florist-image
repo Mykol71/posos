@@ -1,19 +1,17 @@
 #!/usr/bin/bash
 
-echo -n "ShopCode?: "
-read SHOPCODE
 echo -n "rhel or centos?: " 
 read selection
 
 if [ $selection == "rhel" ]; then
 cp -f ./rhel7-rti-dockerfile /var/tmp/containers/`date +%Y%m%d`/rhel7-rti/docker/Dockerfile
 cd /var/tmp/containers/`date +%Y%m%d`/rhel7-rti/docker
-docker build --rm -t rhel7-rti-$SHOPCODE .
+docker build --rm -t rhel7-rti-16.1.3 .
 cd -
 fi
 if [ $selection = "centos" ]; then
 cp -f ./centos7-rti-dockerfile /var/tmp/containers/`date +%Y%m%d`/centos7-rti/docker/Dockerfile
 cd /var/tmp/containers/`date +%Y%m%d`/centos7-rti/docker
-docker build --rm -t centos7-rti-$SHOPCODE .
+docker build --rm -t centos7-rti-16.1.3 .
 cd -
 fi
