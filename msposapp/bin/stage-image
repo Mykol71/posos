@@ -6,7 +6,7 @@ echo -n "SHOPCODE: "
 read SHOPCODE
 
 #start container
-CONTAINER=`docker run --privileged -w="./bin" -i -d -t --name=${SHOPCODE}.teleflora.com -i ${OS}7-rti-16.1.3 /usr/sbin/init`
+CONTAINER=`docker run --privileged -w="/usr/local/bin" -i -d -t --name=${SHOPCODE}.teleflora.com -i ${OS}7-rti-16.1.3 /usr/sbin/init`
 
 #RHEL changed from /bin to /usr/bin at some point. Created link to avoid changing scripts.
 docker exec $CONTAINER ln -s /usr/bin /bin
@@ -23,19 +23,19 @@ docker exec $CONTAINER ./bin/updateos.pl --hostname=$SHOPCODE
 docker exec $CONTAINER ./bin/updateos.pl --samba-set-passdb
 
 #install basis
-docker exec $CONTAINER ./bin/updateos.pl --rti14
+#docker exec $CONTAINER ./bin/updateos.pl --rti14
 #PASS TFSUPPORT PASSWORD INSTEAD OF PROMPT
-docker exec $CONTAINER service blm start
+#docker exec $CONTAINER service blm start
 #DOWNLOAD BASIS FILES AND UNTAR
 
 #upgrade to bbj15
 #DOWNLOAD UPDATEBBJ SCRIPT
-docker exec $CONTAINER chmod +x ./update_bbj_15.pl
-docker exec $CONTAINER ./update_bbj_15.pl --bbj15
+#docker exec $CONTAINER chmod +x ./update_bbj_15.pl
+#docker exec $CONTAINER ./update_bbj_15.pl --bbj15
 
 #install RTI
 #DOWNLOAD RTI ISO
-docker exec $CONTAINER ./install_rti-16.1.5.pl --nobbxt /usr2/bbx
+#docker exec $CONTAINER ./install_rti-16.1.5.pl --nobbxt /usr2/bbx
 
 #install Florist Directory
 docker exec $CONTAINER wget http://tposlinux.blob.core.windows.net/rti-edir/rti-edir-tel-latest.patch
@@ -44,14 +44,14 @@ docker exec $CONTAINER ./applypatch.pl ./rti-edir-tel-latest.patch
 
 #installing tfsupport authorized keys
 #DOWNLOAD TWOFACTOR-20090723.tar
-docker exec $CONTAINER mkdir /home/tfsupport/.ssh
-docker exec $CONTAINER chmod 700 /home/tfsupport/.ssh
-docker exec $CONTAINER chown tfsupport:rti /home/tfsupport/.ssh
-docker exec $CONTAINER tar xvf ./bin/twofactor-20090723.tar
-docker exec $CONTAINER chmod +x ./bin/*.pl
-docker exec $CONTAINER cp ./bin/tfsupport-authorized_keys /home/tfsupport/.ssh/authorized_keys
-docker exec $CONTAINER chmod 700 /home/tfsupport/.ssh/authorized_keys
-docker exec $CONTAINER chown tfsupport:root /home/tfsupport/.ssh/authorized_keys
+#docker exec $CONTAINER mkdir /home/tfsupport/.ssh
+#docker exec $CONTAINER chmod 700 /home/tfsupport/.ssh
+#docker exec $CONTAINER chown tfsupport:rti /home/tfsupport/.ssh
+#docker exec $CONTAINER tar xvf ./bin/twofactor-20090723.tar
+#docker exec $CONTAINER chmod +x ./bin/*.pl
+#docker exec $CONTAINER cp ./bin/tfsupport-authorized_keys /home/tfsupport/.ssh/authorized_keys
+#docker exec $CONTAINER chmod 700 /home/tfsupport/.ssh/authorized_keys
+#docker exec $CONTAINER chown tfsupport:root /home/tfsupport/.ssh/authorized_keys
 
 #installing admin menus
 docker exec $CONTAINER ./bin/install_adminmenus.pl --run
@@ -69,14 +69,14 @@ docker exec $CONTAINER wget http://rtihardware.homelinux.com/ostools/librxtxSeri
 
 #installing 32-bit library for serial ports
 #DOWNLOAD LIBRXTXSERIAL.SO
-docker exec $CONTAINER cp /usr2/basis/lib/librxtxSerial.so /usr2/basis/lib/librxtxSerial.so.64bit
-docker exec $CONTAINER cp librxtxSerial.so /usr2/basis/lib/librxtxSerial.so
-docker exec $CONTAINER chmod 666 /usr2/basis/lib/librxtxSerial.so
-docker exec $CONTAINER chown root:root /usr2/basis/lib/librxtxSerial.so
+#docker exec $CONTAINER cp /usr2/basis/lib/librxtxSerial.so /usr2/basis/lib/librxtxSerial.so.64bit
+#docker exec $CONTAINER cp librxtxSerial.so /usr2/basis/lib/librxtxSerial.so
+#docker exec $CONTAINER chmod 666 /usr2/basis/lib/librxtxSerial.so
+#docker exec $CONTAINER chown root:root /usr2/basis/lib/librxtxSerial.so
 
 #adding multiserver.pwd fix
 #DOWNLOAD MULTISERVER.PWD
-docker exec $CONTAINER cp -f ./bin/multiserver.pwd /usr2/bbx/config/
+#docker exec $CONTAINER cp -f ./bin/multiserver.pwd /usr2/bbx/config/
 
 #install TCC
 docker exec $CONTAINER wget http://rtihardware.homelinux.com/support/tcc/tcc-latest_linux.tar.gz
@@ -88,8 +88,8 @@ docker exec $CONTAINER ln -s /usr2/bbx/bin/tcc_rhel7 /usr2/bbx/bin/tcc_tws
 
 #install Kaseya
 docker exec $CONTAINER wget http://rtihardware.homelinux.com/support/KcsSetup.sh
-docker exec $CONTAINER chmod +x ./bin/KcsSetup.sh
-docker exec $CONTAINER ./bin/KcsSetup.sh
+docker exec $CONTAINER chmod +x ./KcsSetup.sh
+docker exec $CONTAINER ./KcsSetup.sh
 
 #smash staged configuration and data with customer's
 #SYMLINK1
