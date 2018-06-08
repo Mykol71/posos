@@ -13,6 +13,20 @@ CONTAINER=`docker run --privileged -i -d -t --name=${SHOPCODE}.teleflora.com -i 
 tar Ccf ostools - ostools | docker exec -i $CONTAINER tar Cxf /usr/local/bin -
 docker exec $CONTAINER ls -ltr /usr/local/bin
 
+#create basic folders (/teleflora)
+
+#install basis
+
+#install RTI
+
+#install TCC
+
+#install Kaseya
+
+#install tfremote
+
+#configure symlinks for specific florist (SHOPCODE) to create app dir (/d or /usr2)
+
 #save container
 docker commit $CONTAINER rhel7-rti-${SHOPCODE}
 
