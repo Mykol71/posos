@@ -6,28 +6,100 @@ echo -n "SHOPCODE: "
 read SHOPCODE
 
 #start container
-CONTAINER=`docker run --privileged -i -d -t --name=${SHOPCODE}.teleflora.com -i ${OS}7-rti-16.1.3 /usr/sbin/init`
+CONTAINER=`docker run --privileged -w="/usr/local/bin" -i -d -t --name=${SHOPCODE}.teleflora.com -i ${OS}7-rti-16.1.3 /usr/sbin/init`
 
-##ksrti.sh
-#copy ostools
-tar Ccf ostools - ostools | docker exec -i $CONTAINER tar Cxf /usr/local/bin -
-docker exec $CONTAINER ls -ltr /usr/local/bin
+#RHEL changed from /bin to /usr/bin at some point. Created link to avoid changing scripts.
+docker exec $CONTAINER ln -s /usr/bin /bin
 
-#create basic folders (/teleflora)
+##docker version of ksrti.sh
+
+#install ostools
+docker exec $CONTAINER wget http://rtihardware.homelinux.com/ostools/ostools-1.15-latest.tar.gz
+docker exec $CONTAINER tar xvfz ostools-1.15-latest.tar.gz
+docker exec $CONTAINER ./bin/install-ostools.pl --noharden-linux ./ostools-1.15-latest.tar.gz
+
+#configure system with ostools
+docker exec $CONTAINER ./bin/updateos.pl --hostname=$SHOPCODE
+docker exec $CONTAINER ./bin/updateos.pl --samba-set-passdb
 
 #install basis
+docker exec $CONTAINER ./bin/updateos.pl --rti14
+#PASS TFSUPPORT PASSWORD INSTEAD OF PROMPT
+docker exec $CONTAINER service blm start
+#DOWNLOAD BASIS FILES AND UNTAR
+
+#upgrade to bbj15
+#DOWNLOAD UPDATEBBJ SCRIPT
+docker exec $CONTAINER chmod +x ./update_bbj_15.pl
+docker exec $CONTAINER ./update_bbj_15.pl --bbj15
 
 #install RTI
+#DOWNLOAD RTI ISO
+docker exec $CONTAINER ./install_rti-16.1.5.pl --nobbxt /usr2/bbx
+
+#install Florist Directory
+docker exec $CONTAINER wget http://tposlinux.blob.core.windows.net/rti-edir/rti-edir-tel-latest.patch
+docker exec $CONTAINER wget http://tposlinux.blob.core.windows.net/rti-edir/applypatch.pl
+docker exec $CONTAINER ./applypatch.pl ./rti-edir-tel-latest.patch
+
+#installing tfsupport authorized keys
+#DOWNLOAD TWOFACTOR-20090723.tar
+docker exec $CONTAINER mkdir /home/tfsupport/.ssh
+docker exec $CONTAINER chmod 700 /home/tfsupport/.ssh
+docker exec $CONTAINER chown tfsupport:rti /home/tfsupport/.ssh
+docker exec $CONTAINER tar xvf /usr/local/bin/twofactor-20090723.tar
+docker exec $CONTAINER chmod +x /usr/local/bin/*.pl
+docker exec $CONTAINER cp /usr/local/bin/tfsupport-authorized_keys /home/tfsupport/.ssh/authorized_keys
+docker exec $CONTAINER chmod 700 /home/tfsupport/.ssh/authorized_keys
+docker exec $CONTAINER chown tfsupport:root /home/tfsupport/.ssh/authorized_keys
+
+#installing admin menus
+docker exec $CONTAINER ./bin/install_adminmenus.pl --run
+docker exec $CONTAINER rm -f /etc/cron.d/nightly-backup
+docker exec $CONTAINER rm -f /usr/local/bin/rtibackup.pl
+docker exec $CONTAINER ./bin/install-ostools.pl ./ostools-1.15-latest.tar.gz
+
+#installing the backups.config file to exclude files during restore
+docker exec $CONTAINER wget http://rtihardware.homelinux.com/ostools/backups.config.rhel7
+docker exec $CONTAINER cp /usr2/bbx/config/backups.config /usr2/bbx/config/backups.config.save
+docker exec $CONTAINER cp backups.config.rhel7 /usr2/bbx/config/backups.config
+docker exec $CONTAINER chmod 777 /usr2/bbx/config/backups.config
+docker exec $CONTAINER chown tfsupport:rtiadmins /usr2/bbx/config/backups.config
+docker exec $CONTAINER wget http://rtihardware.homelinux.com/ostools/librxtxSerial.so
+
+#installing 32-bit library for serial ports
+#DOWNLOAD LIBRXTXSERIAL.SO
+docker exec $CONTAINER cp /usr2/basis/lib/librxtxSerial.so /usr2/basis/lib/librxtxSerial.so.64bit
+docker exec $CONTAINER cp librxtxSerial.so /usr2/basis/lib/librxtxSerial.so
+docker exec $CONTAINER chmod 666 /usr2/basis/lib/librxtxSerial.so
+docker exec $CONTAINER chown root:root /usr2/basis/lib/librxtxSerial.so
+
+#adding multiserver.pwd fix
+#DOWNLOAD MULTISERVER.PWD
+docker exec $CONTAINER cp -f /usr/local/bin/multiserver.pwd /usr2/bbx/config/
 
 #install TCC
+docker exec $CONTAINER wget http://rtihardware.homelinux.com/support/tcc/tcc-latest_linux.tar.gz
+docker exec $CONTAINER tar xvfz ./tcc-latest_linux.tar.gz
+docker exec $CONTAINER rm -f /usr2/bbx/bin/tcc
+docker exec $CONTAINER rm -f /usr2/bbx/bin/tcc_tws
+docker exec $CONTAINER ln -s /usr2/bbx/bin/tcc2_rhel7 /usr2/bbx/bin/tcc
+docker exec $CONTAINER ln -s /usr2/bbx/bin/tcc_rhel7 /usr2/bbx/bin/tcc_tws
 
 #install Kaseya
+docker exec $CONTAINER wget http://rtihardware.homelinux.com/support/KcsSetup.sh
+docker exec $CONTAINER chmod +x /usr/local/bin/KcsSetup.sh
+docker exec $CONTAINER /usr/local/bin/KcsSetup.sh
 
-#install tfremote
+#smash staged configuration and data with customer's
+#SYMLINK1
+#SYMLINK2
+#SYMLINK3....
 
-#configure symlinks for specific florist (SHOPCODE) to create app dir (/d or /usr2)
-
-#save container
+#save/export container
 docker commit $CONTAINER rhel7-rti-${SHOPCODE}
+#EXPORT CONTAINER to IMAGE?
 
-#export image
+#done
+echo "${OS}7-rti-${SHOPCODE} staged!"
+exit 0
