@@ -29,10 +29,9 @@ echo "* [5] List Network Interfaces        *"
 echo "*                                    *"
 echo "** Images **                         *"
 echo "* [11] Build an OS Image             *"
-echo "* [12] Build an RTI Docker Image     *"
-echo "* [13] Build a Staged RTI Image      *"
-echo "* [14] List Images                   *"
-echo "* [15] Delete Image(s)               *"
+echo "* [12] Stage an RTI Image            *"
+echo "* [13] List Images                   *"
+echo "* [14] Delete Image(s)               *"
 echo "*                                    *"
 echo "** Instances **                      *"
 echo "* [111] List Instances               *"
@@ -55,9 +54,9 @@ case $selection in
 5) cd $ROOTDIR/bin ; ./list_nics ;  echo "Press enter to continue.." ; read  ; cd - ;;
 11) cd $ROOTDIR/bin ; ./create-base-image ;  echo "Press enter to continue.." ; read  ; cd - ;;
 12) cd $ROOTDIR/bin ; ./create-florist-image ;  echo "Press enter to continue.." ; read  ; cd - ;;
-13) cd $ROOTDIR/bin ; ./stage-image ; echo "Press enter to continue.." ; read  ; cd - ;;
-14) cd $ROOTDIR/bin ; ./list_image ; echo "Press enter to continue.." ; read  ; cd - ;;
-15) cd $ROOTDIR/bin ; ./wipe_images ; echo "Press enter to continue.." ; read  ; cd - ;;
+#13) cd $ROOTDIR/bin ; ./stage-image ; echo "Press enter to continue.." ; read  ; cd - ;;
+13) cd $ROOTDIR/bin ; ./list_image ; echo "Press enter to continue.." ; read  ; cd - ;;
+14) cd $ROOTDIR/bin ; ./wipe_images ; echo "Press enter to continue.." ; read  ; cd - ;;
 111) cd $ROOTDIR/bin ; ./list_ec2_instances ; echo "Press enter to continue.." ; read  ; cd - ;;
 112) cd $ROOTDIR/bin ; ./start_ec2_instance ; echo "Press enter to continue.." ; read  ; cd - ;;
 113) cd $ROOTDIR/bin ; ./stop_ec2_instance ; echo "Press enter to continue.." ; read  ; cd - ;;

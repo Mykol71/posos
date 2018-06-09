@@ -31,6 +31,11 @@ yum -y install docker device-mapper-libs device-mapper-event-libs
 echo "ADD_REGISTRY='--add-registry registry.access.redhat.com'">>/etc/sysconfig/docker
 systemctl start docker
 systemctl enable docker
+#add docker sshfs plugin
+cd /usr/libexec/docker/
+ln -s docker-runc-current docker-runc
+cd -
+docker plugin install --grant-all-permissions vieux/sshfs
 
 #createcontainer.sh reqs
 yum -y install lorax
