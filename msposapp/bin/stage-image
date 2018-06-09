@@ -1,18 +1,21 @@
 #!/bin/bash
 
-#echo -n "rhel or centos?: "
-#read OS
-#echo -n "SHOPCODE: "
-#read SHOPCODE
-OS=$1
+echo -n "rhel or centos?: "
+read OS
+echo -n "SHOPCODE: "
+read SHOPCODE
+#OS=$1
+
+#create shop data volume
+#docker volume create --driver vieux/sshfs -o sshcmd=tfrsync-$SHOPCODE@rticloud.homelinux.com:/home/tfrsync-$SHOPCODE -o password=testpassword ${SHOPCODE}vol
 
 #start container
-CONTAINER=`docker run --privileged -w="/usr/local/bin" -i -d -t --name=rti-16.1.3.teleflora.com -i ${OS}7-rti-16.1.3 /usr/sbin/init`
+CONTAINER=`docker run -d -it --name=$SHOPCODE.teleflora.com --rm --privileged -w="/usr/local/bin" -i ${OS}7-rti-16.1.3 /usr/sbin/init`
+#CONTAINER=`docker run --volumes-from ${SHOPCODE}vol -v $(pwd):/usr2 --rm --privileged -w="/usr/local/bin" -i -d -t --name=$SHOPCODE.teleflora.com -i ${OS}7-rti-16.1.3 /usr/sbin/init`
+#will need to copy custom os configs and rti/bbj/blm startup scripts etc. here
 
 #RHEL changed from /bin to /usr/bin at some point. Created link to avoid changing scripts.
 docker exec $CONTAINER ln -s /usr/bin /bin
-
-##docker version of ksrti.sh
 
 #install ostools
 docker exec $CONTAINER wget http://rtihardware.homelinux.com/ostools/ostools-1.15-latest.tar.gz
@@ -40,18 +43,13 @@ docker exec $CONTAINER rm -f /etc/cron.d/nightly-backup
 docker exec $CONTAINER rm -f ./bin/rtibackup.pl
 
 #install Kaseya
-docker exec $CONTAINER wget http://rtihardware.homelinux.com/support/KcsSetup.sh
-docker exec $CONTAINER chmod +x ./KcsSetup.sh
-docker exec $CONTAINER ./KcsSetup.sh
-
-#map customer data from cloud backup folder
-mv /usr2 /usr2.old
-ln -s /backups/tfrsync-$SHOPCODE/usr2 /usr2
-#SYMLINK2
-#SYMLINK3....
+#docker exec $CONTAINER wget http://rtihardware.homelinux.com/support/KcsSetup.sh
+#docker exec $CONTAINER chmod +x ./KcsSetup.sh
+#docker exec $CONTAINER ./KcsSetup.sh
 
 #save/export container
-docker commit $CONTAINER rhel7-rti-16.1.3
+#docker commit $CONTAINER rhel7-rti-16.1.3
+docker commit $CONTAINER $SHOPCODE.teleflora.com
 #EXPORT CONTAINER to IMAGE?
 
 #done
