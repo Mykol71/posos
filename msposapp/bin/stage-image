@@ -13,6 +13,12 @@ read SHOPCODE
 #mount cust data
 #docker exec $CONTAINER mkdir /usr2
 #docker exec $CONTAINER mount 192.168.22.75:/backups/tfrsync-$SHOPCODE /usr2
+#docker volume create ${SHOPCODE}vol
+#docker service create \
+#     --mount 'type=volume,src=${SHOPCODE}vol,dst=/usr2,volume-driver=local,volume-opt=type=nfs,volume-opt=device=192.168.22.75:/backups/tfrsync-$SHOPCODE,"volume-opt=o=addr=192.168.22.75,vers=4,soft,timeo=180,bg,tcp,rw"'
+#    --name ${OS}7-rti-16.1.3 \
+#    ${OS}7-rti-16.1.3
+#CONTAINER=`docker run --mount source=${SHOPCODE}vol,target=/usr2 --rm --privileged -w="/usr/local/bin" -i -d -t --name=$SHOPCODE.teleflora.com -i ${OS}7-rti-16.1.3 /usr/sbin/init`
 ##
 
 #start container
