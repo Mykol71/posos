@@ -15,9 +15,9 @@ while :
 do
 clear
 echo "**************************************"
-echo "***** POS Application Service ********"
+echo "** POS Application Service **        *"
 echo "**************************************"
-echo "**** Start a Florist Now ****        *"
+echo "**   Start a Florist Now   **        *"
 echo "** Options: 13 + 115 + 112 **        *"
 echo "*                                    *"
 echo "** Dev/Docker **                     *"
