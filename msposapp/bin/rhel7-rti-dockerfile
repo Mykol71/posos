@@ -7,6 +7,7 @@ LABEL org.label-schema.schema-version = "1.0" \
     org.label-schema.build-date="20180527"
 MAINTAINER “Mike Green" <mgreen@teleflora.com>
 ENV container rhel7-rti-florist
+WORKDIR=/usr/local/bin
 RUN yum -y install systemd ; yum clean all; \
 (cd /lib/systemd/system/sysinit.target.wants/; for i in *; do [ $i == \
 systemd-tmpfiles-setup.service ] || rm -f $i; done); \
@@ -28,6 +29,16 @@ RUN systemctl enable rpcbind
 EXPOSE 22
 EXPOSE 80
 EXPOSE 443
-#EXPOSE 2049
+EXPOSE 111
+EXPOSE 15022
+EXPOSE 2001
+EXPOSE 2002
+EXPOSE 2003
+EXPOSE 2004
+EXPOSE 2005
+EXPOSE 2006
+EXPOSE 9100
+EXPOSE 445
+EXPOSE 631
 #CMD [“/usr/sbin/init”]
 CMD [“/usr/bin/bash”]
