@@ -1,1 +1,0 @@
-websocketd --port=80 --dir /root/mscloudserver/msposapp --devconsole &
