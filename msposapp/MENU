@@ -55,9 +55,9 @@ case $selection in
 4) cd $ROOTDIR/bin ; ./attach_container ; echo "Press enter to continue.." ; read  ; cd - ;;
 5) cd $ROOTDIR/bin ; ./list_nics ;  echo "Press enter to continue.." ; read  ; cd - ;;
 w) cd $ROOTDIR/bin ; ./prune-docker ;  echo "Press enter to continue.." ; read  ; cd - ;;
-11) cd $ROOTDIR/bin ; ./create-base-image ;  echo "Press enter to continue.." ; read  ; cd - ;;
-12) cd $ROOTDIR/bin ; ./create-florist-image ;  echo "Press enter to continue.." ; read  ; cd - ;;
-13) cd $ROOTDIR/bin ; ./stage-image ; echo "Press enter to continue.." ; read  ; cd - ;;
+11) cd $ROOTDIR/bin ; time ./create-base-image ;  echo "Press enter to continue.." ; read  ; cd - ;;
+12) cd $ROOTDIR/bin ; time ./create-florist-image ;  echo "Press enter to continue.." ; read  ; cd - ;;
+13) cd $ROOTDIR/bin ; time ./stage-image ; echo "Press enter to continue.." ; read  ; cd - ;;
 14) cd $ROOTDIR/bin ; ./list_image ; echo "Press enter to continue.." ; read  ; cd - ;;
 15) cd $ROOTDIR/bin ; ./wipe_images ; echo "Press enter to continue.." ; read  ; cd - ;;
 111) cd $ROOTDIR/bin ; ./list_ec2_instances ; echo "Press enter to continue.." ; read  ; cd - ;;
