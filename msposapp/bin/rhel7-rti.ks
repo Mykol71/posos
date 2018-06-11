@@ -35,7 +35,7 @@ repo --name="CentOS" --baseurl=http://mirrors.kernel.org/centos/7/os/x86_64/ --c
 # Disk setup
 zerombr
 clearpart --all --initlabel
-part / --asprimary --fstype="ext4" --size=30000
+part / --asprimary --fstype="ext4" --size=10000
 
 %addon org_fedora_oscap
 content-type = scap-security-guide

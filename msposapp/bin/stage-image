@@ -67,7 +67,11 @@ echo "${OS}7-rti-$SHOPCODE image ready!"
 echo ""
 echo ""
 echo ""
-docker exec $CONTAINER echo $SHOPCODE.teleflora.com running at: `docker exec $CONTAINER /usr/sbin/ip route get 1 | awk '{print $NF;exit}'`
-echo "To access: ssh root@`docker exec $CONTAINER /usr/sbin/ip route get 1 | awk '{print $NF;exit}'`"
-echo "Password : password"
+#docker exec $CONTAINER echo $SHOPCODE.teleflora.com running at: `docker exec $CONTAINER /usr/sbin/ip route get 1 | awk '{print $NF;exit}'`
+docker exec $CONTAINER /usr/local/bin/bin/updateos.pl --version
+#docker exec $CONTAINER cat /etc/redhat-release
+CONTAINER_IP=`nmap -sS -p 22 172.17.0.1/24 | grep 172 | cut -d" " -f5 | sort | tail -1`
+rm -f ~/.ssh/known_hosts
+ssh root@$CONTAINER_IP
+docker commit $CONTAINER $SHOPCODE.teleflora.com
 exit 0

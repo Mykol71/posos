@@ -14,8 +14,8 @@ LOGININFO=`aws ecr get-login --no-include-email --region us-west-2`
 #login with the info from above
 `$LOGINIFO`
 
-docker tag rhel7-rti-$CODE 239094452516.dkr.ecr.us-west-2.amazonaws.com/rti-rhel7-$CODE
+docker tag $CODE.teleflora.com 239094452516.dkr.ecr.us-west-2.amazonaws.com/rti-rhel7
 
-docker push 239094452516.dkr.ecr.us-west-2.amazonaws.com/rti-${OS}7-$CODE
+docker push 239094452516.dkr.ecr.us-west-2.amazonaws.com/rti-rhel7
 
 #policy configured in AWS will start the pushed image.
