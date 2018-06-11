@@ -27,9 +27,7 @@ systemctl start nfs-server
 systemctl start rpc-statd
 
 #add env awareness of pip and aws at login
-if [ "`grep scl ~/.bash_profile`" == "" ]; then
-echo "scl enable python27 bash">>~/.bash_profile
-fi
+echo "source scl_source enable python27">/etc/profile.d/enablepython27.sh
 
 #install docker
 yum -y install docker device-mapper-libs device-mapper-event-libs
