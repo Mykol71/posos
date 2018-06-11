@@ -1,1 +1,1 @@
-docker ps -l
+docker container ls
