@@ -1,7 +1,8 @@
 #!/bin/bash
 
-echo -n "rhel or centos?: "
-read OS
+#echo -n "rhel or centos?: "
+#read OS
+OS=rhel
 echo -n "SHOPCODE: "
 read SHOPCODE
 #OS=$1

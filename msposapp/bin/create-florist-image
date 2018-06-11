@@ -1,7 +1,8 @@
 #!/usr/bin/bash
 
-echo -n "rhel or centos?: " 
-read selection
+#echo -n "rhel or centos?: " 
+#read selection
+selection=rhel
 
 if [ $selection == "rhel" ]; then
 cp -f ./rhel7-rti-dockerfile /var/tmp/containers/`date +%Y%m%d`/rhel7-rti/docker/Dockerfile
