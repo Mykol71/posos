@@ -26,6 +26,7 @@ echo "* [2] Start Container                *"
 echo "* [3] Stop Container(s)              *"
 echo "* [4] Attach to a Container          *"
 echo "* [5] List Network Interfaces        *"
+echo "* [w] Wipe all Docker imgs/conts     *"
 echo "*                                    *"
 echo "** Images **                         *"
 echo "* [11] Build an OS Image             *"
@@ -53,6 +54,7 @@ case $selection in
 3) cd $ROOTDIR/bin ; ./stop_container ; echo "Press enter to continue.." ; read  ; cd - ;;
 4) cd $ROOTDIR/bin ; ./attach_container ; echo "Press enter to continue.." ; read  ; cd - ;;
 5) cd $ROOTDIR/bin ; ./list_nics ;  echo "Press enter to continue.." ; read  ; cd - ;;
+w) cd $ROOTDIR/bin ; ./prune-docker ;  echo "Press enter to continue.." ; read  ; cd - ;;
 11) cd $ROOTDIR/bin ; ./create-base-image ;  echo "Press enter to continue.." ; read  ; cd - ;;
 12) cd $ROOTDIR/bin ; ./create-florist-image ;  echo "Press enter to continue.." ; read  ; cd - ;;
 13) cd $ROOTDIR/bin ; ./stage-image ; echo "Press enter to continue.." ; read  ; cd - ;;

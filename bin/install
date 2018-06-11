@@ -1,6 +1,5 @@
 #!/usr/bin/bash
 #RHEL7 required! 
-cd /home/mgreen/mscloudserver
  
 #register rhsm
 #subscription-manager register 
@@ -35,6 +34,7 @@ yum -y install docker device-mapper-libs device-mapper-event-libs
 echo "ADD_REGISTRY='--add-registry registry.access.redhat.com'">>/etc/sysconfig/docker
 systemctl start docker
 systemctl enable docker
+
 #add docker sshfs plugin
 cd /usr/libexec/docker/
 ln -s docker-runc-current docker-runc
@@ -51,6 +51,10 @@ find . -name "*recon.sh" -exec cp -f {} /usr/local/bin/. \;
 
 # record ssh sessions
 cat << xxxEOFxxx > /etc/profile.d/record_sessions.sh
+if [ ! -d /var/log/session ]
+then
+mkdir /var/log/session
+fi
 if [ "x$SESSION_RECORD" = "x" ]
 then
 timestamp=`date "+%m%d%Y%H%M"`
@@ -62,13 +66,8 @@ exit
 fi
 xxxEOFxxx
 
-# install web server for php menu
-#yum -y install httpd php
-#systemctl enable httpd
-#systemctl start httpd
-
 # lastly, update everything
 yum -y update
 
-echo "Done. You will have to log out and back in to setup AWS (option 4)."
+echo "Done!"
 exit 0
