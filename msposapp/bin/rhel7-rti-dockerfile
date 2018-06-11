@@ -7,7 +7,6 @@ LABEL org.label-schema.schema-version = "1.0" \
     org.label-schema.build-date="20180527"
 MAINTAINER “Mike Green" <mgreen@teleflora.com>
 ENV container rhel7-rti-florist
-WORKDIR=/usr/local/bin
 RUN yum -y install systemd ; yum clean all; \
 (cd /lib/systemd/system/sysinit.target.wants/; for i in *; do [ $i == \
 systemd-tmpfiles-setup.service ] || rm -f $i; done); \
