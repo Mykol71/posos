@@ -1,1373 +1,0 @@
-Script started on Mon 11 Jun 2018 01:25:37 PM NDT
-]0;root@rhel7rti-cloud-build:~[?1034h[root@rhel7rti-cloud-build ~]# cd mscloudserver/
-]0;root@rhel7rti-cloud-build:~/mscloudserver[root@rhel7rti-cloud-build mscloudserver]# ./.[KMENU
-[3;J[H[2J********************************
-** Managed Services Cloud Menu *
-********************************
-* [1] POS Backup Service       *
-* [2] POS App Service (SAAS)   *
-* [3] Install/Upgrade Deps     *
-* [4] Install/Configure AWSCLI *
-*                              *
-* [a] About                    *
-* [x] Exit                     *
-********************************
-Enter selection: 2
-[3;J[H[2J**************************************
-** POS Application Service **        *
-**************************************
-**   Start a Florist Now   **        *
-** Options: 13 + 115 + 112 **        *
-*                                    *
-** Dev/Docker **                     *
-* [1] List Running Containers        *
-* [2] Start Container                *
-* [3] Stop Container(s)              *
-* [4] Attach to a Container          *
-* [5] List Network Interfaces        *
-* [w] Wipe all Docker imgs/conts     *
-*                                    *
-** Images **                         *
-* [11] Build an OS Image             *
-* [12] Build an RTI Image            *
-* [13] Stage a Florist Container     *
-* [14] List Images                   *
-* [15] Delete Image(s)               *
-*                                    *
-** Prod/EC2 **                       *
-* [111] List Instances               *
-* [112] Start an Instance            *
-* [113] Stop an Instance             *
-* [114] List VPNs                    *
-* [115] Create VPN Access            *
-* [116] Remove VPN Access            *
-*                                    *
-* [a]  About                         *
-* [x]  Exit                          *
-**************************************
-Enter selection: 14
-REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
-Press enter to continue..
-
-/root/mscloudserver/msposapp
-[3;J[H[2J**************************************
-** POS Application Service **        *
-**************************************
-**   Start a Florist Now   **        *
-** Options: 13 + 115 + 112 **        *
-*                                    *
-** Dev/Docker **                     *
-* [1] List Running Containers        *
-* [2] Start Container                *
-* [3] Stop Container(s)              *
-* [4] Attach to a Container          *
-* [5] List Network Interfaces        *
-* [w] Wipe all Docker imgs/conts     *
-*                                    *
-** Images **                         *
-* [11] Build an OS Image             *
-* [12] Build an RTI Image            *
-* [13] Stage a Florist Container     *
-* [14] List Images                   *
-* [15] Delete Image(s)               *
-*                                    *
-** Prod/EC2 **                       *
-* [111] List Instances               *
-* [112] Start an Instance            *
-* [113] Stop an Instance             *
-* [114] List VPNs                    *
-* [115] Create VPN Access            *
-* [116] Remove VPN Access            *
-*                                    *
-* [a]  About                         *
-* [x]  Exit                          *
-**************************************
-Enter selection: 11
-Trying to pull repository registry.access.redhat.com/rhel7 ... 
-latest: Pulling from registry.access.redhat.com/rhel7
-
-[1A[2Ke0f71f706c2a: Pulling fs layer [1B
-[1A[2K121ab4741000: Pulling fs layer [1B[1A[2K121ab4741000: Downloading 1.249 kB/1.249 kB[1B[1A[2K121ab4741000: Verifying Checksum [1B[1A[2K121ab4741000: Download complete [1B[2A[2Ke0f71f706c2a: Downloading 526.9 kB/74.92 MB[2B[2A[2Ke0f71f706c2a: Downloading 1.582 MB/74.92 MB[2B[2A[2Ke0f71f706c2a: Downloading 2.636 MB/74.92 MB[2B[2A[2Ke0f71f706c2a: Downloading 3.691 MB/74.92 MB[2B[2A[2Ke0f71f706c2a: Downloading 4.746 MB/74.92 MB[2B[2A[2Ke0f71f706c2a: Downloading 6.325 MB/74.92 MB[2B[2A[2Ke0f71f706c2a: Downloading 8.435 MB/74.92 MB[2B[2A[2Ke0f71f706c2a: Downloading 9.489 MB/74.92 MB[2B[2A[2Ke0f71f706c2a: Downloading  11.6 MB/74.92 MB[2B[2A[2Ke0f71f706c2a: Downloading 13.18 MB/74.92 MB[2B[2A[2Ke0f71f706c2a: Downloading 13.71 MB/74.92 MB[2B[2A[2Ke0f71f706c2a: Downloading 16.35 MB/74.92 MB[2B[2A[2Ke0f71f706c2a: Downloading 17.93 MB/74.92 MB[2B[2A[2Ke0f71f706c2a: Downloading 20.04 MB/74.92 MB[2B[2A[2Ke0f71f706c2a: Downloading 21.62 MB/74.92 MB[2B[2A[2Ke0f71f706c2a: Downloading  23.2 MB/74.92 MB[2B[2A[2Ke0f71f706c2a: Downloading 24.78 MB/74.92 MB[2B[2A[2Ke0f71f706c2a: Downloading 26.36 MB/74.92 MB[2B[2A[2Ke0f71f706c2a: Downloading 27.95 MB/74.92 MB[2B[2A[2Ke0f71f706c2a: Downloading 28.47 MB/74.92 MB[2B[2A[2Ke0f71f706c2a: Downloading    29 MB/74.92 MB[2B[2A[2Ke0f71f706c2a: Downloading 30.06 MB/74.92 MB[2B[2A[2Ke0f71f706c2a: Downloading 31.64 MB/74.92 MB[2B[2A[2Ke0f71f706c2a: Downloading 32.69 MB/74.92 MB[2B[2A[2Ke0f71f706c2a: Downloading 33.75 MB/74.92 MB[2B[2A[2Ke0f71f706c2a: Downloading 35.33 MB/74.92 MB[2B[2A[2Ke0f71f706c2a: Downloading 36.38 MB/74.92 MB[2B[2A[2Ke0f71f706c2a: Downloading 37.96 MB/74.92 MB[2B[2A[2Ke0f71f706c2a: Downloading 39.55 MB/74.92 MB[2B[2A[2Ke0f71f706c2a: Downloading 41.13 MB/74.92 MB[2B[2A[2Ke0f71f706c2a: Downloading 42.71 MB/74.92 MB[2B[2A[2Ke0f71f706c2a: Downloading 44.29 MB/74.92 MB[2B[2A[2Ke0f71f706c2a: Downloading 45.88 MB/74.92 MB[2B[2A[2Ke0f71f706c2a: Downloading 46.93 MB/74.92 MB[2B[2A[2Ke0f71f706c2a: Downloading 47.99 MB/74.92 MB[2B[2A[2Ke0f71f706c2a: Downloading 49.04 MB/74.92 MB[2B[2A[2Ke0f71f706c2a: Downloading  50.1 MB/74.92 MB[2B[2A[2Ke0f71f706c2a: Downloading 51.15 MB/74.92 MB[2B[2A[2Ke0f71f706c2a: Downloading 52.73 MB/74.92 MB[2B[2A[2Ke0f71f706c2a: Downloading 54.31 MB/74.92 MB[2B[2A[2Ke0f71f706c2a: Downloading 55.37 MB/74.92 MB[2B[2A[2Ke0f71f706c2a: Downloading 56.95 MB/74.92 MB[2B[2A[2Ke0f71f706c2a: Downloading 58.53 MB/74.92 MB[2B[2A[2Ke0f71f706c2a: Downloading 60.11 MB/74.92 MB[2B[2A[2Ke0f71f706c2a: Downloading  61.7 MB/74.92 MB[2B[2A[2Ke0f71f706c2a: Downloading 63.28 MB/74.92 MB[2B[2A[2Ke0f71f706c2a: Downloading 64.33 MB/74.92 MB[2B[2A[2Ke0f71f706c2a: Downloading 65.92 MB/74.92 MB[2B[2A[2Ke0f71f706c2a: Downloading 67.49 MB/74.92 MB[2B[2A[2Ke0f71f706c2a: Downloading 68.55 MB/74.92 MB[2B[2A[2Ke0f71f706c2a: Downloading 69.08 MB/74.92 MB[2B[2A[2Ke0f71f706c2a: Downloading 70.13 MB/74.92 MB[2B[2A[2Ke0f71f706c2a: Downloading 71.71 MB/74.92 MB[2B[2A[2Ke0f71f706c2a: Downloading  73.3 MB/74.92 MB[2B[2A[2Ke0f71f706c2a: Downloading 74.88 MB/74.92 MB[2B[2A[2Ke0f71f706c2a: Verifying Checksum [2B[2A[2Ke0f71f706c2a: Download complete [2B[2A[2Ke0f71f706c2a: Extracting 557.1 kB/74.92 MB[2B[2A[2Ke0f71f706c2a: Extracting 1.114 MB/74.92 MB[2B[2A[2Ke0f71f706c2a: Extracting 2.785 MB/74.92 MB[2B[2A[2Ke0f71f706c2a: Extracting 4.456 MB/74.92 MB[2B[2A[2Ke0f71f706c2a: Extracting 6.128 MB/74.92 MB[2B[2A[2Ke0f71f706c2a: Extracting 7.799 MB/74.92 MB[2B[2A[2Ke0f71f706c2a: Extracting  9.47 MB/74.92 MB[2B[2A[2Ke0f71f706c2a: Extracting 11.14 MB/74.92 MB[2B[2A[2Ke0f71f706c2a: Extracting 12.81 MB/74.92 MB[2B[2A[2Ke0f71f706c2a: Extracting 14.48 MB/74.92 MB[2B[2A[2Ke0f71f706c2a: Extracting 16.15 MB/74.92 MB[2B[2A[2Ke0f71f706c2a: Extracting 17.83 MB/74.92 MB[2B[2A[2Ke0f71f706c2a: Extracting  19.5 MB/74.92 MB[2B[2A[2Ke0f71f706c2a: Extracting 21.17 MB/74.92 MB[2B[2A[2Ke0f71f706c2a: Extracting 22.28 MB/74.92 MB[2B[2A[2Ke0f71f706c2a: Extracting 23.95 MB/74.92 MB[2B[2A[2Ke0f71f706c2a: Extracting 25.62 MB/74.92 MB[2B[2A[2Ke0f71f706c2a: Extracting  27.3 MB/74.92 MB[2B[2A[2Ke0f71f706c2a: Extracting 28.97 MB/74.92 MB[2B[2A[2Ke0f71f706c2a: Extracting 30.64 MB/74.92 MB[2B[2A[2Ke0f71f706c2a: Extracting 31.75 MB/74.92 MB[2B[2A[2Ke0f71f706c2a: Extracting 32.87 MB/74.92 MB[2B[2A[2Ke0f71f706c2a: Extracting 34.54 MB/74.92 MB[2B[2A[2Ke0f71f706c2a: Extracting 36.21 MB/74.92 MB[2B[2A[2Ke0f71f706c2a: Extracting 37.88 MB/74.92 MB[2B[2A[2Ke0f71f706c2a: Extracting 40.11 MB/74.92 MB[2B[2A[2Ke0f71f706c2a: Extracting 41.78 MB/74.92 MB[2B[2A[2Ke0f71f706c2a: Extracting 43.45 MB/74.92 MB[2B[2A[2Ke0f71f706c2a: Extracting 45.68 MB/74.92 MB[2B[2A[2Ke0f71f706c2a: Extracting 47.35 MB/74.92 MB[2B[2A[2Ke0f71f706c2a: Extracting 47.91 MB/74.92 MB[2B[2A[2Ke0f71f706c2a: Extracting 49.02 MB/74.92 MB[2B[2A[2Ke0f71f706c2a: Extracting 50.14 MB/74.92 MB[2B[2A[2Ke0f71f706c2a: Extracting 51.81 MB/74.92 MB[2B[2A[2Ke0f71f706c2a: Extracting 52.92 MB/74.92 MB[2B[2A[2Ke0f71f706c2a: Extracting 54.03 MB/74.92 MB[2B[2A[2Ke0f71f706c2a: Extracting 55.15 MB/74.92 MB[2B[2A[2Ke0f71f706c2a: Extracting 56.26 MB/74.92 MB[2B[2A[2Ke0f71f706c2a: Extracting 57.93 MB/74.92 MB[2B[2A[2Ke0f71f706c2a: Extracting  59.6 MB/74.92 MB[2B[2A[2Ke0f71f706c2a: Extracting 61.28 MB/74.92 MB[2B[2A[2Ke0f71f706c2a: Extracting 62.95 MB/74.92 MB[2B[2A[2Ke0f71f706c2a: Extracting 64.06 MB/74.92 MB[2B[2A[2Ke0f71f706c2a: Extracting 64.62 MB/74.92 MB[2B[2A[2Ke0f71f706c2a: Extracting 65.73 MB/74.92 MB[2B[2A[2Ke0f71f706c2a: Extracting 67.96 MB/74.92 MB[2B[2A[2Ke0f71f706c2a: Extracting 69.07 MB/74.92 MB[2B[2A[2Ke0f71f706c2a: Extracting 70.75 MB/74.92 MB[2B[2A[2Ke0f71f706c2a: Extracting 72.42 MB/74.92 MB[2B[2A[2Ke0f71f706c2a: Extracting 74.09 MB/74.92 MB[2B[2A[2Ke0f71f706c2a: Extracting 74.65 MB/74.92 MB[2B[2A[2Ke0f71f706c2a: Extracting 74.92 MB/74.92 MB[2B[2A[2Ke0f71f706c2a: Pull complete [2B[1A[2K121ab4741000: Extracting 1.249 kB/1.249 kB[1B[1A[2K121ab4741000: Extracting 1.249 kB/1.249 kB[1B[1A[2K121ab4741000: Pull complete [1BDigest: sha256:d0be9a7cb868958c7412ae3626532873fec3491387a6e0f899f8219b61465a59
-Status: Downloaded newer image for registry.access.redhat.com/rhel7:latest
-Starting installer, one moment...
-anaconda argparse: terminal size detection failed, using default width
-[Errno 25] Inappropriate ioctl for device
-anaconda 21.48.22.134-1 for RHEL Docker 7 (pre-release) started.
-Starting automated install..........................................
-Checking software selection
-================================================================================
-================================================================================
-Installation
-
- 1) [x] Language settings                 2) [x] Time settings
-        (English (United States))                (America/Chicago timezone)
- 3) [x] Installation source               4) [x] Software selection
-        (http://mirrors.kernel.org/cent          (Custom software selected)
-        os/7/os/x86_64/)
- 5) [x] Network configuration
-        (Connected: docker0 (), enp0s3)
-================================================================================
-================================================================================
-Progress
-Setting up the installation environment
-.
-Running pre-installation scripts
-.
-Starting package installation process
-Preparing transaction from installation source
-Installing libgcc (1/608)
-Installing fontpackages-filesystem (2/608)
-Installing poppler-data (3/608)
-Installing ncurses-base (4/608)
-Installing libreport-filesystem (5/608)
-Installing langtable (6/608)
-Installing bind-license (7/608)
-Installing langtable-data (8/608)
-Installing liberation-fonts-common (9/608)
-Installing libX11-common (10/608)
-Installing firewalld-filesystem (11/608)
-Installing quota-nls (12/608)
-Installing control-center-filesystem (13/608)
-Installing tzdata-java (14/608)
-Installing xkeyboard-config (15/608)
-Installing mailcap (16/608)
-Installing adwaita-cursor-theme (17/608)
-Installing kbd-legacy (18/608)
-Installing tzdata (19/608)
-Installing ncurses (20/608)
-Installing bash (21/608)
-Installing nss-softokn-freebl (22/608)
-Installing chkconfig (23/608)
-Installing glibc-common (24/608)
-Installing setup (25/608)
-Installing filesystem (26/608)
-Installing basesystem (27/608)
-Installing glibc (28/608)
-Installing zlib (29/608)
-Installing libstdc++ (30/608)
-Installing ncurses-libs (31/608)
-Installing libcom_err (32/608)
-Installing info (33/608)
-Installing nspr (34/608)
-Installing popt (35/608)
-Installing nss-util (36/608)
-Installing libattr (37/608)
-Installing libcap (38/608)
-Installing libacl (39/608)
-Installing libffi (40/608)
-Installing libsepol (41/608)
-Installing pcre (42/608)
-Installing libselinux (43/608)
-Installing grep (44/608)
-Installing sed (45/608)
-Installing gawk (46/608)
-Installing p11-kit (47/608)
-Installing gmp (48/608)
-Installing libtasn1 (49/608)
-Installing p11-kit-trust (50/608)
-Installing ca-certificates (51/608)
-Installing keyutils-libs (52/608)
-Installing libverto (53/608)
-Installing centos-release (54/608)
-Installing openssl-libs (55/608)
-Installing coreutils (56/608)
-Installing krb5-libs (57/608)
-Installing freetype (58/608)
-Installing bzip2-libs (59/608)
-Installing xz-libs (60/608)
-Installing libxml2 (61/608)
-Installing elfutils-libelf (62/608)
-Installing libdb (63/608)
-Installing expat (64/608)
-Installing readline (65/608)
-Installing libjpeg-turbo (66/608)
-Installing libtalloc (67/608)
-Installing libuuid (68/608)
-Installing augeas-libs (69/608)
-Installing libpng (70/608)
-Installing libgpg-error (71/608)
-Installing libtdb (72/608)
-Installing libgcrypt (73/608)
-Installing libblkid (74/608)
-Installing boost-system (75/608)
-Installing libtar (76/608)
-Installing tcp_wrappers-libs (77/608)
-Installing json-c (78/608)
-Installing libtevent (79/608)
-Installing libidn (80/608)
-Installing libcap-ng (81/608)
-Installing audit-libs (82/608)
-Installing lua (83/608)
-Installing cpio (84/608)
-Installing libICE (85/608)
-Installing libogg (86/608)
-Installing libSM (87/608)
-Installing sqlite (88/608)
-Installing cyrus-sasl-lib (89/608)
-Installing xmlrpc-c (90/608)
-Installing gzip (91/608)
-Installing diffutils (92/608)
-Installing lcms2 (93/608)
-Installing libvorbis (94/608)
-Installing boost-chrono (95/608)
-Installing boost-thread (96/608)
-Installing xz (97/608)
-Installing findutils (98/608)
-Installing libwayland-client (99/608)
-Installing which (100/608)
-Installing file-libs (101/608)
-Installing cracklib (102/608)
-Installing nss-softokn (103/608)
-Installing nss-pem (104/608)
-Installing nss (105/608)
-Installing nss-sysinit (106/608)
-Installing libldb (107/608)
-Installing libmount (108/608)
-Installing glib2 (109/608)
-Installing shared-mime-info (110/608)
-Installing atk (111/608)
-Installing pkgconfig (112/608)
-Installing groff-base (113/608)
-Installing hunspell-en-US (114/608)
-Installing hunspell (115/608)
-Installing gpm-libs (116/608)
-Installing libedit (117/608)
-Installing boost-date-time (118/608)
-Installing libicu (119/608)
-Installing GeoIP (120/608)
-Installing slang (121/608)
-Installing newt (122/608)
-Installing lm_sensors-libs (123/608)
-Installing libtool-ltdl (124/608)
-Installing libaio (125/608)
-Installing libpcap (126/608)
-Installing lz4 (127/608)
-Installing libmnl (128/608)
-Installing gdbm (129/608)
-Installing perl-parent (130/608)
-Installing perl-HTTP-Tiny (131/608)
-Installing perl-podlators (132/608)
-Installing perl-Pod-Perldoc (133/608)
-Installing perl-Pod-Escapes (134/608)
-Installing perl-Text-ParseWords (135/608)
-Installing perl-Pod-Usage (136/608)
-Installing perl-Encode (137/608)
-Installing perl-libs (138/608)
-Installing perl-macros (139/608)
-Installing perl-threads (140/608)
-Installing perl-Storable (141/608)
-Installing perl-Time-HiRes (142/608)
-Installing perl-Filter (143/608)
-Installing perl-Exporter (144/608)
-Installing perl-threads-shared (145/608)
-Installing perl-Scalar-List-Utils (146/608)
-Installing perl-Socket (147/608)
-Installing perl-Carp (148/608)
-Installing perl-File-Path (149/608)
-Installing perl-PathTools (150/608)
-Installing perl-File-Temp (151/608)
-Installing perl-Time-Local (152/608)
-Installing perl-Pod-Simple (153/608)
-Installing perl-Getopt-Long (154/608)
-Installing perl-constant (155/608)
-Installing perl (156/608)
-Installing python-libs (157/608)
-Installing python (158/608)
-Installing libxml2-python (159/608)
-Installing python-augeas (160/608)
-Installing pygobject2 (161/608)
-Installing python-decorator (162/608)
-Installing python-six (163/608)
-Installing boost-regex (164/608)
-Installing gsettings-desktop-schemas (165/608)
-Installing mailx (166/608)
-Installing cracklib-dicts (167/608)
-Installing libpwquality (168/608)
-Installing pam (169/608)
-Installing hesiod (170/608)
-Installing boost-filesystem (171/608)
-Installing libxslt (172/608)
-Installing libassuan (173/608)
-Installing kmod-libs (174/608)
-Installing binutils (175/608)
-Installing alsa-lib (176/608)
-Installing hicolor-icon-theme (177/608)
-Installing libssh2 (178/608)
-Installing net-snmp-libs (179/608)
-Installing tar (180/608)
-Installing mesa-libglapi (181/608)
-Installing libwayland-server (182/608)
-Installing acl (183/608)
-Installing e2fsprogs-libs (184/608)
-Installing libfontenc (185/608)
-Installing libnl (186/608)
-Installing pixman (187/608)
-Installing libusal (188/608)
-Installing libnfnetlink (189/608)
-Installing pciutils-libs (190/608)
-Installing yajl (191/608)
-Installing hostname (192/608)
-Installing libxshmfence (193/608)
-Installing lzo (194/608)
-Installing openjpeg-libs (195/608)
-Installing libarchive (196/608)
-Installing libnetfilter_conntrack (197/608)
-Installing iptables (198/608)
-Installing iproute (199/608)
-Installing genisoimage (200/608)
-Installing iw (201/608)
-Installing python-ethtool (202/608)
-Installing libXfont (203/608)
-Installing xorg-x11-font-utils (204/608)
-Installing python-lxml (205/608)
-Installing python-javapackages (206/608)
-Installing javapackages-tools (207/608)
-Installing boost-wave (208/608)
-Installing boost-graph (209/608)
-Installing python-dmidecode (210/608)
-Installing python-chardet (211/608)
-Installing python-kitchen (212/608)
-Installing libselinux-python (213/608)
-Installing python-slip (214/608)
-Installing yum-metadata-parser (215/608)
-Installing pyliblzma (216/608)
-Installing pytalloc (217/608)
-Installing python-iniparse (218/608)
-Installing langtable-python (219/608)
-Installing pyxattr (220/608)
-Installing newt-python (221/608)
-Installing gdb (222/608)
-Installing boost-python (223/608)
-Installing perl-Digest (224/608)
-Installing perl-Data-Dumper (225/608)
-Installing ipset-libs (226/608)
-Installing ipset (227/608)
-Installing nmap-ncat (228/608)
-Installing device-mapper-persistent-data (229/608)
-Installing bind-libs (230/608)
-Installing bind-libs-lite (231/608)
-Installing boost-locale (232/608)
-Installing js (233/608)
-Installing hunspell-en-GB (234/608)
-Installing less (235/608)
-Installing gobject-introspection (236/608)
-Installing python-gobject-base (237/608)
-Installing json-glib (238/608)
-Installing gstreamer1 (239/608)
-Installing nss_compat_ossl (240/608)
-Installing nss-tools (241/608)
-Installing libwayland-cursor (242/608)
-Installing boost-timer (243/608)
-Installing flac-libs (244/608)
-Installing copy-jdk-configs (245/608)
-Installing tcp_wrappers (246/608)
-Installing grubby (247/608)
-Installing xfsprogs (248/608)
-Installing jasper-libs (249/608)
-Installing bc (250/608)
-Installing libdb-utils (251/608)
-Installing libcurl (252/608)
-Installing curl (253/608)
-Installing rpm-libs (254/608)
-Installing rpm (255/608)
-Installing openldap (256/608)
-Installing xmlrpc-c-client (257/608)
-Installing libuser (258/608)
-Installing passwd (259/608)
-Installing net-snmp-agent-libs (260/608)
-Installing python-pycurl (261/608)
-Installing python-urlgrabber (262/608)
-Installing libdwarf (263/608)
-Installing dyninst (264/608)
-Installing tokyocabinet (265/608)
-Installing boost-iostreams (266/608)
-Installing bzip2 (267/608)
-Installing sos (268/608)
-Installing ttmkfdir (269/608)
-Installing libtirpc (270/608)
-Installing linux-firmware (271/608)
-Installing centos-logos (272/608)
-Installing sound-theme-freedesktop (273/608)
-Installing fipscheck-lib (274/608)
-Installing fipscheck (275/608)
-Installing mariadb-libs (276/608)
-Installing nettle (277/608)
-Installing libselinux-utils (278/608)
-Installing qpdf-libs (279/608)
-Installing attr (280/608)
-Installing mozjs17 (281/608)
-Installing make (282/608)
-Installing openssl (283/608)
-Installing pinentry (284/608)
-Installing libss (285/608)
-Installing urlview (286/608)
-Installing boost-context (287/608)
-Installing libconfig (288/608)
-Installing libmodman (289/608)
-Installing libproxy (290/608)
-Installing boost-atomic (291/608)
-Installing boost-random (292/608)
-Installing boost-serialization (293/608)
-Installing snappy (294/608)
-Installing boost-program-options (295/608)
-Installing boost-signals (296/608)
-Installing boost-test (297/608)
-Installing boost-math (298/608)
-Installing graphite2 (299/608)
-Installing harfbuzz (300/608)
-Installing libsss_idmap (301/608)
-Installing sg3_utils-libs (302/608)
-Installing ethtool (303/608)
-Installing hardlink (304/608)
-Installing pth (305/608)
-Installing gnupg2 (306/608)
-Installing gpgme (307/608)
-Installing pygpgme (308/608)
-Installing rpm-build-libs (309/608)
-Installing rpm-python (310/608)
-Installing yum-plugin-fastestmirror (311/608)
-Installing yum (312/608)
-Installing tcl (313/608)
-Installing libyaml (314/608)
-Installing PyYAML (315/608)
-Installing libnl3 (316/608)
-Installing sysvinit-tools (317/608)
-Installing autogen-libopts (318/608)
-Installing libepoxy (319/608)
-Installing dmidecode (320/608)
-Installing libsysfs (321/608)
-Installing gsm (322/608)
-Installing libsndfile (323/608)
-Installing libsss_nss_idmap (324/608)
-Installing procmail (325/608)
-Installing libpipeline (326/608)
-Installing ustr (327/608)
-Installing libsemanage (328/608)
-Installing shadow-utils (329/608)
-Installing libutempter (330/608)
-Installing lksctp-tools (331/608)
-Installing java-1.8.0-openjdk-headless (332/608)
-Installing libXau (333/608)
-Installing libxcb (334/608)
-Installing libX11 (335/608)
-Installing libXext (336/608)
-Installing libXrender (337/608)
-Installing libXfixes (338/608)
-Installing libXdamage (339/608)
-Installing libXi (340/608)
-Installing libXcomposite (341/608)
-Installing libXtst (342/608)
-Installing libXcursor (343/608)
-Installing libXrandr (344/608)
-Installing libXinerama (345/608)
-Installing libXxf86vm (346/608)
-Installing giflib (347/608)
-Installing libXt (348/608)
-Installing xcb-util (349/608)
-Installing startup-notification (350/608)
-Installing lrzsz (351/608)
-Installing sgpio (352/608)
-Installing libxkbcommon (353/608)
-Installing mesa-libwayland-egl (354/608)
-Installing qrencode-libs (355/608)
-Installing util-linux (356/608)
-Installing procps-ng (357/608)
-Installing kpartx (358/608)
-Installing device-mapper (359/608)
-Installing device-mapper-libs (360/608)
-Installing cryptsetup-libs (361/608)
-Installing dracut (362/608)
-Installing kmod (363/608)
-Installing elfutils-libs (364/608)
-Installing systemd-libs (365/608)
-Installing dbus-libs (366/608)
-Installing systemd (367/608)
-Installing dbus (368/608)
-Installing elfutils-default-yama-scope (369/608)
-Installing satyr (370/608)
-Installing libreport-python (371/608)
-Installing libreport (372/608)
-Installing abrt-libs (373/608)
-Installing systemd-sysv (374/608)
-Installing avahi-libs (375/608)
-Installing cups-libs (376/608)
-Installing libusbx (377/608)
-Installing samba-common (378/608)
-Installing libwbclient (379/608)
-Installing samba-client-libs (380/608)
-Installing samba-common-libs (381/608)
-Installing device-mapper-event-libs (382/608)
-Installing libreport-web (383/608)
-Installing polkit (384/608)
-Installing polkit-pkla-compat (385/608)
-Installing iputils (386/608)
-Installing initscripts (387/608)
-Installing hwdata (388/608)
-Installing crontabs (389/608)
-Installing cronie-anacron (390/608)
-Installing cronie (391/608)
-Installing dbus-glib (392/608)
-Installing dbus-python (393/608)
-Installing libstoragemgmt-python-clibs (394/608)
-Installing libstoragemgmt-python (395/608)
-Installing libstoragemgmt (396/608)
-Installing libreport-plugin-mantisbt (397/608)
-Installing device-mapper-event (398/608)
-Installing samba-libs (399/608)
-Installing libreport-cli (400/608)
-Installing dhcp-libs (401/608)
-Installing dhcp-common (402/608)
-Installing dhclient (403/608)
-Installing dracut-network (404/608)
-Installing kexec-tools (405/608)
-Installing samba-common-tools (406/608)
-Installing lvm2-libs (407/608)
-Installing lvm2 (408/608)
-Installing dmraid (409/608)
-Installing dmraid-events (410/608)
-Installing libreport-centos (411/608)
-Installing python-slip-dbus (412/608)
-Installing python-firewall (413/608)
-Installing libpciaccess (414/608)
-Installing libdrm (415/608)
-Installing mesa-libGL (416/608)
-Installing mesa-libgbm (417/608)
-Installing mesa-libEGL (418/608)
-Installing kernel (419/608)
-Installing kmod-kvdo (420/608)
-Installing cyrus-sasl (421/608)
-Installing libreport-plugin-ureport (422/608)
-Installing libreport-plugin-rhtsupport (423/608)
-Installing abrt-dbus (424/608)
-Installing abrt (425/608)
-Installing abrt-python (426/608)
-Installing abrt-addon-kerneloops (427/608)
-Installing abrt-addon-pstoreoops (428/608)
-Installing abrt-addon-vmcore (429/608)
-Installing abrt-tui (430/608)
-Installing abrt-addon-xorg (431/608)
-Installing abrt-retrace-client (432/608)
-Installing libsmbclient (433/608)
-Installing usb_modeswitch (434/608)
-Installing usb_modeswitch-data (435/608)
-Installing libgusb (436/608)
-Installing colord-libs (437/608)
-Installing cups-client (438/608)
-Installing avahi-glib (439/608)
-Installing rpcbind (440/608)
-Installing at-spi2-core (441/608)
-Installing at-spi2-atk (442/608)
-Installing dconf (443/608)
-Installing ebtables (444/608)
-Installing systemd-python (445/608)
-Installing abrt-addon-python (446/608)
-Installing lockdev (447/608)
-Installing trousers (448/608)
-Installing gnutls (449/608)
-Installing glib-networking (450/608)
-Installing libsoup (451/608)
-Installing rest (452/608)
-Installing ntpdate (453/608)
-Installing plymouth-core-libs (454/608)
-Installing plymouth-scripts (455/608)
-Installing plymouth (456/608)
-Installing elfutils (457/608)
-Installing abrt-addon-ccpp (458/608)
-Installing abrt-cli (459/608)
-Installing openssh (460/608)
-Installing openssh-clients (461/608)
-Installing python-meh (462/608)
-Installing usermode (463/608)
-Installing policycoreutils (464/608)
-Installing libasyncns (465/608)
-Installing pulseaudio-libs (466/608)
-Installing libcanberra (467/608)
-Installing libthai (468/608)
-Installing jbigkit-libs (469/608)
-Installing libtiff (470/608)
-Installing gdk-pixbuf2 (471/608)
-Installing gtk-update-icon-cache (472/608)
-Installing libfprint (473/608)
-Installing fprintd (474/608)
-Installing libnotify (475/608)
-Installing cups-filters-libs (476/608)
-Installing stix-fonts (477/608)
-Installing fontconfig (478/608)
-Installing cairo (479/608)
-Installing cairo-gobject (480/608)
-Installing poppler (481/608)
-Installing poppler-utils (482/608)
-Installing pycairo (483/608)
-Installing urw-fonts (484/608)
-Installing xorg-x11-fonts-Type1 (485/608)
-Installing ghostscript-fonts (486/608)
-Installing ghostscript (487/608)
-Installing libXft (488/608)
-Installing pango (489/608)
-Installing gtk2 (490/608)
-Installing pygtk2 (491/608)
-Installing adwaita-icon-theme (492/608)
-Installing gtk3 (493/608)
-Installing zenity (494/608)
-Installing libcanberra-gtk3 (495/608)
-Installing libcanberra-gtk2 (496/608)
-Installing metacity (497/608)
-Installing liberation-mono-fonts (498/608)
-Installing cups-filesystem (499/608)
-Installing cups-filters (500/608)
-Installing ghostscript-cups (501/608)
-Installing cups (502/608)
-Installing emacs-filesystem (503/608)
-Installing desktop-file-utils (504/608)
-Installing xdg-utils (505/608)
-Installing vim-filesystem (506/608)
-Installing vim-common (507/608)
-Installing kbd-misc (508/608)
-Installing kbd (509/608)
-Installing pm-utils (510/608)
-Installing vim-enhanced (511/608)
-Installing pinfo (512/608)
-Installing firstboot (513/608)
-Installing java-1.8.0-openjdk (514/608)
-Installing fprintd-pam (515/608)
-Installing authconfig (516/608)
-Installing setuptool (517/608)
-Installing abrt-console-notification (518/608)
-Installing ntp (519/608)
-Installing mutt (520/608)
-Installing minicom (521/608)
-Installing firewalld (522/608)
-Installing quota (523/608)
-Installing samba-client (524/608)
-Installing sendmail (525/608)
-Installing vdo (526/608)
-Installing samba (527/608)
-Installing sysstat (528/608)
-Installing mlocate (529/608)
-Installing usbutils (530/608)
-Installing pciutils (531/608)
-Installing net-snmp (532/608)
-Installing audit (533/608)
-Installing psacct (534/608)
-Installing libreport-plugin-mailx (535/608)
-Installing net-tools (536/608)
-Installing rsync (537/608)
-Installing qemu-guest-agent (538/608)
-Installing biosdevname (539/608)
-Installing crda (540/608)
-Installing ksh (541/608)
-Installing mdadm (542/608)
-Installing smartmontools (543/608)
-Installing at (544/608)
-Installing rng-tools (545/608)
-Installing iptables-services (546/608)
-Installing kpatch (547/608)
-Installing cryptsetup (548/608)
-Installing virt-what (549/608)
-Installing screen (550/608)
-Installing tcpdump (551/608)
-Installing systemtap-runtime (552/608)
-Installing man-db (553/608)
-Installing sssd-client (554/608)
-Installing expect (555/608)
-Installing yum-langpacks (556/608)
-Installing yum-plugin-ovl (557/608)
-Installing yum-utils (558/608)
-Installing ledmon (559/608)
-Installing boost (560/608)
-Installing e2fsprogs (561/608)
-Installing xfsdump (562/608)
-Installing elinks (563/608)
-Installing hunspell-en (564/608)
-Installing bind-utils (565/608)
-Installing nmap (566/608)
-Installing perl-Digest-MD5 (567/608)
-Installing dvd+rw-tools (568/608)
-Installing wodim (569/608)
-Installing mc (570/608)
-Installing fetchmail (571/608)
-Installing blktrace (572/608)
-Installing ntsysv (573/608)
-Installing bash-completion (574/608)
-Installing mtr (575/608)
-Installing file (576/608)
-Installing cyrus-sasl-plain (577/608)
-Installing wget (578/608)
-Installing zip (579/608)
-Installing unzip (580/608)
-Installing tcsh (581/608)
-Installing logrotate (582/608)
-Installing lsof (583/608)
-Installing vim-minimal (584/608)
-Installing nano (585/608)
-Installing mtools (586/608)
-Installing time (587/608)
-Installing ed (588/608)
-Installing dialog (589/608)
-Installing telnet (590/608)
-Installing rfkill (591/608)
-Installing dosfstools (592/608)
-Installing scl-utils (593/608)
-Installing rdate (594/608)
-Installing strace (595/608)
-Installing bridge-utils (596/608)
-Installing setserial (597/608)
-Installing dos2unix (598/608)
-Installing traceroute (599/608)
-Installing uuid (600/608)
-Installing ncurses-term (601/608)
-Installing man-pages-overrides (602/608)
-Installing rootfiles (603/608)
-Installing man-pages (604/608)
-Installing centos-indexhtml (605/608)
-Installing words (606/608)
-Installing nss-softokn-freebl.i686 (607/608)
-Installing glibc.i686 (608/608)
-Performing post-installation setup tasks
-Performing post-installation setup tasks
-.
-
-Configuring installed system
-.
-Creating users
-.
-Configuring addons
-.
-Generating initramfs
-.
-Running post-installation scripts
-.
-
-real	21m39.049s
-user	14m53.844s
-sys	3m2.411s
-Press enter to continue..
-
-/root/mscloudserver/msposapp
-[3;J[H[2J**************************************
-** POS Application Service **        *
-**************************************
-**   Start a Florist Now   **        *
-** Options: 13 + 115 + 112 **        *
-*                                    *
-** Dev/Docker **                     *
-* [1] List Running Containers        *
-* [2] Start Container                *
-* [3] Stop Container(s)              *
-* [4] Attach to a Container          *
-* [5] List Network Interfaces        *
-* [w] Wipe all Docker imgs/conts     *
-*                                    *
-** Images **                         *
-* [11] Build an OS Image             *
-* [12] Build an RTI Image            *
-* [13] Stage a Florist Container     *
-* [14] List Images                   *
-* [15] Delete Image(s)               *
-*                                    *
-** Prod/EC2 **                       *
-* [111] List Instances               *
-* [112] Start an Instance            *
-* [113] Stop an Instance             *
-* [114] List VPNs                    *
-* [115] Create VPN Access            *
-* [116] Remove VPN Access            *
-*                                    *
-* [a]  About                         *
-* [x]  Exit                          *
-**************************************
-Enter selection: 12
-Sending build context to Docker daemon 557.1 kBSending build context to Docker daemon 11.14 MBSending build context to Docker daemon 22.28 MBSending build context to Docker daemon 33.42 MBSending build context to Docker daemon 44.56 MBSending build context to Docker daemon 55.71 MBSending build context to Docker daemon 66.85 MBSending build context to Docker daemon 77.99 MBSending build context to Docker daemon 89.69 MBSending build context to Docker daemon 101.4 MBSending build context to Docker daemon 112.5 MBSending build context to Docker daemon 124.2 MBSending build context to Docker daemon 135.4 MBSending build context to Docker daemon 146.5 MBSending build context to Docker daemon 157.6 MBSending build context to Docker daemon 168.2 MBSending build context to Docker daemon 179.9 MBSending build context to Docker daemon 191.6 MBSending build context to Docker daemon 203.3 MBSending build context to Docker daemon   215 MBSending build context to Docker daemon 226.2 MBSending build context to Docker daemon 237.9 MBSending build context to Docker daemon 249.6 MBSending build context to Docker daemon 261.3 MBSending build context to Docker daemon   273 MBSending build context to Docker daemon 284.1 MBSending build context to Docker daemon 295.2 MBSending build context to Docker daemon 302.4 MB
-Step 1/28 : FROM scratch
- ---> 
-Step 2/28 : ADD rhel7-rti-docker.tar.xz /
- ---> 7336061c44f1
-Removing intermediate container faf24591ec4f
-Step 3/28 : LABEL org.label-schema.schema-version = "1.0"     org.label-schema.name="RHEL-RTI Base Image"     org.label-schema.vendor="RHEL"     org.label-schema.license="GPLv2"     org.label-schema.build-date="20180527"
- ---> Running in 4e3043cf2c9e
- ---> 77396fd44b53
-Removing intermediate container 4e3043cf2c9e
-Step 4/28 : MAINTAINER “Mike Green" <mgreen@teleflora.com>
- ---> Running in 2d1f22965f1c
- ---> c24704a262c4
-Removing intermediate container 2d1f22965f1c
-Step 5/28 : ENV container rhel7-rti-florist
- ---> Running in 18c61a1ed69b
- ---> 8fcbc8db23d5
-Removing intermediate container 18c61a1ed69b
-Step 6/28 : RUN yum -y install systemd ; yum clean all; (cd /lib/systemd/system/sysinit.target.wants/; for i in *; do [ $i == systemd-tmpfiles-setup.service ] || rm -f $i; done); rm -f /lib/systemd/system/multi-user.target.wants/*;rm -f /etc/systemd/system/*.wants/*;rm -f /lib/systemd/system/local-fs.target.wants/*; rm -f /lib/systemd/system/sockets.target.wants/*udev*; rm -f /lib/systemd/system/sockets.target.wants/*initctl*; rm -f /lib/systemd/system/basic.target.wants/*;rm -f /usr/lib/tmpfiles.d/systemd-nologin.conf;rm -f /lib/systemd/system/anaconda.target.wants/*;
- ---> Running in c040298ffda3
-
-[91m[0mLoaded plugins: fastestmirror, langpacks, ovl
-Determining fastest mirrors
- * base: centos2.zswap.net
- * extras: centos.host-engine.com
- * updates: centos.host-engine.com
-Package systemd-219-57.el7.x86_64 already installed and latest version
-Nothing to do
-Loaded plugins: fastestmirror, langpacks, ovl
-Cleaning repos: base extras updates
-Cleaning up everything
-Maybe you want: rm -rf /var/cache/yum, to also free up space taken by orphaned data from disabled or removed repos
-Cleaning up list of fastest mirrors
- ---> 11eb7b3737d2
-Removing intermediate container c040298ffda3
-Step 7/28 : RUN yum -y install systemd openssh-server pam iptables cups samba httpd nfs net-tools telnet wget curl perl java nfs-utils libnfsidmap perl-Digest perl-Digest-MD5
- ---> Running in 47a85af8236b
-
-[91m[0mLoaded plugins: fastestmirror, langpacks, ovl
-Determining fastest mirrors
- * base: centos.gbeservers.com
- * extras: mirrordenver.fdcservers.net
- * updates: pubmirrors.dal.corespace.com
-Package systemd-219-57.el7.x86_64 already installed and latest version
-Package pam-1.1.8-22.el7.x86_64 already installed and latest version
-Package 1:cups-1.6.3-35.el7.x86_64 already installed and latest version
-Package samba-4.7.1-6.el7.x86_64 already installed and latest version
-No package nfs available.
-Package net-tools-2.0-0.22.20131004git.el7.x86_64 already installed and latest version
-Package 1:telnet-0.17-64.el7.x86_64 already installed and latest version
-Package wget-1.14-15.el7_4.1.x86_64 already installed and latest version
-Package curl-7.29.0-46.el7.x86_64 already installed and latest version
-Package 4:perl-5.16.3-292.el7.x86_64 already installed and latest version
-Package perl-Digest-1.17-245.el7.noarch already installed and latest version
-Package perl-Digest-MD5-2.52-3.el7.x86_64 already installed and latest version
-Resolving Dependencies
---> Running transaction check
----> Package httpd.x86_64 0:2.4.6-80.el7.centos will be installed
---> Processing Dependency: httpd-tools = 2.4.6-80.el7.centos for package: httpd-2.4.6-80.el7.centos.x86_64
---> Processing Dependency: libaprutil-1.so.0()(64bit) for package: httpd-2.4.6-80.el7.centos.x86_64
---> Processing Dependency: libapr-1.so.0()(64bit) for package: httpd-2.4.6-80.el7.centos.x86_64
----> Package iptables.x86_64 0:1.4.21-24.el7 will be updated
---> Processing Dependency: iptables = 1.4.21-24.el7 for package: iptables-services-1.4.21-24.el7.x86_64
----> Package iptables.x86_64 0:1.4.21-24.1.el7_5 will be an update
----> Package java-1.8.0-openjdk.x86_64 1:1.8.0.161-2.b14.el7 will be updated
----> Package java-1.8.0-openjdk.x86_64 1:1.8.0.171-8.b10.el7_5 will be an update
---> Processing Dependency: java-1.8.0-openjdk-headless(x86-64) = 1:1.8.0.171-8.b10.el7_5 for package: 1:java-1.8.0-openjdk-1.8.0.171-8.b10.el7_5.x86_64
----> Package libnfsidmap.x86_64 0:0.25-19.el7 will be installed
----> Package nfs-utils.x86_64 1:1.3.0-0.54.el7 will be installed
---> Processing Dependency: gssproxy >= 0.7.0-3 for package: 1:nfs-utils-1.3.0-0.54.el7.x86_64
---> Processing Dependency: libevent for package: 1:nfs-utils-1.3.0-0.54.el7.x86_64
---> Processing Dependency: keyutils for package: 1:nfs-utils-1.3.0-0.54.el7.x86_64
---> Processing Dependency: libevent-2.0.so.5()(64bit) for package: 1:nfs-utils-1.3.0-0.54.el7.x86_64
----> Package openssh-server.x86_64 0:7.4p1-16.el7 will be installed
---> Running transaction check
----> Package apr.x86_64 0:1.4.8-3.el7_4.1 will be installed
----> Package apr-util.x86_64 0:1.5.2-6.el7 will be installed
----> Package gssproxy.x86_64 0:0.7.0-17.el7 will be installed
---> Processing Dependency: libini_config >= 1.3.1-28 for package: gssproxy-0.7.0-17.el7.x86_64
---> Processing Dependency: libverto-module-base for package: gssproxy-0.7.0-17.el7.x86_64
---> Processing Dependency: libref_array.so.1(REF_ARRAY_0.1.1)(64bit) for package: gssproxy-0.7.0-17.el7.x86_64
---> Processing Dependency: libini_config.so.3(INI_CONFIG_1.2.0)(64bit) for package: gssproxy-0.7.0-17.el7.x86_64
---> Processing Dependency: libini_config.so.3(INI_CONFIG_1.1.0)(64bit) for package: gssproxy-0.7.0-17.el7.x86_64
---> Processing Dependency: libref_array.so.1()(64bit) for package: gssproxy-0.7.0-17.el7.x86_64
---> Processing Dependency: libini_config.so.3()(64bit) for package: gssproxy-0.7.0-17.el7.x86_64
---> Processing Dependency: libcollection.so.2()(64bit) for package: gssproxy-0.7.0-17.el7.x86_64
---> Processing Dependency: libbasicobjects.so.0()(64bit) for package: gssproxy-0.7.0-17.el7.x86_64
----> Package httpd-tools.x86_64 0:2.4.6-80.el7.centos will be installed
----> Package iptables-services.x86_64 0:1.4.21-24.el7 will be updated
----> Package iptables-services.x86_64 0:1.4.21-24.1.el7_5 will be an update
----> Package java-1.8.0-openjdk-headless.x86_64 1:1.8.0.161-2.b14.el7 will be updated
----> Package java-1.8.0-openjdk-headless.x86_64 1:1.8.0.171-8.b10.el7_5 will be an update
---> Processing Dependency: nss-softokn(x86-64) >= 3.36.0 for package: 1:java-1.8.0-openjdk-headless-1.8.0.171-8.b10.el7_5.x86_64
---> Processing Dependency: nss(x86-64) >= 3.36.0 for package: 1:java-1.8.0-openjdk-headless-1.8.0.171-8.b10.el7_5.x86_64
----> Package keyutils.x86_64 0:1.5.8-3.el7 will be installed
----> Package libevent.x86_64 0:2.0.21-4.el7 will be installed
---> Running transaction check
----> Package libbasicobjects.x86_64 0:0.1.1-29.el7 will be installed
----> Package libcollection.x86_64 0:0.7.0-29.el7 will be installed
----> Package libini_config.x86_64 0:1.3.1-29.el7 will be installed
---> Processing Dependency: libpath_utils.so.1(PATH_UTILS_0.2.1)(64bit) for package: libini_config-1.3.1-29.el7.x86_64
---> Processing Dependency: libpath_utils.so.1()(64bit) for package: libini_config-1.3.1-29.el7.x86_64
----> Package libref_array.x86_64 0:0.1.5-29.el7 will be installed
----> Package libverto-tevent.x86_64 0:0.2.5-4.el7 will be installed
----> Package nss.x86_64 0:3.34.0-4.el7 will be updated
---> Processing Dependency: nss = 3.34.0-4.el7 for package: nss-sysinit-3.34.0-4.el7.x86_64
---> Processing Dependency: nss(x86-64) = 3.34.0-4.el7 for package: nss-tools-3.34.0-4.el7.x86_64
----> Package nss.x86_64 0:3.36.0-5.el7_5 will be an update
---> Processing Dependency: nss-util >= 3.36.0-1 for package: nss-3.36.0-5.el7_5.x86_64
---> Processing Dependency: nspr >= 4.19.0 for package: nss-3.36.0-5.el7_5.x86_64
----> Package nss-softokn.x86_64 0:3.34.0-2.el7 will be updated
----> Package nss-softokn.x86_64 0:3.36.0-5.el7_5 will be an update
---> Processing Dependency: nss-softokn-freebl(x86-64) >= 3.36.0-5.el7_5 for package: nss-softokn-3.36.0-5.el7_5.x86_64
---> Running transaction check
----> Package libpath_utils.x86_64 0:0.2.1-29.el7 will be installed
----> Package nspr.x86_64 0:4.17.0-1.el7 will be updated
----> Package nspr.x86_64 0:4.19.0-1.el7_5 will be an update
----> Package nss-softokn-freebl.i686 0:3.34.0-2.el7 will be updated
----> Package nss-softokn-freebl.x86_64 0:3.34.0-2.el7 will be updated
----> Package nss-softokn-freebl.i686 0:3.36.0-5.el7_5 will be an update
----> Package nss-softokn-freebl.x86_64 0:3.36.0-5.el7_5 will be an update
----> Package nss-sysinit.x86_64 0:3.34.0-4.el7 will be updated
----> Package nss-sysinit.x86_64 0:3.36.0-5.el7_5 will be an update
----> Package nss-tools.x86_64 0:3.34.0-4.el7 will be updated
----> Package nss-tools.x86_64 0:3.36.0-5.el7_5 will be an update
----> Package nss-util.x86_64 0:3.34.0-2.el7 will be updated
----> Package nss-util.x86_64 0:3.36.0-1.el7_5 will be an update
---> Finished Dependency Resolution
-
-Dependencies Resolved
-
-================================================================================
- Package                      Arch    Version                    Repository
-                                                                           Size
-================================================================================
-Installing:
- httpd                        x86_64  2.4.6-80.el7.centos        base     2.7 M
- libnfsidmap                  x86_64  0.25-19.el7                base      50 k
- nfs-utils                    x86_64  1:1.3.0-0.54.el7           base     407 k
- openssh-server               x86_64  7.4p1-16.el7               base     458 k
-Updating:
- iptables                     x86_64  1.4.21-24.1.el7_5          updates  432 k
- java-1.8.0-openjdk           x86_64  1:1.8.0.171-8.b10.el7_5    updates  246 k
-Installing for dependencies:
- apr                          x86_64  1.4.8-3.el7_4.1            base     103 k
- apr-util                     x86_64  1.5.2-6.el7                base      92 k
- gssproxy                     x86_64  0.7.0-17.el7               base     108 k
- httpd-tools                  x86_64  2.4.6-80.el7.centos        base      89 k
- keyutils                     x86_64  1.5.8-3.el7                base      54 k
- libbasicobjects              x86_64  0.1.1-29.el7               base      25 k
- libcollection                x86_64  0.7.0-29.el7               base      41 k
- libevent                     x86_64  2.0.21-4.el7               base     214 k
- libini_config                x86_64  1.3.1-29.el7               base      63 k
- libpath_utils                x86_64  0.2.1-29.el7               base      28 k
- libref_array                 x86_64  0.1.5-29.el7               base      26 k
- libverto-tevent              x86_64  0.2.5-4.el7                base     9.0 k
-Updating for dependencies:
- iptables-services            x86_64  1.4.21-24.1.el7_5          updates   51 k
- java-1.8.0-openjdk-headless  x86_64  1:1.8.0.171-8.b10.el7_5    updates   32 M
- nspr                         x86_64  4.19.0-1.el7_5             updates  127 k
- nss                          x86_64  3.36.0-5.el7_5             updates  835 k
- nss-softokn                  x86_64  3.36.0-5.el7_5             updates  315 k
- nss-softokn-freebl           i686    3.36.0-5.el7_5             updates  211 k
- nss-softokn-freebl           x86_64  3.36.0-5.el7_5             updates  222 k
- nss-sysinit                  x86_64  3.36.0-5.el7_5             updates   62 k
- nss-tools                    x86_64  3.36.0-5.el7_5             updates  514 k
- nss-util                     x86_64  3.36.0-1.el7_5             updates   78 k
-
-Transaction Summary
-================================================================================
-Install  4 Packages (+12 Dependent packages)
-Upgrade  2 Packages (+10 Dependent packages)
-
-Total download size: 39 M
-Downloading packages:
-Delta RPMs disabled because /usr/bin/applydeltarpm not installed.
-[91mwarning: /var/cache/yum/x86_64/7/base/packages/apr-util-1.5.2-6.el7.x86_64.rpm: Header V3 RSA/SHA256 Signature, key ID f4a80eb5: NOKEY
-[0mPublic key for apr-util-1.5.2-6.el7.x86_64.rpm is not installed
-Public key for iptables-services-1.4.21-24.1.el7_5.x86_64.rpm is not installed
---------------------------------------------------------------------------------
-Total                                              9.2 MB/s |  39 MB  00:04     
-Retrieving key from file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7
-[91mImporting GPG key 0xF4A80EB5:
- Userid     : "CentOS-7 Key (CentOS 7 Official Signing Key) <security@centos.org>"
- Fingerprint: 6341 ab27 53d7 8a78 a7c2 7bb1 24c6 a8a7 f4a8 0eb5
- Package    : centos-release-7-5.1804.el7.centos.x86_64 (@CentOS)
- From       : /etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7
-[0mRunning transaction check
-Running transaction test
-Transaction test succeeded
-Running transaction
-  Updating   : nspr-4.19.0-1.el7_5.x86_64                                  1/40 
-  Updating   : nss-util-3.36.0-1.el7_5.x86_64                              2/40 
-  Installing : apr-1.4.8-3.el7_4.1.x86_64                                  3/40 
-  Installing : apr-util-1.5.2-6.el7.x86_64                                 4/40 
-  Installing : libref_array-0.1.5-29.el7.x86_64                            5/40 
-  Installing : libbasicobjects-0.1.1-29.el7.x86_64                         6/40 
-  Installing : libcollection-0.7.0-29.el7.x86_64                           7/40 
-  Installing : httpd-tools-2.4.6-80.el7.centos.x86_64                      8/40 
-  Updating   : nss-softokn-freebl-3.36.0-5.el7_5.x86_64                    9/40 
-  Updating   : nss-softokn-3.36.0-5.el7_5.x86_64                          10/40 
-  Updating   : nss-sysinit-3.36.0-5.el7_5.x86_64                          11/40 
-  Updating   : nss-3.36.0-5.el7_5.x86_64                                  12/40 
-  Updating   : 1:java-1.8.0-openjdk-headless-1.8.0.171-8.b10.el7_5.x86_   13/40 
-warning: /usr/lib/jvm/java-1.8.0-openjdk-1.8.0.171-8.b10.el7_5.x86_64/jre/lib/security/java.security created as /usr/lib/jvm/java-1.8.0-openjdk-1.8.0.171-8.b10.el7_5.x86_64/jre/lib/security/java.security.rpmnew
-restored /usr/lib/jvm/java-1.8.0-openjdk-1.8.0.171-8.b10.el7_5.x86_64/jre/lib/security/java.security.rpmnew to /usr/lib/jvm/java-1.8.0-openjdk-1.8.0.171-8.b10.el7_5.x86_64/jre/lib/security/java.security
-  Installing : keyutils-1.5.8-3.el7.x86_64                                14/40 
-  Installing : libnfsidmap-0.25-19.el7.x86_64                             15/40 
-  Updating   : iptables-1.4.21-24.1.el7_5.x86_64                          16/40 
-  Installing : libevent-2.0.21-4.el7.x86_64                               17/40 
-  Installing : libpath_utils-0.2.1-29.el7.x86_64                          18/40 
-  Installing : libini_config-1.3.1-29.el7.x86_64                          19/40 
-  Installing : libverto-tevent-0.2.5-4.el7.x86_64                         20/40 
-  Installing : gssproxy-0.7.0-17.el7.x86_64                               21/40 
-  Installing : 1:nfs-utils-1.3.0-0.54.el7.x86_64                          22/40 
-  Updating   : iptables-services-1.4.21-24.1.el7_5.x86_64                 23/40 
-  Updating   : 1:java-1.8.0-openjdk-1.8.0.171-8.b10.el7_5.x86_64          24/40 
-  Updating   : nss-tools-3.36.0-5.el7_5.x86_64                            25/40 
-  Installing : httpd-2.4.6-80.el7.centos.x86_64                           26/40 
-  Installing : openssh-server-7.4p1-16.el7.x86_64                         27/40 
-  Updating   : nss-softokn-freebl-3.36.0-5.el7_5.i686                     28/40 
-  Cleanup    : nss-tools-3.34.0-4.el7.x86_64                              29/40 
-  Cleanup    : nss-softokn-freebl-3.34.0-2.el7                            30/40 
-  Cleanup    : iptables-services-1.4.21-24.el7.x86_64                     31/40 
-  Cleanup    : 1:java-1.8.0-openjdk-1.8.0.161-2.b14.el7.x86_64            32/40 
-  Cleanup    : 1:java-1.8.0-openjdk-headless-1.8.0.161-2.b14.el7.x86_64   33/40 
-  Cleanup    : nss-sysinit-3.34.0-4.el7.x86_64                            34/40 
-  Cleanup    : nss-3.34.0-4.el7.x86_64                                    35/40 
-  Cleanup    : nss-softokn-3.34.0-2.el7.x86_64                            36/40 
-  Cleanup    : nss-softokn-freebl-3.34.0-2.el7                            37/40 
-  Cleanup    : nss-util-3.34.0-2.el7.x86_64                               38/40 
-  Cleanup    : nspr-4.17.0-1.el7.x86_64                                   39/40 
-  Cleanup    : iptables-1.4.21-24.el7.x86_64                              40/40 
-  Verifying  : 1:java-1.8.0-openjdk-headless-1.8.0.171-8.b10.el7_5.x86_    1/40 
-  Verifying  : libini_config-1.3.1-29.el7.x86_64                           2/40 
-  Verifying  : libverto-tevent-0.2.5-4.el7.x86_64                          3/40 
-  Verifying  : nss-tools-3.36.0-5.el7_5.x86_64                             4/40 
-  Verifying  : libcollection-0.7.0-29.el7.x86_64                           5/40 
-  Verifying  : libbasicobjects-0.1.1-29.el7.x86_64                         6/40 
-  Verifying  : openssh-server-7.4p1-16.el7.x86_64                          7/40 
-  Verifying  : libref_array-0.1.5-29.el7.x86_64                            8/40 
-  Verifying  : nss-util-3.36.0-1.el7_5.x86_64                              9/40 
-  Verifying  : nss-sysinit-3.36.0-5.el7_5.x86_64                          10/40 
-  Verifying  : libpath_utils-0.2.1-29.el7.x86_64                          11/40 
-  Verifying  : iptables-services-1.4.21-24.1.el7_5.x86_64                 12/40 
-  Verifying  : 1:nfs-utils-1.3.0-0.54.el7.x86_64                          13/40 
-  Verifying  : 1:java-1.8.0-openjdk-1.8.0.171-8.b10.el7_5.x86_64          14/40 
-  Verifying  : httpd-tools-2.4.6-80.el7.centos.x86_64                     15/40 
-  Verifying  : libevent-2.0.21-4.el7.x86_64                               16/40 
-  Verifying  : apr-util-1.5.2-6.el7.x86_64                                17/40 
-  Verifying  : httpd-2.4.6-80.el7.centos.x86_64                           18/40 
-  Verifying  : iptables-1.4.21-24.1.el7_5.x86_64                          19/40 
-  Verifying  : gssproxy-0.7.0-17.el7.x86_64                               20/40 
-  Verifying  : nss-softokn-freebl-3.36.0-5.el7_5.i686                     21/40 
-  Verifying  : apr-1.4.8-3.el7_4.1.x86_64                                 22/40 
-  Verifying  : libnfsidmap-0.25-19.el7.x86_64                             23/40 
-  Verifying  : nss-softokn-freebl-3.36.0-5.el7_5.x86_64                   24/40 
-  Verifying  : nspr-4.19.0-1.el7_5.x86_64                                 25/40 
-  Verifying  : keyutils-1.5.8-3.el7.x86_64                                26/40 
-  Verifying  : nss-3.36.0-5.el7_5.x86_64                                  27/40 
-  Verifying  : nss-softokn-3.36.0-5.el7_5.x86_64                          28/40 
-  Verifying  : nss-sysinit-3.34.0-4.el7.x86_64                            29/40 
-  Verifying  : 1:java-1.8.0-openjdk-1.8.0.161-2.b14.el7.x86_64            30/40 
-  Verifying  : nss-softokn-freebl-3.34.0-2.el7.x86_64                     31/40 
-  Verifying  : nspr-4.17.0-1.el7.x86_64                                   32/40 
-  Verifying  : nss-tools-3.34.0-4.el7.x86_64                              33/40 
-  Verifying  : nss-util-3.34.0-2.el7.x86_64                               34/40 
-  Verifying  : nss-3.34.0-4.el7.x86_64                                    35/40 
-  Verifying  : iptables-services-1.4.21-24.el7.x86_64                     36/40 
-  Verifying  : nss-softokn-3.34.0-2.el7.x86_64                            37/40 
-  Verifying  : nss-softokn-freebl-3.34.0-2.el7.i686                       38/40 
-  Verifying  : 1:java-1.8.0-openjdk-headless-1.8.0.161-2.b14.el7.x86_64   39/40 
-  Verifying  : iptables-1.4.21-24.el7.x86_64                              40/40 
-
-Installed:
-  httpd.x86_64 0:2.4.6-80.el7.centos    libnfsidmap.x86_64 0:0.25-19.el7       
-  nfs-utils.x86_64 1:1.3.0-0.54.el7     openssh-server.x86_64 0:7.4p1-16.el7   
-
-Dependency Installed:
-  apr.x86_64 0:1.4.8-3.el7_4.1         apr-util.x86_64 0:1.5.2-6.el7            
-  gssproxy.x86_64 0:0.7.0-17.el7       httpd-tools.x86_64 0:2.4.6-80.el7.centos 
-  keyutils.x86_64 0:1.5.8-3.el7        libbasicobjects.x86_64 0:0.1.1-29.el7    
-  libcollection.x86_64 0:0.7.0-29.el7  libevent.x86_64 0:2.0.21-4.el7           
-  libini_config.x86_64 0:1.3.1-29.el7  libpath_utils.x86_64 0:0.2.1-29.el7      
-  libref_array.x86_64 0:0.1.5-29.el7   libverto-tevent.x86_64 0:0.2.5-4.el7     
-
-Updated:
-  iptables.x86_64 0:1.4.21-24.1.el7_5                                           
-  java-1.8.0-openjdk.x86_64 1:1.8.0.171-8.b10.el7_5                             
-
-Dependency Updated:
-  iptables-services.x86_64 0:1.4.21-24.1.el7_5                                  
-  java-1.8.0-openjdk-headless.x86_64 1:1.8.0.171-8.b10.el7_5                    
-  nspr.x86_64 0:4.19.0-1.el7_5                                                  
-  nss.x86_64 0:3.36.0-5.el7_5                                                   
-  nss-softokn.x86_64 0:3.36.0-5.el7_5                                           
-  nss-softokn-freebl.i686 0:3.36.0-5.el7_5                                      
-  nss-softokn-freebl.x86_64 0:3.36.0-5.el7_5                                    
-  nss-sysinit.x86_64 0:3.36.0-5.el7_5                                           
-  nss-tools.x86_64 0:3.36.0-5.el7_5                                             
-  nss-util.x86_64 0:3.36.0-1.el7_5                                              
-
-Complete!
- ---> 0a5cd2f43f7b
-Removing intermediate container 47a85af8236b
-Step 8/28 : VOLUME [ “/sys/fs/cgroup” ]
- ---> Running in 5957449da868
- ---> 04051735f640
-Removing intermediate container 5957449da868
-Step 9/28 : RUN systemctl enable sshd
- ---> Running in aa874a4558a6
-
-[91m[0m ---> 8c58ab3532c1
-Removing intermediate container aa874a4558a6
-Step 10/28 : RUN systemctl enable cups
- ---> Running in 1d321de17b86
-
-[91m[0m[91mCreated symlink /etc/systemd/system/multi-user.target.wants/cups.service, pointing to /usr/lib/systemd/system/cups.service.
-Created symlink /etc/systemd/system/printer.target.wants/cups.service, pointing to /usr/lib/systemd/system/cups.service.
-Created symlink /etc/systemd/system/sockets.target.wants/cups.socket, pointing to /usr/lib/systemd/system/cups.socket.
-Created symlink /etc/systemd/system/multi-user.target.wants/cups.path, pointing to /usr/lib/systemd/system/cups.path.
-[0m ---> c51e5d5542a2
-Removing intermediate container 1d321de17b86
-Step 11/28 : RUN systemctl enable smb
- ---> Running in 35b1f2715522
-
-[91m[0m[91mCreated symlink /etc/systemd/system/multi-user.target.wants/smb.service, pointing to /usr/lib/systemd/system/smb.service.
-[0m ---> be161ce94358
-Removing intermediate container 35b1f2715522
-Step 12/28 : RUN systemctl enable httpd
- ---> Running in be3399dcaf8a
-
-[91m[0m[91mCreated symlink /etc/systemd/system/multi-user.target.wants/httpd.service, pointing to /usr/lib/systemd/system/httpd.service.
-[0m ---> 43aab75e6300
-Removing intermediate container be3399dcaf8a
-Step 13/28 : RUN systemctl enable rpcbind
- ---> Running in 3412bf72d6ee
-
-[91m[0m[91mCreated symlink /etc/systemd/system/multi-user.target.wants/rpcbind.service, pointing to /usr/lib/systemd/system/rpcbind.service.
-[0m ---> d9e5f2deba38
-Removing intermediate container 3412bf72d6ee
-Step 14/28 : EXPOSE 22
- ---> Running in 55a9ee8075fb
- ---> 48f1a73c4dd4
-Removing intermediate container 55a9ee8075fb
-Step 15/28 : EXPOSE 80
- ---> Running in ce4dfe63869c
- ---> 0309d65d3ed7
-Removing intermediate container ce4dfe63869c
-Step 16/28 : EXPOSE 443
- ---> Running in e66b2736f5a0
- ---> bf03dae58324
-Removing intermediate container e66b2736f5a0
-Step 17/28 : EXPOSE 111
- ---> Running in ef3197a0685a
- ---> 9958bb019ba5
-Removing intermediate container ef3197a0685a
-Step 18/28 : EXPOSE 15022
- ---> Running in 8cf025f7350a
- ---> 4513de01f0d4
-Removing intermediate container 8cf025f7350a
-Step 19/28 : EXPOSE 2001
- ---> Running in 16b28fddfdc6
- ---> 7fd0fc8392d3
-Removing intermediate container 16b28fddfdc6
-Step 20/28 : EXPOSE 2002
- ---> Running in 0d9eecbadfcc
- ---> 3428acc57905
-Removing intermediate container 0d9eecbadfcc
-Step 21/28 : EXPOSE 2003
- ---> Running in 12bb48b83388
- ---> e82f3cf87ad8
-Removing intermediate container 12bb48b83388
-Step 22/28 : EXPOSE 2004
- ---> Running in 0ce9196db093
- ---> 2a7982ac8986
-Removing intermediate container 0ce9196db093
-Step 23/28 : EXPOSE 2005
- ---> Running in 9b7e789b15f7
- ---> 9b32e26c8988
-Removing intermediate container 9b7e789b15f7
-Step 24/28 : EXPOSE 2006
- ---> Running in 0e6ce0074b3d
- ---> a6e5cde86c25
-Removing intermediate container 0e6ce0074b3d
-Step 25/28 : EXPOSE 9100
- ---> Running in 7a733e25aec4
- ---> 262916aead7d
-Removing intermediate container 7a733e25aec4
-Step 26/28 : EXPOSE 445
- ---> Running in f4fe8a89bbf7
- ---> bddfc9ba487f
-Removing intermediate container f4fe8a89bbf7
-Step 27/28 : EXPOSE 631
- ---> Running in 0684fdee5ced
- ---> d2e928e5e3e8
-Removing intermediate container 0684fdee5ced
-Step 28/28 : CMD [“/usr/bin/bash”]
- ---> Running in 0a4eb95ad5f0
- ---> 7f35b1c9a0bb
-Removing intermediate container 0a4eb95ad5f0
-Successfully built 7f35b1c9a0bb
-/root/mscloudserver/msposapp/bin
-
-real	3m56.464s
-user	0m0.293s
-sys	0m0.595s
-Press enter to continue..
-
-/root/mscloudserver/msposapp
-[3;J[H[2J**************************************
-** POS Application Service **        *
-**************************************
-**   Start a Florist Now   **        *
-** Options: 13 + 115 + 112 **        *
-*                                    *
-** Dev/Docker **                     *
-* [1] List Running Containers        *
-* [2] Start Container                *
-* [3] Stop Container(s)              *
-* [4] Attach to a Container          *
-* [5] List Network Interfaces        *
-* [w] Wipe all Docker imgs/conts     *
-*                                    *
-** Images **                         *
-* [11] Build an OS Image             *
-* [12] Build an RTI Image            *
-* [13] Stage a Florist Container     *
-* [14] List Images                   *
-* [15] Delete Image(s)               *
-*                                    *
-** Prod/EC2 **                       *
-* [111] List Instances               *
-* [112] Start an Instance            *
-* [113] Stop an Instance             *
-* [114] List VPNs                    *
-* [115] Create VPN Access            *
-* [116] Remove VPN Access            *
-*                                    *
-* [a]  About                         *
-* [x]  Exit                          *
-**************************************
-Enter selection: 13
-SHOPCODE: 12345678
---2018-06-11 11:21:51--  http://rtihardware.homelinux.com/ostools/ostools-1.15-latest.tar.gz
-Resolving rtihardware.homelinux.com (rtihardware.homelinux.com)... 209.141.208.120
-Connecting to rtihardware.homelinux.com (rtihardware.homelinux.com)|209.141.208.120|:80... connected.
-HTTP request sent, awaiting response... 200 OK
-Length: 367453 (359K) [application/x-gzip]
-Saving to: 'ostools-1.15-latest.tar.gz'
-
-     0K .......... .......... .......... .......... .......... 13%  409K 1s
-    50K .......... .......... .......... .......... .......... 27%  528K 1s
-   100K .......... .......... .......... .......... .......... 41%  491K 0s
-   150K .......... .......... .......... .......... .......... 55%  412K 0s
-   200K .......... .......... .......... .......... .......... 69% 2.10M 0s
-   250K .......... .......... .......... .......... .......... 83%  680K 0s
-   300K .......... .......... .......... .......... .......... 97%  280K 0s
-   350K ........                                              100%  101M=0.7s
-
-2018-06-11 11:21:52 (501 KB/s) - 'ostools-1.15-latest.tar.gz' saved [367453/367453]
-
-README-ostools-1.15.0.txt
-bin/
-bin/install-ostools.pl
-bin/tfmkpserver.pl
-bin/rtiuser.pl
-bin/tfrsync.pl
-bin/tfremote.pl
-bin/tfups_onbattery.pl
-bin/tfprinter.pl
-bin/tfinfo.pl
-bin/rtibackup.pl
-bin/harden_linux.pl
-bin/dsyperms.pl
-bin/dsyuser.pl
-bin/updateos.pl
-bin/tfsupport.pl
-bin/LinuxCustominv.pl
-bin/dsycheck.pl
-config/
-config/systememail
-modules/OSTools/
-modules/OSTools/Platform.pm
-modules/OSTools/Hardware.pm
-modules/OSTools/AppEnv.pm
-modules/OSTools/Filesys.pm
-BEGIN ostools 1.15.0 installation
-install-ostools.pl: $Revision: 1.64 $
-[ostools install] installation type: fresh
-[ostools install] making directory: /teleflora/ostools
-[ostools install] making directory: /teleflora/ostools/bin
-[ostools install] making directory: /teleflora/ostools/config
-[ostools install] making directory: /teleflora/ostools/modules
-[ostools install] installing ostools modules and scripts from: ./ostools-1.15-latest.tar.gz
-[ostools install] setting owner, group, and perms: /teleflora/ostools/bin
-[ostools install] owner, group, and perms set for: /teleflora/ostools/README-ostools-1.15.0.txt
-[ostools install] setting owner, group, and perms: /teleflora/ostools/modules
-[ostools install] added new system service: systememail
-[ostools install] installing tfremote.pl
-[tfrem_install_verify_files] required dir verified: /etc/ssh
-[tfrem_install_verify_files] required file verified: /etc/ssh/sshd_config
-[tfrem_install_verify_files] required file verified: /usr/sbin/sshd
-[tfrem_install_verify_files] required file verified: /usr/lib/systemd/system/sshd.service
-[tfrem_install] required files and directories verified
-[tfrem_install] new service file: /etc/systemd/system/tfremote.service
-[tfrem_install] new tfremote config file: /etc/ssh/tfremote_config
-Created symlink from /etc/systemd/system/multi-user.target.wants/tfremote.service to /etc/systemd/system/tfremote.service.
-[ostools install] installing rtibackup.pl
-[ostools install] perms set explicitly for scripts in: /teleflora/ostools/bin
-END ostools 1.15.0 installation
-Could not set property: Failed to set static hostname: Device or resource busy
-error: command <hostnamectl set-hostname 12345678> returned non-zero exit status: 256
-error: [main] could not change hostname
-[config samba passdb] samba passdb configured in: /etc/samba/smb.conf
-[config samba passdb] samba system service restarted
-sha256:d18666b21f71e6cbffd2d50e55eb0c39ec5979ffa69b7d17f58b04e7c36003d3
-rhel7-rti-12345678 image ready!
-
-
-
-OSTools Version: 1.15.0
-updateos.pl: $Revision: 1.347 $
-The authenticity of host '172.17.0.2 (172.17.0.2)' can't be established.
-ECDSA key fingerprint is SHA256:aVfbWJn5G3cewMhXgyFU68BetmNa2ZKN/Kljv8Y0nTA.
-ECDSA key fingerprint is MD5:54:22:6c:7f:b8:82:33:87:9e:a0:73:2c:ef:9d:a3:3d.
-Are you sure you want to continue connecting (yes/no)? yes
-Warning: Permanently added '172.17.0.2' (ECDSA) to the list of known hosts.
-root@172.17.0.2's password: 
-You are required to change your password immediately (root enforced)
-Changing password for root.
-(current) UNIX password: 
-New password: 
-Retype new password: 
-unicode_stop skipped on /dev/pts/0
-]0;root@12345678:~[?1034h[root@12345678 ~]# exit
-logout
-Connection to 172.17.0.2 closed.
-sha256:d95a83415d69102204bdaf2db712a1067592d47fda11cb7508775c02cae729b5
-
-real	0m27.372s
-user	0m0.245s
-sys	0m0.305s
-Press enter to continue..
-
-/root/mscloudserver/msposapp
-[3;J[H[2J**************************************
-** POS Application Service **        *
-**************************************
-**   Start a Florist Now   **        *
-** Options: 13 + 115 + 112 **        *
-*                                    *
-** Dev/Docker **                     *
-* [1] List Running Containers        *
-* [2] Start Container                *
-* [3] Stop Container(s)              *
-* [4] Attach to a Container          *
-* [5] List Network Interfaces        *
-* [w] Wipe all Docker imgs/conts     *
-*                                    *
-** Images **                         *
-* [11] Build an OS Image             *
-* [12] Build an RTI Image            *
-* [13] Stage a Florist Container     *
-* [14] List Images                   *
-* [15] Delete Image(s)               *
-*                                    *
-** Prod/EC2 **                       *
-* [111] List Instances               *
-* [112] Start an Instance            *
-* [113] Stop an Instance             *
-* [114] List VPNs                    *
-* [115] Create VPN Access            *
-* [116] Remove VPN Access            *
-*                                    *
-* [a]  About                         *
-* [x]  Exit                          *
-**************************************
-Enter selection: x
-/root/mscloudserver
-[3;J[H[2J********************************
-** Managed Services Cloud Menu *
-********************************
-* [1] POS Backup Service       *
-* [2] POS App Service (SAAS)   *
-* [3] Install/Upgrade Deps     *
-* [4] Install/Configure AWSCLI *
-*                              *
-* [a] About                    *
-* [x] Exit                     *
-********************************
-Enter selection: x
-]0;root@rhel7rti-cloud-build:~/mscloudserver[root@rhel7rti-cloud-build mscloudserver]# exit
-exit

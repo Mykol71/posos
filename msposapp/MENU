@@ -1,4 +1,6 @@
 #!/usr/bin/bash
+export TERM=linux                                                                                      
+setterm -term linux -back black -fore green -clear
 
 # verify root
 ID=`/usr/bin/id -u`
@@ -15,10 +17,10 @@ while :
 do
 clear
 echo "**************************************"
-echo "** POS Application Service **        *"
+echo "***** POS Application Service ********"
 echo "**************************************"
-echo "**   Start a Florist Now   **        *"
-echo "** Options: 13 + 115 + 112 **        *"
+echo "** Start a Florist Now ***************"
+echo "** Options: 13 + 112 + 115 ***********"
 echo "*                                    *"
 echo "** Dev/Docker **                     *"
 echo "* [1] List Running Containers        *"
@@ -26,7 +28,7 @@ echo "* [2] Start Container                *"
 echo "* [3] Stop Container(s)              *"
 echo "* [4] Attach to a Container          *"
 echo "* [5] List Network Interfaces        *"
-echo "* [w] Wipe all Docker imgs/conts     *"
+echo "* [w] Wipe Everything                *"
 echo "*                                    *"
 echo "** Images **                         *"
 echo "* [11] Build an OS Image             *"
@@ -36,18 +38,18 @@ echo "* [14] List Images                   *"
 echo "* [15] Delete Image(s)               *"
 echo "*                                    *"
 echo "** Prod/EC2 **                       *"
-echo "* [111] List Instances               *"
-echo "* [112] Start an Instance            *"
-echo "* [113] Stop an Instance             *"
-echo "* [114] List VPNs                    *"
-echo "* [115] Create VPN Access            *"
-echo "* [116] Remove VPN Access            *"
+echo "* [111] List VPNs                    *"
+echo "* [112] Create VPN Access            *"
+echo "* [113] Remove VPN Access            *"
+echo "* [114] List Instances               *"
+echo "* [115] Start an Instance            *"
+echo "* [116] Stop an Instance             *"
 echo "*                                    *"
 echo "* [a]  About                         *"
 echo "* [x]  Exit                          *"
 echo "**************************************"
 echo -n "Enter selection: "
-read selection
+read selection 
 case $selection in
 1) cd $ROOTDIR/bin ; ./container_status ; echo "Press enter to continue.." ; read  ; cd - ;;
 2) cd $ROOTDIR/bin ; ./launch_container ; echo "Press enter to continue.." ; read  ; cd - ;;
@@ -60,12 +62,12 @@ w) cd $ROOTDIR/bin ; ./prune-docker ;  echo "Press enter to continue.." ; read  
 13) cd $ROOTDIR/bin ; time ./stage-image ; echo "Press enter to continue.." ; read  ; cd - ;;
 14) cd $ROOTDIR/bin ; ./list_image ; echo "Press enter to continue.." ; read  ; cd - ;;
 15) cd $ROOTDIR/bin ; ./wipe_images ; echo "Press enter to continue.." ; read  ; cd - ;;
-111) cd $ROOTDIR/bin ; ./list_ec2_instances ; echo "Press enter to continue.." ; read  ; cd - ;;
-112) cd $ROOTDIR/bin ; ./start_ec2_instance ; echo "Press enter to continue.." ; read  ; cd - ;;
-113) cd $ROOTDIR/bin ; ./stop_ec2_instance ; echo "Press enter to continue.." ; read  ; cd - ;;
-114) cd $ROOTDIR/bin ; ./list_vpns ; echo "Press enter to continue.." ; read  ; cd - ;;
-115) cd $ROOTDIR/bin ; ./create_vpn ; echo "Press enter to continue.." ; read  ; cd - ;;
-116) cd $ROOTDIR/bin ; ./delete_vpn ; echo "Press enter to continue.." ; read  ; cd - ;;
+114) cd $ROOTDIR/bin ; ./list_ec2_instances ; echo "Press enter to continue.." ; read  ; cd - ;;
+115) cd $ROOTDIR/bin ; ./start_ec2_instance ; echo "Press enter to continue.." ; read  ; cd - ;;
+116) cd $ROOTDIR/bin ; ./stop_ec2_instance ; echo "Press enter to continue.." ; read  ; cd - ;;
+111) cd $ROOTDIR/bin ; ./list_vpns ; echo "Press enter to continue.." ; read  ; cd - ;;
+112) cd $ROOTDIR/bin ; ./create_vpn ; echo "Press enter to continue.." ; read  ; cd - ;;
+113) cd $ROOTDIR/bin ; ./delete_vpn ; echo "Press enter to continue.." ; read  ; cd - ;;
 a) cat ./README.md ; echo "Press enter to continue.." ; read ;;
 x) exit ;;
 *) ;;
