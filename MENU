@@ -1,7 +1,4 @@
 #!/usr/bin/bash
-export TERM=linux
-setterm -term linux -back black -fore green -clear
-
 
 # verify root
 ID=`/usr/bin/id -u`

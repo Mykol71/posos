@@ -7,10 +7,12 @@ docker pull rhel7:latest
 docker image save rhel7 > /var/tmp/rhel7-rti.tar.xz
 rm -rf /var/tmp/containers/`date +%Y%m%d`/rhel7-rti
 ./containerbuild.sh rhel7-rti.ks RHEL 2>/tmp/build-rti-container.error.log
+./create-florist-image
 fi
 if [ $selection = "centos" ]; then
 docker pull centos:latest
 docker image save centos > /var/tmp/centos7-rti.tar.xz
 rm -rf /var/tmp/containers/`date +%Y%m%d`/centos7-rti
 ./containerbuild.sh centos7-rti.ks CentOS 2>/tmp/build-rti-container.error.log
+./create-florist-image
 fi
