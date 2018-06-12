@@ -17,7 +17,7 @@ yum -y install ntp
 ntpdate pool.ntp.org
  
 #install required packages
-yum -y install net-tools yum-langpacks gtk3 python27-python-pip ksh wget firewalld tigervnc-server-minimal mailx nmap nfs-server
+yum -y install net-tools yum-langpacks gtk3 ksh wget firewalld tigervnc-server-minimal mailx nmap nfs-server
 yum -y install nfs-utils libnfsidmap
 systemctl enable rpcbind
 systemctl enable nfs-server
@@ -25,8 +25,12 @@ systemctl start rpcbind
 systemctl start nfs-server
 systemctl start rpc-statd
 
+#install python-pip
+curl "https://bootstrap.pypa.io/get-pip.py" -o "get-pip.py"
+python get-pip.py
+
 #add env awareness of pip and aws at login
-echo "source scl_source enable python27">/etc/profile.d/enablepython27.sh
+#echo "source scl_source enable python27">/etc/profile.d/enablepython27.sh
 
 #install docker
 yum -y install docker device-mapper-libs device-mapper-event-libs
@@ -36,10 +40,10 @@ systemctl start docker
 systemctl enable docker
 
 #add docker sshfs plugin
-cd /usr/libexec/docker/
-ln -s docker-runc-current docker-runc
-cd -
-docker plugin install --grant-all-permissions vieux/sshfs
+#cd /usr/libexec/docker/
+#ln -s docker-runc-current docker-runc
+#cd -
+#docker plugin install --grant-all-permissions vieux/sshfs
 
 #createcontainer.sh reqs
 yum -y install lorax
@@ -48,23 +52,6 @@ yum -y install anaconda-tui
 # add custom scripts to /usr/local/bin
 find . -name "*monthname.sh" -exec cp -f {} /usr/local/bin/. \;
 find . -name "*recon.sh" -exec cp -f {} /usr/local/bin/. \;
-
-# record ssh sessions
-cat << xxxEOFxxx > /etc/profile.d/record_sessions.sh
-if [ ! -d /var/log/session ]
-then
-mkdir /var/log/session
-fi
-if [ "x$SESSION_RECORD" = "x" ]
-then
-timestamp=`date "+%m%d%Y%H%M"`
-output=/var/log/session/session.$USER.$$.$timestamp
-SESSION_RECORD=started
-export SESSION_RECORD
-script -t -f -q 2>${output}.timing $output
-exit
-fi
-xxxEOFxxx
 
 # lastly, update everything
 yum -y update
