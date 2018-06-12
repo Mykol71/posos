@@ -6,5 +6,5 @@ if [ "$CONTAINER_ID" == "*" ]; then
 docker container stop $(docker container ps -a -q)
 else
 docker container stop $CONTAINER_ID
-#docker container rm $CONTAINER_ID
+docker container rm $CONTAINER_ID
 fi
