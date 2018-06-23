@@ -5,7 +5,7 @@
 OS=rhel
 echo -n "Enter Shop Code: "
 read selection
-CONTAINER=`docker run --privileged -i -d -t --name=${selection}.teleflora.com -i ${OS}7-rti-16.1.3 /usr/sbin/init`
+CONTAINER=`docker run --privileged -i -d -t --name=${selection}.teleflora.com -i ${selection}.teleflora.com /usr/sbin/init`
 #set hostname
 #docker exec $CONTAINER hostnamectl set-hostname $selection.teleflora.com 2>/dev/null
 #add customer data mount
