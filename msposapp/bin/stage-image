@@ -2,7 +2,7 @@
 
 #echo -n "rhel or centos?: "
 #read OS
-OS=rhel
+OS=centos
 echo -n "SHOPCODE: "
 read SHOPCODE
 #OS=$1

@@ -35,7 +35,7 @@ repo --name="CentOS" --baseurl=http://mirrors.kernel.org/centos/7/os/x86_64/ --c
 # Disk setup
 zerombr
 clearpart --all --initlabel
-part / --asprimary --fstype="ext4" --size=30000
+part / --asprimary --fstype="ext4" --size=10000
 
 %addon org_fedora_oscap
 content-type = scap-security-guide
@@ -117,13 +117,13 @@ perl-Digest-MD5
 %end
 %post --log=/anaconda-post.log
 
-cat << xxxEOFxxx > /tmp/ksrti.sh
+cat << xxxEOFxxx > /usr/local/bin/ksrti.sh
 #!/usr/bin/bash
-LOG="/tmp/ksrti.sh.log"
-/tmp/ksrti_install.sh \$1 \$2 \$3 \$4 \$5 2>&1 | tee -a \$LOG
+LOG="/var/log/ksrti.sh.log"
+/usr/local/bin/ksrti_install.sh \$1 \$2 \$3 \$4 \$5 2>&1 | tee -a \$LOG
 xxxEOFxxx
 
-cat << xxxEOFxxx > /tmp/ksrti_install.sh
+cat << xxxEOFxxx > /usr/local/bin/ksrti_install.sh
 #!/usr/bin/bash
 # Script to run, just after a kickstart, which will start things rolling.
 CDROM="/dev/sr0"
@@ -167,8 +167,8 @@ else
         echo "Internet connection down.....exiting"
         exit 1
 fi
-echo "\`date\` -- Beginning RTI Install \${1}.teleflora.com" >/tmp/verify.txt
-cd /tmp
+echo "\`date\` -- Beginning RTI Install \${1}.teleflora.com" >/var/log/verify.txt
+cd /usr/local/bin
 wget http://rtihardware.homelinux.com/ostools/ostools-1.15-latest.tar.gz
 tar xvfz ostools-1.15-latest.tar.gz
 ./bin/install-ostools.pl ./ostools-1.15-latest.tar.gz
@@ -188,23 +188,23 @@ yum -y remove firewalld
 /teleflora/ostools/bin/harden_linux.pl --iptables
 echo "Copying files from DVD. This will take a bit....."
 mount \$CDROM /mnt
-cp /mnt/2145830.jar.gz /tmp
-cp /mnt/blm.2145830.jar.gz /tmp
-cp /mnt/jdk-8u65-linux-x64.tar.gz /tmp
-cp /mnt/jre-latest-linux-x64-rpm.bin /tmp
-cp /mnt/RTI-16.1.5-Linux.iso.gz /tmp
-cp /mnt/update_bbj_15.pl /tmp
-cp /mnt/bbj15update.tar.gz /tmp
-cp /mnt/14_rhel6.tar.gz /tmp
-cp /mnt/tfsupport-authorized_keys /tmp/tfsupport-authorized_keys
-cp /mnt/twofactor-20090723.tar /tmp/twofactor-20090723.tar
-cp /mnt/multiserver.pwd /tmp
+cp /mnt/2145830.jar.gz /usr/local/bin
+cp /mnt/blm.2145830.jar.gz /usr/local/bin
+cp /mnt/jdk-8u65-linux-x64.tar.gz /usr/local/bin
+cp /mnt/jre-latest-linux-x64-rpm.bin /usr/local/bin
+cp /mnt/RTI-16.1.5-Linux.iso.gz /usr/local/bin
+cp /mnt/update_bbj_15.pl /usr/local/bin
+cp /mnt/bbj15update.tar.gz /usr/local/bin
+cp /mnt/14_rhel6.tar.gz /usr/local/bin
+cp /mnt/tfsupport-authorized_keys /usr/local/bin/tfsupport-authorized_keys
+cp /mnt/twofactor-20090723.tar /usr/local/bin/twofactor-20090723.tar
+cp /mnt/multiserver.pwd /usr/local/bin
 umount /mnt
 echo "Done copying files...."
-cd /tmp
+cd /usr/local/bin
 echo "Extracting files...."
-tar xvfz /tmp/14_rhel6.tar.gz
-gunzip /tmp/RTI-16.1.5-Linux.iso.gz
+tar xvfz /usr/local/bin/14_rhel6.tar.gz
+gunzip /usr/local/bin/RTI-16.1.5-Linux.iso.gz
 /teleflora/ostools/bin/updateos.pl --baremetal
 /teleflora/ostools/bin/updateos.pl --ospatches
 /teleflora/ostools/bin/updateos.pl --rti14
@@ -231,7 +231,7 @@ echo "bbj 8 installed......"
 service blm start
 service bbj start
 echo "Installing RTI...."
-mount -o loop /tmp/RTI-16.1.5-Linux.iso /mnt
+mount -o loop /usr/local/bin/RTI-16.1.5-Linux.iso /mnt
 cd /mnt
 ./install_rti-16.1.5.pl --nobbxt /usr2/bbx
 /teleflora/ostools/bin/updateos.pl --samba-set-passdb
@@ -239,10 +239,10 @@ umount /mnt
 #systemctl enable blm
 #systemctl enable bbj
 #systemctl enable rti
-cd /tmp
+cd /usr/local/bin
 echo "Installing bbj 15......"
-chmod +x /tmp/update_bbj_15.pl
-/tmp/update_bbj_15.pl --bbj15
+chmod +x /usr/local/bin/update_bbj_15.pl
+/usr/local/bin/update_bbj_15.pl --bbj15
 echo "Fixing init.d service files....."
 sed -i '1s/^/#Required-Start:\ \$network\n/' /etc/init.d/blm
 sed -i '1s/^/#Required-Start:\ blm\ \$network\n/' /etc/init.d/bbj
@@ -256,19 +256,16 @@ echo "Installing tfsupport authorized keys...."
 mkdir /home/tfsupport/.ssh
 chmod 700 /home/tfsupport/.ssh
 chown tfsupport:rti /home/tfsupport/.ssh
-tar xvf /tmp/twofactor-20090723.tar
-chmod +x /tmp/*.pl
-cp /tmp/tfsupport-authorized_keys /home/tfsupport/.ssh/authorized_keys
+tar xvf /usr/local/bin/twofactor-20090723.tar
+chmod +x /usr/local/bin/*.pl
+cp /usr/local/bin/tfsupport-authorized_keys /home/tfsupport/.ssh/authorized_keys
 chmod 700 /home/tfsupport/.ssh/authorized_keys
 chown tfsupport:root /home/tfsupport/.ssh/authorized_keys
 echo "Installing admin menus....."
-/tmp/install_adminmenus.pl --run
-echo "Installing Dell dset...."
-gunzip /tmp/delldset_v2.0.0.119_A00.bin.gz
-/tmp/dset.sh
+/usr/local/bin/install_adminmenus.pl --run
 rm -f /etc/cron.d/nightly-backup
-rm -f /tmp/rtibackup.pl
-cd /tmp
+rm -f /usr/local/bin/rtibackup.pl
+cd /usr/local/bin
 ./bin/install-ostools.pl ./ostools-1.15-latest.tar.gz
 echo "Installing the backups.config file to exclude files during restore...."
 wget http://rtihardware.homelinux.com/ostools/backups.config.rhel7
@@ -283,7 +280,7 @@ cp librxtxSerial.so /usr2/basis/lib/librxtxSerial.so
 chmod 666 /usr2/basis/lib/librxtxSerial.so
 chown root:root /usr2/basis/lib/librxtxSerial.so
 echo "Adding multiserver.pwd fix....."
-cp -f /tmp/multiserver.pwd /usr2/bbx/config/
+cp -f /usr/local/bin/multiserver.pwd /usr2/bbx/config/
 # Install tcc
 echo "Installing tcc....."
 cd /usr2/bbx/bin
@@ -293,15 +290,15 @@ rm -f ./tcc
 rm -f ./tcc_tws
 ln -s ./tcc2_rhel7 ./tcc
 ln -s ./tcc_rhel7 ./tcc_tws
-cd /tmp
+cd /usr/local/bin
 echo "Done installing tcc..."
 echo "Installing Kaseya....."
 wget http://rtihardware.homelinux.com/support/KcsSetup.sh
-chmod +x /tmp/KcsSetup.sh
-/tmp/KcsSetup.sh
-echo "\`date\` -- End RTI Install \${1}.teleflora.com" >>/tmp/verify.txt
+chmod +x /usr/local/bin/KcsSetup.sh
+/usr/local/bin/KcsSetup.sh
+echo "\`date\` -- End RTI Install \${1}.teleflora.com" >>/usr/local/bin/verify.txt
 # Verify
-/tmp/verify.sh
+/usr/local/bin/verify.sh
 echo "Remove the DVD from the drive"
 echo "Please reboot the system......ctl-alt-del"
 xxxEOFxxx
@@ -312,35 +309,35 @@ unicode_stop
 xxxEOFxxx
 fi
 
-cat << xxxEOFxxx >> /tmp/verify.sh
-echo "--------------------">>/tmp/verify.txt
-echo "ifconfig results....">>/tmp/verify.txt
-ifconfig >>/tmp/verify.txt
-echo "--------------------">>/tmp/verify.txt
-echo "etc/hosts ....">>/tmp/verify.txt
-cat /etc/hosts >>/tmp/verify.txt
-echo "--------------------">>/tmp/verify.txt
-echo "etc/resolve.conf .....">>/tmp/verify.txt
-cat /etc/resolv.conf >>/tmp/verify.txt
-echo "--------------------">>/tmp/verify.txt
-echo "netstat results....">>/tmp/verify.txt
-netstat -rn >>/tmp/verify.txt
-echo "--------------------">>/tmp/verify.txt
-echo "etc/samba/smb.conf .....">>/tmp/verify.txt
-cat /etc/samba/smb.conf >>/tmp/verify.txt
-echo "--------------------">>/tmp/verify.txt
-echo "usr2/basis/basis.lic .....">>/tmp/verify.txt
-cat /usr2/basis/basis.lic >>/tmp/verify.txt
-echo "--------------------">>/tmp/verify.txt
-echo "/etc/hosts.allow">>/tmp/verify.txt
-cat /etc/hosts.allow >>/tmp/verify.txt
-echo "--------------------">>/tmp/verify.txt
-mail -s \`hostname\` mgreen@teleflora.com,kpugh@teleflora.com,sjackson@teleflora.com </tmp/verify.txt
+cat << xxxEOFxxx >> /usr/local/bin/verify.sh
+echo "--------------------">>/usr/local/bin/verify.txt
+echo "ifconfig results....">>/usr/local/bin/verify.txt
+ifconfig >>/usr/local/bin/verify.txt
+echo "--------------------">>/usr/local/bin/verify.txt
+echo "etc/hosts ....">>/usr/local/bin/verify.txt
+cat /etc/hosts >>/usr/local/bin/verify.txt
+echo "--------------------">>/usr/local/bin/verify.txt
+echo "etc/resolve.conf .....">>/usr/local/bin/verify.txt
+cat /etc/resolv.conf >>/usr/local/bin/verify.txt
+echo "--------------------">>/usr/local/bin/verify.txt
+echo "netstat results....">>/usr/local/bin/verify.txt
+netstat -rn >>/usr/local/bin/verify.txt
+echo "--------------------">>/usr/local/bin/verify.txt
+echo "etc/samba/smb.conf .....">>/usr/local/bin/verify.txt
+cat /etc/samba/smb.conf >>/usr/local/bin/verify.txt
+echo "--------------------">>/usr/local/bin/verify.txt
+echo "usr2/basis/basis.lic .....">>/usr/local/bin/verify.txt
+cat /usr2/basis/basis.lic >>/usr/local/bin/verify.txt
+echo "--------------------">>/usr/local/bin/verify.txt
+echo "/etc/hosts.allow">>/usr/local/bin/verify.txt
+cat /etc/hosts.allow >>/usr/local/bin/verify.txt
+echo "--------------------">>/usr/local/bin/verify.txt
+mail -s \`hostname\` mgreen@teleflora.com,kpugh@teleflora.com,sjackson@teleflora.com </usr/local/bin/verify.txt
 xxxEOFxxx
 
-cd /tmp
-chmod +x /tmp/*.sh
-chmod +x /tmp/*.pl
+cd /usr/local/bin
+chmod +x /usr/local/bin/*.sh
+chmod +x /usr/local/bin/*.pl
 
 /usr/bin/chage -d 0 root
 
@@ -394,7 +391,7 @@ rm -rf /usr/lib/udev/hwdb.d/*
 ## Systemd fixes
 # no machine-id by default.
 :> /etc/machine-id
-# Fix /run/lock breakage since it's not tmpfs in docker
+# Fix /run/lock breakage since it's not usr/local/binfs in docker
 umount /run
 systemd-tmpfiles --create --boot
 # Make sure login works
