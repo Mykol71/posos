@@ -2,8 +2,7 @@
 #RHEL7 required! 
  
 #register rhsm
-#subscription-manager register 
-#subscription-manager auto-attach
+#ksubscription-manager --username={USERNAME} --password={PASSWORD} --org=4508688 --auto-attach --force
  
 #enable redhat yum repos
 subscription-manager repos --enable=rhel-7-server-rpms 
