@@ -1,5 +1,5 @@
 FROM scratch
-ADD rhel7-rti-docker.tar.xz /
+ADD rhel7-rti.tar.xz /
 LABEL org.label-schema.schema-version = "1.0" \
     org.label-schema.name="RHEL-RTI Base Image" \
     org.label-schema.vendor="RHEL" \

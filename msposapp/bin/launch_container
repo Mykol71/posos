@@ -2,7 +2,7 @@
 
 #echo -n "rhel or centos?: "
 #read OS
-OS=centos
+OS=rhel
 echo -n "Enter Shop Code: "
 read selection
 CONTAINER=`docker run --privileged -i -d -t --name=${selection}.teleflora.com -i ${selection}.teleflora.com /usr/sbin/init`
