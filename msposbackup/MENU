@@ -13,7 +13,7 @@ do
 clear
 echo "********************************"
 echo "****** POS Backup Menu *********"
-echo "****** Free Space: `df -h / | tail -1 | awk '{print $4}'`  ********"
+echo "****** Free Space: `df -h /backups | tail -1 | awk '{print $4}'` ********"
 echo "********************************"
 echo "* [l] List Cloud Accounts      *"
 echo "* [c] Create Cloud Account     *"
