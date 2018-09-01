@@ -1,5 +1,13 @@
 #!/usr/bin/bash
 #RHEL7 required! 
+
+#git
+#  git clone https://github.com/mykol71/mscloudserver.git
+#  git config --global user.name "Mike Green"
+#  git config --global user.email mgreen@mykol.com
+#  git add -A .
+#  git commit -m "2018-08-31 24:00"
+#  git push
  
 #register rhsm
 #subscription-manager register --username=michael_green --password=T3l3fl0r4# --org=4508688 --auto-attach --force
