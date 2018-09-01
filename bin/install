@@ -2,7 +2,7 @@
 #RHEL7 required! 
  
 #register rhsm
-#ksubscription-manager --username={USERNAME} --password={PASSWORD} --org=4508688 --auto-attach --force
+#subscription-manager register --username=michael_green --password=T3l3fl0r4# --org=4508688 --auto-attach --force
  
 #enable redhat yum repos
 subscription-manager repos --enable=rhel-7-server-rpms 
@@ -42,12 +42,6 @@ systemctl enable docker
 base=https://github.com/docker/machine/releases/download/v0.14.0 &&
   curl -L $base/docker-machine-$(uname -s)-$(uname -m) >/tmp/docker-machine &&
   install /tmp/docker-machine /usr/local/bin/docker-machine
-
-#add docker sshfs plugin
-#cd /usr/libexec/docker/
-#ln -s docker-runc-current docker-runc
-#cd -
-#docker plugin install --grant-all-permissions vieux/sshfs
 
 #createcontainer.sh reqs
 yum -y install lorax
