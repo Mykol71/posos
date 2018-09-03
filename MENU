@@ -16,8 +16,6 @@ echo "** Managed Services Cloud Menu *"
 echo "********************************"
 echo "* [1] POS Backup Service       *"
 echo "* [2] POS App Service (SAAS)   *"
-echo "* [3] Install/Upgrade Deps     *"
-echo "* [4] Install/Configure AWSCLI *"
 echo "*                              *"
 echo "* [a] About                    *"
 echo "* [x] Exit                     *"
@@ -27,8 +25,6 @@ read selection
 case $selection in
 1) cd $ROOTDIR/msposbackup ; ./MENU ; cd - ;;
 2) cd $ROOTDIR/msposapp ; ./MENU ; cd - ;;
-3) cd $ROOTDIR/bin ; ./install ; echo "Press enter to continue.." ; read ; cd - ;;
-4) cd $ROOTDIR/bin ; ./setupaws ; echo "Press enter to continue.." ; read  ; cd - ;;
 a) cat ./README.md ; echo "Press enter to continue.." ; read ;;
 x) exit ;;
 *) ;;
