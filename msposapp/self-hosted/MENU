@@ -23,16 +23,16 @@ else
 echo "* Shopcode: `cat $ROOTDIR/bin/.shop-code`                 *"
 fi
 if [ ! -f $ROOTDIR/bin/.network ]; then
-echo "* Network: None                      *"
-else "* Network: `cat $ROOTDIR/bin/.network`  *"
+echo "* Network : None                     *"
+else "* Network : `cat $ROOTDIR/bin/.network` *"
 fi
 if [ ! -f $ROOTDIR/bin/.meraki ]; then
-echo "* Router: None                       *"
-else "* Router: `cat $ROOTDIR/bin/.meraki`   *"
+echo "* Router  : None                     *"
+else "* Router  : `cat $ROOTDIR/bin/.meraki` *"
 fi
 if [ ! -f $ROOTDIR/bin/.running ]; then
-echo "* Running: Locally                   *"
-else "* Running: Cloud                       *"
+echo "* Running : Locally                  *"
+else "* Running : Cloud                      *"
 fi
 echo "*                                    *"
 echo "* [1] Create Cloud Network           *"
