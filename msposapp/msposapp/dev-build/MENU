@@ -1,0 +1,59 @@
+#!/usr/bin/bash
+
+# verify root
+ID=`/usr/bin/id -u`
+[ $ID -ne 0 ] && echo "You must be root to run $0." && exit 1
+
+ROOTDIR="`pwd`"
+export ROOTDIR
+
+#figure out why I have to do the next command manually
+#scl enable python27 /usr/bin/bash
+
+trap '' 2
+while :
+do
+clear
+echo "**************************************"
+echo "***** Devel/Build ********************"
+echo "**************************************"
+echo "*                                    *"
+echo "** Containers **                     *"
+echo "* [1] List Running Containers        *"
+echo "* [2] Start Container                *"
+echo "* [3] Stop Container(s)              *"
+echo "* [4] Attach to a Container          *"
+echo "* [5] List Network Interfaces        *"
+echo "* [w] Wipe Everything                *"
+echo "*                                    *"
+echo "** Images **                         *"
+echo "* [11] Build an OS Image             *"
+echo "* [12] Build an RTI Image            *"
+echo "* [13] Stage a Florist Container     *"
+echo "* [14] List Images                   *"
+echo "* [15] Delete Image(s)               *"
+echo "*                                    *"
+echo "* [i]  Install/Upgrade Deps.         *"
+echo "* [a]  Install/Configure AWS         *"
+echo "* [x]  Exit                          *"
+echo "**************************************"
+echo -n "Enter selection: "
+read selection 
+case $selection in
+1) cd $ROOTDIR/bin ; ./container_status ; echo "Press enter to continue.." ; read  ; cd - ;;
+2) cd $ROOTDIR/bin ; ./launch_container ; echo "Press enter to continue.." ; read  ; cd - ;;
+3) cd $ROOTDIR/bin ; ./stop_container ; echo "Press enter to continue.." ; read  ; cd - ;;
+4) cd $ROOTDIR/bin ; ./attach_container ; echo "Press enter to continue.." ; read  ; cd - ;;
+5) cd $ROOTDIR/bin ; ./list_nics ;  echo "Press enter to continue.." ; read  ; cd - ;;
+w) cd $ROOTDIR/bin ; ./prune-docker ;  echo "Press enter to continue.." ; read  ; cd - ;;
+11) cd $ROOTDIR/bin ; time ./create-base-image ;  echo "Press enter to continue.." ; read  ; cd - ;;
+13) cd $ROOTDIR/bin ; time ./create-cust-image ;  echo "Press enter to continue.." ; read  ; cd - ;;
+12) cd $ROOTDIR/bin ; time ./stage-image ; echo "Press enter to continue.." ; read  ; cd - ;;
+14) cd $ROOTDIR/bin ; ./list_image ; echo "Press enter to continue.." ; read  ; cd - ;;
+15) cd $ROOTDIR/bin ; ./wipe_images ; echo "Press enter to continue.." ; read  ; cd - ;;
+i) cd $ROOTDIR/bin ; ./install ; echo "Press enter to continue.." ; read ; cd - ;;
+a) cd $ROOTDIR/bin ; ./setup_aws ; echo "Press enter to continue.." ; read ; cd - ;;
+x) exit ;;
+*) ;;
+esac
+done

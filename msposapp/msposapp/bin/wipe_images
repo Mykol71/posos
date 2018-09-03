@@ -1,0 +1,9 @@
+#!/usr/bin/bash
+
+echo -n "Enter image ID (* for all): "
+read IMAGE_ID
+if [ "$IMAGE_ID" == "*" ]; then
+docker rmi $(docker images -a -q) -f
+else
+docker rmi $IMAGE_ID
+fi

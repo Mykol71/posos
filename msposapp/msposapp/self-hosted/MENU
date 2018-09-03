@@ -1,0 +1,63 @@
+#!/usr/bin/bash
+
+# verify root
+ID=`/usr/bin/id -u`
+[ $ID -ne 0 ] && echo "You must be root to run $0." && exit 1
+
+ROOTDIR="`pwd`"
+export ROOTDIR
+
+#figure out why I have to do the next command manually
+#scl enable python27 /usr/bin/bash
+
+trap '' 2
+while :
+do
+clear
+echo "**************************************"
+echo "* FLORIST HOSTED *********************"
+echo "**************************************"
+if [ ! -f $ROOTDIR/bin/.shop-code ]; then
+echo "* Shopcode: Not Installed            *"
+else
+echo "* Shopcode: `cat $ROOTDIR/bin/.shop-code`                 *"
+fi
+if [ ! -f $ROOTDIR/bin/.network ]; then
+echo "* Network: None                      *"
+else "* Network: `cat $ROOTDIR/bin/.network`  *"
+fi
+if [ ! -f $ROOTDIR/bin/.meraki ]; then
+echo "* Router: None                       *"
+else "* Router: `cat $ROOTDIR/bin/.meraki`   *"
+fi
+if [ ! -f $ROOTDIR/bin/.running ]; then
+echo "* Running: Locally                   *"
+else "* Running: Cloud                       *"
+fi
+echo "*                                    *"
+echo "* [1] Create Cloud Network           *"
+echo "* [2] Install Virtual Router         *"
+echo "* [3] Create Cloud RTI Instance      *"
+echo "* [4] Start RTI in Cloud             *"
+echo "* [5] Start RTI locally              *"
+echo "*                                    *"
+echo "* [i]  Install/Upgrade Deps.         *"
+echo "* [a]  Install/Configure AWS         *"
+echo "* [d]  Documentation                 *"
+echo "* [x]  Exit                          *"
+echo "**************************************"
+echo -n "Enter selection: "
+read selection 
+case $selection in
+1) cd $ROOTDIR/bin ; ./create_network ; echo "Press enter to continue.." ; read  ; cd - ;;
+2) cd $ROOTDIR/bin ; ./install_meraki ; echo "Press enter to continue.." ; read  ; cd - ;;
+3) cd $ROOTDIR/bin ; ./create_rti_instance ; echo "Press enter to continue.." ; read  ; cd - ;;
+4) cd $ROOTDIR/bin ; ./start_cloud_rti ; echo "Press enter to continue.." ; read  ; cd - ;;
+5) cd $ROOTDIR/bin ; ./start_local_rti ; echo "Press enter to continue.." ; read  ; cd - ;;
+i) cd $ROOTDIR/bin ; ./install_self ; echo "Press enter to continue.." ; read ; cd - ;;
+a) cd $ROOTDIR/bin ; ./setup_aws ; echo "Press enter to continue.." ; read ; cd - ;;
+d) ./readme.sh | more ; echo "Press enter to continue.." ; read ; cd - ;;
+x) exit ;;
+*) ;;
+esac
+done

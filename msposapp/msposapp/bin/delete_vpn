@@ -1,0 +1,36 @@
+#!/usr/bin/bash
+
+# verify root
+ID=`/usr/bin/id -u`
+[ $ID -ne 0 ] && echo "You must be root to run $0." && exit 1
+
+# gather user input
+INPUTS="VPNID"
+#INPUTS=""
+
+echo "Gathering required information...."
+for var in $INPUTS; do
+  echo "Enter $var:"
+  read -p ""
+  export $var=$REPLY
+  TYPE="ipsec.1"
+done
+
+# verify input
+if [ "$INPUTS" != "" ]; then
+echo "VPNID = $VPNID"
+echo "--------------------"
+echo "Continue y/n?"
+read -p ""
+if [ $REPLY == "n" ]; then
+  exit 1
+else
+# do action
+echo "Deleting VPN Connection......"
+aws ec2 delete-vpn-connection --vpn-connection-id $VPNID
+echo "VPN Connection deleted."
+fi
+else
+echo "Nothing to do."
+fi
+exit 0
