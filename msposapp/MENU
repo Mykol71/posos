@@ -17,56 +17,22 @@ clear
 echo "**************************************"
 echo "***** POS Application Service ********"
 echo "**************************************"
-echo "** Start a Florist Now ***************"
-echo "** Options: 13 + 112 + 115 ***********"
+echo "* [1] Dev/Build                      *"
+echo "* [2] Share-Hosted (Teleflora)       *"
+echo "* [3] Self-Hosted (Florist)          *"
 echo "*                                    *"
-echo "** Dev/Docker **                     *"
-echo "* [1] List Running Containers        *"
-echo "* [2] Start Container                *"
-echo "* [3] Stop Container(s)              *"
-echo "* [4] Attach to a Container          *"
-echo "* [5] List Network Interfaces        *"
-echo "* [w] Wipe Everything                *"
-echo "*                                    *"
-echo "** Images **                         *"
-echo "* [11] Build an OS Image             *"
-echo "* [12] Build an RTI Image            *"
-echo "* [13] Stage a Florist Container     *"
-echo "* [14] List Images                   *"
-echo "* [15] Delete Image(s)               *"
-echo "*                                    *"
-echo "** Prod/EC2 **                       *"
-echo "* [111] List VPNs                    *"
-echo "* [112] Create VPN Access            *"
-echo "* [113] Remove VPN Access            *"
-echo "* [114] List Instances               *"
-echo "* [115] Start an Instance            *"
-echo "* [116] Stop an Instance             *"
-echo "*                                    *"
-echo "* [a]  About                         *"
+echo "* [i] Install/Upgrade Deps.          *"
+echo "* [a] Install/Configure AWS          *"
 echo "* [x]  Exit                          *"
 echo "**************************************"
 echo -n "Enter selection: "
 read selection 
 case $selection in
-1) cd $ROOTDIR/bin ; ./container_status ; echo "Press enter to continue.." ; read  ; cd - ;;
-2) cd $ROOTDIR/bin ; ./launch_container ; echo "Press enter to continue.." ; read  ; cd - ;;
-3) cd $ROOTDIR/bin ; ./stop_container ; echo "Press enter to continue.." ; read  ; cd - ;;
-4) cd $ROOTDIR/bin ; ./attach_container ; echo "Press enter to continue.." ; read  ; cd - ;;
-5) cd $ROOTDIR/bin ; ./list_nics ;  echo "Press enter to continue.." ; read  ; cd - ;;
-w) cd $ROOTDIR/bin ; ./prune-docker ;  echo "Press enter to continue.." ; read  ; cd - ;;
-11) cd $ROOTDIR/bin ; time ./create-base-image ;  echo "Press enter to continue.." ; read  ; cd - ;;
-13) cd $ROOTDIR/bin ; time ./create-cust-image ;  echo "Press enter to continue.." ; read  ; cd - ;;
-12) cd $ROOTDIR/bin ; time ./stage-image ; echo "Press enter to continue.." ; read  ; cd - ;;
-14) cd $ROOTDIR/bin ; ./list_image ; echo "Press enter to continue.." ; read  ; cd - ;;
-15) cd $ROOTDIR/bin ; ./wipe_images ; echo "Press enter to continue.." ; read  ; cd - ;;
-114) cd $ROOTDIR/bin ; ./list_ec2_instances ; echo "Press enter to continue.." ; read  ; cd - ;;
-115) cd $ROOTDIR/bin ; ./start_ec2_instance ; echo "Press enter to continue.." ; read  ; cd - ;;
-116) cd $ROOTDIR/bin ; ./stop_ec2_instance ; echo "Press enter to continue.." ; read  ; cd - ;;
-111) cd $ROOTDIR/bin ; ./list_vpns ; echo "Press enter to continue.." ; read  ; cd - ;;
-112) cd $ROOTDIR/bin ; ./create_vpn ; echo "Press enter to continue.." ; read  ; cd - ;;
-113) cd $ROOTDIR/bin ; ./delete_vpn ; echo "Press enter to continue.." ; read  ; cd - ;;
-a) cat ./README.md ; echo "Press enter to continue.." ; read ;;
+1) cd $ROOTDIR/dev-build ; ./MENU ; cd - ;;
+2) cd $ROOTDIR/share-hosted ; ./MENU ; cd - ;;
+3) cd $ROOTDIR/self-hosted ; ./MENU ; cd - ;;
+i) cd $ROOTDIR/bin ; ./install ; echo "Press enter to continue.." ; read ; cd - ;;
+a) cd $ROOTDIR/bin ; ./setup_aws ; echo "Press enter to continue.." ; read ; cd - ;;
 x) exit ;;
 *) ;;
 esac
