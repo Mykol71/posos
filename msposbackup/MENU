@@ -1,42 +1,76 @@
 #!/bin/bash
 
 # verify root
-ID=`/usr/bin/id -u`
+ID=$(/usr/bin/id -u)
 [ $ID -ne 0 ] && echo "You must be root to run $0." && exit 1
 
-ROOTDIR="`pwd`"
+ROOTDIR="$(pwd)"
 export ROOTDIR
 
 trap '' 2
-while :
-do
-clear
-echo "********************************"
-echo "****** POS Backup Menu *********"
-echo "****** Free Space: `df -h /backups | tail -1 | awk '{print $4}'` ********"
-echo "********************************"
-echo "* [l] List Cloud Accounts      *"
-echo "* [c] Create Cloud Account     *"
-echo "* [k] Change Cloud Account Key *"
-echo "* [v] View Cloud Account Key   *"
-echo "* [g] Get Cloud Account Key    *"
-echo "* [d] Delete Cloud Account     *"
-echo "* [s] Is Subscriber?           *"
-echo "* [a] About                    *"
-echo "* [x] Exit the system          *"
-echo "********************************"
-echo -n "Enter selection [l,a,k,v,g,d,s,a,x]: "
-read selection
-case $selection in
-l) $ROOTDIR/bin/list_cloud_account ; echo "Press enter to continue.." ; read ;;
-c) $ROOTDIR/bin/create_cloud_account ; echo "Press enter to continue.." ; read ;;
-k) $ROOTDIR/bin/change_account_key ; echo "Press enter to continue.." ; read  ;;
-v) $ROOTDIR/bin/view_cloud_key ; echo "Press enter to continue.." ; read  ;;
-g) $ROOTDIR/bin/get_cloud_key ; echo "Press enter to continue.." ; read  ;;
-d) $ROOTDIR/bin/delete_cloud_account ; echo "Press enter to continue.." ; read  ;;
-s) $ROOTDIR/bin/is_subscriber ; echo "Press enter to continue.." ; read  ;;
-a) cat ./README.md ; echo "Press enter to continue.." ; read ;;
-x)  cd .. ; exit ;;
-*) ;;
-esac
+while :; do
+	clear
+	echo "********************************"
+	echo "****** POS Backup Menu *********"
+	echo "****** Free Space: $(df -h /backups | tail -1 | awk '{print $4}') ********"
+	echo "********************************"
+	echo "* [l] List Cloud Accounts      *"
+	echo "* [c] Create Cloud Account     *"
+	echo "* [k] Change Cloud Account Key *"
+	echo "* [v] View Cloud Account Key   *"
+	echo "* [g] Get Cloud Account Key    *"
+	echo "* [d] Delete Cloud Account     *"
+	echo "* [s] Is Subscriber?           *"
+	echo "* [a] About                    *"
+	echo "* [x] Exit the system          *"
+	echo "********************************"
+	echo -n "Enter selection [l,a,k,v,g,d,s,a,x]: "
+	read selection
+	case $selection in
+	l)
+		$ROOTDIR/bin/list_cloud_account
+		echo "Press enter to continue.."
+		read
+		;;
+	c)
+		$ROOTDIR/bin/create_cloud_account
+		echo "Press enter to continue.."
+		read
+		;;
+	k)
+		$ROOTDIR/bin/change_account_key
+		echo "Press enter to continue.."
+		read
+		;;
+	v)
+		$ROOTDIR/bin/view_cloud_key
+		echo "Press enter to continue.."
+		read
+		;;
+	g)
+		$ROOTDIR/bin/get_cloud_key
+		echo "Press enter to continue.."
+		read
+		;;
+	d)
+		$ROOTDIR/bin/delete_cloud_account
+		echo "Press enter to continue.."
+		read
+		;;
+	s)
+		$ROOTDIR/bin/is_subscriber
+		echo "Press enter to continue.."
+		read
+		;;
+	a)
+		cat ./README.md
+		echo "Press enter to continue.."
+		read
+		;;
+	x)
+		cd ..
+		exit
+		;;
+	*) ;;
+	esac
 done

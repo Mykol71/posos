@@ -1,33 +1,43 @@
 #!/usr/bin/bash
 
 # verify root
-ID=`/usr/bin/id -u`
+ID=$(/usr/bin/id -u)
 [ $ID -ne 0 ] && echo "You must be root to run $0." && exit 1
 
-ROOTDIR="`pwd`"
+ROOTDIR="$(pwd)"
 export ROOTDIR
 
 trap '' 2
-while :
-do
-clear
-echo "********************************"
-echo "** Managed Services Cloud Menu *"
-echo "********************************"
-echo "* [1] POS Backup Service       *"
-echo "* [2] POS App Service (SAAS)   *"
-echo "*                              *"
-echo "* [a] About                    *"
-echo "* [x] Exit                     *"
-echo "********************************"
-echo -n "Enter selection: "
-read selection
-case $selection in
-1) cd $ROOTDIR/msposbackup ; ./MENU ; cd - ;;
-2) cd $ROOTDIR/msposapp ; ./MENU ; cd - ;;
-a) cat ./README.md ; echo "Press enter to continue.." ; read ;;
-x) exit ;;
-*) ;;
-esac
+while :; do
+	clear
+	echo "********************************"
+	echo "** Managed Services Cloud Menu *"
+	echo "********************************"
+	echo "* [1] POS Backup Service       *"
+	echo "* [2] POS App Service (SAAS)   *"
+	echo "*                              *"
+	echo "* [a] About                    *"
+	echo "* [x] Exit                     *"
+	echo "********************************"
+	echo -n "Enter selection: "
+	read selection
+	case $selection in
+	1)
+		cd $ROOTDIR/msposbackup
+		./MENU
+		cd -
+		;;
+	2)
+		cd $ROOTDIR/msposapp
+		./MENU
+		cd -
+		;;
+	a)
+		cat ./README.md
+		echo "Press enter to continue.."
+		read
+		;;
+	x) exit ;;
+	*) ;;
+	esac
 done
-fi

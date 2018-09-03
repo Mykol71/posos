@@ -1,35 +1,46 @@
 #!/usr/bin/bash
 
 # verify root
-ID=`/usr/bin/id -u`
+ID=$(/usr/bin/id -u)
 [ $ID -ne 0 ] && echo "You must be root to run $0." && exit 1
 
-ROOTDIR="`pwd`"
+ROOTDIR="$(pwd)"
 export ROOTDIR
 
 #figure out why I have to do the next command manually
 #scl enable python27 /usr/bin/bash
 
 trap '' 2
-while :
-do
-clear
-echo "**************************************"
-echo "***** POS Application Service ********"
-echo "**************************************"
-echo "* [1] Dev/Build                      *"
-echo "* [2] Share-Hosted (Teleflora)       *"
-echo "* [3] Self-Hosted (Florist)          *"
-echo "*                                    *"
-echo "* [x]  Exit                          *"
-echo "**************************************"
-echo -n "Enter selection: "
-read selection 
-case $selection in
-1) cd $ROOTDIR/dev-build ; ./MENU ; cd - ;;
-2) cd $ROOTDIR/share-hosted ; ./MENU ; cd - ;;
-3) cd $ROOTDIR/self-hosted ; ./MENU ; cd - ;;
-x) exit ;;
-*) ;;
-esac
+while :; do
+	clear
+	echo "**************************************"
+	echo "***** POS Application Service ********"
+	echo "**************************************"
+	echo "* [1] Dev/Build                      *"
+	echo "* [2] Share-Hosted (Teleflora)       *"
+	echo "* [3] Self-Hosted (Florist)          *"
+	echo "*                                    *"
+	echo "* [x]  Exit                          *"
+	echo "**************************************"
+	echo -n "Enter selection: "
+	read selection
+	case $selection in
+	1)
+		cd $ROOTDIR/dev-build
+		./MENU
+		cd -
+		;;
+	2)
+		cd $ROOTDIR/share-hosted
+		./MENU
+		cd -
+		;;
+	3)
+		cd $ROOTDIR/self-hosted
+		./MENU
+		cd -
+		;;
+	x) exit ;;
+	*) ;;
+	esac
 done
