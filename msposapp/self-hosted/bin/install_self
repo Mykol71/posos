@@ -1,28 +1,28 @@
 #!/bin/bash
  
-#-Get Info
-#ShopCode
+#------------
+#install_self
+#------------
+#+Get Info
+#-ShopCode
 echo -n "Enter Shopcode: "
 read shopcode 
 echo "$shopcode">.shop-code
 
-#-Packages
-#Install/Update ntp.
+#+Main
+#-Install/Update ntp.
 yum -y install ntp
-#Sync Date/Time otherwise AWS auth will fail.
+#-Sync Date/time otherwise AWS auth will fail.
 ntpdate pool.ntp.org
  
-#install/update required linux packages.
+#-Install/update required linux packages.
 yum -y install net-tools yum-langpacks gtk3 ksh wget tigervnc-server-minimal mailx nmap time
 
-#install/update python-pip.
+#-Install/update python-pip.
 curl "https://bootstrap.pypa.io/get-pip.py" -o "get-pip.py"
 python get-pip.py
 
-#add env awareness of pip and aws at login.
-#echo "source scl_source enable python27">/etc/profile.d/enablepython27.sh
-
-#lastly, update everything.
+#-Lastly, update everything.
 yum -y update
 
 echo "Done!"

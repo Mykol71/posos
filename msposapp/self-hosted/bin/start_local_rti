@@ -1,1 +1,19 @@
 #!/bin/bash
+
+#---------------
+#start_local_rti
+#---------------
+#+Main
+#-Stop cloud RTI application.
+
+#-Run final cloud backup on cloud server.
+
+#-Disable cloud backup on cloud server.
+
+#-Stop cloud RTI and Meraki instances.
+
+#-Restore cloud backup to local.
+
+#-Enable cloud backup on local.
+
+#-Start local RTI application.

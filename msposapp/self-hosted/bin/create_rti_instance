@@ -1,1 +1,9 @@
 #!/bin/bash
+
+#-------------------
+#create_rti_instance
+#-------------------
+#+Main
+#-Launch EC2 instance from RTI AMI.
+
+#-Restore customer data from cloud backup.

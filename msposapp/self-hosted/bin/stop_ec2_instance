@@ -1,6 +1,12 @@
-#!/usr/bin/bash
+#!/bin/bash
 
+#-----------------
+#stop_ec2_instance
+#-----------------
+#+Get Info
+#-EC2 instance ID.
 echo -n "Enter EC2 Instance ID: "
 read INSTANCE_ID
-#aws ec2 stop-instances --instance-id $INSTANCE_ID
+
+#-Terminate instance ID.
 aws ec2 terminate-instances --instance-id $INSTANCE_ID
