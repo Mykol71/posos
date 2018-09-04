@@ -1,4 +1,4 @@
-#!/usr/bin/bash
+#!/bin/bash
 #--------------------------------------------------------------------
 # Author: Jim Perrin
 # Script: containerbuild.sh
@@ -11,17 +11,16 @@
 # Requires: anaconda lorax
 #--------------------------------------------------------------------
 #### Basic VAR definitions
-USAGE="USAGE: $(basename "$0") kickstart os"
+USAGE="USAGE: $(basename "$0") kickstart"
 KICKSTART="$1"
 KSNAME=${KICKSTART%.*}
 BUILDDATE=$(date +%Y%m%d)
 BUILDROOT=/var/tmp/containers/$BUILDDATE/$KSNAME
 CONT_ARCH=$(uname -m)
-OS="$2"
 
 #### Test for script requirements
 # Did we get passed a kickstart
-if [ "$#" -ne 2 ]; then
+if [ "$#" -ne 1 ]; then
     echo "$USAGE"
     exit 1
 fi
@@ -55,26 +54,28 @@ fi
 # Build the rootfs
 time livemedia-creator --logfile=/tmp/"$KSNAME"-"$BUILDDATE".log \
      --no-virt --make-tar --ks "$KICKSTART" \
-     --image-name="$KSNAME"-docker.tar.xz --project "$OS Docker" \
+     --image-name="$KSNAME"-docker.tar.xz --project "CentOS 7 Docker" \
      --releasever "7"
 
 # Put the rootfs someplace
 mkdir -p $BUILDROOT/docker
-mv /var/tmp/"$KSNAME"-docker.tar.xz $BUILDROOT/docker/
+#mv /var/tmp/"$KSNAME"-docker.tar.xz $BUILDROOT/docker/
+mv /var/tmp/"$KSNAME".tar.xz $BUILDROOT/docker/
 
 # Create a Dockerfile to go along with the rootfs.
 
 cat << EOF > $BUILDROOT/docker/Dockerfile
 FROM scratch
-ADD $KSNAME-docker.tar.xz /
+#ADD $KSNAME-docker.tar.xz /
+ADD $KSNAME.tar.xz /
 
 LABEL org.label-schema.schema-version="1.0" \\
-    org.label-schema.name="$OS Base Image" \\
-    org.label-schema.vendor="$OS" \\
+    org.label-schema.name="CentOS Base Image" \\
+    org.label-schema.vendor="CentOS" \\
     org.label-schema.license="GPLv2" \\
     org.label-schema.build-date="$BUILDDATE"
 
-CMD ["/usr/bin/bash"]
+CMD ["/bin/bash"]
 EOF
 
 # Create cccp.yaml for testing
