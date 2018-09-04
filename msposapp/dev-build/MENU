@@ -14,9 +14,8 @@ trap '' 2
 while :; do
 	clear
 	echo "**************************************"
-	echo "***** Devel/Build ********************"
+	echo "** DEV/BUILD *************************"
 	echo "**************************************"
-	echo "*                                    *"
 	echo "** Containers **                     *"
 	echo "* [1] List Running Containers        *"
 	echo "* [2] Start Container                *"
