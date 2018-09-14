@@ -1,5 +1,10 @@
+#first time repo creation
 yum install httpd
-
 sysctl enable httpd
 sysctl start httpd
+yum install createrepo
+createrepo /var/www/html/7/os/x86_64
+
+#update os
+yum -y update
 
