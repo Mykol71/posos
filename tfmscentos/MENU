@@ -1,0 +1,51 @@
+#!/usr/bin/bash
+
+# verify root
+ID=$(/usr/bin/id -u)
+[ $ID -ne 0 ] && echo "You must be root to run $0." && exit 1
+
+ROOTDIR="$(pwd)"
+export ROOTDIR
+
+#figure out why I have to do the next command manually
+#scl enable python27 /usr/bin/bash
+
+trap '' 2
+while :; do
+	clear
+	echo "**************************************"
+	echo "** TFMS CentOS Repo Config ***********"
+	echo "**************************************"
+	echo "*                                    *"
+	echo "* [i]  Install/Upgrade Deps.         *"
+	echo "* [r]  Repo upgrade                  *"
+	echo "* [d]  Documentation                 *"
+	echo "* [x]  Exit                          *"
+	echo "**************************************"
+	echo -n "Enter selection: "
+	read selection
+	case $selection in
+	i)
+		cd $ROOTDIR/bin
+		./install_deps
+		echo "Press enter to continue.."
+		read
+		cd -
+		;;
+	r)
+		cd $ROOTDIR/bin
+		./update_centos_mirrors
+		echo "Press enter to continue.."
+		read
+		cd -
+		;;
+	d)
+		./readme.sh | more
+		echo "Press enter to continue.."
+		read
+		cd -
+		;;
+	x) exit ;;
+	*) ;;
+	esac
+done
