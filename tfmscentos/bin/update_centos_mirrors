@@ -1,0 +1,3 @@
+cd /var/www/html/7/
+rsync -rz --progress rsync://mirrors.ocf.berkeley.edu/centos/7/ .
+cd -
