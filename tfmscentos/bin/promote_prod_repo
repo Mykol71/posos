@@ -1,0 +1,5 @@
+#!/bin/bash
+
+#Promote Production Repository
+#1. update symbolic link.
+

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-##Convert system to CentOS
+#--Convert system to CentOS
 #1. Disable Redhat repos/subscription manager.
 
 
@@ -9,4 +9,4 @@
 
 #3. Run yum update.
 
-#-
+#

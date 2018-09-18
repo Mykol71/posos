@@ -3,12 +3,12 @@
 ID=$(/usr/bin/id -u)
 [ $ID -ne 0 ] && echo "You must be root to run $0." && exit 1
 
-##Configure RTI Server for Sendgrid email relay.
+#--Configure RTI Server for Sendgrid email relay.
 
-#a. Get required info
+#a. Get API Key.
 echo -n "Enter API Key: "
 read $APIKEY
-
+#
 #1. Remove postfix if there and install and enable sendmail insteada. (Good for RH6 and RH7.)
 yum -y remove postfix
 yum -y install sendmail sendmail-cf
@@ -46,4 +46,4 @@ service sendmail restart
 #mail -s test_sendgrid_email mgreen@teleflora.com < /etc/hosts
 echo "Send a test email now. ex: $mail -s test someone@somewhere.com < /some/filename"
 
-#-
+#

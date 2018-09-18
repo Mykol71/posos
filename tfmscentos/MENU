@@ -16,24 +16,33 @@ while :; do
 	echo "**************************************"
 	echo "** TFMS CentOS Repo Config ***********"
 	echo "**************************************"
-	echo "* [i]  Install/Upgrade Deps.         *"
-	echo "* [r]  Repo upgrade                  *"
+	echo "* [1]  Install/Upgrade Deps.         *"
+	echo "* [2]  Update QA Repository.         *"
+	echo "* [3]  Promote Production Repo.      *"
+        echo "*                                    *"
 	echo "* [d]  Documentation                 *"
 	echo "* [x]  Exit                          *"
 	echo "**************************************"
 	echo -n "Enter selection: "
 	read selection
 	case $selection in
-	i)
+	1)
 		cd $ROOTDIR/bin
 		./install_deps
 		echo "Press enter to continue.."
 		read
 		cd -
 		;;
-	r)
+	2)
 		cd $ROOTDIR/bin
 		./update_centos_mirrors
+		echo "Press enter to continue.."
+		read
+		cd -
+		;;
+	3)
+		cd $ROOTDIR/bin
+		./promote_prod_repo
 		echo "Press enter to continue.."
 		read
 		cd -
