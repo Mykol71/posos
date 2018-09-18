@@ -1,0 +1,12 @@
+#!/bin/bash
+
+##Convert system to CentOS
+#1. Disable Redhat repos/subscription manager.
+
+
+#2. Install CentOS repo provided by Teleflora.
+
+
+#3. Run yum update.
+
+#-

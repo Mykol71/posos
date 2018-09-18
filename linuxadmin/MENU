@@ -14,6 +14,7 @@ while :; do
 	echo "** Linux Admin                 *"
 	echo "********************************"
 	echo "* [1] Configure Sendgrid Relay *"
+	echo "* [2] Convert to CentOS        *"
 	echo "*                              *"
 	echo "* [d] Documentation            *"
 	echo "* [x] Exit                     *"
@@ -24,6 +25,11 @@ while :; do
 	1)
 		cd $ROOTDIR/bin
 		./config_sendgrid
+		cd -
+		;;
+	2)
+		cd $ROOTDIR/bin
+		./convert_centos
 		cd -
 		;;
 	d)
