@@ -10,6 +10,6 @@ MS Cloud Server
    3. Promote Production repo
 
 4. Linux Admin 			-	POS Customer Linux Tasks
-   1. Configure Sendgrid SMTP Relay
-   2. Convert OS from Redhat to Centos
+   1. Config Sendgrid SMTP
+   2. Convert to Centos
 

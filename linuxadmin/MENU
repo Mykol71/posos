@@ -11,7 +11,7 @@ trap '' 2
 while :; do
 	clear
 	echo "********************************"
-	echo "** Linux Admin                 *"
+	echo "** Linux Admin Tasks           *"
 	echo "********************************"
 	echo "* [1] Configure Sendgrid Relay *"
 	echo "* [2] Convert to CentOS        *"
@@ -24,13 +24,17 @@ while :; do
 	case $selection in
 	1)
 		cd $ROOTDIR/bin
-		./config_sendgrid
+		time ./config_sendgrid
 		cd -
+		echo "Press enter to continue.."
+		read
 		;;
 	2)
 		cd $ROOTDIR/bin
-		./convert_centos
+		time ./convert_centos
 		cd -
+		echo "Press enter to continue.."
+		read
 		;;
 	d)
 		./readme.sh
