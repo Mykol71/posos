@@ -15,6 +15,7 @@ while :; do
 	echo "********************************"
 	echo "* [1] POS Backup Service       *"
 	echo "* [2] POS App Service (SAAS)   *"
+	echo "* [3] POS CentOS Repo          *"
 	echo "*                              *"
 	echo "* [a] About                    *"
 	echo "* [x] Exit                     *"
@@ -29,6 +30,11 @@ while :; do
 		;;
 	2)
 		cd $ROOTDIR/msposapp
+		./MENU
+		cd -
+		;;
+	2)
+		cd $ROOTDIR/tfmscentos
 		./MENU
 		cd -
 		;;
