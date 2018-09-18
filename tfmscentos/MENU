@@ -16,7 +16,6 @@ while :; do
 	echo "**************************************"
 	echo "** TFMS CentOS Repo Config ***********"
 	echo "**************************************"
-	echo "*                                    *"
 	echo "* [i]  Install/Upgrade Deps.         *"
 	echo "* [r]  Repo upgrade                  *"
 	echo "* [d]  Documentation                 *"

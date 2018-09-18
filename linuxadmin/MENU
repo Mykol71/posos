@@ -11,41 +11,23 @@ trap '' 2
 while :; do
 	clear
 	echo "********************************"
-	echo "** Managed Services Cloud Menu *"
+	echo "** Linux Admin                 *"
 	echo "********************************"
-	echo "* [1] POS Backup Service       *"
-	echo "* [2] POS App Service (SAAS)   *"
-	echo "* [3] POS CentOS Repo          *"
-	echo "* [4] Linux Admin              *"
+	echo "* [1] Configure Sendgrid Relay *"
 	echo "*                              *"
-	echo "* [a] About                    *"
+	echo "* [d] Documentation            *"
 	echo "* [x] Exit                     *"
 	echo "********************************"
 	echo -n "Enter selection: "
 	read selection
 	case $selection in
 	1)
-		cd $ROOTDIR/msposbackup
-		./MENU
+		cd $ROOTDIR/bin
+		./config_sendgrid
 		cd -
 		;;
-	2)
-		cd $ROOTDIR/msposapp
-		./MENU
-		cd -
-		;;
-	3)
-		cd $ROOTDIR/tfmscentos
-		./MENU
-		cd -
-		;;
-	4)
-		cd $ROOTDIR/linuxadmin
-		./MENU
-		cd -
-		;;
-	a)
-		cat ./README.md
+	d)
+		./readme.sh
 		echo "Press enter to continue.."
 		read
 		;;

@@ -1,0 +1,45 @@
+#!/bin/bash
+
+ID=$(/usr/bin/id -u)
+[ $ID -ne 0 ] && echo "You must be root to run $0." && exit 1
+
+##Configure RTI Server for Sendgrid email relay.
+
+#a. Get required info
+echo -n "Enter API Key: "
+read $APIKEY
+
+#1. Remove postfix if there and install and enable sendmail insteada. (Good for RH6 and RH7.)
+yum -y remove postfix
+yum -y install sendmail sendmail-cf
+chkconfig sendmail on
+
+#2. Create mail auth folder.
+mkdir /etc/mail/auth
+chmod 777 /etc/mail/auth
+
+#3. Backup config files just in case.
+cp /etc/mail/sendmail.cf /etc/mail/sendmail.cf.orig
+cp /etc/mail/sendmail.mc /etc/mail/sendmail.mc.orig
+cp /etc/mail/sendmail.mc /tmp/sendmail.mc.orig
+
+#4. Make make additions to sendmail.mc and build new sendmail.cf.
+echo "FEATURE(`authinfo',`hash /etc/mail/auth/authinfo')dnl">>/tmp/sendmail.mc
+echo "define(`SMART_HOST',`smtp.sendgrid.net')dnl">>/tmp/sendmail.mc
+m4 /tmp/sendmail.mc > /tmp/sendmail.cf
+cp -f /tmp/sendmail.cf /etc/mail
+
+#5. Create authentication file and build authentication db.
+echo 'AuthInfo:smtp.sendgrid.net "U:apikey"  "P:$APIKEY"   "M:DIGEST-MD5"'>/etc/mail/auth/authinfo
+makemap hash /etc/mail/auth/authinfo < /etc/mail/auth/authinfo
+
+#6. Set permissions on authentication files.
+chmod 600 /etc/mail/auth/authinfo
+chmod 700 /etc/mail/auth
+
+#7. Restart sendmail.
+service sendmail restart
+
+#8. Test email.
+#mail -s test_sendgrid_email mgreen@teleflora.com < /etc/hosts
+echo "Send a test email now. ex: $mail -s test someone@somewhere.com < /some/filename"
