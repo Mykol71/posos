@@ -11,10 +11,10 @@ trap '' 2
 while :; do
 	clear
 	echo "********************************"
-	echo "** Managed Services Cloud Menu *"
+	echo "** MS Linux Support Menu       *"
 	echo "********************************"
-	echo "* [1] POS Backup Service       *"
-	echo "* [2] POS App Service (SAAS)   *"
+	echo "* [1] POS Cloud Backup Service *"
+	echo "* [2] POS Cloud App Service    *"
 	echo "* [3] POS CentOS Repo          *"
 	echo "* [4] Linux Admin              *"
 	echo "*                              *"
