@@ -1,0 +1,10 @@
+#!/bin/bash
+
+#---------
+#setup_aws
+#---------
+#1. Install AWSCLI.
+pip install awscli
+
+#2. Configure AWS for your account.
+aws configure

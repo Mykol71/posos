@@ -1,10 +1,16 @@
-#first time repo creation
-yum install httpd
-sysctl enable httpd
-sysctl start httpd
-yum install createrepo
-createrepo /var/www/html/7/os/x86_64
+#!/bin/bash
+#-Install Deps. and Create initial repo.
+yum -y install httpd
+systemctl enable httpd
+systemctl start httpd
+yum -y install createrepo
 
-#update os
-yum -y update
-
+mkdir /var/www/html/7
+cd /var/www/html/7
+rsync -rz --progress rsync://mirrors.ocf.berkeley.edu/centos/7/ .
+cd -
+createrepo --update /var/www/html/7/os/x86_64
+ln -s /var/www/html/7/os/x86_64 /var/www/html/centos7
+echo "CentOS 7.5">>.repos
+systemctl restart httpd
+#-

@@ -3,3 +3,4 @@
 #Promote Production Repository
 #1. update symbolic link.
 
+ln -s /var/www/html/7/os/x86_64 /var/www/html/centos7

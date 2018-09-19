@@ -21,6 +21,7 @@ while :; do
 	echo "* [3]  Promote Production Repo.      *"
         echo "*                                    *"
 	echo "* [d]  Documentation                 *"
+	echo "* [a]  Configure AWS                 *"
 	echo "* [x]  Exit                          *"
 	echo "**************************************"
 	echo -n "Enter selection: "
@@ -43,6 +44,13 @@ while :; do
 	3)
 		cd $ROOTDIR/bin
 		./promote_prod_repo
+		echo "Press enter to continue.."
+		read
+		cd -
+		;;
+	a)
+		cd $ROOTDIR/bin
+		./setup_aws
 		echo "Press enter to continue.."
 		read
 		cd -
