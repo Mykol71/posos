@@ -1,12 +1,28 @@
 #!/bin/bash
 
-#--Convert system to CentOS
-#1. Disable Redhat repos/subscription manager.
+#-Convert system to CentOS
+cd /etc/yum.repos.d
+#a. Cleanup.
+rm -f /etc/yum.repos.d/CentOS*
+rm -f /etc/yum.repos.d/tfmscentos*
 
+#1. Disable Redhat repos.
+sed -i 's/enabled = 1/enabled = 0/g' redhat.repo
 
 #2. Install CentOS repo provided by Teleflora.
+wget http://tfmscentos.homelinux.com/7/os/x86_64/tfmscentos.repo
+echo "enabled=1">>/etc/yum.repos.d/tfmscentos.repo
 
+#3. Replace redhat-release with centos-release
+rpm -e --nodeps redhat-release-server
+rm -rf /usr/share/doc/redhat*
+rm -rf /usr/share/redhat-release*
+yum -y install centos-release
 
-#3. Run yum update.
+#4. Update everything.
+yum -y update
 
-#
+#5. Done.
+cat /etc/redhat-release
+cd -
+#-
