@@ -1,0 +1,67 @@
+#!/usr/bin/bash
+#RHEL7 required! 
+
+#git
+#  git clone https://github.com/mykol71/mscloudserver.git
+#  git config --global user.name "Mike Green"
+#  git config --global user.email mgreen@mykol.com
+#  git config --global push.default simple
+#  git add -A .
+#  git commit -m "2018-08-31 24:00"
+#  git push
+ 
+#register rhsm
+#subscription-manager register --username=(USER) --password=(PASS) --org=4508688 --auto-attach --force
+ 
+#enable redhat yum repos
+subscription-manager repos --enable=rhel-7-server-rpms 
+subscription-manager repos --enable=rhel-7-server-extras-rpms
+subscription-manager repos --enable=rhel-7-server-optional-rpms 
+subscription-manager repos --enable=rhel-server-rhscl-7-rpms
+
+# install ntp
+yum -y install ntp
+# sync date/time otherwise AWS auth will fail
+ntpdate pool.ntp.org
+ 
+#install required packages
+yum -y install net-tools yum-langpacks gtk3 ksh wget firewalld tigervnc-server-minimal mailx nmap nfs-server time
+yum -y install nfs-utils libnfsidmap
+systemctl enable rpcbind
+systemctl enable nfs-server
+systemctl start rpcbind
+systemctl start nfs-server
+systemctl start rpc-statd
+
+#install python-pip
+curl "https://bootstrap.pypa.io/get-pip.py" -o "get-pip.py"
+python get-pip.py
+
+#add env awareness of pip and aws at login
+#echo "source scl_source enable python27">/etc/profile.d/enablepython27.sh
+
+#install docker
+yum -y install docker device-mapper-libs device-mapper-event-libs
+#add redhat container registry
+echo "ADD_REGISTRY='--add-registry registry.access.redhat.com'">>/etc/sysconfig/docker
+systemctl start docker
+systemctl enable docker
+
+#install docker-machine
+base=https://github.com/docker/machine/releases/download/v0.14.0 &&
+  curl -L $base/docker-machine-$(uname -s)-$(uname -m) >/tmp/docker-machine &&
+  install /tmp/docker-machine /usr/local/bin/docker-machine
+
+#createcontainer.sh reqs
+yum -y install lorax
+yum -y install anaconda-tui
+
+# add custom scripts to /usr/local/bin
+find . -name "*monthname.sh" -exec cp -f {} /usr/local/bin/. \;
+find . -name "*recon.sh" -exec cp -f {} /usr/local/bin/. \;
+
+# lastly, update everything
+yum -y update
+
+echo "Done!"
+exit 0

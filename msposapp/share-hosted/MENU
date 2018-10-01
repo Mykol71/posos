@@ -155,7 +155,7 @@ while :; do
 		;;
 	i)
 		cd $ROOTDIR/bin
-		./install
+		./install_self
 		echo "Press enter to continue.."
 		read
 		cd -
