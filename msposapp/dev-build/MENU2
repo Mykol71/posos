@@ -1,0 +1,64 @@
+#!/bin/bash
+
+HEIGHT=28
+WIDTH=35
+CHOICE_HEIGHT=25
+BACKTITLE="POS Application Service"
+TITLE="Development"
+MENU="Enter selection: "
+
+OPTIONS=( 1 "Running Contianers" 
+          2 "Start Container" 
+          3 "Stop Container" 
+          4 "Attach to a Container" 
+	  5 "List Network Interfaces" 
+	  6 "Wipe Everything" 
+	  7 "Create RTI Image" 
+	  8 "List Images" 
+	  9 "Wipe Images" 
+	  a "Setup AWS" 
+	  i "Install Dependancies" )
+
+CHOICE=$(dialog --clear \
+		--backtitle "$BACKTITLE" \
+		--title "$TITLE" \
+		--menu "$MENU" \
+		$HEIGHT $WIDTH $CHOICE_HEIGHT \
+		"${OPTIONS[@]}" \
+		2>&1 >/dev/tty) 
+
+case $CHOICE in
+	1)
+		./msposapp/dev-build/bin/container_status
+		;;
+	2)
+		./msposapp/dev-build/bin/launch_container
+		;;
+	3)
+		./msposapp/dev-build/bin/stop_container
+		;;
+	4)
+		./msposapp/dev-build/bin/attach_container
+		;;
+	5)
+		./msposapp/dev-build/bin/list_nics
+		;;
+	6)
+		./msposapp/dev-build/bin/prune-docker
+		;;
+	7)
+		time ./msposapp/dev-build/bin/create-base-image 2>&1
+		;;
+	8)
+		./msposapp/dev-build/bin/list_image
+		;;
+	9)
+		./msposapp/dev-build/bin/wipe_images
+		;;
+	i)
+		./msposapp/dev-build/bin/install
+		;;
+	a)
+		./msposapp/dev-build/bin/setup_aws
+		;;
+esac
