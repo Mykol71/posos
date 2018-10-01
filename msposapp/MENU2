@@ -1,5 +1,8 @@
 #!/usr/bin/bash
 
+DOCROOT="`pwd`"
+export DOCROOT
+
 HEIGHT=18
 WIDTH=35
 CHOICE_HEIGHT=15
@@ -21,14 +24,9 @@ CHOICE=$(dialog --clear \
 
 case $CHOICE in
 	1)
-		./msposapp/dev-build/MENU2
-		;;
+		cd dev-build ; ./MENU2 ; cd - ;;
 	2)
-		./msposapp/share-hosted/MENU2
-		;;
+		cd share-hosted ; ./MENU2 ; cd - ;;
 	3)
-		./msposapp/self-hosted/MENU2
-		;;
-	*) ;;
+		cd self-hosted ; ./MENU2 ; cd - ;;
 esac
-exit 0

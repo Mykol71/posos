@@ -1,11 +1,14 @@
 #!/bin/bash
 
+DOCROOT="`pwd`"
+export DOCROOT
+
 HEIGHT=28
 WIDTH=35
 CHOICE_HEIGHT=25
 BACKTITLE="POS Application Service"
 TITLE="Development"
-MENU="Enter selection: "
+MENU="Selection: "
 
 OPTIONS=( 1 "Running Contianers" 
           2 "Start Container" 
@@ -29,36 +32,36 @@ CHOICE=$(dialog --clear \
 
 case $CHOICE in
 	1)
-		./msposapp/dev-build/bin/container_status
+		$DOCROOT/bin/container_status
 		;;
 	2)
-		./msposapp/dev-build/bin/launch_container
+		$DOCROOT/bin/launch_container
 		;;
 	3)
-		./msposapp/dev-build/bin/stop_container
+		$DOCROOT/bin/stop_container
 		;;
 	4)
-		./msposapp/dev-build/bin/attach_container
+		$DOCROOT/bin/attach_container
 		;;
 	5)
-		./msposapp/dev-build/bin/list_nics
+		$DOCROOT/bin/list_nics
 		;;
 	6)
-		./msposapp/dev-build/bin/prune-docker
+		$DOCROOT/bin/prune-docker
 		;;
 	7)
-		time ./msposapp/dev-build/bin/create-base-image 2>&1
+		time $DOCROOT/bin/create-base-image 2>&1
 		;;
 	8)
-		./msposapp/dev-build/bin/list_image
+		$DOCROOT/bin/list_image | tee /tmp/tailbox.out
 		;;
 	9)
-		./msposapp/dev-build/bin/wipe_images
+		$DOCROOT/bin/wipe_images
 		;;
 	i)
-		./msposapp/dev-build/bin/install
+		$DOCROOT/bin/install
 		;;
 	a)
-		./msposapp/dev-build/bin/setup_aws
+		$DOCROOT/bin/setup_aws
 		;;
 esac
