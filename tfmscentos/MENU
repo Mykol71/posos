@@ -16,10 +16,14 @@ while :; do
 	echo "**************************************"
 	echo "** TFMS CentOS Repo Config ***********"
 	echo "**************************************"
-	echo "* [1]  Install/Upgrade Deps.         *"
-	echo "* [2]  Update QA Repository.         *"
-	echo "* [3]  Promote Production Repo.      *"
+        echo "** Status: `cat $ROOTDIR/.status`                      *"
         echo "*                                    *"
+	echo "* [1]  Start TF CentOS Repo          *"
+	echo "* [2]  Stop TF CentOS Repo           *"
+	echo "* [3]  Update Repository             *"
+	echo "* [4]  Promote to Production         *"
+        echo "*                                    *"
+	echo "* [i]  Install/Upgrade Deps.         *"
 	echo "* [d]  Documentation                 *"
 	echo "* [a]  Configure AWS                 *"
 	echo "* [x]  Exit                          *"
@@ -27,21 +31,35 @@ while :; do
 	echo -n "Enter selection: "
 	read selection
 	case $selection in
-	1)
+	i)
 		cd $ROOTDIR/bin
 		./install_deps
 		echo "Press enter to continue.."
 		read
 		cd -
 		;;
+	1)
+		cd $ROOTDIR/bin
+		./start_ec2_instance
+		echo "Press enter to continue.."
+		read
+		cd -
+		;;
 	2)
+		cd $ROOTDIR/bin
+		./stop_ec2_instance
+		echo "Press enter to continue.."
+		read
+		cd -
+		;;
+	3)
 		cd $ROOTDIR/bin
 		./update_centos_mirrors
 		echo "Press enter to continue.."
 		read
 		cd -
 		;;
-	3)
+	4)
 		cd $ROOTDIR/bin
 		./promote_prod_repo
 		echo "Press enter to continue.."

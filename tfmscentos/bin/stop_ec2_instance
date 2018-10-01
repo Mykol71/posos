@@ -1,0 +1,13 @@
+#!/bin/bash
+
+#------------------
+#stop_ec2_instance
+#------------------
+#1.Get temp login info from AWS.
+LOGININFO=`aws ec2 get-login --no-include-email --region ca-central-1`
+#-Login with the info from above.
+`$LOGINIFO`
+#2.Stop EC2 Instance.
+aws ec2 stop-instances --instance-ids i-0a192a9010094389e
+echo "Down">../.status
+#
