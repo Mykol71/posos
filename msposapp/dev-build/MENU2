@@ -33,6 +33,7 @@ CHOICE=$(dialog --begin 2 2 \
 		--menu "$MENU" \
 		$HEIGHT $WIDTH $CHOICE_HEIGHT \
 		"${OPTIONS[@]}" \
+		--and-widget --clear --begin 2 44 --cr-wrap --trim --title "Create Media" --backtitle "$BACKTITLE" --tailbox /tmp/create-base-image_dia.out 30 120 \
 		2>&1 >/dev/tty) 
 
 case $CHOICE in
@@ -55,15 +56,13 @@ case $CHOICE in
 		$CURRENTDIR/bin/prune-docker
 		;;
 	7)
-		cd $CURRENTDIR/bin 
-		./create-base-image 2>&1 >/tmp/create-base-image_dia.out & 
-		dialog --begin 2 10 --title "Create Media" --backtitle "$BACKTITLE" --tailbox /tmp/create-base-image_dia.out 40 140
-		cd $CURRENTDIR 
+		cd $CURRENTDIR/bin ; ./create-base-image 2>&1 >/tmp/create-base-image_dia.out ; cd $CURRENTDIR
 		;;
 	8)
 		cd $CURRENTDIR/bin
                 ./list_image 2>&1 >/tmp/list_image_dia.out & 
-		dialog --begin 2 10 --title "List Images" --backtitle "$BACKTITLE" --tailbox /tmp/list_image_dia.out 40 140
+		dialog --begin 2 10 --cr-wrap --trim --title "List Images" --backtitle "$BACKTITLE" --tailbox /tmp/list_image_dia.out 30 120
+		dialog --begin 2 52 --gauge Progress 4 120 1
 		cd $CURRENTDIR
 		;;
 	9)
