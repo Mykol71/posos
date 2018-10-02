@@ -1,8 +1,5 @@
 #!/usr/bin/bash
 
-DOCROOT="`pwd`"
-export DOCROOT
-
 HEIGHT=18
 WIDTH=35
 CHOICE_HEIGHT=15

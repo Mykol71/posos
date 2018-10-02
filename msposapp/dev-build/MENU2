@@ -1,10 +1,13 @@
 #!/bin/bash
 
-DOCROOT="`pwd`"
-export DOCROOT
+for file in `ls /tmp/*_dia.out` ; do
+echo "" > $file
+done
 
-HEIGHT=28
-WIDTH=35
+CURRENTDIR="`pwd`"
+
+HEIGHT=30
+WIDTH=40
 CHOICE_HEIGHT=25
 BACKTITLE="POS Application Service"
 TITLE="Development"
@@ -19,10 +22,12 @@ OPTIONS=( 1 "Running Contianers"
 	  7 "Create RTI Image" 
 	  8 "List Images" 
 	  9 "Wipe Images" 
+
 	  a "Setup AWS" 
 	  i "Install Dependancies" )
 
-CHOICE=$(dialog --clear \
+CHOICE=$(dialog --begin 2 2 \
+		--keep-window \
 		--backtitle "$BACKTITLE" \
 		--title "$TITLE" \
 		--menu "$MENU" \
@@ -32,36 +37,42 @@ CHOICE=$(dialog --clear \
 
 case $CHOICE in
 	1)
-		$DOCROOT/bin/container_status
+		$CURRENTDIR/bin/container_status
 		;;
 	2)
-		$DOCROOT/bin/launch_container
+		$CURRENTDIR/bin/launch_container
 		;;
 	3)
-		$DOCROOT/bin/stop_container
+		$CURRENTDIR/bin/stop_container
 		;;
 	4)
-		$DOCROOT/bin/attach_container
+		$CURRENTDIR/bin/attach_container
 		;;
 	5)
-		$DOCROOT/bin/list_nics
+		$CURRENTDIR/bin/list_nics
 		;;
 	6)
-		$DOCROOT/bin/prune-docker
+		$CURRENTDIR/bin/prune-docker
 		;;
 	7)
-		time $DOCROOT/bin/create-base-image 2>&1
+		cd $CURRENTDIR/bin 
+		./create-base-image 2>&1 >/tmp/create-base-image_dia.out & 
+		dialog --begin 2 10 --title "Create Media" --backtitle "$BACKTITLE" --tailbox /tmp/create-base-image_dia.out 40 140
+		cd $CURRENTDIR 
 		;;
 	8)
-		$DOCROOT/bin/list_image | tee /tmp/tailbox.out
+		cd $CURRENTDIR/bin
+                ./list_image 2>&1 >/tmp/list_image_dia.out & 
+		dialog --begin 2 10 --title "List Images" --backtitle "$BACKTITLE" --tailbox /tmp/list_image_dia.out 40 140
+		cd $CURRENTDIR
 		;;
 	9)
-		$DOCROOT/bin/wipe_images
+		$CURRENTDIR/bin/wipe_images
 		;;
 	i)
-		$DOCROOT/bin/install
+		$CURRENTDIR/bin/install
 		;;
 	a)
-		$DOCROOT/bin/setup_aws
+		$CURRENTDIR/bin/setup_aws
 		;;
 esac
