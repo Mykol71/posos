@@ -22,18 +22,17 @@ while :; do
 	echo "* [3] Stop Container(s)              *"
 	echo "* [4] Attach to a Container          *"
 	echo "* [5] List Network Interfaces        *"
-	echo "* [w] Wipe Everything                *"
 	echo "*                                    *"
 	echo "** Images **                         *"
-	echo "* [11] Build an OS Image             *"
-	echo "* [12] Build an RTI Image            *"
-	echo "* [13] Stage a Florist Container     *"
-	echo "* [14] List Images                   *"
-	echo "* [15] Delete Image(s)               *"
+	echo "* [11] Build RTI OS Media            *"
+	echo "* [12] Build a Florist Image         *"
+	echo "* [13] List Images                   *"
+	echo "* [14] Delete Image(s)               *"
 	echo "*                                    *"
-	echo "* [i]  Install/Upgrade Deps.         *"
-	echo "* [a]  Install/Configure AWS         *"
-	echo "* [x]  Exit                          *"
+	echo "* [w] Wipe Everything                *"
+	echo "* [i] Install/Upgrade Deps.          *"
+	echo "* [a] Install/Configure AWS          *"
+	echo "* [x] Exit                           *"
 	echo "**************************************"
 	echo -n "Enter selection: "
 	read selection
@@ -87,13 +86,6 @@ while :; do
 		read
 		cd -
 		;;
-	13)
-		cd $ROOTDIR/bin
-		time ./create-cust-image
-		echo "Press enter to continue.."
-		read
-		cd -
-		;;
 	12)
 		cd $ROOTDIR/bin
 		time ./stage-image
@@ -101,14 +93,14 @@ while :; do
 		read
 		cd -
 		;;
-	14)
+	13)
 		cd $ROOTDIR/bin
 		./list_image
 		echo "Press enter to continue.."
 		read
 		cd -
 		;;
-	15)
+	14)
 		cd $ROOTDIR/bin
 		./wipe_images
 		echo "Press enter to continue.."

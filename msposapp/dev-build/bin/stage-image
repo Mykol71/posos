@@ -71,5 +71,4 @@ docker exec $CONTAINER /usr/local/bin/bin/updateos.pl --version
 #CONTAINER_IP=`nmap -sS -p 22 172.17.0.1/24 | grep 172 | cut -d" " -f5 | sort | tail -1`
 #rm -f ~/.ssh/known_hosts
 #ssh root@$CONTAINER_IP
-docker commit $CONTAINER $SHOPCODE.teleflora.com
 exit 0
