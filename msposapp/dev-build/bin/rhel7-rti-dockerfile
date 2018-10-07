@@ -19,7 +19,8 @@ rm -f /lib/systemd/system/basic.target.wants/*;\
 rm -f /usr/lib/tmpfiles.d/systemd-nologin.conf;\
 rm -f /lib/systemd/system/anaconda.target.wants/*;
 RUN yum -y install systemd openssh-server pam iptables cups samba httpd nfs net-tools telnet wget curl perl java nfs-utils libnfsidmap perl-Digest perl-Digest-MD5 perl-Time-Piece perl-core
-VOLUME [ “/sys/fs/cgroup” ]
+#VOLUME [ “/sys/fs/cgroup” ]
+VOLUME /sys/fs/cgroup
 RUN systemctl enable sshd
 RUN systemctl enable cups
 RUN systemctl enable smb
