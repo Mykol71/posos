@@ -1,8 +1,8 @@
 #!/bin/bash
 
-for file in `ls /tmp/*_dia.out` ; do
-echo "" > $file
-done
+#for file in `ls /tmp/*_dia.out` ; do
+#echo "" > $file
+#done
 
 CURRENTDIR="`pwd`"
 
@@ -56,7 +56,9 @@ case $CHOICE in
 		$CURRENTDIR/bin/prune-docker
 		;;
 	7)
-		cd $CURRENTDIR/bin ; ./create-base-image 2>&1 >/tmp/create-base-image_dia.out ; cd $CURRENTDIR
+		cd $CURRENTDIR/bin
+	 	./create-base-image 2>&1 >/tmp/create-base-image_dia.out &
+		cd $CURRENTDIR
 		;;
 	8)
 		cd $CURRENTDIR/bin
