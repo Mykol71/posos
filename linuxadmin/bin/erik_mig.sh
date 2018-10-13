@@ -12,14 +12,14 @@ echo -n "Enter Shopcode: "
 read SHOPCODE
 #
 #1. Cleanup from possible previous run.
-umount /mnt/usb 2&>1 >>/dev/null
-rm -rf /mnt/usb 2&>1 >>/dev/null
-mkdir /mnt/usb 2&>1 >>/dev/null
+umount /mnt/usb >>/dev/null 2>&1 1>/dev/null
+rm -rf /mnt/usb >>/dev/null 2>&1 1>/dev/null
+mkdir /mnt/usb >>/dev/null 2>&1 1>/dev/null
 #2. Test for USB conversion stick and run the migration against result if found.
 for DRIVE in $DRIVE_LIST 
 	do
 	echo "Testing $DRIVE.."
-	udevadm info -a -n `basename $DRIVE` 2&>/dev/null | grep Removable 2&>1 1>/dev/null
+	udevadm info -a -n `basename $DRIVE` 2>/dev/null | grep Removable 2>&1 1>/dev/null
 	if [ $? -eq 0 ];
 	then
 		echo "FOUND USB Conversion stick at $DRIVE."
