@@ -15,6 +15,7 @@ while :; do
 	echo "********************************"
 	echo "* [1] Configure Sendgrid Relay *"
 	echo "* [2] Convert to CentOS        *"
+	echo "* [3] Daisy migration script   *"
 	echo "*                              *"
 	echo "* [d] Documentation            *"
 	echo "* [x] Exit                     *"
@@ -32,6 +33,13 @@ while :; do
 	2)
 		cd $ROOTDIR/bin
 		time ./convert_centos
+		cd -
+		echo "Press enter to continue.."
+		read
+		;;
+	3)
+		cd $ROOTDIR/bin
+		time ./erik_mig.sh
 		cd -
 		echo "Press enter to continue.."
 		read
