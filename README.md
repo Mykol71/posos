@@ -6,7 +6,7 @@ MS Cloud Server
 
    a. Dev/Build Menu
 
-      - Media/image creation
+      - Media/Image Maintenance
       - Stage virtual server
       - Run VM locally in Docker
 
