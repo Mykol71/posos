@@ -26,11 +26,16 @@ MS Cloud Server
 3. POS CentOS Repo 		- 	CentOS Repo Maintenance
 
    a. Install/Upgrade Deps.
+
    b. Update QA repo
+
    c. Promote Production repo
 
 4. Linux Admin 			-	POS Customer Linux Tasks
 
    a. Config Sendgrid SMTP
+
    b. Convert to Centos
+
    c. Erik's Daisy Migration
+
