@@ -16,9 +16,9 @@ DRIVE_LIST="`ls /dev/sd[a-z]`"
 echo -n "Enter Shopcode: "
 read SHOPCODE
 #
-#1. Test for USB conversion stick and run the migration against result if found.
 for DRIVE in $DRIVE_LIST 
 	do
+#1. Test for USB conversion stick and run the migration against result if found.
 	echo "Testing $DRIVE.."
 	udevadm info -a -n `basename $DRIVE` 2>/dev/null | grep Removable 2>&1 1>/dev/null
 	if [ $? -eq 0 ];
