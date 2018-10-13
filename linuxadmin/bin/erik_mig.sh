@@ -23,12 +23,12 @@ for DRIVE in $DRIVE_LIST
 	udevadm info -a -n `basename $DRIVE` 2>/dev/null | grep Removable 2>&1 1>/dev/null
 	if [ $? -eq 0 ];
 	then
-		echo "FOUND USB Conversion stick at $DRIVE."
-		echo "Running migration for $SHOPCODE against $DRIVE...."
+		echo "FOUND USB stick at $DRIVE."
 		mount ${DRIVE}1 /mnt/usb
-		[ $? -ne 0 ] && echo "Could not mount conversion drive." && exit 1
-		[ ! -d /mnt/usb/Conversion ] && echo "/d/conversion does not exist." && exit 1
+		[ $? -ne 0 ] && echo "Could not mount USB stick." && exit 1
+		[ ! -d /mnt/usb/Conversion ] && echo "Not conversion USB stick. Remove $DRIVE and try again." && umount /mnt/usb && exit 1
 		cd /d/conversion
+		echo "Running migration for $SHOPCODE against $DRIVE...."
 		[ ! -f /mnt/usb/Conversion/$SHOPCODE_datafile.tgz ] && echo "No data file found." && exit 1
 #2. Extracting datafile.tgz from conversion USB stick.
 		tar xvfz /mnt/usb/Conversion/$SHOPCODE_datafile.tgz
