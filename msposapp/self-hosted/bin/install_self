@@ -16,7 +16,8 @@ yum -y install ntp
 ntpdate pool.ntp.org
  
 #-Install/update required linux packages.
-yum -y install net-tools yum-langpacks gtk3 ksh wget tigervnc-server-minimal mailx nmap time
+yum -y install net-tools yum-langpacks gtk3 ksh wget tigervnc-server-minimal mailx nmap time qemu-kvm gemu-kvm-common gemu-kvm-tools rpm-build
+yum -y install m4 gcc bc xmlto asciidoc hmaccalc python-devel newt-devel perl\(ExtUtils::Embed\) pesign elfutils-devel zlib-devel binutils-devel bison audit-libs-devel java-devel numactl-devel pciutils-devel ncurses-devel flex
 
 #-Install/update python-pip.
 curl "https://bootstrap.pypa.io/get-pip.py" -o "get-pip.py"

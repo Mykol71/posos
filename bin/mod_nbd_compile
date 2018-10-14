@@ -1,0 +1,25 @@
+KERN_VER=`uname -r`
+useradd mockbuild
+groupadd mockbuild
+mkdir -p ~/rpmbuild/{BUILD,BUILDROOT,RPMS,SOURCES,SPECS,SRPMS}
+
+# Get Source Code, make sure you check the kernel version first and download the proper version
+wget http://vault.centos.org/7.5.1804/updates/Source/SPackages/kernel-3.10.0-862.14.4.el7.src.rpm
+rpm -ivh kernel-3.10.0-862.14.4.el7.src.rpm
+mv -f ./kernel-3.10.0-862.14.4.el7.src.rpm ~/rpmbuild/SRPMS
+
+# Build Preparation
+echo '%_topdir %(echo $HOME)/rpmbuild' > ~/.rpmmacros
+cd ~/rpmbuild/SPECS
+rpmbuild -bp --target=$(uname -m) kernel.spec
+cd ~/rpmbuild/BUILD/kernel-3.10.0-862.14.4.el7/linux-3.10.0-862.14.4.el7.x86_64
+
+# Build
+make menuconfig
+# Device Driver -> Block devices -> Set “M” On “Network block device support”
+
+make prepare && make modules_prepare && make
+make M=drivers/block -j8
+modinfo drivers/block/nbd.ko
+cp drivers/block/nbd.ko /lib/modules/3.10.0-862.14.4/extra/
+depmod -a && sudo modprobe nbd
