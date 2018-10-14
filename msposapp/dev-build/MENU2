@@ -1,9 +1,5 @@
 #!/bin/bash
 
-#for file in `ls /tmp/*_dia.out` ; do
-#echo "" > $file
-#done
-
 CURRENTDIR="`pwd`"
 
 HEIGHT=30
@@ -28,17 +24,17 @@ OPTIONS=( 1 "Running Contianers"
 
 CHOICE=$(dialog --begin 2 2 \
 		--keep-window \
-		--backtitle "$BACKTITLE" \
+		--backtitle "$BACKTITLE -> Dev / Build" \
 		--title "$TITLE" \
 		--menu "$MENU" \
 		$HEIGHT $WIDTH $CHOICE_HEIGHT \
 		"${OPTIONS[@]}" \
-		--and-widget --clear --begin 2 44 --cr-wrap --trim --title "Create Media" --backtitle "$BACKTITLE" --tailbox /tmp/create-base-image_dia.out 30 120 \
 		2>&1 >/dev/tty) 
 
 case $CHOICE in
 	1)
-		$CURRENTDIR/bin/container_status
+		$CURRENTDIR/bin/container_status 2>&1 >/tmp/MENU2_dia.out &
+		dialog --keep-window --begin 2 50 --cr-wrap --trim --title "List Running Containers" --backtitle "$BACKTITLE -> Dev / Build" --tailbox /tmp/MENU2_dia.out 30 180
 		;;
 	2)
 		$CURRENTDIR/bin/launch_container
@@ -50,22 +46,23 @@ case $CHOICE in
 		$CURRENTDIR/bin/attach_container
 		;;
 	5)
-		$CURRENTDIR/bin/list_nics
+		$CURRENTDIR/bin/list_nics 2>&1 >/tmp/MENU2_dia.out
+		dialog --keep-window --begin 2 50 --cr-wrap --trim --title "List Network Interfaces" --backtitle "$BACKTITLE -> Dev / Build" --tailbox /tmp/MENU2_dia.out 30 180 
 		;;
 	6)
 		$CURRENTDIR/bin/prune-docker
 		;;
 	7)
 		cd $CURRENTDIR/bin
-	 	./create-base-image 2>&1 >/tmp/create-base-image_dia.out &
+	 	./create-base-image 2>&1 >/tmp/MENU2_dia.out &
 		cd $CURRENTDIR
+		dialog --keep-window --begin 2 50 --cr-wrap --trim --title "Create Installation Media" --backtitle "$BACKTITLE -> Dev / Build" --tailbox /tmp/MENU2_dia.out 30 180
 		;;
 	8)
 		cd $CURRENTDIR/bin
-                ./list_image 2>&1 >/tmp/list_image_dia.out & 
-		dialog --begin 2 10 --cr-wrap --trim --title "List Images" --backtitle "$BACKTITLE" --tailbox /tmp/list_image_dia.out 30 120
-		dialog --begin 2 52 --gauge Progress 4 120 1
+                ./list_image 2>&1 >/tmp/MENU2_dia.out & 
 		cd $CURRENTDIR
+		dialog --keep-window --begin 2 50 --cr-wrap --trim --title "List Images" --backtitle "$BACKTITLE -> Dev / Build" --tailbox /tmp/MENU2_dia.out 30 180
 		;;
 	9)
 		$CURRENTDIR/bin/wipe_images
@@ -75,5 +72,7 @@ case $CHOICE in
 		;;
 	a)
 		$CURRENTDIR/bin/setup_aws
+		;;
+	*)
 		;;
 esac
