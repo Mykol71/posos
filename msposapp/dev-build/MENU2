@@ -34,7 +34,7 @@ CHOICE=$(dialog --begin 2 2 \
 case $CHOICE in
 	1)
 		$CURRENTDIR/bin/container_status 2>&1 >/tmp/MENU2_dia.out &
-		dialog --keep-window --begin 2 50 --cr-wrap --trim --title "List Running Containers" --backtitle "$BACKTITLE -> Dev / Build" --tailbox /tmp/MENU2_dia.out 30 180
+		dialog --keep-window --begin 2 50 --cr-wrap --trim --title "List Running Containers" --backtitle "$BACKTITLE -> Dev / Build" --tailbox /tmp/MENU2_dia.out 30 170 >/dev/tty
 		;;
 	2)
 		$CURRENTDIR/bin/launch_container
