@@ -56,7 +56,7 @@ case $CHOICE in
 		cd $CURRENTDIR/bin
 	 	./create-base-image 2>&1 >/tmp/MENU2_dia.out &
 		cd $CURRENTDIR
-		dialog --keep-window --begin 2 50 --cr-wrap --trim --title "Create Installation Media" --backtitle "$BACKTITLE -> Dev / Build" --tailbox /tmp/MENU2_dia.out 30 180
+		dialog --keep-window --begin 2 50 --title "Create Installation Media" --backtitle "$BACKTITLE -> Dev / Build" --tailbox /tmp/MENU2_dia.out 30 180
 		;;
 	8)
 		cd $CURRENTDIR/bin
