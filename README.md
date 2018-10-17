@@ -1,4 +1,4 @@
-MS Cloud Server
+MSCloudServer
 ---------------
 1. POS Backup Service -	Linux Cloud Backup - ** THIS IS STABLE, SORTA, NO TOUCHY! **
 
