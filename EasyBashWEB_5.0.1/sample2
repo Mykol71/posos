@@ -1,0 +1,57 @@
+#!/bin/bash
+#
+PATH="${PATH}:/usr/local/bin"
+HOME="/var/www"
+#
+source easybashweb
+#
+if [ "${step}" = "0" ]
+    then
+    next_step 1
+    web_question "Do you like this question?"
+fi
+
+if [ "${step}" = "1" ]
+    then
+    answer="${exit_code}"
+    if [ ${answer} -eq 0 ]
+        then
+        choice="Ok"
+    elif [ ${answer} -eq 1 ]
+        then
+        choice="Cancel"
+    fi
+    #
+    next_step 2
+    web_message "You selected: \n ${choice}"
+fi
+
+if [ "${step}" = "2" ]
+    then
+    next_step 3
+    web_input 3        text "first value" 0      text "init value" 100         text "end value" 200
+fi
+
+if [ "${step}" = "3" ]
+    then
+    array_choices=( $(cat "${dir_tmp}/${file_tmp}" ) )
+    choice_1="${array_choices[0]}"
+    choice_2="${array_choices[1]}"
+    choice_3="${array_choices[2]}"
+    #
+    next_step 4
+    web_adjust "Please adjust proper value..." ${choice_1} ${choice_2} ${choice_3}
+fi
+
+if [ "${step}" = "4" ]
+    then
+    choice="$(cat "${dir_tmp}/${file_tmp}" )"
+    #
+    next_step 5
+    web_message "You selected: \n ${choice}"
+fi
+
+if [ "${step}" = "5" ]
+    then
+    next_step END
+    web_final_message "https://10.25.178.132/mail/src/login.php" "BYE !!!"

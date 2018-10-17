@@ -1,0 +1,3764 @@
+#!/usr/bin/env bash
+#
+#####################################
+#####################################
+#
+# EasyBashWEB is a bash function library
+# that aims to give scripters simple
+# web page creation functions for a script
+# launched by http server ( CGI technology )
+#
+#########################
+#
+# Copyright (C) 2012 Vittorio Cagnetta
+#
+# Author: Vittorio Cagnetta <vaisarger@gmail.com>
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; version 3 of the License.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License along with this program, 
+# called, in this distribution, "EasyBashWEB-license"; if not, write to the 
+# Free Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA.
+#
+#########################
+#
+#	Dedicated to Angela, Nicole and Carlo.
+#
+#			Vittorio Cagnetta
+#	http://sites.google.com/site/easybashweb
+#
+#####################################
+#####################################
+#
+LIB_NAME="easybashweb"
+LIB_VERSION="5.0.1"
+LIB_URL="http://sites.google.com/site/easybashweb"
+LIB_AUTHOR="Vittorio Cagnetta"
+#
+#####################################
+#
+MYSQL_user="please_set"
+MYSQL_password="please_set"
+MYSQL_host="localhost"
+max_char_number_CONTENT_LENGTH=10000
+default_text_color="black"
+default_page_color="white"
+# easybashweb="dummy_EBW_var"
+# dummy_EBW_var="${LIB_NAME}"
+#set -o noglob # this disables filename-expansion...
+#
+#####################################
+# Initial settings...
+#
+##
+# mascotte...
+[ ${#OSTYPE} -gt 0 ] && os=${OSTYPE} || os="$(uname -s )"
+[ $(echo -n "${os}" | grep -i "bsd" | wc -c ) -gt 0 ] && \
+mascotte="Beastie" || mascotte="Tux"
+#
+##
+#
+# Window width and height...
+# width=500
+# : width
+# height=378
+# : height
+#
+##
+#
+# where storing data file...
+#echo "\${HOME} is: ${HOME} ..." 1>&2
+default_tmp="${HOME}/tmp"
+if [ -d "${default_tmp}" ]
+	then
+	dir_tmp="${default_tmp}"
+else
+	dir_tmp="/tmp"
+fi
+[ ! -d "${dir_tmp}" -o ! -w "${dir_tmp}" ] && mkdir "${default_tmp}" && dir_tmp="${default_tmp}"
+#echo "So, \${dir_tmp} now is: ${dir_tmp} ..." 1>&2
+: dir_tmp
+#
+##
+#
+# gsed...
+for word in sed gsed
+	do
+	unset -v "${word}"
+	unset -f "${word}"
+done 
+[ "${mascotte}" = "Beastie" ] && : #later we'll check for gsed binary...
+[ "${mascotte}" = "Tux" ] && shopt -s expand_aliases && alias gsed=sed #gsed is no more a function...
+typing_gsed="$(type "gsed" 2> /dev/null )"
+if [ ${#typing_gsed} -eq 0 ]
+	then
+	[ "${mascotte}" = "Beastie" ] && echo -e "\n\n\n\nYou need to install \"gsed\" ( GNU Sed ) port/package to use ${LIB_NAME}...\nSorry :(\n\n\n\n" 1>&2
+	[ "${mascotte}" = "Tux" ] && echo -e "\n\n\n\nErr.: gsed aliasing failed!...\n:(\n\n\n\n" 1>&2
+	#
+	exit 1
+fi
+#
+##
+#
+###############################################
+###############################################
+######### ...  FUNCTIONS  ... #################
+###############################################
+###############################################
+#
+##
+#
+clean_temp()
+	{
+	local FUNCT_NAME="clean_temp"
+	local IFS=$' \t\n'
+	#
+	if [ -f "${dir_tmp}/${file_tmp}" ] 2> /dev/null
+		then
+		rm -f "${dir_tmp}/${file_tmp}" 2> /dev/null
+		#rm -f "${dir_tmp}/${file_tmp}_CONSTANTS" 2> /dev/null
+		rm -f "${dir_tmp}/${file_tmp}_*" 2> /dev/null
+	fi
+	#
+	}
+#
+##
+#
+arrotonda()
+	{
+	local FUNCT_NAME="arrotonda"
+	local IFS=$' \t\n'
+	#
+	float="${1}"
+	#
+	float__integer_part=$(echo "${float}" | cut -d '.' -f 1 ) ; [ ${#float__integer_part} -eq 0 ] && float__integer_part=0
+	float__decimal_part=$(echo "${float}" | cut -d '.' -f 2 )
+	# =>
+	[ ${float__decimal_part} -le 50 ] && \
+	arrotondato=${float__integer_part} || \
+	arrotondato=$(( ${float__integer_part} + 1 ))
+	#
+	echo "${arrotondato}"
+	#
+	}
+#
+##
+#
+if_arg_is_an_empty_variable_then_exit()
+	{
+	local FUNCT_NAME="if_arg_is_an_empty_variable_then_exit"
+	local IFS=$' \t\n'
+	#
+	var_da_controllare="${1}"
+	if [ $(echo -n "${!var_da_controllare}" | wc -c ) -eq 0 ]
+		then
+		#
+		clean_temp
+		exit
+	fi
+	}
+#
+##
+#
+start()
+	{
+	local FUNCT_NAME="start"
+	local IFS=$' \t\n'
+	[ ${#CONTENT_TYPE} -eq 0 ] && CONTENT_TYPE="application/x-www-form-urlencoded"
+	#
+	##
+	#
+	set_start_data()
+		{
+		# Extract "step" from cookie :
+		#Il CGI si ritrovera' l'elenco dei cookies nella variabile d'ambiente HTTP_COOKIE, 
+		#in questa forma: "tuonome=Mario; c705f2=689f3f6; PHPSESSID=50e90ad24; SQMSESSID=25bf3a3b9; sboard_settings[prevvisit]=1159160190; sboard_settings[member_id]=0; sboard_settings[current_view]=flat"
+		browser_cookies="$(echo "${HTTP_COOKIE}" | tr ';' '\n' | grep 'ebw_cookie=' )"
+		#
+		IFS=$'\n' ; array_how_many_bc=( ${browser_cookies} ) ; IFS=$' \t\n'
+		how_many_bc=${#array_how_many_bc[@]}
+		if [ ${how_many_bc} -gt 1 ]
+			then
+			next_step 0
+			#
+			##
+			clean_temp
+			##
+			#
+			web_alert_message \
+			-c "red,white" \
+			"Error: you have MORE than ONE cookie."
+		fi
+		cookie_data="$(echo "${browser_cookies}" | gsed -n s/'.*="\(.*\)"'/'\1'/p )"
+		#echo "\${cookie_data} is: ${cookie_data} ..." 1>&2
+		cookie_temp_file_name="$(echo "${cookie_data}" | cut -d '_' -f 1 )"
+		#echo "\${cookie_temp_file_name} is: ${cookie_temp_file_name} ..." 1>&2
+		cookie_step="$(echo "${cookie_data}" | cut -d '_' -f 2 )"
+		#echo "\${cookie_step} is: ${cookie_step} ..." 1>&2
+		#
+		##
+		#
+		# Extract "step" from "cookie_temp_file_name"
+		: dir_tmp
+		#echo "Temp file name complete path is: ${dir_tmp}/${cookie_temp_file_name} ..." 1>&2
+		file_data="$(gsed -n s#'^\(step=.*\)$'#'\1'#p 0< "${dir_tmp}/${cookie_temp_file_name}" | tail -n 1 )"
+		#
+		if [ ${#file_data} -eq 0 ]
+			then
+			next_step 0
+			#
+			##
+			#clean_temp
+			##
+			#
+			web_alert_message \
+			-c "red,white" \
+			"Error: session is expired."
+		fi
+		file_step="$(echo "${file_data}" | cut -d '=' -f 2 )"
+		#echo "\${file_step} is: ${file_step} ..." 1>&2
+		#
+		##
+		#
+		# Compare two "steps" :
+		if [ "${cookie_step}" != "${file_step}" ]
+			then
+			next_step 0
+			#
+			##
+			clean_temp
+			##
+			#
+			web_alert_message \
+			-c "red,white" \
+			"Error: what says your cookie IS NOT what I expect."
+		else
+			#
+			##########################################################
+			#
+			##
+			#
+			export file_tmp="${cookie_temp_file_name}"
+			: file_tmp
+			#
+			##
+			#
+			export step="${cookie_step}"
+			: step
+			#
+			##
+			#
+			##########################################################
+			#
+		fi # if [ "${cookie_step}" != "${file_step}" ]
+		}
+	#End of "set_start_data()"...
+	#
+	##
+	#
+	if [[ ${CONTENT_TYPE} = application/x-www-form-urlencoded ]]
+		then
+		#
+		# "remote_browser_data" creation :
+		verify_CONTENT_LENGTH && read -n ${max_char_number_CONTENT_LENGTH} remote_browser_data
+		#
+		if [ ${#remote_browser_data} -eq 0 ]
+			then
+			#
+			##
+			#
+			# Create temp files :
+			: dir_tmp
+			if [ -f "${dir_tmp}/${file_tmp}" ]
+				then
+				: 1> "${dir_tmp}/${file_tmp}"
+				# : 1> "${dir_tmp}/${file_ignore}"
+			else
+				cd "${dir_tmp}"
+				export file_tmp="$(mktemp "XXXXXXXXXXXXXXXXXXXX" )"
+				# export file_ignore="$(mktemp "XXXXXXXXXXXXXXXXXXXX" )"
+				cd - 1>/dev/null
+			fi
+			: file_tmp
+			#
+			##
+			#
+			export step="0"
+			: step
+			#
+			##
+			#
+		elif [ ${#remote_browser_data} -gt 0 ]
+			then
+			#
+			##
+			#
+			set_start_data
+			#
+			##
+			#
+			#echo "\${remote_browser_data} is: ${remote_browser_data} ..." 1>&2
+			#echo "\${remote_browser_data} _2_ is: $(echo "${remote_browser_data}" | gsed s/"=&"/"=NULL\&"/g ) ..." 1>&2
+			export remote_browser_data_list="$(echo "${remote_browser_data}" | gsed s/"=&"/"=NULL\&"/g | \
+							tr '&' '\n' | \
+							gsed -n s/'.*\(\<.*\>\)\.\?=\(.*\)'/'\1=\2'/p | gsed s/"%3d"/""/g | urldecode | \
+							rev | gsed -n s\#'^\(.*\)=\(.*\)$'#'\1\&\2'#p | rev | tr '=' "$(echo -en "\t" )" | tr '&' '=' | \
+							gsed s\-'$('-"x"-g | gsed s\-'`'-""-g )"  # << | gsed s/"%3d"/""/g | >> serve a togliere i caratteri "=" in piu'... 
+			#echo -e "\${remote_browser_data_list} is: ${remote_browser_data_list} ..." 1>&2
+			#echo -e "\n\n\n$(echo "${remote_browser_data}" | gsed s/"=&"/"=NULL\&"/g | \
+			#			tr '&' '\n' | \
+			#			gsed -n s/'.*\(\<.*\>\)\.\?=\(.*\)'/'\1=\2'/p | gsed s/"%3d"/""/g | urldecode | \
+			#			rev | gsed -n s\#'^\(.*\)=\(.*\)$'#'\1\&\2'#p | rev | tr '=' '?' | tr '&' '=')" 1>&2
+			# =>
+			create_variables_from_form
+			#
+			##
+			#
+		fi # if [ ${#remote_browser_data} -eq 0 ]
+		#
+	elif [[ ${CONTENT_TYPE} = multipart/form-data* ]]
+		then
+		#
+		##
+		#
+		set_start_data
+		#
+		##
+		#
+		#CONTENT_TYPE="multipart/form-data; boundary=---------------------------19997633989627340681776932616"
+		export boundary="$(echo "${CONTENT_TYPE}" | gsed -n s\#'^.*; boundary=\(.*\)$'#'\1'#p )"
+		save_upload_file
+		#
+		##
+		#
+	else
+		#
+		next_step 0
+		#
+		##
+		clean_temp
+		##
+		#
+		web_alert_message \
+		-c "red,white" \
+		"Error: I don't understand \"enctype\"..."
+		# \n \${CONTENT_TYPE} is: \"${CONTENT_TYPE}\" \n \"SERVER_SOFTWARE = $SERVER_SOFTWARE\"\n\"SERVER_NAME = $SERVER_NAME\"\n\"GATEWAY_INTERFACE = $GATEWAY_INTERFACE\"\n\"SERVER_PROTOCOL = $SERVER_PROTOCOL\"\n\"SERVER_PORT = $SERVER_PORT\"\n\"SERVER_ADMIN = $SERVER_ADMIN\"\n\"REQUEST_METHOD = $REQUEST_METHOD\"\n\"HTTP_ACCEPT = $HTTP_ACCEPT\"\n\"HTTP_USER_AGENT = $HTTP_USER_AGENT\"\n\"HTTP_CONNECTION = $HTTP_CONNECTION\"\n\"PATH_INFO = $PATH_INFO\"\n\"PATH_TRANSLATED = $PATH_TRANSLATED\"\n\"SCRIPT_NAME = $SCRIPT_NAME\"\n\"QUERY_STRING = $QUERY_STRING\"\n\"REMOTE_HOST = $REMOTE_HOST\"\n\"REMOTE_ADDR = $REMOTE_ADDR\"\n\"REMOTE_USER = $REMOTE_USER\"\n\"AUTH_TYPE = $AUTH_TYPE\"\n\"CONTENT_TYPE = $CONTENT_TYPE\"\n\"CONTENT_LENGTH = $CONTENT_LENGTH\"\n\"HTTP_COOKIE = $HTTP_COOKIE\"\n\n..."
+		#
+		#
+	fi # if [[ ${CONTENT_TYPE} = application/x-www-form-urlencoded ]]
+	#
+	##
+	#
+	# This is only for "web_question()" :
+	if [ "${ebw_question}" = "Ok" ]
+		then
+		export exit_code=0
+		return 0
+	elif [ "${ebw_question}" = "Cancel" ]
+		then
+		export exit_code=1
+		return 1
+	fi
+	#
+	}
+#
+##
+#
+save_upload_file()
+	{
+	local FUNCT_NAME="save_upload_file"
+	local IFS=$' \t\n'
+	#
+	##
+	#
+# 	array_myme_type_allowed=( $(outputta_myme-types | grep "${extension}" | head -n 1 ) )
+# 	myme_type_allowed="${array_myme_type_allowed[1]}"
+# 	if [ -z "${myme_type_allowed}" ]
+# 		then
+# 		next_step 0
+# 		#
+# 		##
+# 		clean_temp
+# 		##
+# 		#
+# 		web_alert_message \
+# 		-c "red,white" \
+# 		"Error: \"\${myme_type_allowed}\" var is empty...\n\${extension} is: ${extension}\n\${array_myme_type_allowed[@]} is: ${array_myme_type_allowed[@]}"
+# 	fi
+	#
+	##
+	#
+	file_upload__first_dummy_name="${file_tmp}_UPLOAD"
+	#
+	cat - 1> "${dir_tmp}/${file_upload__first_dummy_name}"
+	#cp "${dir_tmp}/${file_upload__first_dummy_name}" "${dir_tmp}/${file_upload__first_dummy_name}_BACKUP"
+	#####################
+	# Let's find out origin filename...
+	file_upload="$(cat -v "${dir_tmp}/${file_upload__first_dummy_name}" | gsed -n s\#'^.* filename="\(.*\)".*$'#'\1'#p )"
+	#####################
+	tail -n +5 "${dir_tmp}/${file_upload__first_dummy_name}" 1> "${dir_tmp}/${file_upload__first_dummy_name}_TEMP"
+	head -n -1 "${dir_tmp}/${file_upload__first_dummy_name}_TEMP" 1> "${dir_tmp}/${file_upload__first_dummy_name}"
+	#####################
+	#
+	##
+	#
+	# submit ...
+	: submit
+	head -n -4 "${dir_tmp}/${file_upload__first_dummy_name}" 1> "${dir_tmp}/${file_upload__first_dummy_name}_TEMP"
+	#
+	##
+	#
+	# step ...
+	#step_VAR_NAME_row="$(tail -n 3 0< "${dir_tmp}/${file_upload__first_dummy_name}" | head -n 1 )"
+	#step_VAR_NAME="$(echo "${step_VAR_NAME_row}" | gsed -n s\#'^.* name="\(.*\)".*$'#'\1'#p )"
+	step_VAR_NAME="step"
+	step_VAR_DATA="$(tail -n 1 0< "${dir_tmp}/${file_upload__first_dummy_name}_TEMP" | gsed -n s\#'^\(.*\).$'#'\1'#p )"
+	: step
+	# =>
+	export remote_browser_data_list=$(echo -e "${step_VAR_NAME}=\"${step_VAR_DATA}\"" )
+	#
+	head -n -4 "${dir_tmp}/${file_upload__first_dummy_name}_TEMP" 1> "${dir_tmp}/${file_upload__first_dummy_name}"
+	#
+	##
+	#
+	#export remote_browser_data_list="$(echo "${remote_browser_data}" | tr '&' '\n' | gsed -n s/'.*\(\<.*\>\)=\(.*\)'/'\1=\2'/p | gsed s/"%3d"/""/g | urldecode | gsed s\-'$('-"x"-g | gsed s\-'`'-""-g )"  # << | gsed s/"%3d"/""/g | >> serve a togliere i caratteri "=" in piu'... 
+	: remote_browser_data_list
+	create_variables_from_form
+	#
+	##
+	#
+	#####################
+	# =>
+	# Copy everything but the new last line to a temporary file
+	#head -$((LINES - 6)) $TMPOUT >$TMPOUT.1
+	head -n -1 "${dir_tmp}/${file_upload__first_dummy_name}" 1> "${dir_tmp}/${file_upload__first_dummy_name}_TEMP"
+	# =>
+	# Copy the new last line but remove trailing \r\n
+	tail -n 1 "${dir_tmp}/${file_upload__first_dummy_name}" | perl -p -i -e 's/\r\n$//' 1>> "${dir_tmp}/${file_upload__first_dummy_name}_TEMP"
+	#####################
+	# Set name to true filename...
+	if [ ${#file_upload} -gt 0 ]
+		then
+		#
+		: file_upload
+		#
+		mv "${dir_tmp}/${file_upload__first_dummy_name}_TEMP" "${dir_tmp}/${file_upload}"
+		#
+		rm "${dir_tmp}/${file_upload__first_dummy_name}"
+		#
+	else
+		#
+		file_upload="${file_upload__first_dummy_name}"
+		#
+		mv "${dir_tmp}/${file_upload__first_dummy_name}_TEMP" "${dir_tmp}/${file_upload}"
+		#
+		#rm "${dir_tmp}/${file_upload__first_dummy_name}"
+		#
+	fi
+	: \${dir_tmp}/\${file_upload}
+	#
+	#####################
+	#
+	##
+	#
+	#####################
+	# Checks...
+	if [ ! -f "${dir_tmp}/${file_upload}" ]
+		then
+		# file doesn't exist ...
+		next_step 0
+		#
+		##
+		clean_temp
+		##
+		#
+		web_alert_message \
+		-c "red,white" \
+		"Error: could not save file ..."
+	fi
+	#
+	if [ $(wc -c 0< "${dir_tmp}/${file_upload}" ) -eq 0 ]
+		then
+		# file has got ZERO bytes...
+		next_step 0
+		#
+		##
+		clean_temp
+		##
+		#
+		web_alert_message \
+		-c "red,white" \
+		"Error: file has ZERO bytes..."
+	fi
+	#####################
+	#
+	##
+	#
+	# : myme_type_found_before
+# 	if [ "${myme_type_found_before}" = "application/octet-stream" ]
+# 		then
+# 		next_step 0
+# 		#
+# 		##
+# 		clean_temp
+# 		##
+# 		#
+# 		web_alert_message \
+# 		-c "red,white" \
+# 		"WARNING : Could not check uploaded file's binary structure !"
+# 	fi
+#
+# 	myme_type__through_file_command=$(file -i "${dir_tmp}/${file_upload}" | cut -d ':' -f 2 | gsed s/'^ '/''/ )
+# 	if [ "${myme_type__through_file_command}" = "application/octet-stream" ]
+# 		then
+# 		rm "${dir_tmp}/${file_upload}"
+# 		#
+# 		next_step 0
+# 		#
+# 		##
+# 		clean_temp
+# 		##
+# 		#
+# 		web_alert_message \
+# 		-c "red,white" \
+# 		"ERROR : Could not keep binary file structure..."
+# 	fi
+	#
+	##
+	#
+	##########################################################################################
+	# "${dir_tmp}/${file_upload}" goes in temp file :
+	: dir_tmp
+	: file_tmp
+	if [ -f "${dir_tmp}/${file_tmp}" ]
+		then
+		#
+		{
+			echo "${dir_tmp}/${file_upload}"
+		} 1> "${dir_tmp}/${file_tmp}"
+		#
+	else
+		#
+		next_step 0
+		#
+		##
+		clean_temp
+		##
+		#
+		web_alert_message \
+		-c "red,white" \
+		"Error: \n temp file not present."
+		#
+	fi
+	##########################################################################################
+	#
+	##
+	#
+	}
+#
+##
+#
+verify_CONTENT_LENGTH()
+	{
+	local FUNCT_NAME="verify_CONTENT_LENGTH"
+	local IFS=$' \t\n'
+	#
+	if [ ${#CONTENT_LENGTH} -gt 0 ]
+		then
+		if [ ${CONTENT_LENGTH} -gt ${max_char_number_CONTENT_LENGTH} ]
+			then
+			next_step 0
+			#
+			##
+			clean_temp
+			##
+			#
+			web_alert_message \
+			-c "red,white" \
+			"Error: received characters are: \"${CONTENT_LENGTH}\" \n (greater than \${max_char_number_CONTENT_LENGTH} = ${max_char_number_CONTENT_LENGTH} ... ) \n\n Please, reduce characters \n (e.g.: reduce words lenght)."
+		fi
+	fi
+	}
+#
+##
+#
+create_variables_from_form()
+	{
+	local FUNCT_NAME="create_variables_from_form"
+	local IFS=$' \t\n'
+	: \${remote_browser_data_list}
+	#echo -e "\n\n\tAAA\tBBB\n\n\${remote_browser_data_list} is: ${remote_browser_data_list} ..." 1>&2
+	#echo -e "\n\n\tAAA\tBBB\n\n\${remote_browser_data_list} is: ${remote_browser_data_list} ..." | gsed s/'.*='/'&"'/g | gsed s/'.*'/'&"'/g | tr '\t' '=' 1>&2
+	#
+	##
+	#
+	# ENV ATTACK check :
+	array_ENV_vars=( $(set | gsed -n s/'.*\(\<.*\>=\).*'/'\1'/p | sort -u | grep [[:upper:]] ) )
+	attacked_env_or_not="$(for ((i=0 ; i < ${#array_ENV_vars[@]} ; i++))
+					do
+					echo "${remote_browser_data_list}" | grep "${array_ENV_vars[${i}]}"
+				done )"
+	#
+	##
+	#
+	if [ $(echo "${attacked_env_or_not}" | tr -dc [:alnum:] | wc -c) -gt 0 ]
+		then
+		next_step 0
+		#
+		##
+		clean_temp
+		##
+		#
+		web_alert_message \
+		-c "red,white" \
+		"You attempted to change environmental variable values! \n (\${attacked_env_or_not} is: ${attacked_env_or_not} ) \n ..."
+	else
+		##########################################################################################
+		# SETTAGGIO EFFETTIVO DELLE VARIABILI DAL FORM :
+		#(gli ultimi due "gsed" servono a: ciccio=ab => ciccio="ab" , l'ultimo "tr serve a riportare gli "uguale" trasf. in tabs nella funz. start(), di nuovo "uguale" )
+		eval "$(echo -en "${remote_browser_data_list}" | gsed s/'.*='/'&"'/g | gsed s/'.*'/'&"'/g | tr '\t' '=' | grep "^step=" )"
+		##########################################################################################
+		# SETTAGGIO DELLE COSTANTI NEL FILE "${dir_tmp}/${file_tmp}_CONSTANTS" :
+		if [ -f "${dir_tmp}/${file_tmp}_CONSTANTS" ]
+			then
+			IFS=$' \t' ; eval "$(cat "${dir_tmp}/${file_tmp}_CONSTANTS" )" ; IFS=$' \t\n'
+		fi
+		##########################################################################################
+		# Values go in temp file :
+		: dir_tmp
+		: file_tmp
+		if [ -f "${dir_tmp}/${file_tmp}" ]
+			then
+			#
+			{
+				# l'ultimo "tr serve a riportare gli "uguale" trasf. in tabs nella funz. start(), di nuovo "uguale"
+				echo "${remote_browser_data_list}" | tr '\t' '=' | \
+				grep -v "submit=" | \
+				grep -v "step=" | \
+				cut -d '=' -f 2-
+			} 1> "${dir_tmp}/${file_tmp}"
+			#
+		else
+			#
+			next_step 0
+			#
+			##
+			clean_temp
+			##
+			#
+			web_alert_message \
+			-c "red,white" \
+			"Error: \n temp file not present."
+			#
+		fi
+		##########################################################################################
+		#
+	fi
+	}
+#
+##
+#
+set_constant()
+	{
+	local FUNCT_NAME="set_constant"
+	local IFS=$' \t\n'
+	#
+	variable_to_set_constant="${1}"
+	if [ ${#variable_to_set_constant} -eq 0 ]
+		then
+		next_step 0
+		#
+		##
+		clean_temp
+		##
+		#
+		web_alert_message \
+		-c "red,white" \
+		"Error : \"\${variable_to_set_constant}\" not set !"
+	fi
+	: variable_to_set_constant
+	#
+	if [ ! -f "${dir_tmp}/${file_tmp}" ]
+		then
+		#
+		# Create temp files :
+		# (I assume "dir_tmp" exists...)
+		if [ -f "${dir_tmp}/${file_tmp}" ]
+			then
+			: 1> "${dir_tmp}/${file_tmp}"
+			# : 1> "${dir_tmp}/${file_ignore}"
+		else
+			cd "${dir_tmp}"
+			export file_tmp="$(mktemp "XXXXXXXXXXXXXXXXXXXX" )"
+			# export file_ignore="$(mktemp "XXXXXXXXXXXXXXXXXXXX" )"
+			cd - 1>/dev/null
+		fi
+		#
+	fi
+	#
+	echo -e "${variable_to_set_constant}=\"${!variable_to_set_constant}\"" 1>> "${dir_tmp}/${file_tmp}_CONSTANTS"
+	}
+#
+##
+#
+next_step()
+	{
+	local FUNCT_NAME="next_step"
+	local IFS=$' \t\n'
+	#
+	step="${1}"
+	if [ ${#step} -eq 0 ]
+		then
+		next_step 0
+		#
+		##
+		clean_temp
+		##
+		#
+		web_alert_message \
+		-c "red,white" \
+		"Error : \"\${step}\" not set !"
+	fi
+	: step
+	#
+	if [ ! -f "${dir_tmp}/${file_tmp}" ]
+		then
+		#
+		# Create temp files :
+		# (I assume "dir_tmp" exists...)
+		if [ -f "${dir_tmp}/${file_tmp}" ]
+			then
+			: 1> "${dir_tmp}/${file_tmp}"
+			# : 1> "${dir_tmp}/${file_ignore}"
+		else
+			cd "${dir_tmp}"
+			export file_tmp="$(mktemp "XXXXXXXXXXXXXXXXXXXX" )"
+			# export file_ignore="$(mktemp "XXXXXXXXXXXXXXXXXXXX" )"
+			cd - 1>/dev/null
+		fi
+		#
+	fi
+	#
+	# For cookie...
+	export nome_cookie="ebw_cookie"
+	export valore_cookie="${file_tmp}_${step}"
+	# For temp file...
+	echo "step=${step}" 1>> "${dir_tmp}/${file_tmp}"
+	#
+	}
+#
+##
+#
+read_mysql_table()
+	{
+	#read_mysql_table "[database name]" "[table name]" "[column1,column2,etc.]" "<order by column>"(optional)
+	db="${1}"
+	table="${2}"
+	#
+	columns="${3}"
+	order_by_column="${4}" ; [ ${#order_by_column} -eq 0 ] && order_by_string="" || order_by_string="ORDER BY ${order_by_column} ASC"
+	#
+	########################
+	#
+	IFS=$'\n'
+	array_table=( $(mysql --batch --force -u ${MYSQL_user} -h ${MYSQL_host} -p${MYSQL_password} <<<"USE ${db}; SELECT ${columns} FROM ${table} ${order_by_string};" | tr '\t' '\n' | gsed s\#'^$'#'NULL'# ) )
+	IFS=$' \t\n'
+	#
+	for ((index=0 ; index < ${#array_table[@]} ; index++ ))
+		do
+		field_data="${array_table[${index}]}"
+		echo -n "\"${field_data-"NULL"}\" "
+	done
+	}
+#
+##
+#
+read_mysql_row()
+	{
+	#read_mysql_row "[database name]" "[table name]" "[column1,column2,etc.]" "[key]=[key data]"
+	db="${1}"
+	table="${2}"
+	#
+	columns="${3}"
+	key="$(echo "${4}" | cut -d "=" -f 1 )" ; key_data="$(echo "${4}" | cut -d "=" -f 2 )"
+	#
+	########################
+	#
+	IFS=$'\n'
+	array_row=( $(mysql --batch --force -u ${MYSQL_user} -h ${MYSQL_host} -p${MYSQL_password} <<<"USE ${db}; SELECT ${columns} FROM ${table} WHERE ${key} = \"${key_data}\";" | tail -n 1 | tr '\t' '\n' | gsed s\#'^$'#'NULL'# ) )
+	IFS=$' \t\n'
+	#
+	for ((index=0 ; index < ${#array_row[@]} ; index++ ))
+		do
+		field_data="${array_row[${index}]}"
+		echo -n "\"${field_data-"NULL"}\" "
+	done
+	}
+#
+##
+#
+insert_mysql_row()
+	{
+	#insert_mysql_row "[database name]" "[table name]" "[column1,column2,etc.]" "['value1','value2',etc.]"
+	db="${1}"
+	table="${2}"
+	#
+	columns="${3}"
+	values="${4}"
+	#
+	########################
+	#
+	mysql --batch --force -u ${MYSQL_user} -h ${MYSQL_host} -p${MYSQL_password} <<<"USE ${db}; INSERT INTO ${table} (${columns}) VALUES (${values});"
+	}
+#
+##
+#
+delete_mysql_row()
+	{
+	#delete_mysql_row "[database name]" "[table name]" "[key]=[key data]"
+	db="${1}"
+	table="${2}"
+	#
+	key="$(echo "${3}" | cut -d "=" -f 1 )" ; key_data="$(echo "${3}" | cut -d "=" -f 2 )"
+	#
+	########################
+	#
+	mysql --batch --force -u ${MYSQL_user} -h ${MYSQL_host} -p${MYSQL_password} <<<"USE ${db}; DELETE FROM ${table} WHERE ${table}.${key} = \"${key_data}\";"
+	}
+#
+##
+#
+update_mysql_row()
+	{
+	#update_mysql "[database name]" "[table name]" "[key]=[key data]" "[column1='new value1',column2='new value2',etc.]"
+	db="${1}"
+	table="${2}"
+	#
+	key="$(echo "${3}" | cut -d "=" -f 1 )" ; key_data="$(echo "${3}" | cut -d "=" -f 2 )"
+	columns_newvalues="${4}"
+	#
+	########################
+	#
+	mysql --batch --force -u ${MYSQL_user} -h ${MYSQL_host} -p${MYSQL_password} <<<"USE ${db}; UPDATE ${table} SET ${columns_newvalues} WHERE ${table}.${key} = \"${key_data}\";"
+	}
+#
+##
+#
+# 1)
+web_question()
+	{
+	local FUNCT_NAME="web_question"
+	local FUNCT_TITLE="$(basename ${0}): question"
+	local IFS=$' \t\n'
+	#
+	while getopts ":c:" opzione_riga_di_comando
+	do
+		case ${opzione_riga_di_comando} in
+			c     ) colors="${OPTARG}" ;;
+			#
+			*     ) : ;; # DEFAULT
+		esac
+	done
+	shift $(($OPTIND - 1))
+	# =>
+	text_color="$(echo "${colors}" | cut -d ',' -f 1 )" ; [ ${#text_color} -eq 0 ] && text_color="${default_text_color}"
+	page_color="$(echo "${colors}" | cut -d ',' -f 2 )" ; [ ${#page_color} -eq 0 ] && page_color="${default_page_color}"
+	#
+	######################################################################
+	######################################################################
+	######################################################################
+	######################################################################
+	#
+	cat <<-BLOCCO_HTML__web_question
+	Content-type: text/html
+	Set-Cookie: ${nome_cookie}="${valore_cookie}"
+	
+	<!DOCTYPE html>
+	<html>
+		<head>
+			<meta content="text/html; charset=ISO-8859-1" http-equiv="content-type">
+			<title>${FUNCT_TITLE}</title>
+			<style type="text/css">
+				body
+					{
+					background-color:${page_color};
+					color:blue;
+					font-size:12px;
+					text-align:center;
+					}
+				#box
+					{
+					background-color:${page_color};
+					color:${text_color};
+					font-size:14px;
+					text-align:center;
+					}
+			</style>
+		</head>
+		<body>
+			<br>
+			<form method=post action="$(basename ${0})" name="web_question">
+				<table id="box" align="center" border=1 cellspacing=2 cellpadding=2>
+					<tr>
+						<td>
+							<table width="100%" align="center" border=1 cellspacing=0 cellpadding=2>
+								<tr>
+									<td>
+										<b>${FUNCT_TITLE}</b>
+									</td>
+								</tr>
+							</table>
+							<table width="100%" align="center" border=0 cellspacing=0 cellpadding=2>
+								<tr>
+									<td>
+										<table align="center" border=0 cellspacing=0 cellpadding=2>
+											<tr>
+												<td>
+													<br>
+													$(echo "${@}" | gsed s\-"\\\n"-"<br>"-g )
+													<br>
+													<br>
+													<br>
+												</td>
+											</tr>
+										</table>
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<table align="left" border=0 cellspacing=0 cellpadding=2>
+											<tr>
+												<td align="left">
+													<br>
+													<INPUT TYPE="radio" NAME="ebw_question" ALIGN="left" VALUE="Ok" CHECKED> Ok<br>
+													<INPUT TYPE="radio" NAME="ebw_question" ALIGN="left" VALUE="Cancel"> Cancel<br>
+													<br>
+													<br>
+												</td>
+											</tr>
+										</table>
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<table align="center" border=0 cellspacing=0 cellpadding=2>
+											<tr>
+												<td>
+													<br>
+													<input type=hidden name=step VALUE=${step}>
+													<input type=submit name=submit value="Select">
+													<br>
+													<br>
+												</td>
+											</tr>
+										</table>
+									</td>
+								</tr>
+							</table>
+						</td>
+					</tr>
+				</table>
+			</form>
+			<br>
+			<br>
+			<hr width="90%">
+			<br>
+			Powered by ${LIB_NAME} vers. ${LIB_VERSION}
+		</body>
+	</html>
+
+BLOCCO_HTML__web_question
+	exit
+	}
+#
+##
+#
+# 2)
+web_message()
+	{
+	local FUNCT_NAME="web_message"
+	local FUNCT_TITLE="$(basename ${0}): message"
+	local IFS=$' \t\n'
+	#
+	while getopts ":c:" opzione_riga_di_comando
+	do
+		case ${opzione_riga_di_comando} in
+			c     ) colors="${OPTARG}" ;;
+			#
+			*     ) : ;; # DEFAULT
+		esac
+	done
+	shift $(($OPTIND - 1))
+	# =>
+	text_color="$(echo "${colors}" | cut -d ',' -f 1 )" ; [ ${#text_color} -eq 0 ] && text_color="${default_text_color}"
+	page_color="$(echo "${colors}" | cut -d ',' -f 2 )" ; [ ${#page_color} -eq 0 ] && page_color="${default_page_color}"
+	#
+	######################################################################
+	######################################################################
+	######################################################################
+	######################################################################
+	#
+	cat <<-BLOCCO_HTML__web_message
+	Content-type: text/html
+	Set-Cookie: ${nome_cookie}="${valore_cookie}"
+	
+	<!DOCTYPE html>
+	<html>
+		<head>
+			<meta content="text/html; charset=ISO-8859-1" http-equiv="content-type">
+			<title>${FUNCT_TITLE}</title>
+			<style type="text/css">
+				body
+					{
+					background-color:${page_color};
+					color:blue;
+					font-size:12px;
+					text-align:center;
+					}
+				#box
+					{
+					background-color:${page_color};
+					color:${text_color};
+					font-size:14px;
+					text-align:center;
+					}
+			</style>
+		</head>
+		<body>
+			<form method=post action="$(basename ${0})" name="web_message">
+				<br>
+				<br>
+				<table id="box" align="center" border=1 cellspacing=2 cellpadding=2>
+					<tr>
+						<td>
+							<table align="center" border=1 cellspacing=0 cellpadding=2>
+								<tr>
+									<td colspan=2 align="center">
+										<b>${FUNCT_TITLE}</b>
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<br>
+										<br>
+										<br>
+										<br>
+										$(echo "${@}" | gsed s\-"\\\n"-"<br>"-g )
+										<br>
+										<br>
+										<br>
+										<br>
+										<br>
+										<br>
+										<input type=hidden name=step VALUE=${step}>
+										<input type=submit name=submit value="OK">
+										<br>
+										<br>
+									</td>
+								</tr>
+							</table>
+						</td>
+					</tr>
+				</table>
+			</form>
+			<br>
+			<br>
+			<hr width="90%">
+			<br>
+			Powered by ${LIB_NAME} vers. ${LIB_VERSION}
+		</body>
+	</html>
+
+BLOCCO_HTML__web_message
+	exit
+	}
+#
+##
+#
+# 3)
+web_alert_message()
+	{
+	local FUNCT_NAME="web_alert_message"
+	local FUNCT_TITLE="$(basename ${0}): alert message"
+	local IFS=$' \t\n'
+	#
+	while getopts ":c:" opzione_riga_di_comando
+	do
+		case ${opzione_riga_di_comando} in
+			c     ) colors="${OPTARG}" ;;
+			#
+			*     ) : ;; # DEFAULT
+		esac
+	done
+	shift $(($OPTIND - 1))
+	# =>
+	text_color="$(echo "${colors}" | cut -d ',' -f 1 )" ; [ ${#text_color} -eq 0 ] && text_color="${default_text_color}"
+	page_color="$(echo "${colors}" | cut -d ',' -f 2 )" ; [ ${#page_color} -eq 0 ] && page_color="${default_page_color}"
+	#
+	######################################################################
+	######################################################################
+	######################################################################
+	######################################################################
+	#
+	cat <<-BLOCCO_HTML__web_alert_message
+	Content-type: text/html
+	Set-Cookie: ${nome_cookie}="${valore_cookie}"
+	
+	<!DOCTYPE html>
+	<html>
+		<head>
+			<meta content="text/html; charset=ISO-8859-1" http-equiv="content-type">
+			<title>${FUNCT_TITLE}</title>
+			<style type="text/css">
+				body
+					{
+					background-color:${page_color};
+					color:blue;
+					font-size:12px;
+					text-align:center;
+					}
+				#box
+					{
+					background-color:${page_color};
+					color:${text_color};
+					font-size:14px;
+					text-align:center;
+					}
+			</style>
+		</head>
+		<body>
+			<form method=post action="$(basename ${0})" name="web_alert_message">
+				<br>
+				<br>
+				<table id="box" align="center" border=1 cellspacing=2 cellpadding=2>
+					<tr>
+						<td>
+							<table align="center" border=1 cellspacing=0 cellpadding=2>
+								<tr>
+									<td colspan=2 align="center">
+										<b>${FUNCT_TITLE}</b>
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<br>
+										<br>
+										<img alt="Alert image" src="images/Alert.gif">
+										<br>
+										<br>
+										$(echo "${@}" | gsed s\-"\\\n"-"<br>"-g )
+										<br>
+										<br>
+										<br>
+										<br>
+										<br>
+										<br>
+										<input type=hidden name=step VALUE=${step}>
+										<input type=submit name=submit value="OK">
+										<br>
+										<br>
+									</td>
+								</tr>
+							</table>
+						</td>
+					</tr>
+				</table>
+			</form>
+			<br>
+			<br>
+			<hr width="90%">
+			<br>
+			Powered by ${LIB_NAME} vers. ${LIB_VERSION}
+		</body>
+	</html>
+
+BLOCCO_HTML__web_alert_message
+	exit
+	}
+#
+##
+#
+# 4)
+web_ok_message()
+	{
+	local FUNCT_NAME="web_ok_message"
+	local FUNCT_TITLE="$(basename ${0}): ok message"
+	local IFS=$' \t\n'
+	#
+	while getopts ":c:" opzione_riga_di_comando
+	do
+		case ${opzione_riga_di_comando} in
+			c     ) colors="${OPTARG}" ;;
+			#
+			*     ) : ;; # DEFAULT
+		esac
+	done
+	shift $(($OPTIND - 1))
+	# =>
+	text_color="$(echo "${colors}" | cut -d ',' -f 1 )" ; [ ${#text_color} -eq 0 ] && text_color="${default_text_color}"
+	page_color="$(echo "${colors}" | cut -d ',' -f 2 )" ; [ ${#page_color} -eq 0 ] && page_color="${default_page_color}"
+	#
+	######################################################################
+	######################################################################
+	######################################################################
+	######################################################################
+	#
+	cat <<-BLOCCO_HTML__web_ok_message
+	Content-type: text/html
+	Set-Cookie: ${nome_cookie}="${valore_cookie}"
+	
+	<!DOCTYPE html>
+	<html>
+		<head>
+			<meta content="text/html; charset=ISO-8859-1" http-equiv="content-type">
+			<title>${FUNCT_TITLE}</title>
+			<style type="text/css">
+				body
+					{
+					background-color:${page_color};
+					color:blue;
+					font-size:12px;
+					text-align:center;
+					}
+				#box
+					{
+					background-color:${page_color};
+					color:${text_color};
+					font-size:14px;
+					text-align:center;
+					}
+			</style>
+		</head>
+		<body>
+			<form method=post action="$(basename ${0})" name="web_ok_message">
+				<br>
+				<br>
+				<table id="box" align="center" border=1 cellspacing=2 cellpadding=2>
+					<tr>
+						<td>
+							<table align="center" border=1 cellspacing=0 cellpadding=2>
+								<tr>
+									<td colspan=2 align="center">
+										<b>${FUNCT_TITLE}</b>
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<br>
+										<br>
+										<img alt="Ok image" src="images/Ok.gif">
+										<br>
+										<br>
+										$(echo "${@}" | gsed s\-"\\\n"-"<br>"-g )
+										<br>
+										<br>
+										<br>
+										<br>
+										<br>
+										<br>
+										<input type=hidden name=step VALUE=${step}>
+										<input type=submit name=submit value="OK">
+										<br>
+										<br>
+									</td>
+								</tr>
+							</table>
+						</td>
+					</tr>
+				</table>
+			</form>
+			<br>
+			<br>
+			<hr width="90%">
+			<br>
+			Powered by ${LIB_NAME} vers. ${LIB_VERSION}
+		</body>
+	</html>
+
+BLOCCO_HTML__web_ok_message
+	exit
+	}
+#
+##
+#
+# 5)
+web_preformatted_message()
+	{
+	local FUNCT_NAME="web_preformatted_message"
+	local FUNCT_TITLE="$(basename ${0}): preformatted message"
+	local IFS=$' \t\n'
+	#
+	while getopts ":c:" opzione_riga_di_comando
+	do
+		case ${opzione_riga_di_comando} in
+			c     ) colors="${OPTARG}" ;;
+			#
+			*     ) : ;; # DEFAULT
+		esac
+	done
+	shift $(($OPTIND - 1))
+	# =>
+	text_color="$(echo "${colors}" | cut -d ',' -f 1 )" ; [ ${#text_color} -eq 0 ] && text_color="${default_text_color}"
+	page_color="$(echo "${colors}" | cut -d ',' -f 2 )" ; [ ${#page_color} -eq 0 ] && page_color="${default_page_color}"
+	#
+	######################################################################
+	######################################################################
+	######################################################################
+	######################################################################
+	#
+	cat <<-BLOCCO_HTML__web_preformatted_message
+	Content-type: text/html
+	Set-Cookie: ${nome_cookie}="${valore_cookie}"
+	
+	<!DOCTYPE html>
+	<html>
+		<head>
+			<meta content="text/html; charset=ISO-8859-1" http-equiv="content-type">
+			<title>${FUNCT_TITLE}</title>
+			<style type="text/css">
+				body
+					{
+					background-color:${page_color};
+					color:blue;
+					font-size:12px;
+					text-align:center;
+					}
+				#box
+					{
+					background-color:${page_color};
+					color:${text_color};
+					font-size:14px;
+					text-align:left;
+					}
+			</style>
+		</head>
+		<body>
+			<form method=post action="$(basename ${0})" name="web_preformatted_message">
+				<br>
+				<br>
+				<table id="box" align="center" border=1 cellspacing=2 cellpadding=2>
+					<tr>
+						<td>
+							<table align="center" border=1 cellspacing=0 cellpadding=2>
+								<tr>
+									<td align="center">
+										<b>${FUNCT_TITLE}</b>
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<br>
+										<pre>
+											$(echo "${@}" | gsed s\-"\\\n"-"<br>"-g )
+										</pre>
+										<br>
+										<br>
+									</td>
+								</tr>
+								<tr>
+									<td align="center">
+										<br>
+										<input type=hidden name=step VALUE=${step}>
+										<input type=submit name=submit value="OK">
+										<br>
+										<br>
+									</td>
+								</tr>
+							</table>
+						</td>
+					</tr>
+				</table>
+			</form>
+			<br>
+			<br>
+			<hr width="90%">
+			<br>
+			Powered by ${LIB_NAME} vers. ${LIB_VERSION}
+		</body>
+	</html>
+
+BLOCCO_HTML__web_preformatted_message
+	exit
+	}
+#
+##
+#
+# 6)
+web_final_message()
+	{
+	local FUNCT_NAME="web_final_message"
+	local FUNCT_TITLE="$(basename ${0}): final message"
+	local IFS=$' \t\n'
+	#
+	clean_temp
+	#
+	while getopts ":c:" opzione_riga_di_comando
+	do
+		case ${opzione_riga_di_comando} in
+			c     ) colors="${OPTARG}" ;;
+			#
+			*     ) : ;; # DEFAULT
+		esac
+	done
+	shift $(($OPTIND - 1))
+	# =>
+	text_color="$(echo "${colors}" | cut -d ',' -f 1 )" ; [ ${#text_color} -eq 0 ] && text_color="${default_text_color}"
+	page_color="$(echo "${colors}" | cut -d ',' -f 2 )" ; [ ${#page_color} -eq 0 ] && page_color="${default_page_color}"
+	#
+	URL_TO_REDIRECT_THE_USER="${1}"
+	http_or_https="$(echo "${URL_TO_REDIRECT_THE_USER}" | cut -d ':' -f 1 )"
+	if [ "${http_or_https}" = "http" -o "${http_or_https}" = "https" ]
+		then
+		:
+	else
+		URL_TO_REDIRECT_THE_USER="http://${URL_TO_REDIRECT_THE_USER}"
+	fi
+	: URL_TO_REDIRECT_THE_USER
+	#
+	shift
+	#
+	######################################################################
+	######################################################################
+	######################################################################
+	######################################################################
+	#
+	cat <<-BLOCCO_HTML__web_final_message
+	Content-type: text/html
+	Set-Cookie: ${nome_cookie}="${valore_cookie}"
+	
+	<!DOCTYPE html>
+	<html>
+		<head>
+			<meta content="text/html; charset=ISO-8859-1" http-equiv="content-type">
+			<title>${FUNCT_TITLE}</title>
+			<style type="text/css">
+				body
+					{
+					background-color:${page_color};
+					color:blue;
+					font-size:12px;
+					text-align:center;
+					}
+				#box
+					{
+					background-color:${page_color};
+					color:${text_color};
+					font-size:14px;
+					text-align:center;
+					}
+			</style>
+		</head>
+		<body>
+			 <form method=post action="${URL_TO_REDIRECT_THE_USER}" name="web_final_message">
+				<br>
+				<br>
+				<table id="box" align="center" border=1 cellspacing=2 cellpadding=2>
+					<tr>
+						<td>
+							<table align="center" border=1 cellspacing=0 cellpadding=2>
+								<tr>
+									<td colspan=2 align="center">
+										<b>${FUNCT_TITLE}</b>
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<br>
+										<br>
+										<img alt="OK image" src="images/Ok.gif">
+										<br>
+										<br>
+										$(echo "${@}" | gsed s\-"\\\n"-"<br>"-g )
+										<br>
+										<br>
+										<br>
+										<br>
+										<br>
+										<br>
+										<!-- <input type=hidden name=step VALUE=${step}> -->
+										<input type=submit name=submit value="OK">
+										<br>
+										<br>
+									</td>
+								</tr>
+							</table>
+						</td>
+					</tr>
+				</table>
+			</form>
+			<br>
+			<br>
+			<hr width="90%">
+			<br>
+			Powered by ${LIB_NAME} vers. ${LIB_VERSION}
+		</body>
+	</html>
+
+BLOCCO_HTML__web_final_message
+	exit
+	}
+#
+##
+#
+# 7)
+web_text()
+	{
+	local FUNCT_NAME="web_text"
+	local FUNCT_TITLE="$(basename ${0}): text"
+	local IFS=$' \t\n'
+	export dummy_file="${dir_tmp}/${file_tmp}"
+	#
+	while getopts ":c:m:" opzione_riga_di_comando
+	do
+		case ${opzione_riga_di_comando} in
+			c     ) colors="${OPTARG}" ;;
+			m     ) max_displayed_chars="${OPTARG}" ;;
+			#
+			*     ) : ;; # DEFAULT
+		esac
+	done
+	shift $(($OPTIND - 1))
+	# =>
+	text_color="$(echo "${colors}" | cut -d ',' -f 1 )" ; [ ${#text_color} -eq 0 ] && text_color="${default_text_color}"
+	page_color="$(echo "${colors}" | cut -d ',' -f 2 )" ; [ ${#page_color} -eq 0 ] && page_color="${default_page_color}"
+	#
+	if [ ${#max_displayed_chars} -eq 0 -o $(echo "${max_displayed_chars}" | tr -dc [[:digit:]] | wc -c ) -eq 0 ]
+		then
+		max_displayed_chars=$(( $(( ${max_char_number_CONTENT_LENGTH} / 100 )) * 60 )) #this is to avoid other form dummy chars count...
+	fi
+	: max_displayed_chars
+	#
+	##
+	#
+	cat "${dummy_file}" | grep "^step=[[:alnum:]]\+$" 1> "${dummy_file}_TEMP"
+	mv "${dummy_file}_TEMP" "${dummy_file}"
+	cat - | head -c ${max_displayed_chars} 1>> "${dummy_file}"
+	#
+	######################################################################
+	######################################################################
+	######################################################################
+	######################################################################
+	#
+	cat <<-BLOCCO_HTML__web_text
+	Content-type: text/html
+	Set-Cookie: ${nome_cookie}="${valore_cookie}"
+	
+	<!DOCTYPE html>
+	<html>
+		<head>
+			<meta content="text/html; charset=ISO-8859-1" http-equiv="content-type">
+			<title>${FUNCT_TITLE}</title>
+			<style type="text/css">
+				body
+					{
+					background-color:${page_color};
+					color:blue;
+					font-size:12px;
+					text-align:center;
+					}
+				#box
+					{
+					background-color:${page_color};
+					color:${text_color};
+					font-size:14px;
+					text-align:center;
+					}
+			</style>
+		</head>
+		<body>
+			<br>
+			<form method=post action="$(basename ${0})" name="web_text">
+				<table id="box" align="center" border=1 cellspacing=2 cellpadding=2>
+					<tr>
+						<td>
+							<table align="center" border=1 cellspacing=0 cellpadding=2>
+								<tr>
+									<td colspan=2>
+										<b>${FUNCT_TITLE} (max chars displayed: ${max_displayed_chars})</b>
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<textarea name="web_text_data" rows="20" cols="60">
+											$(grep -v "^step=[[:alnum:]]\+$" 0< "${dummy_file}" )
+										</textarea>
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<br>
+										<input type=hidden name=step VALUE=${step}>
+										<input type=submit name=submit value="OK">
+										<br>
+										<br>
+									</td>
+								</tr>
+							</table>
+						</td>
+					</tr>
+				</table>
+			</form>
+			<br>
+			<br>
+			<hr width="90%">
+			<br>
+			powered by ${lib_name} vers. ${lib_version}
+		</body>
+	</html>
+
+BLOCCO_HTML__web_text
+	sleep 1
+	kill $PPID
+	#exit
+	}
+#
+##
+#
+# 8)
+web_wait_seconds()
+	{
+	: # Impossible through bare HTML ...
+	}
+#
+##
+#
+# 9)
+web_wait_for()
+	{
+	local FUNCT_NAME="web_wait_for"
+	local FUNCT_TITLE="$(basename ${0}): wait_for"
+	local IFS=$' \t\n'
+	#
+	while getopts ":c:" opzione_riga_di_comando
+	do
+		case ${opzione_riga_di_comando} in
+			c     ) colors="${OPTARG}" ;;
+			#
+			*     ) : ;; # DEFAULT
+		esac
+	done
+	shift $(($OPTIND - 1))
+	# =>
+	text_color="$(echo "${colors}" | cut -d ',' -f 1 )" ; [ ${#text_color} -eq 0 ] && text_color="${default_text_color}"
+	page_color="$(echo "${colors}" | cut -d ',' -f 2 )" ; [ ${#page_color} -eq 0 ] && page_color="${default_page_color}"
+	#
+	######################################################################
+	######################################################################
+	######################################################################
+	######################################################################
+	#
+	text="$(echo "${@}" | gsed s\-"\\\n"-"<br>"-g )"
+	cat <<-BLOCCO_HTML__web_wait_for
+	Content-type: text/html
+	Set-Cookie: ${nome_cookie}="${valore_cookie}"
+	
+	<!DOCTYPE html>
+	<html>
+		<head>
+			<meta content="text/html; charset=ISO-8859-1" http-equiv="content-type">
+			<title>${FUNCT_TITLE}</title>
+			<style type="text/css">
+				body
+					{
+					background-color:${page_color};
+					color:blue;
+					font-size:12px;
+					text-align:center;
+					}
+				#box
+					{
+					background-color:${page_color};
+					color:${text_color};
+					font-size:14px;
+					text-align:center;
+					}
+			</style>
+		</head>
+		<body>
+			<form method=post action="$(basename ${0})" name="web_message">
+				<br>
+				<br>
+				<table id="box" align="center" border=1 cellspacing=2 cellpadding=2>
+					<tr>
+						<td>
+							<table align="center" border=1 cellspacing=0 cellpadding=2>
+								<tr>
+									<td colspan=2 align="center">
+										<b>${FUNCT_TITLE}</b>
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<br>
+										${text}
+										<br>
+										<br>
+										<progress max="100">Please wait...</progress> 
+										<br>
+										<br>
+										<br>
+										<br>
+										<br>
+										<br>
+										<br>
+										<input type=hidden name=step VALUE=${step}>
+										<input type=submit name=submit value="OK">
+										<br>
+										<br>
+									</td>
+								</tr>
+							</table>
+						</td>
+					</tr>
+				</table>
+			</form>
+			<br>
+			<br>
+			<hr width="90%">
+			<br>
+			Powered by ${LIB_NAME} vers. ${LIB_VERSION}
+		</body>
+	</html>
+
+BLOCCO_HTML__web_wait_for
+	exit
+	}
+#
+##
+#
+# 10)
+web_terminate_wait_for()
+	{
+	: # for backward compatibility ...
+	}
+#
+##
+#
+# 11)
+web_fselect()
+	{
+	: #It a refurbished old "input_cgi()" function... thanks to http://tuxx-home.at/ !!!!
+	#
+	local FUNCT_NAME="web_fselect"
+	local FUNCT_TITLE="$(basename ${0}): file select"
+	local IFS=$' \t\n'
+	#
+	while getopts ":c:T:" opzione_riga_di_comando
+	do
+		case ${opzione_riga_di_comando} in
+			c     ) colors="${OPTARG}" ;;
+			T     ) fselect_title="${OPTARG}" ;;
+			#
+			*     ) : ;; # DEFAULT
+		esac
+	done
+	shift $(($OPTIND - 1))
+	# =>
+	text_color="$(echo "${colors}" | cut -d ',' -f 1 )" ; [ ${#text_color} -eq 0 ] && text_color="${default_text_color}"
+	page_color="$(echo "${colors}" | cut -d ',' -f 2 )" ; [ ${#page_color} -eq 0 ] && page_color="${default_page_color}"
+	#
+	if [ ${#fselect_title} -eq 0 ]
+		then
+		#fselect_title="Select a file..."
+		fselect_title=""
+	fi
+	: menu_title
+	#
+	######################################################################
+	######################################################################
+	######################################################################
+	######################################################################
+	#
+	cat <<-BLOCCO_HTML__web_fselect
+	Content-type: text/html
+	Set-Cookie: ${nome_cookie}="${valore_cookie}"
+	
+	<!DOCTYPE html>
+	<html>
+		<head>
+			<meta content="text/html; charset=ISO-8859-1" http-equiv="content-type">
+			<title>${FUNCT_TITLE}</title>
+			<style type="text/css">
+				body
+					{
+					background-color:${page_color};
+					color:blue;
+					font-size:12px;
+					text-align:center;
+					}
+				#box
+					{
+					background-color:${page_color};
+					color:${text_color};
+					font-size:14px;
+					text-align:center;
+					}
+			</style>
+		</head>
+		<body>
+			<br>
+			<form method=post action="$(basename ${0})" name="ebw_fselect" enctype="multipart/form-data">
+				<table id="box" align="center" border=1 cellspacing=2 cellpadding=2>
+					<tr>
+						<td>
+							<table align="center" border=1 cellspacing=0 cellpadding=2>
+								<tr>
+									<td colspan=2>
+										<b>${FUNCT_TITLE}</b>
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<br>
+										${fselect_title}
+										<br>
+										<br>
+										<br>
+										<br>
+										<input type=file name=fselect_choice size=15> 
+										<br>
+										<br>
+										<br>
+										<br>
+										<input type=hidden name=step VALUE=${step}>
+										<input type=submit name=submit value="OK">
+										<br>
+										<br>
+										<br>
+										
+									</td>
+								</tr>
+							</table>
+						</td>
+					</tr>
+				</table>
+			</form>
+			<br>
+			<br>
+			<hr width="90%">
+			<br>
+			Powered by ${LIB_NAME} vers. ${LIB_VERSION}
+		</body>
+	</html>
+
+BLOCCO_HTML__web_fselect
+	#
+	#
+	#
+	#
+	exit
+	}
+#
+##
+#
+# 12)
+web_dselect()
+	{
+	: # It will be an alias to "web_fselect()"
+	}
+#
+##
+#
+# 13)
+web_menu()
+	{
+	local FUNCT_NAME="web_menu"
+	local FUNCT_TITLE="$(basename ${0}): menu"
+	local IFS=$' \t\n'
+	#
+	while getopts ":c:T:" opzione_riga_di_comando
+	do
+		case ${opzione_riga_di_comando} in
+			c     ) colors="${OPTARG}" ;;
+			T     ) menu_title="${OPTARG}" ;;
+			#
+			*     ) : ;; # DEFAULT
+		esac
+	done
+	shift $(($OPTIND - 1))
+	# =>
+	text_color="$(echo "${colors}" | cut -d ',' -f 1 )" ; [ ${#text_color} -eq 0 ] && text_color="${default_text_color}"
+	page_color="$(echo "${colors}" | cut -d ',' -f 2 )" ; [ ${#page_color} -eq 0 ] && page_color="${default_page_color}"
+	#
+	if [ ${#menu_title} -eq 0 ]
+		then
+		#menu_title="Select option..."
+		menu_title=""
+	fi
+	: menu_title
+	#
+	local IFS=$'\n'
+		threshold=${#}
+		args=( $(for (( num=1 ; num <= ${threshold} ; num++ ))
+					do
+					echo "${1}"
+					shift
+				done) )
+	local IFS=$' \t\n'
+	: args[@]
+	#
+	######################################################################
+	######################################################################
+	######################################################################
+	######################################################################
+	#
+	cat <<-BLOCCO_HTML__web_menu
+	Content-type: text/html
+	Set-Cookie: ${nome_cookie}="${valore_cookie}"
+	
+	<!DOCTYPE html>
+	<html>
+		<head>
+			<meta content="text/html; charset=ISO-8859-1" http-equiv="content-type">
+			<title>${FUNCT_TITLE}</title>
+			<style type="text/css">
+				body
+					{
+					background-color:${page_color};
+					color:blue;
+					font-size:12px;
+					text-align:center;
+					}
+				#box
+					{
+					background-color:${page_color};
+					color:${text_color};
+					font-size:14px;
+					text-align:center;
+					}
+			</style>
+		</head>
+		<body>
+			<br>
+			<form method=post action="$(basename ${0})" name="web_menu">
+				<table id="box" align="center" border=1 cellspacing=2 cellpadding=2>
+					<tr>
+						<td>
+							<table align="center" border=1 cellspacing=0 cellpadding=2>
+								<tr>
+									<td colspan=2 align="center">
+										<b>${FUNCT_TITLE}</b>
+									</td>
+								</tr>
+							</table>
+							<table width="100%" align="center" border=0 cellspacing=0 cellpadding=2>
+								<tr>
+									<td>
+										<tr align="center">
+											<td align="center">
+												<br>
+												${menu_title}
+												<br>
+											</td>
+										</tr>
+										<tr align="left">
+											<td align="left">
+												<br>
+												$(for ((index=0 ; index < ${#args[@]} ; index++ ))
+													do
+													echo "<INPUT TYPE=\"radio\" NAME=\"ebw_menu\" ALIGN=\"left\" VALUE=\"${args[${index}]}\" $([ ${index} -eq 0 ] && echo "CHECKED")> ${args[${index}]}<br>"
+												done)
+												<br>
+												<br>
+											</td>
+										</tr>
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<tr align="center">
+											<td align="center">
+												<br>
+												<input type=hidden name=step VALUE=${step}>
+												<input type=submit name=submit value="OK">
+												<br>
+												<br>
+											</td>
+										</tr>
+									</td>
+								</tr>
+							</table>
+						</td>
+					</tr>
+				</table>
+			</form>
+			<br>
+			<br>
+			<hr width="90%">
+			<br>
+			Powered by ${LIB_NAME} vers. ${LIB_VERSION}
+		</body>
+	</html>
+
+BLOCCO_HTML__web_menu
+	exit
+#
+#<input type="radio" name="group1" value="Milk"> Milk<br>
+#<input type="radio" name="group1" value="Butter" checked> Butter<br>
+#<input type="radio" name="group1" value="Cheese"> Cheese<br>
+#
+	}
+#
+##
+#
+# 14)
+web_list()
+	{
+	local FUNCT_NAME="web_list"
+	local FUNCT_TITLE="$(basename ${0}): list"
+	local IFS=$' \t\n'
+	#
+	while getopts ":c:T:" opzione_riga_di_comando
+	do
+		case ${opzione_riga_di_comando} in
+			c     ) colors="${OPTARG}" ;;
+			T     ) list_title="${OPTARG}" ;;
+			#
+			*     ) : ;; # DEFAULT
+		esac
+	done
+	shift $(($OPTIND - 1))
+	# =>
+	text_color="$(echo "${colors}" | cut -d ',' -f 1 )" ; [ ${#text_color} -eq 0 ] && text_color="${default_text_color}"
+	page_color="$(echo "${colors}" | cut -d ',' -f 2 )" ; [ ${#page_color} -eq 0 ] && page_color="${default_page_color}"
+	#
+	if [ ${#list_title} -eq 0 ]
+		then
+		#list_title="Select options..."
+		list_title=""
+	fi
+	: list_title
+	#
+	local IFS=$'\n'
+		threshold=${#}
+		args=( $(for (( num=1 ; num <= ${threshold} ; num++ ))
+					do
+					echo "${1}"
+					shift
+				done) )
+	local IFS=$' \t\n'
+	: args[@]
+	#
+	local IFS=$'\n'
+	args_parametri=( $(for (( index=0 ; index < ${#args[@]} ; index++ ))
+				do
+				#
+				arg_prog="${args[${index}]}"
+				first_char="${arg_prog:0:1}"
+				#
+				if [ "${first_char}" = "+" ]
+					then
+					arg="${arg_prog:1}"
+					#
+					echo -e "\"${arg}\" CHECKED"
+					#
+				else
+					#
+					if [ "${first_char}" = "-" ]
+						then
+						arg="${arg_prog:1}"
+					else
+						arg="${arg_prog}"
+					fi
+					#
+					echo -e "\"${arg}\""
+					#
+				fi #if [ "${first_char}" = "+" ]
+				#
+			done )
+			)
+	local IFS=$' \t\n'
+	: args_parametri
+	#
+	######################################################################
+	######################################################################
+	######################################################################
+	######################################################################
+	#
+	cat <<-BLOCCO_HTML__web_list
+	Content-type: text/html
+	Set-Cookie: ${nome_cookie}="${valore_cookie}"
+	
+	<!DOCTYPE html>
+	<html>
+		<head>
+			<meta content="text/html; charset=ISO-8859-1" http-equiv="content-type">
+			<title>${FUNCT_TITLE}</title>
+			<style type="text/css">
+				body
+					{
+					background-color:${page_color};
+					color:blue;
+					font-size:12px;
+					text-align:center;
+					}
+				#box
+					{
+					background-color:${page_color};
+					color:${text_color};
+					font-size:14px;
+					text-align:center;
+					}
+			</style>
+		</head>
+		<body>
+			<br>
+			<form method=post action="$(basename ${0})" name="web_list">
+				<table id="box" align="center" border=1 cellspacing=2 cellpadding=2>
+					<tr>
+						<td>
+							<table align="center" border=1 cellspacing=0 cellpadding=2>
+								<tr>
+									<td colspan=2 align="center">
+										<b>${FUNCT_TITLE}</b>
+									</td>
+								</tr>
+							</table>
+							<table width="100%" align="center" border=0 cellspacing=0 cellpadding=2>
+								<tr>
+									<td colspan=2>
+										<tr align="center">
+											<td align="center">
+												<br>
+												${list_title}
+												<br>
+											</td>
+										</tr>
+										<tr align="left">
+											<td align="left">
+												<br>
+												$(for ((index=0 ; index < ${#args_parametri[@]} ; index++ ))
+													do
+													echo "<INPUT TYPE=\"checkbox\" NAME=\"ebw_list\" ALIGN=\"left\" VALUE=${args_parametri[${index}]}> $(echo "${args_parametri[${index}]}" | gsed -n s\#'^"\(.*\)".*$'#'\1'#p )<br>"
+												done)
+												<br>
+												<br>
+											</td>
+										</tr>
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<tr align="center">
+											<td align="center">
+												<br>
+												<input type=hidden name=step VALUE=${step}>
+												<input type=submit name=submit value="Ok">
+												<br>
+												<br>
+											</td>
+										</tr>
+									</td>
+								</tr>
+							</table>
+						</td>
+					</tr>
+				</table>
+			</form>
+			<br>
+			<br>
+			<hr width="90%">
+			<br>
+			Powered by ${LIB_NAME} vers. ${LIB_VERSION}
+		</body>
+	</html>
+
+BLOCCO_HTML__web_list
+	exit
+	}
+#
+##
+#
+# 15)
+web_input()
+	{
+	local FUNCT_NAME="web_input"
+	local FUNCT_TITLE="$(basename ${0}): data input"
+	local IFS=$' \t\n'
+	#
+	while getopts ":c:T:" opzione_riga_di_comando
+	do
+		case ${opzione_riga_di_comando} in
+			c     ) colors="${OPTARG}" ;;
+			T     ) input_title="${OPTARG}" ;;
+			#
+			*     ) : ;; # DEFAULT
+		esac
+	done
+	shift $(($OPTIND - 1))
+	# =>
+	text_color="$(echo "${colors}" | cut -d ',' -f 1 )" ; [ ${#text_color} -eq 0 ] && text_color="${default_text_color}"
+	page_color="$(echo "${colors}" | cut -d ',' -f 2 )" ; [ ${#page_color} -eq 0 ] && page_color="${default_page_color}"
+	#
+	if [ ${#input_title} -eq 0 ]
+		then
+		#input_title="Please insert data..."
+		input_title=""
+	fi
+	: input_title
+	#
+	##
+	#
+	how_many_loops="${1}"
+	if [ $(echo "${how_many_loops}" | tr -dc [[:digit:]] | wc -c ) -eq 0 ]
+		then
+		next_step 0
+		#
+		##
+		clean_temp
+		##
+		#
+		web_alert_message \
+		-c "red,white" \
+		"Error: first web_input arg must be a digit."
+	fi
+	shift
+	#
+	##
+	#
+	local IFS=$'\n'
+		threshold=${#}
+		args=( $(for (( num=1 ; num <= ${threshold} ; num++ ))
+					do
+					echo "${1}"
+					shift
+				done) )
+	local IFS=$' \t\n'
+	: args[@]
+	#
+	cat <<-BLOCCO_HTML__web_input
+	Content-type: text/html
+	Set-Cookie: ${nome_cookie}="${valore_cookie}"
+	
+	<!DOCTYPE html>
+	<html>
+		<head>
+			<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+			<title>${FUNCT_TITLE}</title>
+			<style type="text/css">
+				body
+					{
+					background-color:${page_color};
+					color:blue;
+					font-size:12px;
+					text-align:center;
+					}
+				#box
+					{
+					background-color:${page_color};
+					color:${text_color};
+					font-size:14px;
+					text-align:center;
+					}
+			</style>
+		</head>
+		<body>
+			<br>
+			<form method=post action="$(basename ${0})" name="web_input">
+				<table id="box" align="center" border=1 cellspacing=2 cellpadding=2>
+					<tr>
+						<td>
+							<table align="center" border=1 width="100%" cellspacing=0 cellpadding=2>
+								<tr>
+									<td colspan=2 align="center">
+										<b>${FUNCT_TITLE}</b>
+										<br>
+									</td>
+								</tr>
+							</table>
+							<table align="center" border=0 cellspacing=0 cellpadding=2>
+								<tr>
+									<td colspan=2 align="center">
+										<br>
+										${input_title}
+										<br>
+										<br>
+										<br>
+									</td>
+								</tr>
+								$(for ((index_1=0 ; index_1 < ${#args[@]} ; index_1++,index_1++,index_1++ ))
+									do 
+									#
+									: index_1
+									type="${args[${index_1}]}"
+									if [ ${#type} -eq 0 ]
+										then
+										type="text"
+									fi
+									if [ "${type}" != "text" -a "${type}" != "TEXT" -a "${type}" != "password" -a "${type}" != "PASSWORD" ]
+										then
+										type="text"
+									fi
+									: type
+									#
+									##
+									#
+									index_2=$(( ${index_1} + 1 ))
+									name="${args[${index_2}]}"
+									if [ ${#name} -eq 0 ]
+										then
+										name="DUMMY"
+									fi
+									: name
+									#
+									##
+									#
+									index_3=$(( ${index_1} + 2 ))
+									value="${args[${index_3}]}"
+									if [ ${#value} -eq 0 ]
+										then
+										value="DUMMY"
+									fi
+									value="$(if [ "${value}" != "NULL" ]
+											then
+											echo "${args[${index_3}]}"
+										else
+											echo ""
+										fi)"
+									: value
+									#
+									####
+									##############
+									#########################
+									echo "
+								<tr align=\"center\">
+									<td align=\"right\">
+										${name} :
+									</td>
+									<td align=\"left\">
+										<input type=${type} name=${name} size=20 maxlength=30 value=\"${value}\" >
+									</td>
+								</tr>
+								<tr>
+									<td align=\"right\" colspan=\"2\">
+									
+									</td> 
+								</tr> "
+									#########################
+									##############
+									####
+									#
+									done)
+								<tr>
+									<td colspan="2">
+										<br>
+										<br>
+										<input type=hidden name=step value=${step}>
+										<input type=submit name=submit value="OK">
+										<br>
+										<br>
+									</td>
+								</tr>
+								<tr>
+									<td colspan="2">
+									&nbsp;
+									</td>
+								</tr>
+							</table>
+						</td>
+					</tr>
+				</table>
+			</form>
+			<br>
+			<br>
+			<hr width="90%">
+			<br>
+			Powered by ${LIB_NAME} vers. ${LIB_VERSION}
+		</body>
+	</html>
+
+BLOCCO_HTML__web_input
+	exit
+	}
+#
+##
+#
+# 16)
+web_progress()
+	{
+	: # Impossible through bare HTML...
+	}
+#
+##
+#
+# 17)
+web_adjust()
+	{
+	local FUNCT_NAME="web_adjust"
+	local FUNCT_TITLE="$(basename "${0}" ): adjust"
+	local IFS=$' \t\n'
+	#
+	while getopts ":c:" opzione_riga_di_comando
+	do
+		case ${opzione_riga_di_comando} in
+			c     ) colors="${OPTARG}" ;;
+			#
+			*     ) : ;; # DEFAULT
+		esac
+	done
+	shift $(($OPTIND - 1))
+	# =>
+	text_color="$(echo "${colors}" | cut -d ',' -f 1 )" ; [ ${#text_color} -eq 0 ] && text_color="${default_text_color}"
+	page_color="$(echo "${colors}" | cut -d ',' -f 2 )" ; [ ${#page_color} -eq 0 ] && page_color="${default_page_color}"
+	#
+	##
+	#
+	testo="${1-"Please adjust parameter..."}"
+	#
+	start_value=${2-"0"}
+	init_value=${3-"50"}
+	end_value=${4-"100"}
+	#
+	start_value_percent=0
+	end_value_percent=100
+	#
+	num_tot_elementi=$(( ${end_value} - ${start_value} ))
+	diff_values_percent=$(( ${end_value_percent} - ${start_value_percent} ))
+	step_calc=$(echo "scale=2; ${num_tot_elementi} / ${diff_values_percent}" | bc -l )
+	# =>
+	init_value_percent_float=$(echo "scale=2; $(( ${init_value} - ${start_value} )) / ${step_calc}" | bc -l )
+	init_value_percent=$(arrotonda "${init_value_percent_float}" )
+	#
+	pre_values="$(for ((int1=${start_value_percent} ; int1 < ${init_value_percent} ; int1++ )); do echo -n "${int1}% " ; done )"
+	post_values="$(for ((int2=${init_value_percent} ; int2 <= ${end_value_percent} ; int2++ )); do echo -n "${int2}% " ; done )"
+	#
+	args_percent=( ${pre_values} ${post_values} )
+	# ( default: "${init_value_percent}%" )
+	: args_percent[@]
+	#
+	args_integer=($(for ((index_args_percent=0 ; index_args_percent < ${#args_percent[@]} ; index_args_percent++ ))
+				do
+				arg_percent="${args_percent[${index_args_percent}]}"
+				#
+				value_percent=$(echo "${arg_percent}" | tr -dc '[[:digit:]]' )
+				: value_percent
+				#
+				final_value_temp=$(echo "scale=2; ${value_percent} * ${step_calc}" | bc -l )
+				final_value_float=$(echo "scale=2; ${start_value} + ${final_value_temp}" | bc -l )
+				: final_value_float
+				#
+				final_value=$(arrotonda "${final_value_float}" )
+				: final_value
+				#
+				echo -en "${final_value} "
+				#
+			done )
+			)
+	: args_integer[@]
+	#
+	######################################################################
+	######################################################################
+	######################################################################
+	######################################################################
+	#
+	cat <<-BLOCCO_HTML__web_adjust
+	Content-type: text/html
+	Set-Cookie: ${nome_cookie}="${valore_cookie}"
+	
+	<!DOCTYPE html>
+	<html>
+		<head>
+			<meta content="text/html; charset=ISO-8859-1" http-equiv="content-type">
+			<title>${FUNCT_TITLE}</title>
+			<style type="text/css">
+				body
+					{
+					background-color:${page_color};
+					color:blue;
+					font-size:12px;
+					text-align:center;
+					}
+				#box
+					{
+					background-color:${page_color};
+					color:${text_color};
+					font-size:14px;
+					text-align:center;
+					}
+			</style>
+		</head>
+		<body>
+			<br>
+			<form method=post action="$(basename ${0})" name="web_adjust">
+				<table id="box" align="center" border=1 cellspacing=2 cellpadding=2>
+					<tr>
+						<td>
+							<table align="center" border=1 cellspacing=0 cellpadding=2>
+								<tr>
+									<td colspan=2 align="center">
+										<b>${FUNCT_TITLE}</b>
+									</td>
+								</tr>
+								<tr>
+									<td align="center">
+										<br>
+										${testo}
+										<br>
+										<br>
+										<select name="adjust_choice">
+											$(for ((index=0 ; index < ${#args_percent[@]} ; index++ ))
+												do
+												echo "<OPTION VALUE=${args_integer[${index}]} $([ "${args_percent[${index}]}" = "${init_value_percent}%" ] && echo "SELECTED")>${args_percent[${index}]}"
+											done)
+										</select>
+										<br>
+										<br>
+										<input type=hidden name=step VALUE=${step}>
+										<input type=submit name=submit value="OK">
+										<br>
+										<br>
+									</td>
+								</tr>
+							</table>
+						</td>
+					</tr>
+				</table>
+			</form>
+			<br>
+			<br>
+			<hr width="90%">
+			<br>
+			Powered by ${LIB_NAME} vers. ${LIB_VERSION}
+		</body>
+	</html>
+
+BLOCCO_HTML__web_adjust
+	exit
+	}
+#
+##
+#
+# 18)
+web_itable()
+	{
+	local FUNCT_NAME="web_itable"
+	local FUNCT_TITLE="$(basename ${0}): interactive table"
+	local IFS=$' \t\n'
+	#
+	table_mode="menu"
+	while getopts ":lc:C:T:N:" opzione_riga_di_comando
+	do
+		case ${opzione_riga_di_comando} in
+			l     ) table_mode="list" ;;
+			c     ) colors="${OPTARG}" ;;
+			C     ) table_colors="${OPTARG}" ;;
+			T     ) table_title="${OPTARG}" ;;
+			N     ) column_number="${OPTARG}" ;;
+			#
+			*     ) : ;; # DEFAULT
+		esac
+	done
+	shift $(($OPTIND - 1))
+	# =>
+	text_color="$(echo "${colors}" | cut -d ',' -f 1 )" ; [ ${#text_color} -eq 0 ] && text_color="${default_text_color}"
+	page_color="$(echo "${colors}" | cut -d ',' -f 2 )" ; [ ${#page_color} -eq 0 ] && page_color="${default_page_color}"
+	#
+	table_text_color="$(echo "${table_colors}" | cut -d ',' -f 1 )" ; [ ${#table_text_color} -eq 0 ] && table_text_color="${default_text_color}"
+	table_page_color="$(echo "${table_colors}" | cut -d ',' -f 2 )" ; [ ${#table_page_color} -eq 0 ] && table_page_color="${default_page_color}"
+	#
+	: table_mode
+	if [ "${table_mode}" = "menu" ]
+		then
+		input_type="radio"
+	elif [ "${table_mode}" = "list" ]
+		then
+		input_type="checkbox"
+	fi
+	#
+	if [ ${#table_title} -eq 0 ]
+		then
+		table_title="Table 1"
+	fi
+	: table_title
+	#
+	if [ $(echo "${column_number}" | tr -dc [[:digit:]] | wc -c ) -eq 0 ]
+		then
+		next_step 0
+		#
+		##
+		clean_temp
+		##
+		#
+		web_alert_message \
+		-c "red,white" \
+		"Error: \"-N\" arg must be a digit."
+	fi
+	: column_number
+	#
+	local IFS=$'\n'
+		threshold=${#}
+		args=( $(for (( num=1 ; num <= ${threshold} ; num++ ))
+					do
+					echo "${1}"
+					shift
+				done) )
+	local IFS=$' \t\n'
+	: args[@]
+	#
+	cat <<-BLOCCO_HTML__web_itable
+	Content-type: text/html
+	Set-Cookie: ${nome_cookie}="${valore_cookie}"
+	
+	<!DOCTYPE html>
+	<html>
+		<head>
+			<meta content="text/html; charset=ISO-8859-1" http-equiv="content-type">
+			<title>${FUNCT_TITLE}</title>
+			<style type="text/css">
+				body
+					{
+					background-color:${page_color};
+					color:blue;
+					font-size:12px;
+					text-align:center;
+					}
+				#box
+					{
+					background-color:${page_color};
+					color:${text_color};
+					font-size:14px;
+					text-align:center;
+					}
+				#itable_box
+					{
+					background-color:${table_page_color};
+					color:${text_color};
+					font-size:14px;
+					text-align:center;
+					}
+				#itable
+					{
+					background-color:${table_page_color};
+					color:${table_text_color};
+					font-size:14px;
+					text-align:center;
+					}
+			</style>
+		</head>
+		<body>
+			<br>
+			<form method=post action="$(basename ${0})" name="web_itable">
+				<table id="box" align="center" border=1 cellspacing=2 cellpadding=2>
+					<tr>
+						<td>
+							<table align="center" border=1 cellspacing=0 cellpadding=2>
+								<tr>
+									<td colspan=2>
+									<b>${FUNCT_TITLE}</b>
+									</td>
+								</tr>
+								<tr>
+									<td align="center">
+										<br>
+										<table id="itable_box" align="center" width="95%" border="1" cellspacing="1">
+											<tr>
+												<td>
+													<br>
+													<strong>${table_title}</strong>
+													<br>
+													<br>
+												</td>
+											</tr>
+											<tr>
+												<td align="right">
+													<br>
+													<br>
+													
+													$([ "${input_type}" = "radio" ] && echo "Insert<input type=\"${input_type}\" name=\"Action\" value=\"Insert\">&nbsp;&nbsp;" )
+													
+													$([ "${input_type}" = "checkbox" ] && echo "Insert<input type=\"radio\" name=\"Action\" value=\"Insert\">&nbsp;&nbsp;&nbsp;&nbsp; Modify<input type=\"radio\" name=\"Action\" value=\"Modify\">&nbsp;&nbsp;&nbsp;&nbsp; Remove<input type=\"radio\" name=\"Action\" value=\"Remove\">&nbsp;&nbsp;" )
+													
+													<table id="itable" align="center" width="95%" align="center" border="1" cellspacing="1">
+														<tr>
+														$(
+														grassetto="YES" && \
+														count_while_loop_1=1 && \
+														count_while_loop_2=1 && \
+														for ((index_table=0 ; index_table <= ${#args[@]} ; index_table++ ))
+															do
+															arg="${args[${index_table}]}"
+															#
+															[ "${arg}" = "NULL" ] && arg="//"
+															#
+															if [ "${grassetto}" = "YES" ]
+																then
+																: column_number
+																while [ ${count_while_loop_1} -le ${column_number} ]
+																	do
+																	: arg
+																	echo -n "<td><strong><em>${arg}</em></strong></td> "
+																	#
+																	count_while_loop_1=$(( ${count_while_loop_1} + 1 ))
+																	continue 2
+																	#
+																done
+																grassetto="NO"
+																#
+															else
+																: column_number
+																while [ ${count_while_loop_2} -le ${column_number} ]
+																	do
+																	: arg
+																	echo -n "<td>${arg}</em></td> "
+																	#
+																	count_while_loop_2=$(( ${count_while_loop_2} + 1 ))
+																	continue 2
+																	#
+																done
+																count_for_loop=$(( ${count_for_loop} + 1 ))
+																[ "${input_type}" = "radio" ] && echo -n "<td id=\"itable_box\"><em>Modify</em><input type=\"${input_type}\" name=\"Action\" value=\"Modify_${count_for_loop}\"></td> " && echo -n "<td id=\"itable_box\"><em>Remove</em><input type=\"${input_type}\" name=\"Action\" value=\"Remove_${count_for_loop}\"></td> "
+																[ "${input_type}" = "checkbox" ] && echo -n "<td id=\"itable_box\"><input type=\"${input_type}\" name=\"Row\" value=\"Row_${count_for_loop}\"></td> "
+																#
+																count_while_loop_2=1
+																#
+															fi
+															#
+															[ ${index_table} -lt ${#args[@]} ] && index_table=$(( ${index_table} - 1 )) # This because 
+															echo -e "</tr><tr>"
+															#
+														done && unset grassetto )
+														</tr>       
+													</table>
+													$(: && echo "No action<input type=\"radio\" name=\"Action\" value=\"NoAction\" checked>&nbsp;&nbsp;" )
+													<br>
+													<br>
+													<br>
+												</td>
+											</tr>
+										</table>
+										<br>
+										<br>
+										<input type=hidden name=step VALUE=${step}>
+										<input type=submit name=submit value="OK">
+										<br>
+										<br>
+									</td>
+								</tr>
+							</table>
+						</td>
+					</tr>
+				</table>
+			</form>
+			<br>
+			<br>
+			<hr width="90%">
+			<br>
+			Powered by ${LIB_NAME} vers. ${LIB_VERSION}
+		</body>
+	</html>
+
+BLOCCO_HTML__web_itable
+	unset conteggio_ciclo_for
+	exit
+	}
+#
+##
+#
+# 19)
+web_tables()
+	{
+	local FUNCT_NAME="web_tables"
+	local FUNCT_TITLE="$(basename ${0}): table(s)"
+	local IFS=$' \t\n'
+	#
+	while getopts ":c:C:T:N:" opzione_riga_di_comando
+	do
+		case ${opzione_riga_di_comando} in
+			c     ) colors="${OPTARG}" ;;
+			C     ) table_colors="${OPTARG}" ;;
+			T     ) table_titles="${OPTARG}" ;;
+			N     ) column_numbers="${OPTARG}" ;;
+			#
+			*     ) : ;; # DEFAULT
+		esac
+	done
+	shift $(($OPTIND - 1))
+	# =>
+	text_color="$(echo "${colors}" | cut -d ',' -f 1 )" ; [ ${#text_color} -eq 0 ] && text_color="${default_text_color}"
+	page_color="$(echo "${colors}" | cut -d ',' -f 2 )" ; [ ${#page_color} -eq 0 ] && page_color="${default_page_color}"
+	#
+	table_text_color="$(echo "${table_colors}" | cut -d ',' -f 1 )" ; [ ${#table_text_color} -eq 0 ] && table_text_color="${default_text_color}"
+	table_page_color="$(echo "${table_colors}" | cut -d ',' -f 2 )" ; [ ${#table_page_color} -eq 0 ] && table_page_color="${default_page_color}"
+	#
+	: column_numbers
+	local IFS=$','
+	array_column_numbers=( ${column_numbers} )
+	local IFS=$' \t\n'
+	for ((index_column=0 ; index_column < ${#array_column_numbers[@]} ; index_column++ ))
+		do
+		column_number_check="${array_column_numbers[${index_column}]}"
+		if [ $(echo "${column_number_check}" | tr -dc [[:digit:]] | wc -c ) -eq 0 ]
+			then
+			next_step 0
+			#
+			##
+			clean_temp
+			##
+			#
+			web_alert_message \
+			-c "red,white" \
+			"Error: \"-N\" arg must be [digit<,digit,digit...>] ."
+		fi
+	done
+	: array_column_numbers[@]
+	#
+	local IFS=$'\n'
+		threshold=${#}
+		args=( $(for (( num=1 ; num <= ${threshold} ; num++ ))
+					do
+					echo "${1}"
+					shift
+				done) )
+	local IFS=$' \t\n'
+	: args[@]
+	#
+	if [ ${#table_titles} -eq 0 ]
+		then
+		table_titles="$(for ((index_titles=1 ; index_titles <= ${#array_column_numbers[@]} ; index_titles++ ))
+					do
+					echo -en "Table ${index_titles},"
+				done )"
+		eval args=( 
+			"$(echo "\"Table 1\"") $(for ((index_args=0 ; index_args <= ${#args[@]} ; index_args++ ))
+							do
+							progr_arg="${args[${index_args}]}"
+							echo -en "\"${progr_arg}\" "
+						done ) $(for ((index_titles=2 ; index_titles <= ${#array_column_numbers[@]} ; index_titles++ ))
+							do
+							echo -en "\"Table ${index_titles}\" "
+						done )" 
+			)
+			 
+	fi
+	: table_titles
+	local IFS=$','
+	array_table_titles=( ${table_titles} )
+	local IFS=$' \t\n'
+	: array_table_titles[@]
+	#
+	cat <<-BLOCCO_HTML__web_tables_header
+	Content-type: text/html
+	Set-Cookie: ${nome_cookie}="${valore_cookie}"
+	
+	<!DOCTYPE html>
+	<html>
+		<head>
+			<meta content="text/html; charset=ISO-8859-1" http-equiv="content-type">
+			<title>${FUNCT_TITLE}</title>
+			<style type="text/css">
+				body
+					{
+					background-color:${page_color};
+					color:blue;
+					font-size:12px;
+					text-align:center;
+					}
+				#box
+					{
+					background-color:${page_color};
+					color:${text_color};
+					font-size:14px;
+					text-align:center;
+					}
+				#tables_box
+					{
+					background-color:${table_page_color};
+					color:${text_color};
+					font-size:14px;
+					text-align:center;
+					}
+				#tables
+					{
+					background-color:${table_page_color};
+					color:${table_text_color};
+					font-size:14px;
+					text-align:center;
+					}
+			</style>
+		</head>
+		<body>
+			<br>
+			<form method=post action="$(basename ${0})" name="web_tables">
+				<table id="box" align="center" border=1 cellspacing=2 cellpadding=2>
+					<tr>
+						<td>
+							<table align="center" border=1 cellspacing=0 cellpadding=2>
+								<tr>
+									<td colspan=2>
+									<b>${FUNCT_TITLE}</b>
+									</td>
+								</tr>
+								<tr>
+									<td align="center">
+				
+BLOCCO_HTML__web_tables_header
+	
+	for ((index_tables=0 ; index_tables < ${#array_column_numbers[@]} ; index_tables++ ))
+		do
+		#
+		: array_table_titles[@]
+		table_title="${array_table_titles[${index_tables}]}"
+		next_table_title="${array_table_titles[$(( ${index_tables} + 1 ))]}"
+		: table_title
+		#
+		: array_column_numbers[@]
+		column_number="${array_column_numbers[${index_tables}]}"
+		: column_number
+		#
+		cat <<-BLOCCO_HTML__web_tables
+										<table id="tables_box" align="center" width="95%" border=1 cellspacing=2 cellpadding=2>
+											<br>
+											<tr>
+												<td>
+													<br>
+													<strong>${table_title}</strong>
+													<br>
+													<br>
+												</td>
+											</tr>
+											<tr>
+												<td align="right">
+													<br>
+													<table id="tables" align="center" width="95%" align="center" border="1" cellspacing="1">
+														<tr>
+							$(
+							grassetto="YES"
+							count_while_loop_1=1
+							count_while_loop_2=1
+							for ((index_table=0 ; index_table <= ${#args[@]} ; index_table++ ))
+								do
+								arg="${args[${index_table}]}"
+								#
+								# restart from last "index_table" related to last "table_title" :
+								[ "${arg}" != "${table_title}" ] && continue 1 # find proper loop to do that...
+								[ "${arg}" = "${table_title}" ] && export index_table=$(( ${index_table} + 1 )) && break 1 # set "${index_table} + 1" and break current loop...
+								#
+							done
+							for (( ; index_table <= ${#args[@]} ; index_table++ ))
+								do
+								arg="${args[${index_table}]}"
+								#
+								[ "${arg}" = "${next_table_title}" ] && export index_table=$(( ${index_table} + 1 )) && continue 2 # return to main "for loop" when "${next_table_title}" is found...
+								#
+								##
+								#
+								[ "${arg}" = "NULL" ] && arg="//"
+								#
+								if [ "${grassetto}" = "YES" ]
+									then
+									: column_number
+									while [ ${count_while_loop_1} -le ${column_number} ]
+										do
+										: arg
+										echo -n "<td><strong><em>${arg}</em></strong></td> "
+										#
+										count_while_loop_1=$(( ${count_while_loop_1} + 1 ))
+										continue 2
+										#
+									done
+									#
+									grassetto="NO"
+									#
+								else
+									: column_number
+									while [ ${count_while_loop_2} -le ${column_number} ]
+										do
+										: arg
+										echo -n "<td><em>${arg}</em></td> "
+										#
+										count_while_loop_2=$(( ${count_while_loop_2} + 1 ))
+										continue 2
+										#
+									done
+									#
+									count_while_loop_2=1
+									#
+								fi
+								#
+								[ ${index_table} -lt ${#args[@]} ] && index_table=$(( ${index_table} - 1 )) # This because 
+								echo -e "</tr><tr>"
+								#
+							done && unset grassetto )
+														</tr>       
+													</table>
+													<br>
+												</td>
+											</tr>
+										</table>
+										<br>
+BLOCCO_HTML__web_tables
+	#
+	#
+	#
+	done # for index in ((index_tables=0 ; index_tables < ${#array_column_numbers[@]} ; index_tables++ ))
+	#
+	#
+	#
+	#
+	#
+	#
+	cat <<-BLOCCO_HTML__web_tables_tail
+										<br>
+										<table align="center" width="100%" border=0 cellspacing=0 cellpadding=2>
+											<tr>
+												<td colspan=2 align="center">
+													<input type=hidden name=step VALUE=${step}>
+													<input type=submit name=submit value="OK">
+													<br>
+													<br>   
+												</td>
+											</tr>
+										</table>
+									</td>
+								</tr>
+							</table>
+						</td>
+					</tr>
+				</table>
+			</form>
+			<br>
+			<br>
+			<hr width="90%">
+			<br>
+			Powered by ${LIB_NAME} vers. ${LIB_VERSION}
+		</body>
+	</html>
+
+BLOCCO_HTML__web_tables_tail
+	#
+	#
+	#
+	#
+	exit
+	}
+#
+#
+#
+#
+#
+# CHECK!!!!!!!!!!!!!!!!!!!
+find_values_in_mysql_row()
+	{
+	#verifica_se_insieme_di_valori_risulta_in_riga_mysql "[nome database]" "[colonna1,colonna2,ecc]" "[nome tabella]" "[valore1,valore2,ecc.]"
+	#1)
+	nome_database="${1}"
+	#2)
+	colonne="${2}"
+	IFS=$',' && array_colonne=( $(echo "${2}") ) && IFS=$' \t\n'
+	#3)
+	nome_tabella="${3}"
+	#4)
+	IFS=$',' && array_valori=( $(echo "${4}") ) && IFS=$' \t\n'
+	stringa_valori="$(for ((index=0 ; index < ${#array_valori[@]} ; index++ ))
+				do
+				echo -n ".*\<${array_valori[${index}]}\>"
+			done)"
+	#
+	#
+	IFS=$'\n' && array_valori__riga_mysql=( $(read_mysql "${nome_database}" "${colonne}" "${nome_tabella}") ) && IFS=$' \t\n' && unset array_valori__riga_mysql[0]
+	#
+	#
+	for ((index=1 ; index <= ${#array_valori__riga_mysql[@]} ; index++ ))
+		do
+		if [ $(echo -n "${array_valori__riga_mysql[${index}]}" | grep ${stringa_valori} | wc -c) -gt 0 ]
+			then
+			echo -n "YES_"
+		else
+			echo -n "NO_"
+		fi
+	done
+	}
+#
+##
+#
+outputta_myme-types()
+	{
+	echo "
+	.3dm 	x-world/x-3dmf
+	.3dmf 	x-world/x-3dmf
+	.a 	application/octet-stream
+	.aab 	application/x-authorware-bin
+	.aam 	application/x-authorware-map
+	.aas 	application/x-authorware-seg
+	.abc 	text/vnd.abc
+	.acgi 	text/html
+	.afl 	video/animaflex
+	.ai 	application/postscript
+	.aif 	audio/aiff
+	.aif 	audio/x-aiff
+	.aifc 	audio/aiff
+	.aifc 	audio/x-aiff
+	.aiff 	audio/aiff
+	.aiff 	audio/x-aiff
+	.aim 	application/x-aim
+	.aip 	text/x-audiosoft-intra
+	.ani 	application/x-navi-animation
+	.aos 	application/x-nokia-9000-communicator-add-on-software
+	.aps 	application/mime
+	.arc 	application/octet-stream
+	.arj 	application/arj
+	.arj 	application/octet-stream
+	.art 	image/x-jg
+	.asf 	video/x-ms-asf
+	.asm 	text/x-asm
+	.asp 	text/asp
+	.asx 	application/x-mplayer2
+	.asx 	video/x-ms-asf
+	.asx 	video/x-ms-asf-plugin
+	.au 	audio/basic
+	.au 	audio/x-au
+	.avi 	application/x-troff-msvideo
+	.avi 	video/avi
+	.avi 	video/msvideo
+	.avi 	video/x-msvideo
+	.avs 	video/avs-video
+	.bcpio 	application/x-bcpio
+	.bin 	application/mac-binary
+	.bin 	application/macbinary
+	.bin 	application/octet-stream
+	.bin 	application/x-binary
+	.bin 	application/x-macbinary
+	.bm 	image/bmp
+	.bmp 	image/bmp
+	.bmp 	image/x-windows-bmp
+	.boo 	application/book
+	.book 	application/book
+	.boz 	application/x-bzip2
+	.bsh 	application/x-bsh
+	.bz 	application/x-bzip
+	.bz2 	application/x-bzip2
+	.c 	text/plain
+	.c 	text/x-c
+	.c++ 	text/plain
+	.cat 	application/vnd.ms-pki.seccat
+	.cc 	text/plain
+	.cc 	text/x-c
+	.ccad 	application/clariscad
+	.cco 	application/x-cocoa
+	.cdf 	application/cdf
+	.cdf 	application/x-cdf
+	.cdf 	application/x-netcdf
+	.cer 	application/pkix-cert
+	.cer 	application/x-x509-ca-cert
+	.cha 	application/x-chat
+	.chat 	application/x-chat
+	.class 	application/java
+	.class 	application/java-byte-code
+	.class 	application/x-java-class
+	.com 	application/octet-stream
+	.com 	text/plain
+	.conf 	text/plain
+	.cpio 	application/x-cpio
+	.cpp 	text/x-c
+	.cpt 	application/mac-compactpro
+	.cpt 	application/x-compactpro
+	.cpt 	application/x-cpt
+	.crl 	application/pkcs-crl
+	.crl 	application/pkix-crl
+	.crt 	application/pkix-cert
+	.crt 	application/x-x509-ca-cert
+	.crt 	application/x-x509-user-cert
+	.csh 	application/x-csh
+	.csh 	text/x-script.csh
+	.css 	application/x-pointplus
+	.css 	text/css
+	.cxx 	text/plain
+	.dcr 	application/x-director
+	.deepv 	application/x-deepv
+	.def 	text/plain
+	.der 	application/x-x509-ca-cert
+	.dif 	video/x-dv
+	.dir 	application/x-director
+	.dl 	video/dl
+	.dl 	video/x-dl
+	.doc 	application/msword
+	.dot 	application/msword
+	.dp 	application/commonground
+	.drw 	application/drafting
+	.dump 	application/octet-stream
+	.dv 	video/x-dv
+	.dvi 	application/x-dvi
+	.dwf 	drawing/x-dwf (old)
+	.dwf 	model/vnd.dwf
+	.dwg 	application/acad
+	.dwg 	image/vnd.dwg
+	.dwg 	image/x-dwg
+	.dxf 	application/dxf
+	.dxf 	image/vnd.dwg
+	.dxf 	image/x-dwg
+	.dxr 	application/x-director
+	.el 	text/x-script.elisp
+	.elc 	application/x-bytecode.elisp (compiled elisp)
+	.elc 	application/x-elc
+	.env 	application/x-envoy
+	.eps 	application/postscript
+	.es 	application/x-esrehber
+	.etx 	text/x-setext
+	.evy 	application/envoy
+	.evy 	application/x-envoy
+	.exe 	application/octet-stream
+	.f 	text/plain
+	.f 	text/x-fortran
+	.f77 	text/x-fortran
+	.f90 	text/plain
+	.f90 	text/x-fortran
+	.fdf 	application/vnd.fdf
+	.fif 	application/fractals
+	.fif 	image/fif
+	.fli 	video/fli
+	.fli 	video/x-fli
+	.flo 	image/florian
+	.flx 	text/vnd.fmi.flexstor
+	.fmf 	video/x-atomic3d-feature
+	.for 	text/plain
+	.for 	text/x-fortran
+	.fpx 	image/vnd.fpx
+	.fpx 	image/vnd.net-fpx
+	.frl 	application/freeloader
+	.funk 	audio/make
+	.g 	text/plain
+	.g3 	image/g3fax
+	.gif 	image/gif
+	.gl 	video/gl
+	.gl 	video/x-gl
+	.gsd 	audio/x-gsm
+	.gsm 	audio/x-gsm
+	.gsp 	application/x-gsp
+	.gss 	application/x-gss
+	.gtar 	application/x-gtar
+	.gz 	application/x-compressed
+	.gz 	application/x-gzip
+	.gzip 	application/x-gzip
+	.gzip 	multipart/x-gzip
+	.h 	text/plain
+	.h 	text/x-h
+	.hdf 	application/x-hdf
+	.help 	application/x-helpfile
+	.hgl 	application/vnd.hp-hpgl
+	.hh 	text/plain
+	.hh 	text/x-h
+	.hlb 	text/x-script
+	.hlp 	application/hlp
+	.hlp 	application/x-helpfile
+	.hlp 	application/x-winhelp
+	.hpg 	application/vnd.hp-hpgl
+	.hpgl 	application/vnd.hp-hpgl
+	.hqx 	application/binhex
+	.hqx 	application/binhex4
+	.hqx 	application/mac-binhex
+	.hqx 	application/mac-binhex40
+	.hqx 	application/x-binhex40
+	.hqx 	application/x-mac-binhex40
+	.hta 	application/hta
+	.htc 	text/x-component
+	.htm 	text/html
+	.html 	text/html
+	.htmls 	text/html
+	.htt 	text/webviewhtml
+	.htx 	text/html
+	.ice 	x-conference/x-cooltalk
+	.ico 	image/x-icon
+	.idc 	text/plain
+	.ief 	image/ief
+	.iefs 	image/ief
+	.iges 	application/iges
+	.iges 	model/iges
+	.igs 	application/iges
+	.igs 	model/iges
+	.ima 	application/x-ima
+	.imap 	application/x-httpd-imap
+	.inf 	application/inf
+	.ins 	application/x-internett-signup
+	.ip 	application/x-ip2
+	.isu 	video/x-isvideo
+	.it 	audio/it
+	.iv 	application/x-inventor
+	.ivr 	i-world/i-vrml
+	.ivy 	application/x-livescreen
+	.jam 	audio/x-jam
+	.jav 	text/plain
+	.jav 	text/x-java-source
+	.java 	text/plain
+	.java 	text/x-java-source
+	.jcm 	application/x-java-commerce
+	.jfif 	image/jpeg
+	.jfif 	image/pjpeg
+	.jfif-tbnl 	image/jpeg
+	.jpe 	image/jpeg
+	.jpe 	image/pjpeg
+	.jpeg 	image/jpeg
+	.jpeg 	image/pjpeg
+	.jpg 	image/jpeg
+	.jpg 	image/pjpeg
+	.jps 	image/x-jps
+	.js 	application/x-javascript
+	.jut 	image/jutvision
+	.kar 	audio/midi
+	.kar 	music/x-karaoke
+	.ksh 	application/x-ksh
+	.ksh 	text/x-script.ksh
+	.la 	audio/nspaudio
+	.la 	audio/x-nspaudio
+	.lam 	audio/x-liveaudio
+	.latex 	application/x-latex
+	.lha 	application/lha
+	.lha 	application/octet-stream
+	.lha 	application/x-lha
+	.lhx 	application/octet-stream
+	.list 	text/plain
+	.lma 	audio/nspaudio
+	.lma 	audio/x-nspaudio
+	.log 	text/plain
+	.lsp 	application/x-lisp
+	.lsp 	text/x-script.lisp
+	.lst 	text/plain
+	.lsx 	text/x-la-asf
+	.ltx 	application/x-latex
+	.lzh 	application/octet-stream
+	.lzh 	application/x-lzh
+	.lzx 	application/lzx
+	.lzx 	application/octet-stream
+	.lzx 	application/x-lzx
+	.m 	text/plain
+	.m 	text/x-m
+	.m1v 	video/mpeg
+	.m2a 	audio/mpeg
+	.m2v 	video/mpeg
+	.m3u 	audio/x-mpequrl
+	.man 	application/x-troff-man
+	.map 	application/x-navimap
+	.mar 	text/plain
+	.mbd 	application/mbedlet
+	.mc$ 	application/x-magic-cap-package-1.0
+	.mcd 	application/mcad
+	.mcd 	application/x-mathcad
+	.mcf 	image/vasa
+	.mcf 	text/mcf
+	.mcp 	application/netmc
+	.me 	application/x-troff-me
+	.mht 	message/rfc822
+	.mhtml 	message/rfc822
+	.mid 	application/x-midi
+	.mid 	audio/midi
+	.mid 	audio/x-mid
+	.mid 	audio/x-midi
+	.mid 	music/crescendo
+	.mid 	x-music/x-midi
+	.midi 	application/x-midi
+	.midi 	audio/midi
+	.midi 	audio/x-mid
+	.midi 	audio/x-midi
+	.midi 	music/crescendo
+	.midi 	x-music/x-midi
+	.mif 	application/x-frame
+	.mif 	application/x-mif
+	.mime 	message/rfc822
+	.mime 	www/mime
+	.mjf 	audio/x-vnd.audioexplosion.mjuicemediafile
+	.mjpg 	video/x-motion-jpeg
+	.mm 	application/base64
+	.mm 	application/x-meme
+	.mme 	application/base64
+	.mod 	audio/mod
+	.mod 	audio/x-mod
+	.moov 	video/quicktime
+	.mov 	video/quicktime
+	.movie 	video/x-sgi-movie
+	.mp2 	audio/mpeg
+	.mp2 	audio/x-mpeg
+	.mp2 	video/mpeg
+	.mp2 	video/x-mpeg
+	.mp2 	video/x-mpeq2a
+	.mp3 	audio/mpeg3
+	.mp3 	audio/x-mpeg-3
+	.mp3 	video/mpeg
+	.mp3 	video/x-mpeg
+	.mpa 	audio/mpeg
+	.mpa 	video/mpeg
+	.mpc 	application/x-project
+	.mpe 	video/mpeg
+	.mpeg 	video/mpeg
+	.mpg 	audio/mpeg
+	.mpg 	video/mpeg
+	.mpga 	audio/mpeg
+	.mpp 	application/vnd.ms-project
+	.mpt 	application/x-project
+	.mpv 	application/x-project
+	.mpx 	application/x-project
+	.mrc 	application/marc
+	.ms 	application/x-troff-ms
+	.mv 	video/x-sgi-movie
+	.my 	audio/make
+	.mzz 	application/x-vnd.audioexplosion.mzz
+	.nap 	image/naplps
+	.naplps 	image/naplps
+	.nc 	application/x-netcdf
+	.ncm 	application/vnd.nokia.configuration-message
+	.nif 	image/x-niff
+	.niff 	image/x-niff
+	.nix 	application/x-mix-transfer
+	.nsc 	application/x-conference
+	.nvd 	application/x-navidoc
+	.o 	application/octet-stream
+	.oda 	application/oda
+	.omc 	application/x-omc
+	.omcd 	application/x-omcdatamaker
+	.omcr 	application/x-omcregerator
+	.p 	text/x-pascal
+	.p10 	application/pkcs10
+	.p10 	application/x-pkcs10
+	.p12 	application/pkcs-12
+	.p12 	application/x-pkcs12
+	.p7a 	application/x-pkcs7-signature
+	.p7c 	application/pkcs7-mime
+	.p7c 	application/x-pkcs7-mime
+	.p7m 	application/pkcs7-mime
+	.p7m 	application/x-pkcs7-mime
+	.p7r 	application/x-pkcs7-certreqresp
+	.p7s 	application/pkcs7-signature
+	.part 	application/pro_eng
+	.pas 	text/pascal
+	.pbm 	image/x-portable-bitmap
+	.pcl 	application/vnd.hp-pcl
+	.pcl 	application/x-pcl
+	.pct 	image/x-pict
+	.pcx 	image/x-pcx
+	.pdb 	chemical/x-pdb
+	.pdf 	application/pdf
+	.pfunk 	audio/make
+	.pfunk 	audio/make.my.funk
+	.pgm 	image/x-portable-graymap
+	.pgm 	image/x-portable-greymap
+	.pic 	image/pict
+	.pict 	image/pict
+	.pkg 	application/x-newton-compatible-pkg
+	.pko 	application/vnd.ms-pki.pko
+	.pl 	text/plain
+	.pl 	text/x-script.perl
+	.plx 	application/x-pixclscript
+	.pm 	image/x-xpixmap
+	.pm 	text/x-script.perl-module
+	.pm4 	application/x-pagemaker
+	.pm5 	application/x-pagemaker
+	.png 	image/png
+	.pnm 	application/x-portable-anymap
+	.pnm 	image/x-portable-anymap
+	.pot 	application/mspowerpoint
+	.pot 	application/vnd.ms-powerpoint
+	.pov 	model/x-pov
+	.ppa 	application/vnd.ms-powerpoint
+	.ppm 	image/x-portable-pixmap
+	.pps 	application/mspowerpoint
+	.pps 	application/vnd.ms-powerpoint
+	.ppt 	application/mspowerpoint
+	.ppt 	application/powerpoint
+	.ppt 	application/vnd.ms-powerpoint
+	.ppt 	application/x-mspowerpoint
+	.ppz 	application/mspowerpoint
+	.pre 	application/x-freelance
+	.prt 	application/pro_eng
+	.ps 	application/postscript
+	.psd 	application/octet-stream
+	.pvu 	paleovu/x-pv
+	.pwz 	application/vnd.ms-powerpoint
+	.py 	text/x-script.phyton
+	.pyc 	applicaiton/x-bytecode.python
+	.qcp 	audio/vnd.qcelp
+	.qd3 	x-world/x-3dmf
+	.qd3d 	x-world/x-3dmf
+	.qif 	image/x-quicktime
+	.qt 	video/quicktime
+	.qtc 	video/x-qtc
+	.qti 	image/x-quicktime
+	.qtif 	image/x-quicktime
+	.ra 	audio/x-pn-realaudio
+	.ra 	audio/x-pn-realaudio-plugin
+	.ra 	audio/x-realaudio
+	.ram 	audio/x-pn-realaudio
+	.ras 	application/x-cmu-raster
+	.ras 	image/cmu-raster
+	.ras 	image/x-cmu-raster
+	.rast 	image/cmu-raster
+	.rexx 	text/x-script.rexx
+	.rf 	image/vnd.rn-realflash
+	.rgb 	image/x-rgb
+	.rm 	application/vnd.rn-realmedia
+	.rm 	audio/x-pn-realaudio
+	.rmi 	audio/mid
+	.rmm 	audio/x-pn-realaudio
+	.rmp 	audio/x-pn-realaudio
+	.rmp 	audio/x-pn-realaudio-plugin
+	.rng 	application/ringing-tones
+	.rng 	application/vnd.nokia.ringing-tone
+	.rnx 	application/vnd.rn-realplayer
+	.roff 	application/x-troff
+	.rp 	image/vnd.rn-realpix
+	.rpm 	audio/x-pn-realaudio-plugin
+	.rt 	text/richtext
+	.rt 	text/vnd.rn-realtext
+	.rtf 	application/rtf
+	.rtf 	application/x-rtf
+	.rtf 	text/richtext
+	.rtx 	application/rtf
+	.rtx 	text/richtext
+	.rv 	video/vnd.rn-realvideo
+	.s 	text/x-asm
+	.s3m 	audio/s3m
+	.saveme 	application/octet-stream
+	.sbk 	application/x-tbook
+	.scm 	application/x-lotusscreencam
+	.scm 	text/x-script.guile
+	.scm 	text/x-script.scheme
+	.scm 	video/x-scm
+	.sdml 	text/plain
+	.sdp 	application/sdp
+	.sdp 	application/x-sdp
+	.sdr 	application/sounder
+	.sea 	application/sea
+	.sea 	application/x-sea
+	.set 	application/set
+	.sgm 	text/sgml
+	.sgm 	text/x-sgml
+	.sgml 	text/sgml
+	.sgml 	text/x-sgml
+	.sh 	application/x-bsh
+	.sh 	application/x-sh
+	.sh 	application/x-shar
+	.sh 	text/x-script.sh
+	.shar 	application/x-bsh
+	.shar 	application/x-shar
+	.shtml 	text/html
+	.shtml 	text/x-server-parsed-html
+	.sid 	audio/x-psid
+	.sit 	application/x-sit
+	.sit 	application/x-stuffit
+	.skd 	application/x-koan
+	.skm 	application/x-koan
+	.skp 	application/x-koan
+	.skt 	application/x-koan
+	.sl 	application/x-seelogo
+	.smi 	application/smil
+	.smil 	application/smil
+	.snd 	audio/basic
+	.snd 	audio/x-adpcm
+	.sol 	application/solids
+	.spc 	application/x-pkcs7-certificates
+	.spc 	text/x-speech
+	.spl 	application/futuresplash
+	.spr 	application/x-sprite
+	.sprite 	application/x-sprite
+	.src 	application/x-wais-source
+	.ssi 	text/x-server-parsed-html
+	.ssm 	application/streamingmedia
+	.sst 	application/vnd.ms-pki.certstore
+	.step 	application/step
+	.stl 	application/sla
+	.stl 	application/vnd.ms-pki.stl
+	.stl 	application/x-navistyle
+	.stp 	application/step
+	.sv4cpio 	application/x-sv4cpio
+	.sv4crc 	application/x-sv4crc
+	.svf 	image/vnd.dwg
+	.svf 	image/x-dwg
+	.svr 	application/x-world
+	.svr 	x-world/x-svr
+	.swf 	application/x-shockwave-flash
+	.t 	application/x-troff
+	.talk 	text/x-speech
+	.tar 	application/x-tar
+	.tbk 	application/toolbook
+	.tbk 	application/x-tbook
+	.tcl 	application/x-tcl
+	.tcl 	text/x-script.tcl
+	.tcsh 	text/x-script.tcsh
+	.tex 	application/x-tex
+	.texi 	application/x-texinfo
+	.texinfo 	application/x-texinfo
+	.text 	application/plain
+	.text 	text/plain
+	.tgz 	application/gnutar
+	.tgz 	application/x-compressed
+	.tif 	image/tiff
+	.tif 	image/x-tiff
+	.tiff 	image/tiff
+	.tiff 	image/x-tiff
+	.tr 	application/x-troff
+	.tsi 	audio/tsp-audio
+	.tsp 	application/dsptype
+	.tsp 	audio/tsplayer
+	.tsv 	text/tab-separated-values
+	.turbot 	image/florian
+	.txt 	text/plain
+	.uil 	text/x-uil
+	.uni 	text/uri-list
+	.unis 	text/uri-list
+	.unv 	application/i-deas
+	.uri 	text/uri-list
+	.uris 	text/uri-list
+	.ustar 	application/x-ustar
+	.ustar 	multipart/x-ustar
+	.uu 	application/octet-stream
+	.uu 	text/x-uuencode
+	.uue 	text/x-uuencode
+	.vcd 	application/x-cdlink
+	.vcs 	text/x-vcalendar
+	.vda 	application/vda
+	.vdo 	video/vdo
+	.vew 	application/groupwise
+	.viv 	video/vivo
+	.viv 	video/vnd.vivo
+	.vivo 	video/vivo
+	.vivo 	video/vnd.vivo
+	.vmd 	application/vocaltec-media-desc
+	.vmf 	application/vocaltec-media-file
+	.voc 	audio/voc
+	.voc 	audio/x-voc
+	.vos 	video/vosaic
+	.vox 	audio/voxware
+	.vqe 	audio/x-twinvq-plugin
+	.vqf 	audio/x-twinvq
+	.vql 	audio/x-twinvq-plugin
+	.vrml 	application/x-vrml
+	.vrml 	model/vrml
+	.vrml 	x-world/x-vrml
+	.vrt 	x-world/x-vrt
+	.vsd 	application/x-visio
+	.vst 	application/x-visio
+	.vsw 	application/x-visio
+	.w60 	application/wordperfect6.0
+	.w61 	application/wordperfect6.1
+	.w6w 	application/msword
+	.wav 	audio/wav
+	.wav 	audio/x-wav
+	.wb1 	application/x-qpro
+	.wbmp 	image/vnd.wap.wbmp
+	.web 	application/vnd.xara
+	.wiz 	application/msword
+	.wk1 	application/x-123
+	.wmf 	windows/metafile
+	.wml 	text/vnd.wap.wml
+	.wmlc 	application/vnd.wap.wmlc
+	.wmls 	text/vnd.wap.wmlscript
+	.wmlsc 	application/vnd.wap.wmlscriptc
+	.word 	application/msword
+	.wp 	application/wordperfect
+	.wp5 	application/wordperfect
+	.wp5 	application/wordperfect6.0
+	.wp6 	application/wordperfect
+	.wpd 	application/wordperfect
+	.wpd 	application/x-wpwin
+	.wq1 	application/x-lotus
+	.wri 	application/mswrite
+	.wri 	application/x-wri
+	.wrl 	application/x-world
+	.wrl 	model/vrml
+	.wrl 	x-world/x-vrml
+	.wrz 	model/vrml
+	.wrz 	x-world/x-vrml
+	.wsc 	text/scriplet
+	.wsrc 	application/x-wais-source
+	.wtk 	application/x-wintalk
+	.xbm 	image/x-xbitmap
+	.xbm 	image/x-xbm
+	.xbm 	image/xbm
+	.xdr 	video/x-amt-demorun
+	.xgz 	xgl/drawing
+	.xif 	image/vnd.xiff
+	.xl 	application/excel
+	.xla 	application/excel
+	.xla 	application/x-excel
+	.xla 	application/x-msexcel
+	.xlb 	application/excel
+	.xlb 	application/vnd.ms-excel
+	.xlb 	application/x-excel
+	.xlc 	application/excel
+	.xlc 	application/vnd.ms-excel
+	.xlc 	application/x-excel
+	.xld 	application/excel
+	.xld 	application/x-excel
+	.xlk 	application/excel
+	.xlk 	application/x-excel
+	.xll 	application/excel
+	.xll 	application/vnd.ms-excel
+	.xll 	application/x-excel
+	.xlm 	application/excel
+	.xlm 	application/vnd.ms-excel
+	.xlm 	application/x-excel
+	.xls 	application/excel
+	.xls 	application/vnd.ms-excel
+	.xls 	application/x-excel
+	.xls 	application/x-msexcel
+	.xlt 	application/excel
+	.xlt 	application/x-excel
+	.xlv 	application/excel
+	.xlv 	application/x-excel
+	.xlw 	application/excel
+	.xlw 	application/vnd.ms-excel
+	.xlw 	application/x-excel
+	.xlw 	application/x-msexcel
+	.xm 	audio/xm
+	.xml 	application/xml
+	.xml 	text/xml
+	.xmz 	xgl/movie
+	.xpix 	application/x-vnd.ls-xpix
+	.xpm 	image/x-xpixmap
+	.xpm 	image/xpm
+	.x-png 	image/png
+	.xsr 	video/x-amt-showrun
+	.xwd 	image/x-xwd
+	.xwd 	image/x-xwindowdump
+	.xyz 	chemical/x-pdb
+	.z 	application/x-compress
+	.z 	application/x-compressed
+	.zip 	application/x-compressed
+	.zip 	application/x-zip-compressed
+	.zip 	application/zip
+	.zip 	multipart/x-zip
+	.zoo 	application/octet-stream
+	.zsh 	text/x-script.zsh
+	"
+	}
+#
+##
+#
+##########################################################################################################
+# __(NOTES)__
+#
+#UPLOAD FILE: file_upload__cgi "< progressive form number >" "[page color]" "[text color]" "[file extension]" "[MAX dimension in kb]"
+#     => ${uploaded_file_name}
+#
+##
+#
+##get_all_mysql_table_ids "[database name]" "[table name]" "<order by column>"(optional)
+#
+##read_mysql "[database name]" "[column_1,column_2,etc.]" "[table name]" "<order by column>"(optional)
+#
+##read_mysql_row "[database name]" "[id]" "[table name]"
+#
+##insert_mysql "[database name]" "[column_1,column_2,etc.]" "[table name]" "['value_1','value_2',etc.]"
+#
+##change_empty_values_in_NULL "variable_name_1" "variable_name_2" etc.
+#
+##cancel_mysql "[database name]" "[ref. column]" "[table name]" "[value if found, mysql deletes the row]"
+#
+##update_mysql "[database name]" "[ref. column]" "[table name]" "[ value if found, mysql updates the row]" "[column_1='value_1',column_2='value_2',etc.]"
+#
+##find_values_in_mysql_row "[database name]" "[column_1,column_2,etc]" "[table name]" "[value_1,value_2,etc.]"
+#
+##########################################################################################################
+#
+#
+######################
+#################
+###########
+#####
+##
+#
+start #let's groove!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! ;D

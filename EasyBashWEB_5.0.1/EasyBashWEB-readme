@@ -1,0 +1,257 @@
+Project EasyBashWEB.
+
+
+Intro.
+
+EasyBashWEB is a bash function library that aims to give scripters simple web page creation functions to write in a script launched by http server ( CGI technology ) .
+Since the goal is simplicity, web interactivity is very limited: the concept is EasyBashGUI (http://sites.google.com/site/easybashgui). 
+EasyBashWEB aims to be for Web, what EasyBashGUI is for local machine.
+
+
+
+
+
+
+
+Library functions.
+web_question
+web_message
+web_ok_message
+web_alert_message
+web_preformatted_message
+web_final_message
+web_text
+web_menu
+web_list
+web_input
+web_adjust
+web_itable
+web_tables
+
+(To do)
+web_fselect (= "file select" )
+
+
+
+
+
+
+
+How to install and use.
+
+Extract all files...
+(e.g.: >tar -xzvf EasyBashWEB_X.X.X )
+
+Cd in ./EasyBashWEB source dir...
+(e.g.: >cd ./EasyBashWEB_X.X.X )
+
+Install it (as root)...
+(e.g.: #sudo make install )
+ 
+That's it !!!!!
+
+
+
+If you want use it in your http webserver side "cgi" scripts, simply source "easybashweb" before use...
+(e.g.: "source easybashweb" )
+
+And don't forget to use "web_final_message" function at the end of all your scripts... -or use clean_temp() somewhere- ;-)
+
+E.g.:
+-------------------
+#!/bin/bash
+HOME="/var/www"
+PATH="${PATH}:/usr/local/bin"
+#
+source easybashweb
+#
+if [ "${step}" = "0" ]
+	then
+	next_step 1
+	web_message "this"
+fi
+if [ "${step}" = "1" ]
+	then
+	next_step 2
+	web_menu "this" "that"
+fi
+if [ "${step}" = "2" ]
+	then
+	next_step 3
+	web_message "that"
+fi
+if [ "${step}" = "3" ]
+	then
+	next_step 4
+	web_input 2 "text" "foo" "bar" "password" "foo2" "bar2"
+fi
+...
+etc.etc.
+...
+if [ "${step}" = "9" ]
+	then
+	next_step "end"
+	web_final_message "www.google.com" "THE END"
+fi
+-------------------
+
+Enjoy !! :-)
+
+
+
+
+
+
+
+Synopsis.
+
+web_message
+
+	 <-c "[text color],[page color]">
+	 "[text]"
+	 ( 1 argument )
+
+
+
+web_final_message
+
+	  <-c "[text color],[page color]">	  "[URL]" "[text]" 	 ( 2 arguments )
+(0)
+
+
+
+web_text
+
+	 <-c "[text color],[page color]">
+	<-m "[max displayed chars number]">
+	 "(text from StdIn)"
+	 ( no argument )
+
+
+
+
+web_question
+	  <-c "[text color],[page color]">	 "[text]"	 ( 1 argument, box output to "exit_code" variable or "source easybashweb" command's exit code )
+(1)
+
+
+
+
+web_input
+
+	  <-c "[text color],[page color]">	 1 "[type 1]" "[label 1]" "[init 1]"
+	  ( 4 arguments, box output to "${dir_tmp}/${file_tmp}")
+(2)
+ web_input	  <-c "[text color],[page color]">	 2 "[type 1]" "[label 1]" "[init 1]" "[type 2]" "[label 2]" "[init 2]"
+	  ( 7 arguments, box output to "${dir_tmp}/${file_tmp}")
+(2)
+ web_input	  <-c "[text color],[page color]">	 3 "[type 1]" "[label 1]" "[init 1]" "[type 2]" "[label 2]" "[init 2]" "[type 3]" "[label 3]" "[init 3]" 	  ( 10 arguments, box output to "${dir_tmp}/${file_tmp}")
+(2)
+
+
+
+
+
+web_menu
+
+	  <-c "[text color],[page color]">
+<-T "[page title]">
+	 "[item 1]" ... "[item n]"    	  ( [n] arguments, box output to "${dir_tmp}/${file_tmp}" )
+ (3)
+
+
+
+
+
+web_list
+
+	 <-c "[text color],[page color]">
+<-T "[page title]">
+	   <+|->"[item 1]" ... <+|->"[item n]"  	  ( [n] arguments
+optionally prefixed with "+"(plus) or "-"(minus),
+box output to "${dir_tmp}/${file_tmp}" )
+ (3)
+
+
+
+
+web_adjust
+
+	  <-c "[text color],[page color]">	 "[text]" "[min value]" "[init value]" "[max value]"	 ( 4 arguments, box output to "${dir_tmp}/${file_tmp}")
+
+
+
+
+
+web_itable
+
+	  <-c "[text color],[page color]">
+<-C "[table text color],[table page color]">
+<-T "[table title]">
+-N "[table column Number]"
+
+	"[table item 1]" ... "[table item n]"
+	  ( [n] arguments,
+box output to "${dir_tmp}/${file_tmp}" )
+ (4)
+
+
+
+
+web_tables
+
+	  <-c "[text color],[page color]">
+<-C "[table text color],[table page color]">
+-T "[table 1 title],[table 2 title], ...[table n title]"
+-N "[table 1 column Number],[table 2 column Number], ...[table n column Number]"
+
+	 "[table 1 title]" "[table 1 item 1]" ... "[table 1 item n]"
+"[table 2 title]" "[table 2 item 1]" ... "[table 2 item n]"
+...
+"[table n title]" "[table n item 1]" ... "[table n item n]"
+	 ( [n] arguments,
+no box output )
+(5)
+(6)
+
+
+
+
+next_step
+	 	 "[integer]" 	( 1 argument )
+
+
+
+clean_temp           ( no argument )
+
+
+
+
+(O) = "web_final_message" differs from other "web_message" types about temp files cleaning and redirection to other URL: you have to put it always in your script (unless you use "clean_temp()" somewhere) -moreover beware web_final_message() "closes" the user session- otherwise temp files will stay in your server for ever... ;
+(1) = after "web_question" use, you have to check value in "source easybashweb" command's exit status (or, it's the same, in "exit_code" global variable ); values can be: "0" that is "YES", "1"  that is "NOT" ;
+(2) = "web_input" needs "type" argument: it can be "text" or "password", remember to set it ;
+(3) = "web_menu" function allows only one item selected; on the contrary "web_list" allows multiple choices and with "+" or "-" you can tell it to display them already selected or not ;
+(4) = "web_itable" ( = "web interactive table" ) output can be: "NoAction", "Insert", "Modify_[row number]", "Remove_[row number]" -NOTE that table name is optional-;
+(5) = "web_tables" ( = "web multiple tables" ) needs "-N" option not only to know tables column numbers, but actually to understand how many tables do you want draw on page ( -N 3,6,8,1 means: => 4 tables ) -obviously you can set a single table also ( e.g.: web_tables -N 4  "OS" "Creator" "Mascotte" "Family" "Linux" "Torvalds" "Tux" "UNIX" "Windows" "Gates" "a window" "DOS/NT" "FreeBSD" "Berkeley University" "Beastie" "UNIX"  -NOTE that with only one table, table name becomes optional- ) -;
+(6) = "web_tables" ( = "web multiple tables" ) arguments must include table names before table items ( e.g.: web_tables -T "tabella di prova 1,tabella di prova 2,tabella di prova 3" -N 3,2,4      "tabella di prova 1" "io" "NULL" "noi" "NULL" "lui" "lei" "tabella di prova 2" "IO" "TE" "NOI" "VOI" "LUI" "tabella di prova 3" aaa bbb ccc ddd eee fff ggg hhh iii lll mmm NULL  ) ;
+
+
+
+
+
+
+Credits.
+
+I would like to thank Umberto Salsi for "urldecode" binary and its interesting sites on CGI technology
+I would like to thank also Jose Joao Dias de Almeida for the makefile tip.
+
+
+
+
+
+
+
+Please let me know if you think my work is useful.
+Vittorio Cagnetta
+vaisarger@gmail.com
+http://sites.google.com/site/easybashweb
