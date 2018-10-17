@@ -9,6 +9,9 @@ BACKTITLE="POS Application Service"
 TITLE="Development"
 MENU="Selection: "
 
+echo "" >/tmp/MENU2_dia.out
+WIDGET=(--and-widget --keep-window --begin 46 2 --cr-wrap --tailbox /tmp/MENU2_dia.out 30 170)
+
 OPTIONS=( 1 "Running Contianers" 
           2 "Start Container" 
           3 "Stop Container" 
@@ -29,12 +32,13 @@ CHOICE=$(dialog --begin 2 2 \
 		--menu "$MENU" \
 		$HEIGHT $WIDTH $CHOICE_HEIGHT \
 		"${OPTIONS[@]}" \
+		$WIDGET \
 		2>&1 >/dev/tty) 
 
 case $CHOICE in
 	1)
 		$CURRENTDIR/bin/container_status 2>&1 >/tmp/MENU2_dia.out &
-		dialog --keep-window --begin 2 50 --cr-wrap --trim --title "List Running Containers" --backtitle "$BACKTITLE -> Dev / Build" --tailbox /tmp/MENU2_dia.out 30 170 >/dev/tty
+#		dialog --keep-window --begin 2 50 --cr-wrap --trim --title "List Running Containers" --backtitle "$BACKTITLE -> Dev / Build" --tailbox /tmp/MENU2_dia.out 30 170 >/dev/tty
 		;;
 	2)
 		$CURRENTDIR/bin/launch_container

@@ -1,0 +1,162 @@
+#!/usr/bin/env bash
+#
+source easybashgui
+#
+#########################
+# Initial checks...
+#
+if [ -n "${TERM}" ]
+    then
+    if [ $(type -a "${TERM}" 2>/dev/null | wc -c) -gt 0 ]
+        then
+        :
+    elif [ $(type -a rxvt 2>/dev/null | wc -c) -gt 0 ]
+        then
+        TERM="rxvt"
+    elif [ $(type -a xterm 2>/dev/null | wc -c) -gt 0 ]
+        then
+        TERM="xterm"
+    elif [ $(type -a gnome-terminal 2>/dev/null | wc -c) -gt 0 ]
+        then
+        TERM="gnome-terminal"
+    elif [ $(type -a konsole 2>/dev/null | wc -c) -gt 0 ]
+        then
+        TERM="konsole"
+    else
+        alert_message "Err.: \n no terminal in this system ?"
+        exit 1
+    fi
+fi
+#
+########
+for fd in 0 1 2
+    do
+    if [ ! -t ${fd} ]
+        then
+        #
+        ${TERM} -e ${0} && exit
+        #
+    fi
+########
+#
+#####################################################################
+#####################################################################
+##########
+########## main
+##########
+######################################################################
+######################################################################
+#
+#
+#
+#
+clear
+cat <<TITLE
+
+     
+
+                 $(basename "${0}" ) CONSOLE
+
+     
+
+
+     
+
+TITLE
+##
+#
+#
+menu "Use rsync ..." "Use scp ..."
+choice="$( 0< "${dir_tmp}/${file_tmp}" )" ; if_arg_is_an_empty_variable_then_exit "choice"
+#
+if [ "${choice}" = "Use rsync ..." ]
+    then
+    scp_or_rsync="rsync"
+    COMMAND="rsync -az -e ssh"
+    #
+elif [ "${choice}" = "Use scp ..." ]
+    then
+    scp_or_rsync="scp"
+    COMMAND="scp -r"
+    #
+fi
+#
+#
+if [ ${#} -ge 1 ]
+    then
+    how_many_args=${#}
+    IFS=$'\n'
+    file_or_dir_to_copy=( $(for (( num=1 ; num <= ${how_many_args} ; num++ ))
+                                                       do
+                                                    echo "${1}"
+                                                    shift
+                                            done ) )
+    IFS=$' \t\n'
+    #
+else
+    menu "Copy a file ..." "Copy a directory ..."
+    c="$( 0< "${dir_tmp}/${file_tmp}" )" ; if_arg_is_an_empty_variable_then_exit "c"
+    if [ "${c}" = "Copy a file ..." ]
+        then
+        fselect
+        file_or_dir_to_copy="$(0< "${dir_tmp}/${file_tmp}" )"
+        #
+    elif [ "${c}" = "Copy a directory ..." ]
+        then
+        dselect
+        file_or_dir_to_copy="$( 0< "${dir_tmp}/${file_tmp}" )"
+        #
+    fi
+    #
+fi
+if_arg_is_an_empty_variable_then_exit "file_or_dir_to_copy"
+
+#
+input 3 "Remote host IP address" "192.168.1.?" "Remote user" "joe" "Remote dir in wich you want copy your choice" "/home/joe/tmp"
+#
+IFS=$'\n'
+array=( $( 0< "${dir_tmp}/${file_tmp}" ) )
+IFS=$' \t\n'
+remote_ip="${array[0]}" ; if_arg_is_an_empty_variable_then_exit "remote_ip"
+    {
+    if [ $(echo ${remote_ip} | tr -dc [:digit:] | wc -c) -gt 7 ]
+        then
+        : #Don't do anything... it's ok!
+    else
+        #
+        alert_message "Err.: \n IP address not correct !"
+        exit 1
+        #
+    fi
+    }
+user="${array[1]}" ; if_arg_is_an_empty_variable_then_exit "user"
+remote_dir="${array[2]}" ; if_arg_is_an_empty_variable_then_exit "remote_dir"
+ok_message "Next step will be: \n give to \"$(basename "${0}" ) CONSOLE\" \n\n remote user \n ( \"${user}\" ) password \n in remote host \n with ip: \"${remote_ip}\" ... "
+##
+#####
+##########
+#
+{
+eval ${COMMAND} $(for (( index=0 ; index < ${#file_or_dir_to_copy[@]} ; index++ ))
+            do
+            file_or_dir="${file_or_dir_to_copy[${index}]}"
+            echo -n "\"${file_or_dir}\" "
+        done ) ${user}@${remote_ip}:${remote_dir} 2>&1
+} | tee "/tmp/${scp_or_rsync}_log.txt"
+##########
+#####
+##
+#
+if [ $(tr -dc '[[:alnum:]]' 0< "/tmp/${scp_or_rsync}_log.txt" | wc -c ) -gt 0 ]
+    then
+    #
+    alert_message "Command \"${scp_or_rsync}\" \n gave this \n error message : \n\n $( 0< "/tmp/${scp_or_rsync}_log.txt" ) \n\n\n ...Sorry  :( "
+    #
+else
+    #
+    ok_message "Success !"
+    #
+fi
+#
+rm -f "/tmp/${scp_or_rsync}_log.txt" && clean_temp
+done
