@@ -39,8 +39,8 @@ MSCloudServer
       - Update QA repo
       - Promote Production repo
 
-4. Linux Admin - POS Customer Linux Tasks - PENDING QA
+4. Linux Admin - POS Customer Linux Tasks - ONGOING
 
-      - Config Sendgrid SMTP
-      - Convert to Centos
-      - Erik's Daisy Migration
+      - Config Sendgrid SMTP - PENDING QA
+      - Convert to Centos - PENDING QA
+      - Erik's Daisy Migration - PENDING QA
