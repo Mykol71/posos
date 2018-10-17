@@ -32,6 +32,8 @@ systemctl enable nfs-server
 systemctl start rpcbind
 systemctl start nfs-server
 systemctl start rpc-statd
+yum -y groupinstall "Server with GUI"
+yum -y install xterm
 
 #install python-pip
 curl "https://bootstrap.pypa.io/get-pip.py" -o "get-pip.py"
