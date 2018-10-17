@@ -2,15 +2,15 @@ MS Cloud Server
 ---------------
 1. POS Backup Service -	Linux Cloud Backup - ** THIS IS STABLE, SORTA, NO TOUCHY! **
 
-     - [l] List Cloud Accounts 
-     - [c] Create Cloud Account 
-     - [k] Change Cloud Account Key
-     - [v] View Cloud Account Key
-     - [g] Get Cloud Account Key
-     - [d] Delete Cloud Account 
-     - [s] Is Subscriber?
-     - [a] About          
-     - [x] Exit the system 
+      - List Cloud Accounts 
+      - Create Cloud Account 
+      - Change Cloud Account Key
+      - View Cloud Account Key
+      - Get Cloud Account Key
+      - Delete Cloud Account 
+      - Is Subscriber?
+      - About          
+      - Exit the system 
 
 2. POS App Service (SAAS) - Linux Cloud POS App Service - ** WIP **
 
@@ -35,12 +35,12 @@ MS Cloud Server
 
 3. POS CentOS Repo - CentOS Repo Maintenance
 
-   - Install/Upgrade Deps.
-   - Update QA repo
-   - Promote Production repo
+      - Install/Upgrade Deps.
+      - Update QA repo
+      - Promote Production repo
 
 4. Linux Admin - POS Customer Linux Tasks
 
-   - Config Sendgrid SMTP
-   - Convert to Centos
-   - Erik's Daisy Migration
+      - Config Sendgrid SMTP
+      - Convert to Centos
+      - Erik's Daisy Migration
