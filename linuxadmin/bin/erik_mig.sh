@@ -26,7 +26,15 @@ for DRIVE in $DRIVE_LIST
 	do
 #1. Test for USB stick and run the conversion against result if found.
 	echo "Testing $DRIVE.."
+#
+#NEXT LINE NOT DONE
+#HUGE guess. Cant get find a freegin USB stick in this dump
+#Dont have time to screw with it right now
+#
 	udevadm info -a -n `basename $DRIVE` 2>/dev/null | grep Transcend 2>&1 1>/dev/null
+#
+#
+#
 	if [ $? -eq 0 ];
 	then
 		echo "FOUND USB stick at $DRIVE."
