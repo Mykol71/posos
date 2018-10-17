@@ -1,8 +1,18 @@
 MS Cloud Server
 ---------------
-1. POS Backup Service -	Linux Cloud Backup
+1. POS Backup Service -	Linux Cloud Backup - ** THIS IS STABLE, SORTA, NO TOUCHY! **
 
-2. POS App Service (SAAS) - Linux Cloud POS App Service
+     - [l] List Cloud Accounts 
+     - [c] Create Cloud Account 
+     - [k] Change Cloud Account Key
+     - [v] View Cloud Account Key
+     - [g] Get Cloud Account Key
+     - [d] Delete Cloud Account 
+     - [s] Is Subscriber?
+     - [a] About          
+     - [x] Exit the system 
+
+2. POS App Service (SAAS) - Linux Cloud POS App Service - ** WIP **
 
    a. Dev/Build Menu
 
