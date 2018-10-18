@@ -1,15 +1,20 @@
-POS SAAS
---------
-Process to configure a customer:
+POS App Service (SAAS) - Linux Cloud POS App Service
+----------------------------------------------------
+a. Dev/Build Menu - WIP
 
-1. Build base RTI-OS image. (optional)
+  - Media/Image Maintenance
+  - Stage virtual server
+  - Run VM locally in Docker
 
-2. Build rhel7-rti-florist specfic container. (required)
+b. Share-hosted Menu - WIP
 
-3. Test by running container on build machine. (optional)
+  - VPN Maintenance
+  - Upload customer image
+  - Start/Stop customer cloud instance
 
-4. Upload container to AWS. (required)
+c. Self-hosted Menu - WIP
 
-5. Create VPN connection. (required)
-
-6. Start the container as an EC2 instance. (required)
+  - VPN Maintenance
+  - VPC Maintenance
+  - Upload customer image
+  - Start/Stop customer cloud instance
