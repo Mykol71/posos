@@ -43,4 +43,4 @@ MSCloudServer
 
       - Config Sendgrid SMTP - PENDING QA
       - Convert to CentOS - PENDING QA
-      - Erik's Daisy Migration - PENDING QA
+      - Erik's Daisy Conversion - PENDING QA
