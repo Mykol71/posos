@@ -42,5 +42,5 @@ MSCloudServer
 4. Linux Admin - POS Customer Linux Tasks - ONGOING
 
       - Config Sendgrid SMTP - PENDING QA
-      - Convert to Centos - PENDING QA
+      - Convert to CentOS - PENDING QA
       - Erik's Daisy Migration - PENDING QA
