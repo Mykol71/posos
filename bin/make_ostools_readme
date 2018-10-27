@@ -1,0 +1,16 @@
+#!/bin/bash
+
+# verify root
+#ID=$(/usr/bin/id -u)
+#[ $ID -ne 0 ] && echo "You must be root to run $0." && exit 1
+
+#ROOTDIR="$(pwd)"
+#export ROOTDIR
+
+echo "" >$ROOTDIR/ostools/README.md
+
+for SCRIPT in "`ls $ROOTDIR/ostools/*.pl`" ; do
+#pod2html $ROOTDIR/ostools/$SCRIPT 2>>/dev/null >>$ROOTDIR/ostools/README.md
+	pod2html $ROOTDIR/ostools/$SCRIPT
+#	echo "-----------">>$ROOTDIR/ostools/README.md
+done
