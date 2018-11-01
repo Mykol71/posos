@@ -1,8 +1,10 @@
-#-Refresh local mirror
+#-Populate/Refresh local mirror
 
-cd /var/www/html/7/
-rsync -rz --progress rsync://mirrors.ocf.berkeley.edu/centos/7/ .
-createrepo --update /var/www/html/7/os/x86_64
+cd /var/www/html/repos/7/os/x86_64
+rsync -rz --progress rsync://mirrors.ocf.berkeley.edu/centos/7/os/x86_64 .
+createrepo --update /var/www/html/repos/7/os/x86_64/x86_64
+cd x86_64
+echo "CentOS 7.5">.repos
 cd -
 
 #-
