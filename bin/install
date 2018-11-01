@@ -59,6 +59,14 @@ yum -y install anaconda-tui
 find . -name "*monthname.sh" -exec cp -f {} /usr/local/bin/. \;
 find . -name "*recon.sh" -exec cp -f {} /usr/local/bin/. \;
 
+# add tfsupport usr
+#
+# change default home dir to /backups from now now
+# /etc/default/useradd
+# 
+# add /etc/skel/tfrsync
+# in this folder
+#
 # lastly, update everything
 yum -y update
 
