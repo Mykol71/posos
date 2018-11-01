@@ -25,7 +25,6 @@ while :; do
         echo "*                                    *"
 	echo "* [i]  Install/Upgrade Deps.         *"
 	echo "* [d]  Documentation                 *"
-	echo "* [a]  Configure AWS                 *"
 	echo "* [x]  Exit                          *"
 	echo "**************************************"
 	echo -n "Enter selection: "
@@ -40,14 +39,14 @@ while :; do
 		;;
 	1)
 		cd $ROOTDIR/bin
-		./start_ec2_instance
+		./start_repo
 		echo "Press enter to continue.."
 		read
 		cd -
 		;;
 	2)
 		cd $ROOTDIR/bin
-		./stop_ec2_instance
+		./stop_repo
 		echo "Press enter to continue.."
 		read
 		cd -
@@ -62,13 +61,6 @@ while :; do
 	4)
 		cd $ROOTDIR/bin
 		./promote_prod_repo
-		echo "Press enter to continue.."
-		read
-		cd -
-		;;
-	a)
-		cd $ROOTDIR/bin
-		./setup_aws
 		echo "Press enter to continue.."
 		read
 		cd -
