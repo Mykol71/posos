@@ -19,6 +19,7 @@ while :; do
 	echo "* [4] Misc                     *"
 	echo "*                              *"
 	echo "* [a] About                    *"
+	echo "* [i] Install Deps             *"
 	echo "* [x] Exit                     *"
 	echo "********************************"
 	echo -n "Enter selection: "
@@ -49,6 +50,8 @@ while :; do
 		echo "Press enter to continue.."
 		read
 		;;
+	i)
+		$ROOTDIR/bin/install ; echo "Press enter to continue.." ; read ;; 
 	x) exit ;;
 	*) ;;
 	esac
