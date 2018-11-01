@@ -45,13 +45,18 @@ while :; do
 		./MENU
 		cd -
 		;;
+	i)
+		cd $ROOTDIR/bin
+		./install
+		echo "Press enter to continue.."
+		read
+		cd -
+		;;
 	a)
 		cat ./README.md
 		echo "Press enter to continue.."
 		read
 		;;
-	i)
-		$ROOTDIR/bin/install ; echo "Press enter to continue.." ; read ;; 
 	x) exit ;;
 	*) ;;
 	esac
