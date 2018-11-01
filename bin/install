@@ -67,6 +67,9 @@ sed -i 's/\/home/\/backups/' /etc/default/useradd
 # add /etc/skel/tfrsync
 cp -f ./tfrsync /etc/skel/.
 #
+# make backups folder if its not there.
+[ ! -d /backups ] && mkdir /backups
+
 # lastly, update everything
 yum -y update
 
