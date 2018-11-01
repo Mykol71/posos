@@ -59,7 +59,8 @@ yum -y install anaconda-tui
 find . -name "*monthname.sh" -exec cp -f {} /usr/local/bin/. \;
 find . -name "*recon.sh" -exec cp -f {} /usr/local/bin/. \;
 
-# add tfsupport usr
+# add tfsupport usr if not there.
+[ -d /home/tfsupport ] && useradd tfsupport
 #
 # change default home dir to /backups from now now
 sed -i 's/\/home/\/backups/' /etc/default/useradd
@@ -69,9 +70,13 @@ cp -f ./tfrsync /etc/skel/.
 #
 # make backups folder if its not there.
 [ ! -d /backups ] && mkdir /backups
-
+#
+# set selinux to permissive
+setenforce 0
+sed -i 's/enforcing/permissive/' /etc/selinux/config
+#
 # lastly, update everything
 yum -y update
-
+#
 echo "Done!"
 exit 0
