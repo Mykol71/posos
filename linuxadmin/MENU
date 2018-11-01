@@ -25,21 +25,30 @@ while :; do
 	case $selection in
 	1)
 		cd $ROOTDIR/bin
-		time ./config_sendgrid
+		cat ./config_sendgrid
+		echo "Run it? y/n: "
+		read runit
+		[ "$runit" == "y|Y" ] && time ./config_sendgrid
 		cd -
 		echo "Press enter to continue.."
 		read
 		;;
 	2)
 		cd $ROOTDIR/bin
-		time ./convert_centos
+		cat ./convert_centos
+		echo "Run it? y/n: "
+		read runit
+		[ "$runit" == "y|Y" ] && time ./convert_centos
 		cd -
 		echo "Press enter to continue.."
 		read
 		;;
 	3)
 		cd $ROOTDIR/bin
-		time ./erik_mig.sh
+		cat ./erik_mig.sh
+		echo "Run it? y/n: "
+		read runit
+		[ "$runit" == "y|Y" ] && time ./erik_mig.sh
 		cd -
 		echo "Press enter to continue.."
 		read
