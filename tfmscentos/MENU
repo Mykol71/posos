@@ -13,20 +13,27 @@ export ROOTDIR
 trap '' 2
 while :; do
 	clear
-	echo "**************************************"
-	echo "** TFMS CentOS Repo Config ***********"
-	echo "**************************************"
-        echo "** Status: `systemctl status httpd | grep Active | cut -d" " -f5`                    *"
-        echo "*                                    *"
-	echo "* [1]  Start TF CentOS Repo          *"
-	echo "* [2]  Stop TF CentOS Repo           *"
-	echo "* [3]  Update Repository             *"
-	echo "* [4]  Promote to Production         *"
-        echo "*                                    *"
-	echo "* [i]  Install/Upgrade Deps.         *"
-	echo "* [d]  Documentation                 *"
-	echo "* [x]  Exit                          *"
-	echo "**************************************"
+printf '\u250f''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\n'
+printf '\u2503''\033[1m CentOS Repo Menu\033[0m''\n'
+printf '\u2523''\u2501''\n'
+printf '\u2503'" Status: `systemctl status httpd | grep Active | cut -d" " -f5`"'\n'
+printf '\u2503''\n'
+printf '\u2503''\033[1m'" 1.\033[0m Start Repo"'\n'
+printf '\u2503''\033[1m'" 2.\033[0m Stop Repo"'\n'
+printf '\u2503''\033[1m'" 3.\033[0m Update Repo"'\n'
+printf '\u2503''\033[1m'" 4.\033[0m Promote to Prod"'\n'
+printf '\u2503''\n'
+printf '\u2503''\n'
+printf '\u2503''\n'
+printf '\u2503''\n'
+printf '\u2503''\n'
+printf '\u2503''\n'
+printf '\u2503''\n'
+printf '\u2503''\n'
+printf '\u2503''\033[1m'" i.\033[0m I/C/U Deps"'\n'
+printf '\u2503''\033[1m'" d.\033[0m About"'\n'
+printf '\u2503''\033[1m'" x.\033[0m Exit"'\n'
+printf '\u2517''\u2501''\n'
 	echo -n "Enter selection: "
 	read selection
 	case $selection in

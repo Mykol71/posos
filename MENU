@@ -42,7 +42,7 @@ printf '\u2517''\u2501''\n'
 		cd -
 		;;
 	2)
-		cd $ROOTDIR/msposapp
+		cd $ROOTDIR/msposapp/dev-build
 		./MENU
 		cd -
 		;;
