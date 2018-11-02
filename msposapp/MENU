@@ -13,15 +13,27 @@ export ROOTDIR
 trap '' 2
 while :; do
 	clear
-	echo "**************************************"
-	echo "***** POS Application Service ********"
-	echo "**************************************"
-	echo "* [1] Dev/Build                      *"
-	echo "* [2] Share-Hosted (Teleflora)       *"
-	echo "* [3] Self-Hosted (Florist)          *"
-	echo "*                                    *"
-	echo "* [x]  Exit                          *"
-	echo "**************************************"
+printf '\u250f''\u2501''\u2501''\u2501''\n'
+printf '\u2503''\033[1m Application Service\033[0m''\n'
+printf '\u2523''\u2501''\n'
+printf '\u2503''\033[1m'" 1.\033[0m Dev/Build"'\n'
+printf '\u2503''\033[1m'" 2.\033[0m Share-Hosted"'\n'
+printf '\u2503''\033[1m'" 3.\033[0m Self-Hosted"'\n'
+printf '\u2503''\n'
+printf '\u2503''\n'
+printf '\u2503''\n'
+printf '\u2503''\n'
+printf '\u2503''\n'
+printf '\u2503''\n'
+printf '\u2503''\n'
+printf '\u2503''\n'
+printf '\u2503''\n'
+printf '\u2503''\n'
+printf '\u2503''\n'
+printf '\u2503''\n'
+printf '\u2503''\n'
+printf '\u2503''\033[1m'" x.\033[0m Exit"'\n'
+printf '\u2517''\u2501''\u2501''\n'
 	echo -n "Enter selection: "
 	read selection
 	case $selection in
