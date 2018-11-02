@@ -62,7 +62,7 @@ find . -name "*recon.sh" -exec cp -f {} /usr/local/bin/. \;
 # add tfsupport usr if not there.
 [ -d /home/tfsupport ] && useradd tfsupport
 #
-# change default home dir to /backups from now now
+# change default home dir to /backups from now on
 sed -i 's/\/home/\/backups/' /etc/default/useradd
 # 
 # add /etc/skel/tfrsync

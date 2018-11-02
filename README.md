@@ -1,14 +1,27 @@
 # MSCloudServer
 Teleflora Managed Services Linux
 
-- Linux Admin tasks
+To Install:
+----------
 
-- POS Cloud Backup
+1. Create a base RHEL7 install anywhere.
 
-- POS Running in Cloud
+2. Download and Install Cloud Menus.
 
-- MS CentOS Repo
+sudo yum install git
+git clone https://github.com/mykol-com/MSCloudServer.git
+cd ./MSCloudServer ; sudo ./MENU
 
-- OSTools
+- Select "i" to I/C/U Deps (Install/Configure/Upgrade)
+- Select "a" to I/C/U AWS (Need AWS Account public/private Key pair)
 
-- Kickstart scripts
+3. Start with Building the OS Media (11).
+
+---------
+- Cloud Backup
+
+- Cloud App
+
+- CentOS Repo
+
+- Admin tasks
