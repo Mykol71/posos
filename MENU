@@ -26,9 +26,9 @@ printf '\u2503''\n'
 printf '\u2503''\n'
 printf '\u2503''\n'
 printf '\u2503''\n'
-printf '\u2503''\n'
-printf '\u2503''\033[1m'" a.\033[0m About"'\n'
 printf '\u2503''\033[1m'" i.\033[0m I/C/U Deps"'\n'
+printf '\u2503''\033[1m'" a.\033[0m I/C/U AWS"'\n'
+printf '\u2503''\033[1m'" d.\033[0m About"'\n'
 printf '\u2503''\033[1m'" x.\033[0m Exit"'\n'
 printf '\u2517''\u2501''\n'
 	echo -n "Enter selection: "
@@ -61,8 +61,14 @@ printf '\u2517''\u2501''\n'
 		read
 		cd -
 		;;
-	a)
+	d)
 		cat ./README.md
+		echo "Press enter to continue.."
+		read
+		;;
+	a)
+		cd $ROOTDIR/bin
+		./setupaws
 		echo "Press enter to continue.."
 		read
 		;;
