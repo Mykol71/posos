@@ -25,7 +25,7 @@ ntpdate pool.ntp.org
  
 #install required packages
 yum -y install net-tools yum-langpacks gtk3 ksh wget firewalld tigervnc-server-minimal mailx nmap nfs-server time
-yum -y install nfs-utils libnfsidmap
+yum -y install nfs-utils libnfsidmap bridge-utils
 systemctl enable rpcbind
 systemctl enable nfs-server
 systemctl start rpcbind
