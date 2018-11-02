@@ -1,4 +1,6 @@
 #!/bin/bash
 
+rm -rf /var/tmp/containers
+rm -f /var/tmp/rhel7*xz
 docker container stop $(docker container ps -a -q)
 docker system prune --all
