@@ -20,7 +20,7 @@ while :; do
 	echo "* [1] List Running Containers        *"
 	echo "* [2] Start Container                *"
 	echo "* [3] Stop Container(s)              *"
-	echo "* [4] Attach to a Container          *"
+	echo "* [4] Connect to Container           *"
 	echo "* [5] List Network Interfaces        *"
 	echo "*                                    *"
 	echo "** Images **                         *"
@@ -60,7 +60,7 @@ while :; do
 		;;
 	4)
 		cd $ROOTDIR/bin
-		./attach_container
+		./container_connect
 		echo "Press enter to continue.."
 		read
 		cd -

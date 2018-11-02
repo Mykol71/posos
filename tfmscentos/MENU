@@ -16,7 +16,7 @@ while :; do
 	echo "**************************************"
 	echo "** TFMS CentOS Repo Config ***********"
 	echo "**************************************"
-        echo "** Status: `cat $ROOTDIR/.status`                      *"
+        echo "** Status: `systemctl status httpd | grep Active | cut -d" " -f5`                    *"
         echo "*                                    *"
 	echo "* [1]  Start TF CentOS Repo          *"
 	echo "* [2]  Stop TF CentOS Repo           *"

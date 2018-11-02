@@ -58,6 +58,9 @@ docker exec $CONTAINER ./bin/updateos.pl --samba-set-passdb
 #docker exec $CONTAINER chmod +x ./KcsSetup.sh
 #docker exec $CONTAINER ./KcsSetup.sh
 
+#update everything
+docker exec $CONTAINER yum -y update
+
 #save/export container
 docker commit $CONTAINER $SHOPCODE.teleflora.com
 #EXPORT CONTAINER to IMAGE before AWS import?
@@ -66,9 +69,10 @@ echo "${OS}7-rti-$SHOPCODE image ready!"
 echo ""
 echo ""
 echo ""
+
 docker exec $CONTAINER /usr/local/bin/bin/updateos.pl --version
-#docker exec $CONTAINER cat /etc/redhat-release
-#CONTAINER_IP=`nmap -sS -p 22 172.17.0.1/24 | grep 172 | cut -d" " -f5 | sort | tail -1`
-#rm -f ~/.ssh/known_hosts
-#ssh root@$CONTAINER_IP
+docker exec $CONTAINER cat /etc/redhat-release
+CONTAINER_IP=`nmap -sS -p 22 172.17.0.1/24 | grep 172 | cut -d" " -f5 | sort | tail -1`
+rm -f ~/.ssh/known_hosts
+ssh root@$CONTAINER_IP
 exit 0
