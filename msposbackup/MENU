@@ -10,54 +10,61 @@ export ROOTDIR
 trap '' 2
 while :; do
 	clear
-	echo "********************************"
-	echo "****** POS Backup Menu *********"
-	echo "****** Free Space: $(df -h /backups | tail -1 | awk '{print $4}') ********"
-	echo "********************************"
-	echo "* [l] List Cloud Accounts      *"
-	echo "* [c] Create Cloud Account     *"
-	echo "* [k] Change Cloud Account Key *"
-	echo "* [v] View Cloud Account Key   *"
-	echo "* [g] Get Cloud Account Key    *"
-	echo "* [d] Delete Cloud Account     *"
-	echo "* [s] Is Subscriber?           *"
-	echo "* [a] About                    *"
-	echo "* [x] Exit the system          *"
-	echo "********************************"
-	echo -n "Enter selection [l,a,k,v,g,d,s,a,x]: "
+printf '\u250f''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\n'
+printf '\u2503''\033[1m Cloud Backup Menu\033[0m''\n'
+printf '\u2523''\u2501''\n'
+printf '\u2503'" Free Space: $(df -h /backups | tail -1 | awk '{print $4}')"'\n'
+printf '\u2503''\n'
+printf '\u2503''\033[1m'" 1.\033[0m List Accounts"'\n'
+printf '\u2503''\033[1m'" 2.\033[0m Create Account"'\n'
+printf '\u2503''\033[1m'" 3.\033[0m Change Key"'\n'
+printf '\u2503''\033[1m'" 4.\033[0m View Key"'\n'
+printf '\u2503''\033[1m'" 5.\033[0m Get Key"'\n'
+printf '\u2503''\033[1m'" 6.\033[0m Delete Account"'\n'
+printf '\u2503''\033[1m'" 7.\033[0m Is Subscriber?"'\n'
+printf '\u2503''\n'
+printf '\u2503''\n'
+printf '\u2503''\n'
+printf '\u2503''\n'
+printf '\u2503''\n'
+printf '\u2503''\n'
+printf '\u2503''\033[1m'" d.\033[0m About"'\n'
+printf '\u2503''\033[1m'" x.\033[0m Exit"'\n'
+printf '\u2517''\u2501''\n'
+	echo -n "Enter selection: "
 	read selection
 	case $selection in
-	l)
+	1)
 		$ROOTDIR/bin/list_cloud_account
 		echo "Press enter to continue.."
 		read
 		;;
-	c)
+	2)
 		$ROOTDIR/bin/create_cloud_account
 		echo "Press enter to continue.."
 		read
 		;;
-	k)
+	3)
 		$ROOTDIR/bin/change_account_key
 		echo "Press enter to continue.."
 		read
 		;;
-	v)
+	4)
 		$ROOTDIR/bin/view_cloud_key
 		echo "Press enter to continue.."
 		read
 		;;
-	g)
+	5)
 		$ROOTDIR/bin/get_cloud_key
 		echo "Press enter to continue.."
 		read
 		;;
-	d)
+	6)
 		$ROOTDIR/bin/delete_cloud_account
 		echo "Press enter to continue.."
 		read
 		;;
-	s)
+	7)
 		$ROOTDIR/bin/is_subscriber
 		echo "Press enter to continue.."
 		read
