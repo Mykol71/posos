@@ -53,7 +53,7 @@ while :; do
 	echo "* [i]  Install/Upgrade Deps.         *"
 	echo "* [a]  Install/Configure AWS         *"
 	echo "* [d]  Documentation                 *"
-	echo "* [m]  Install Merkai vMX100         *"
+	echo "*                                    *"
 	echo "* [x]  Exit                          *"
 	echo "**************************************"
 	echo -n "Enter selection: "
@@ -146,13 +146,6 @@ while :; do
 	a)
 		cd $ROOTDIR/bin
 		./setup_aws
-		echo "Press enter to continue.."
-		read
-		cd -
-		;;
-	m)
-		cd $ROOTDIR/bin
-		./install_meraki
 		echo "Press enter to continue.."
 		read
 		cd -
