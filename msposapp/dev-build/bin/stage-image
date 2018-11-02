@@ -63,8 +63,9 @@ docker exec $CONTAINER yum -y update
 
 #save/export container
 docker commit $CONTAINER $SHOPCODE.teleflora.com
-#EXPORT CONTAINER to IMAGE before AWS import?
-echo "${OS}7-rti-$SHOPCODE image ready!"
+
+#Done
+echo "${OS}7-rti-$SHOPCODE instance is ready!"
 
 echo ""
 echo ""

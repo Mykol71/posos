@@ -13,7 +13,7 @@ export ROOTDIR
 trap '' 2
 while :; do
 	clear
-printf '\u250f''\u2501''\u2501''\u2501''\n'
+printf '\u250f''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\n'
 printf '\u2503''\033[1m Application Service\033[0m''\n'
 printf '\u2523''\u2501''\n'
 printf '\u2503''\033[1m'" 1.\033[0m Dev/Build"'\n'

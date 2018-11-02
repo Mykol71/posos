@@ -10,13 +10,13 @@ export ROOTDIR
 trap '' 2
 while :; do
 	clear
-printf '\u250f''\u2501''\u2501''\u2501''\n'
+printf '\u250f''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\n'
 printf '\u2503''\033[1m Cloud Support Menu\033[0m''\n'
 printf '\u2523''\u2501''\n'
 printf '\u2503''\033[1m'" 1.\033[0m Backup Service"'\n'
 printf '\u2503''\033[1m'" 2.\033[0m App Service"'\n'
 printf '\u2503''\033[1m'" 3.\033[0m CentOS Repo"'\n'
-printf '\u2503''\033[1m'" 4.\033[0m Linux Admin Tasks"'\n'
+printf '\u2503''\033[1m'" 4.\033[0m Admin Tasks"'\n'
 printf '\u2503''\n'
 printf '\u2503''\n'
 printf '\u2503''\n'
@@ -28,9 +28,9 @@ printf '\u2503''\n'
 printf '\u2503''\n'
 printf '\u2503''\n'
 printf '\u2503''\033[1m'" a.\033[0m About"'\n'
-printf '\u2503''\033[1m'" i.\033[0m Install Deps"'\n'
+printf '\u2503''\033[1m'" i.\033[0m I/C/U Deps"'\n'
 printf '\u2503''\033[1m'" x.\033[0m Exit"'\n'
-printf '\u2517''\u2501''\u2501''\n'
+printf '\u2517''\u2501''\n'
 	echo -n "Enter selection: "
 	read selection
 	case $selection in
