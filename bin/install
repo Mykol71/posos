@@ -22,6 +22,8 @@ subscription-manager repos --enable=rhel-server-rhscl-7-rpms
 yum -y install ntp
 # sync date/time otherwise AWS auth will fail
 ntpdate pool.ntp.org
+$ set timezone
+timedatectl set-timezone America/Chicago
  
 #install required packages
 yum -y install net-tools yum-langpacks gtk3 ksh wget firewalld tigervnc-server-minimal mailx nmap nfs-server time
