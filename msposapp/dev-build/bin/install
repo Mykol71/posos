@@ -22,7 +22,7 @@ subscription-manager repos --enable=rhel-server-rhscl-7-rpms
 yum -y install ntp
 # sync date/time otherwise AWS auth will fail
 ntpdate pool.ntp.org
-$ set timezone
+# set timezone
 timedatectl set-timezone America/Chicago
  
 #install required packages
@@ -69,13 +69,19 @@ find . -name "*recon.sh" -exec cp -f {} /usr/local/bin/. \;
 [ ! -d /home/tfsupport ] && useradd tfsupport
 
 # if not there, generate tfsupport ssh key
-[ ! -f /home/tfsupport/.ssh/id_rsa.pub ] && su - tfsupport && ssh-keygen -b 2048 -t rsa && GENKEY=1
+rm -f ./id_rsa*
+[ ! -f /home/tfsupport/.ssh/id_rsa.pub ] && ssh-keygen -t rsa -N "" -f id_rsa  && GENKEY=1
+# copy into place.
+mkdir /home/tfsupport/.ssh
+mv -f ./id_rsa* /home/tfsupport/.ssh
+chown -R tfsupport:tfsupport /home/tfsupport/.ssh
+chmod 640 /home/tfsupport/.ssh
 #
 # Add tfsupport to sudoers, if not there.
 [ "`grep tfsupport /etc/sudoers`" == "" ] && echo "tfsupport        ALL=(ALL)       NOPASSWD: ALL">>/etc/sudoers
 
 # Add Admin Menu to tfsupports .profile to be exec on login
-[ "`grep MENU ~/.bash_profile`" == "" ] && echo "./MENU">>/home/tfsupport/.bash_profile
+[ "`grep MENU ~/.bash_profile`" == "" ] && echo "sudo ./MENU">>/home/tfsupport/.bash_profile
 
 # change default home dir to /backups from now on
 sed -i 's/\/home/\/backups/' /etc/default/useradd
@@ -91,16 +97,13 @@ setenforce 0
 sed -i 's/enforcing/permissive/' /etc/selinux/config
 #
 # Copy cloud backup programs into place for tfsupport..
-cp -rf ~/MSCloudServer/msposbackup/* /home/tfsupport/.
+cp -rf ../msposbackup/* /home/tfsupport/.
 #
 # lastly, update everything
 yum -y update
 #
 # if produced, show tfsupports new public key
-if [ "$GENKEY" == "1" ]; do
-echo "tfsupport's public key (to be used with ssh connect):
-cat /home/tfsupport/.ssh/id_rsa.pub
-done
+[ "$GENKEY" == "1" ] && echo "tfsupport's public key (to be used with ssh connect):" && cat /home/tfsupport/.ssh/id_rsa.pub
 echo ""
 echo ""
 echo "Done!"
