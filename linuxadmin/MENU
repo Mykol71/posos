@@ -10,6 +10,7 @@ export ROOTDIR
 trap '' 2
 while :; do
 	clear
+echo -en "$(date +%T)\n"
 printf '\u250f''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\n'
 printf '\u2503''\033[1m Linux Admin Tasks\033[0m''\n'
 printf '\u2523''\u2501''\n'
@@ -37,6 +38,7 @@ printf '\u2517''\u2501''\n'
 	1)
 		cd $ROOTDIR/bin
 		cat ./config_sendgrid
+		echo "Scared ya huh? :)"
 		echo "Run it? y/n: "
 		read runit
 		[ "$runit" == "y|Y" ] && time ./config_sendgrid

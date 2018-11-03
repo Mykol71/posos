@@ -1,6 +1,4 @@
-#!/bin/zsh
-
-. ./bin/.zsh_clock
+#!/bin/bash
 
 # verify root
 ID=$(/usr/bin/id -u)
@@ -12,6 +10,7 @@ export ROOTDIR
 trap '' 2
 while :; do
 	clear
+echo -en "$(date +%T)\n"
 printf '\u250f''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\n'
 printf '\u2503''\033[1m Cloud Support Menu\033[0m''\n'
 printf '\u2523''\u2501''\n'
