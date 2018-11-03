@@ -1,5 +1,4 @@
 #!/usr/bin/bash
-#RHEL7 required! 
 
 #git
 #  git clone https://github.com/mykol71/mscloudserver.git
@@ -11,7 +10,7 @@
 #  git push
  
 #register rhsm
-#subscription-manager register --username=(USER) --password=(PASS) --org=4508688 --auto-attach --force
+subscription-manager register --org=4508688 --auto-attach
  
 #enable redhat yum repos
 subscription-manager repos --enable=rhel-7-server-rpms 
@@ -23,10 +22,12 @@ subscription-manager repos --enable=rhel-server-rhscl-7-rpms
 yum -y install ntp
 # sync date/time otherwise AWS auth will fail
 ntpdate pool.ntp.org
+$ set timezone
+timedatectl set-timezone America/Chicago
  
 #install required packages
 yum -y install net-tools yum-langpacks gtk3 ksh wget firewalld tigervnc-server-minimal mailx nmap nfs-server time
-yum -y install nfs-utils libnfsidmap
+yum -y install nfs-utils libnfsidmap bridge-utils zsh
 systemctl enable rpcbind
 systemctl enable nfs-server
 systemctl start rpcbind
@@ -44,10 +45,10 @@ python get-pip.py
 yum -y install docker device-mapper-libs device-mapper-event-libs
 #add redhat container registry
 echo "ADD_REGISTRY='--add-registry registry.access.redhat.com'">>/etc/sysconfig/docker
-#configure dns for docker
+
+#copy in custom configs for docker
 cp -f ./99-docker.conf /usr/lib/sysctl.d/99-docker.conf
 cp -f ./daemon.json /etc/docker/daemon.json
-#bring it up
 systemctl start docker
 systemctl enable docker
 
@@ -60,12 +61,47 @@ base=https://github.com/docker/machine/releases/download/v0.14.0 &&
 yum -y install lorax
 yum -y install anaconda-tui
 
-# add custom scripts to /usr/local/bin
+# add custom cloud backup server scripts to /usr/local/bin
 find . -name "*monthname.sh" -exec cp -f {} /usr/local/bin/. \;
 find . -name "*recon.sh" -exec cp -f {} /usr/local/bin/. \;
 
+# add tfsupport usr and generate key, if not there.
+[ ! -d /home/tfsupport ] && useradd tfsupport
+
+# if not there, generate tfsupport ssh key
+[ ! -f /home/tfsupport/.ssh/id_rsa.pub ] && su - tfsupport && ssh-keygen -b 2048 -t rsa && GENKEY=1
+#
+# Add tfsupport to sudoers, if not there.
+[ "`grep tfsupport /etc/sudoers`" == "" ] && echo "tfsupport        ALL=(ALL)       NOPASSWD: ALL">>/etc/sudoers
+
+# Add Admin Menu to tfsupports .profile to be exec on login
+[ "`grep MENU ~/.bash_profile`" == "" ] && echo "./MENU">>/home/tfsupport/.bash_profile
+
+# change default home dir to /backups from now on
+sed -i 's/\/home/\/backups/' /etc/default/useradd
+# 
+# add /etc/skel/tfrsync
+cp -f ./tfrsync /etc/skel/.
+#
+# make backups folder if its not there.
+[ ! -d /backups ] && mkdir /backups
+#
+# set selinux to permissive
+setenforce 0
+sed -i 's/enforcing/permissive/' /etc/selinux/config
+#
+# Copy cloud backup programs into place for tfsupport..
+cp -rf ~/MSCloudServer/msposbackup/* /home/tfsupport/.
+#
 # lastly, update everything
 yum -y update
-
+#
+# if produced, show tfsupports new public key
+if [ "$GENKEY" == "1" ]; do
+echo "tfsupport's public key (to be used with ssh connect):
+cat /home/tfsupport/.ssh/id_rsa.pub
+done
+echo ""
+echo ""
 echo "Done!"
 exit 0
