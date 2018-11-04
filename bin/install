@@ -53,7 +53,7 @@ echo "ADD_REGISTRY='--add-registry registry.access.redhat.com'">>/etc/sysconfig/
 
 #copy in custom configs for docker
 cp -f ./99-docker.conf /usr/lib/sysctl.d/99-docker.conf
-cp -f ./daemon.json /etc/docker/daemon.json
+#cp -f ./daemon.json /etc/docker/daemon.json
 systemctl start docker
 systemctl enable docker
 
