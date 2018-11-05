@@ -102,7 +102,7 @@ setenforce 0
 sed -i 's/enforcing/permissive/' /etc/selinux/config
 #
 # Copy cloud backup programs into place for tfsupport..
-cp -rf ../msposbackup/* /home/tfsupport/.
+cp -rf ../* /home/tfsupport/.
 #
 # lastly, update everything
 yum -y update
