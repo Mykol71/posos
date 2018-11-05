@@ -8,9 +8,9 @@ To Install:
 
 2. Download and Install Cloud Menus.
 
-sudo yum install git
-git clone https://github.com/mykol-com/MSCloudServer.git
-cd ./MSCloudServer ; sudo ./MENU
+- sudo yum install git
+- git clone https://github.com/mykol-com/MSCloudServer.git
+- cd ./MSCloudServer ; sudo ./MENU
 
 - Select "d" to I/C/U Deps (Install/Configure/Upgrade)
 - Select "a" to I/C/U AWS (Need AWS Account public/private Key pair)
@@ -19,10 +19,10 @@ cd ./MSCloudServer ; sudo ./MENU
 
 ---------
 - Cloud Backup
-Current Cloud Backup Solution.
+Current Cloud Backup.
 
-- Cloud App
-RTI Running in Cloud Solution.
+- RTI Service
+RTI Running in Cloud.
 
 - CentOS Repo
 Creation and Maintenance of Teleflora's CentOS Repo.
@@ -30,4 +30,5 @@ Creation and Maintenance of Teleflora's CentOS Repo.
 - Admin tasks
 Various Admin tasks.
 
+---------
 mgreen@teleflora.com
