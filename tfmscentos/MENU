@@ -14,7 +14,7 @@ trap '' 2
 while :; do
 	clear
 echo -en "$(date +%T)\n"
-printf '\u250f''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\n'
+printf '\u250f''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\n'
 printf '\u2503''\033[1m CentOS Repo Menu\033[0m''\n'
 printf '\u2523''\u2501''\n'
 printf '\u2503'" Status: `systemctl status httpd | grep Active | cut -d" " -f5`"'\n'
@@ -31,14 +31,19 @@ printf '\u2503''\n'
 printf '\u2503''\n'
 printf '\u2503''\n'
 printf '\u2503''\n'
-printf '\u2503''\033[1m'" i.\033[0m I/C/U Deps"'\n'
-printf '\u2503''\033[1m'" d.\033[0m About"'\n'
+printf '\u2503''\n'
+printf '\u2503''\n'
+printf '\u2503''\n'
+printf '\u2503''\n'
+printf '\u2503''\n'
+printf '\u2503''\n'
+printf '\u2503''\033[1m'" d.\033[0m I/C/U Deps"'\n'
 printf '\u2503''\033[1m'" x.\033[0m Exit"'\n'
 printf '\u2517''\u2501''\n'
 	echo -n "Enter selection: "
 	read selection
 	case $selection in
-	i)
+	d)
 		cd $ROOTDIR/bin
 		./install_deps
 		echo "Press enter to continue.."
@@ -73,7 +78,7 @@ printf '\u2517''\u2501''\n'
 		read
 		cd -
 		;;
-	d)
+	i)
 		./readme.sh | more
 		echo "Press enter to continue.."
 		read

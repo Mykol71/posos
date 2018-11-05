@@ -11,7 +11,7 @@ trap '' 2
 while :; do
 	clear
 echo -en "$(date +%T)\n"
-printf '\u250f''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\n'
+printf '\u250f''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\n'
 printf '\u2503''\033[1m Linux Admin Tasks\033[0m''\n'
 printf '\u2523''\u2501''\n'
 printf '\u2503''\033[1m'" 1.\033[0m Configure Sendgrid Relay"'\n'
@@ -29,7 +29,12 @@ printf '\u2503''\n'
 printf '\u2503''\n'
 printf '\u2503''\n'
 printf '\u2503''\n'
-printf '\u2503''\033[1m'" d.\033[0m About"'\n'
+printf '\u2503''\n'
+printf '\u2503''\n'
+printf '\u2503''\n'
+printf '\u2503''\n'
+printf '\u2503''\n'
+printf '\u2503''\033[1m'" i.\033[0m Info"'\n'
 printf '\u2503''\033[1m'" x.\033[0m Exit"'\n'
 printf '\u2517''\u2501''\n'
 	echo -n "Enter selection: "
@@ -66,7 +71,7 @@ printf '\u2517''\u2501''\n'
 		echo "Press enter to continue.."
 		read
 		;;
-	d)
+	i)
 		./readme.sh
 		echo "Press enter to continue.."
 		read

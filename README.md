@@ -12,16 +12,20 @@ sudo yum install git
 git clone https://github.com/mykol-com/MSCloudServer.git
 cd ./MSCloudServer ; sudo ./MENU
 
-- Select "i" to I/C/U Deps (Install/Configure/Upgrade)
+- Select "d" to I/C/U Deps (Install/Configure/Upgrade)
 - Select "a" to I/C/U AWS (Need AWS Account public/private Key pair)
 
-3. Start with Building the OS Media (11).
+3. Start with Building the OS Media.
 
 ---------
 - Cloud Backup
+Current Cloud Backup Solution.
 
 - Cloud App
+RTI Running in Cloud Solution.
 
 - CentOS Repo
+Creation and Maintenance of Teleflora's CentOS Repo.
 
 - Admin tasks
+Various Admin tasks.

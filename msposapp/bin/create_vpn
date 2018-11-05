@@ -6,7 +6,6 @@ ID=`/usr/bin/id -u`
 
 # gather user input
 INPUTS="SHOPCODE SHOPTYPE SHOPPUBLICIP"
-#INPUTS=""
 
 echo "Gathering required information...."
 for var in $INPUTS; do
