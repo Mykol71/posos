@@ -19,16 +19,16 @@ To Install:
 
 ---------
 - Cloud Backup
-Current Cloud Backup.
+-- Current Cloud Backup.
 
 - RTI Service
-RTI Running in Cloud.
+-- RTI Running in Cloud.
 
 - CentOS Repo
-Creation and Maintenance of Teleflora's CentOS Repo.
+-- Creation and Maintenance of Teleflora's CentOS Repo.
 
 - Admin tasks
-Various Admin tasks.
+-- Various Admin tasks.
 
 ---------
-mgreen@teleflora.com
+Mike Green - mgreen@teleflora.com
