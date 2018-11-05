@@ -2,9 +2,9 @@
 
 #git sample commands
 #  git clone https://github.com/mykol71/mscloudserver.git
-#  git config --global user.name "Mike Green"
-#  git config --global user.email mgreen@mykol.com
-#  git config --global push.default simple
+git config --global user.name "Mike Green"
+git config --global user.email mgreen@teleflora.com
+git config --global push.default simple
 #  git add -A .
 #  git commit -m "2018-08-31 24:00"
 #  git push
