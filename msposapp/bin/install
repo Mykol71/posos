@@ -1,13 +1,18 @@
 #!/usr/bin/bash
 
-#git
+#git sample commands
 #  git clone https://github.com/mykol71/mscloudserver.git
-#  git config --global user.name "Mike Green"
-#  git config --global user.email mgreen@mykol.com
-#  git config --global push.default simple
+git config --global user.name "Mike Green"
+git config --global user.email mgreen@teleflora.com
+git config --global push.default simple
 #  git add -A .
 #  git commit -m "2018-08-31 24:00"
 #  git push
+
+#Environment Name
+echo -n "Env Name: "
+read ENVTYPE
+echo "$ENVTYPE" >../.envtype
 
 #register rhsm
 subscription-manager register --org=4508688 --auto-attach
@@ -72,6 +77,7 @@ find . -name "*recon.sh" -exec cp -f {} /usr/local/bin/. \;
 
 # add tfsupport usr and generate key, if not there.
 [ ! -d /home/tfsupport ] && useradd tfsupport
+[ ! -d /home/tfsupport/keys ] && mkdir /home/tfsupport/keys && chown tfsupport:tfsupport /home/tfsupport/keys
 
 # if not there, generate tfsupport ssh key
 rm -f ./id_rsa*
@@ -103,7 +109,10 @@ sed -i 's/enforcing/permissive/' /etc/selinux/config
 #
 # Copy cloud backup programs into place for tfsupport..
 cp -rf ../* /home/tfsupport/.
-#
+
+# create cron jobs
+# TODO Add Cron jobs
+
 # lastly, update everything
 yum -y update
 #

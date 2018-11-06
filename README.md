@@ -1,7 +1,7 @@
 # MSCloudServer
 Teleflora Managed Services Linux
 
-To Install:
+Install:
 ----------
 
 1. Create a base RHEL7 install anywhere.
@@ -18,17 +18,21 @@ To Install:
 3. Start with Building the OS Media.
 
 ---------
-- Cloud Backup
--- Current Cloud Backup.
+- Backup Service
+
+Current Cloud Backup.
 
 - RTI Service
--- RTI Running in Cloud.
+
+RTI Running in Cloud.
 
 - CentOS Repo
--- Creation and Maintenance of Teleflora's CentOS Repo.
+
+Creation and Maintenance of Teleflora's CentOS Repo.
 
 - Admin tasks
--- Various Admin tasks.
+
+Various Admin tasks.
 
 ---------
 Mike Green - mgreen@teleflora.com

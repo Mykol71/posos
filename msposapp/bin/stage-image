@@ -23,7 +23,7 @@ read SHOPCODE
 ##
 
 #start container
-CONTAINER=`docker run -d -it --name=$SHOPCODE.teleflora.com --rm --privileged -w="/usr/local/bin" -i ${OS}7-rti-16.1.3 /usr/sbin/init`
+CONTAINER=`docker run -d -it --name=$SHOPCODE.teleflora.com --rm --privileged --mount source=usr2,target=/usr2 -w="/usr/local/bin" -i ${OS}7-rti-16.1.3 /usr/sbin/init`
 ./pipework --direct-phys eth1 $CONTAINER 192.168.222.22/24@192.168.222.1
 
 #RHEL changed from /bin to /usr/bin at some point. Created link to avoid changing scripts.

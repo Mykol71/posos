@@ -11,7 +11,7 @@ trap '' 2
 while :; do
     clear
     echo -en "$(date +%T) - `[ -f .envtype ] && cat .envtype || echo -n Not Installed`\n"
-    printf '\u250f''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\n'
+    printf '\u250f''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\n'
     printf '\u2503''\033[1m MS Cloud Menu\033[0m''\n'
 printf '\u2523''\u2501''\n'
 printf '\u2503''\033[1m'" 1.\033[0m Backup Service"'\n'
