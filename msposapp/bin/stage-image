@@ -23,6 +23,11 @@ docker exec $CONTAINER ./bin/install-ostools.pl --noharden-linux ./ostools-1.15-
 docker exec $CONTAINER ./bin/updateos.pl --hostname=$SHOPCODE.teleflora.com >/dev/null 2>&1
 
 #Run RTI staging script.
+docker exec $CONTAINER chmod +x ./ksrti.sh
+docker exec $CONTAINER chmod +x ./ksrti_install.sh
+
+#ISSUE TO FIGURE OUT: No terminal input passed to this script for password entry etc.
+#ALSO: Look again for a completely silent install for bbj?
 #docker exec $CONTAINER ./ksrti.sh
 
 #update OS
