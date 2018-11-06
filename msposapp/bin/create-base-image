@@ -2,7 +2,7 @@
 
 docker pull rhel7:latest
 docker image save rhel7:latest > /var/tmp/rhel7-rti.tar.xz
-#rm -rf /var/tmp/containers/`date +%Y%m%d`/rhel7-rti-docker
-rm -rf /var/tmp/containers/`date +%Y%m%d`/rhel7-rti
+rm -rf /var/tmp/containers
+rm -f /var/tmp/rhel*xz
 ./containerbuild.sh rhel7-rti.ks 2>/tmp/build-rti-container.error.log
 ./create-rti-image 2>/tmp/create-rti-image.error.log

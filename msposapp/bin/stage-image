@@ -1,33 +1,18 @@
 #!/bin/bash
 
-#echo -n "rhel or centos?: "
-#read OS
 OS=rhel
 echo -n "SHOPCODE: "
 read SHOPCODE
-#OS=$1
-
-##WIP starting container with a mounted folder
-#create shop data volume
-#docker volume create --driver vieux/sshfs -o sshcmd=tfrsync-$SHOPCODE@rticloud.homelinux.com:/home/tfrsync-$SHOPCODE -o password=testpassword ${SHOPCODE}vol
-#CONTAINER=`docker run --volumes-from ${SHOPCODE}vol -v $(pwd):/usr2 --rm --privileged -w="/usr/local/bin" -i -d -t --name=$SHOPCODE.teleflora.com -i ${OS}7-rti-16.1.3 /usr/sbin/init`
-#mount cust data
-#docker exec $CONTAINER mkdir /usr2
-#docker exec $CONTAINER mount 192.168.22.75:/backups/tfrsync-$SHOPCODE /usr2
-#docker volume create ${SHOPCODE}vol
-#docker run \
-#     --mount 'type=volume,src=/backups/tfrsync-$SHOPCODE,dst=/usr2,volume-driver=local,volume-opt=type=nfs,volume-opt=device=192.168.22.75:/backups/tfrsync-$SHOPCODE,"volume-opt=o=addr=192.168.22.75,vers=4,soft,timeo=180,bg,tcp,rw"'
-#    --name ${SHOPCODE}.teleflora.com \
-#    ${OS}7-rti-16.1.3
-#CONTAINER=`docker run --mount source=${SHOPCODE}vol,target=/usr2 --rm --privileged -w="/usr/local/bin" -i -d -t --name=$SHOPCODE.teleflora.com -i ${OS}7-rti-16.1.3 /usr/sbin/init`
-##
 
 #start container
-CONTAINER=`docker run -d -it --name=$SHOPCODE.teleflora.com --rm --privileged --mount source=usr2,target=/usr2 -w="/usr/local/bin" -i ${OS}7-rti-16.1.3 /usr/sbin/init`
+CONTAINER=`docker run -d -it --name=$SHOPCODE.teleflora.com --rm --privileged -v usr2:/usr2  -w="/usr/local/bin" -i ${OS}7-rti-16.1.3 /usr/sbin/init`
 ./pipework --direct-phys eth1 $CONTAINER 192.168.222.22/24@192.168.222.1
 
 #RHEL changed from /bin to /usr/bin at some point. Created link to avoid changing scripts.
 docker exec $CONTAINER ln -s /usr/bin /bin
+
+#Make loop back device in container
+docker exec $CONTAINER mknod /dev/loop0 b 7 0
 
 #install ostools
 docker exec $CONTAINER wget http://rtihardware.homelinux.com/ostools/ostools-1.15-latest.tar.gz
@@ -35,31 +20,12 @@ docker exec $CONTAINER tar xvfz ostools-1.15-latest.tar.gz
 docker exec $CONTAINER ./bin/install-ostools.pl --noharden-linux ./ostools-1.15-latest.tar.gz
 
 #configure system with ostools
-docker exec $CONTAINER ./bin/updateos.pl --hostname=$SHOPCODE.teleflora.com
-docker exec $CONTAINER ./bin/updateos.pl --samba-set-passdb
+docker exec $CONTAINER ./bin/updateos.pl --hostname=$SHOPCODE.teleflora.com >/dev/null 2>&1
 
-#installing tfsupport authorized keys
-#DOWNLOAD TWOFACTOR-20090723.tar
-#docker exec $CONTAINER mkdir /home/tfsupport/.ssh
-#docker exec $CONTAINER chmod 700 /home/tfsupport/.ssh
-#docker exec $CONTAINER chown tfsupport:rti /home/tfsupport/.ssh
-#docker exec $CONTAINER tar xvf ./bin/twofactor-20090723.tar
-#docker exec $CONTAINER chmod +x ./bin/*.pl
-#docker exec $CONTAINER cp ./bin/tfsupport-authorized_keys /home/tfsupport/.ssh/authorized_keys
-#docker exec $CONTAINER chmod 700 /home/tfsupport/.ssh/authorized_keys
-#docker exec $CONTAINER chown tfsupport:root /home/tfsupport/.ssh/authorized_keys
+#Run RTI staging script.
+#docker exec $CONTAINER ./ksrti.sh
 
-#installing admin menus
-#docker exec $CONTAINER ./bin/install_adminmenus.pl --run
-#docker exec $CONTAINER rm -f /etc/cron.d/nightly-backup
-#docker exec $CONTAINER rm -f ./bin/rtibackup.pl
-
-#install Kaseya
-#docker exec $CONTAINER wget http://rtihardware.homelinux.com/support/KcsSetup.sh
-#docker exec $CONTAINER chmod +x ./KcsSetup.sh
-#docker exec $CONTAINER ./KcsSetup.sh
-
-#update everything
+#update OS
 docker exec $CONTAINER yum -y update
 
 #save/export container
@@ -67,14 +33,12 @@ docker commit $CONTAINER $SHOPCODE.teleflora.com
 
 #Done
 echo "${OS}7-rti-$SHOPCODE instance is ready!"
-
-echo ""
-echo ""
-echo ""
-
+echo "---"
 docker exec $CONTAINER /usr/local/bin/bin/updateos.pl --version
 docker exec $CONTAINER cat /etc/redhat-release
-CONTAINER_IP=`nmap -sS -p 22 172.17.0.1/24 | grep 172 | cut -d" " -f5 | sort | tail -1`
 rm -f ~/.ssh/known_hosts
-ssh root@$CONTAINER_IP
+echo "---"
+echo -n "Next: Add Customer Data?(y/n): "
+read DATA
+[ "$DATA" == "y" ] && echo Restore Data Here
 exit 0
