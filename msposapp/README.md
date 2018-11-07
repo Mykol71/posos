@@ -60,17 +60,17 @@ Installation
 
 1. Create a base RHEL7 install in AWS with the following confuration options.
 
-- A second network interface (eth1) assigned to the VM
-- 100GB of disk space
+	- A second network interface (eth1) assigned to the VM
+	- 100GB of disk space
+	- 2 Elastic IPs. Each assigned to each NIC. (One for a managment endpoint and another to passthrough for the application instance.)
 
 2. Download and Install Cloud Menus:
 
-- sudo yum install git
-- git clone https://github.com/mykol-com/MSCloudServer.git
-- cd ./MSCloudServer ; sudo ./MENU
-
-- Select "d" to I/C/U Deps (Install/Configure/Upgrade; need Redhat support login)
-- Select "a" to I/C/U AWS (Need AWS Account Keys, region, text output)
+	- sudo yum install git
+	- git clone https://github.com/mykol-com/MSCloudServer.git
+	- cd ./MSCloudServer ; sudo ./MENU
+		- Select "d" to I/C/U Deps (Install/Configure/Upgrade; need Redhat support login)
+		- Select "a" to I/C/U AWS (Need AWS Account Keys, region, text output)
 
 3. Start with Building the OS Media; then create a VPN connection; and finally Deploy.
 
@@ -104,24 +104,40 @@ PCI/Security Considerations
 Resources
 ------------------------
 
-Amazon AWS - https://aws.amazon.com/
+- Amazon AWS
 
-Redhat Containers - https://www.redhat.com/
+	https://aws.amazon.com/
 
-CentOS - https://www.centos.org/
+- Redhat Containers
 
-Docker - https://docs.docker.com/ 
+	https://www.redhat.com/
 
-OpenVPN - https://openvpn.net/
+- CentOS
 
-Kickstart Info - https://github.com/CentOS/sig-cloud-instance-build/tree/master/docker 
+	https://www.centos.org/
 
-NIC Configuration - https://github.com/jpetazzo/pipework 
+- Docker
 
-Teleflora Managed Services OSTools - http://rtihardware.homelinux.com/ostools/ostools.html 
+	https://docs.docker.com/ 
+
+- OpenVPN
+
+	https://openvpn.net/
+
+- Kickstart Info
+
+	https://github.com/CentOS/sig-cloud-instance-build/tree/master/docker 
+
+- NIC Configuration
+
+	https://github.com/jpetazzo/pipework 
+
+- Teleflora Managed Services OSTools
+
+	http://rtihardware.homelinux.com/ostools/ostools.html 
 
 
 
 ------------------------
 
-Mike Green - mgreen@teleflora.com
+	Mike Green - mgreen@teleflora.com
