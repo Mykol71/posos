@@ -39,23 +39,58 @@ Requirements
 Design
 ------------------------
 
+The solution can be considered in 3 peices:
+
+1. Build (media creation)
+
+An automated build process, using containers, to quickly produce OS media prepared with all the required components needed by the application installation. Technically, the use of prepared media from a marketplace or other solution, isn't suggested for PCI compliance. Additionally, in a catastrophic situation, quickling matching patch levels from a customer's physical server might bee needed.
+
+2. Staging (creation of a running, generic instance, from media)
+
+Prepare the linux boot volume, combine with added required pieces needed for deployment from managed services for the application installation, assign to a specific customer, run through the kickstart process, then commit (and export if desired) the resulting image.
+
+3. Deployment (with data)
+
+Create VPN connection, start application instance prepared above, restore data (if desired).
 
 
 
 Installation
 ------------------------
 
+1. Create a base RHEL7 install anywhere.
+
+2. Download and Install Cloud Menus:
+
+- sudo yum install git
+- git clone https://github.com/mykol-com/MSCloudServer.git
+- cd ./MSCloudServer ; sudo ./MENU
+
+- Select "d" to I/C/U Deps (Install/Configure/Upgrade; need Redhat support login)
+- Select "a" to I/C/U AWS (Need AWS Account Keys, region, text output)
+
+3. Start with Building the OS Media.
 
 
 
 PCI Considerations
 ------------------------
 
-Good Container/PCI Article - https://thenewstack.io/containers-pose-different-operational-security-challenges-pci-compliance/
+Good Container/PCI Article
 
-Another good article with downloadable, container specific, PA-DSS Guide - https://blog.aquasec.com/why-container-security-matters-for-pci-compliant-organizations
+- https://thenewstack.io/containers-pose-different-operational-security-challenges-pci-compliance/
 
-PCI Cloud Computing - https://www.pcisecuritystandards.org/pdfs/PCI_DSS_v2_Cloud_Guidelines.pdf
+	- Another, with downloadable container specific, PA-DSS Guide
+
+- https://blog.aquasec.com/why-container-security-matters-for-pci-compliant-organizations
+
+And, one more, that outlines the differences to address between PA-DSS Virtualization and Docker/containers
+
+- https://www.schellman.com/blog/docker-pci-compliance
+
+PCI Cloud Computing
+
+- https://www.pcisecuritystandards.org/pdfs/PCI_DSS_v2_Cloud_Guidelines.pdf
 
 
 Resources
