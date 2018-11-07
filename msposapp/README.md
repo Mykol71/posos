@@ -25,11 +25,11 @@ Requirements
 
 - Able to expand to a share-hosted style, or host multiple florists with one cloud account
 
-- Repeatable installation and configuration of Build / QA / Dev Instances
+- Repeatable installation and configuration of Prod, QA, and Dev Instances
 
 - Allow for ease to add other Teleflora POS Linux applications
 
-- Integrated with Cloud Backup Service
+- Teleflora Managed Services Linux Cloud Backup Service (To be upgraded from by the end of this process).
 
 - Minimal to no maintenance added to what is already done for the instance itself
 
@@ -39,23 +39,23 @@ Requirements
 Design
 ------------------------
 
-The solution can be considered in 4 peices:
+The solution can be considered in 4 peices (Each having different PCI/PA-DSS implications):
 
 1. Build (media creation)
 
-	An automated build process, using containers, to quickly produce OS media prepared with all the required components needed by the application installation. Technically, the use of prepared media from a marketplace or other solution, isn't suggested for PCI compliance. Additionally, in a catastrophic situation, quickling matching patch levels from a customer's physical server might bee needed.
+	An automated build process, using containers, to quickly produce OS media prepared with all the required components needed by the application installation. Technically, the use of prepared media from a marketplace or other solution, isn't suggested for PCI compliance. Additionally, in a catastrophic situation, quickling matching patch levels from a customer's physical server might be needed.
 
-2. Staging (creation of a running, generic instance, from media)
+2. Staging (creation of a running, generic, instance from media)
 
-	Prepare the linux boot volume, combine with added required pieces needed for deployment from managed services for the application installation, assign to a specific customer, run through the kickstart process, then commit (and export if desired) the resulting image.
+	Prepare the linux boot volume, combine with added required pieces needed for deployment from managed services for the application installation, run through the build process, then commit to the resulting container.
 
 3. Deployment (with data)
 
-	Create VPN connection, start application instance prepared above, restore data (if desired).
+	Assign to a customer, create VPN connection, start application instance prepared above, restore data (if desired).
 
 4. Reporting 
 
-	Creation of reporting sufficient enough to produce historical use for both billing and performance purposes.
+	Creation of reporting sufficient enough to produce historical info for billing, performance, and compliance purposes.
 
 
 
@@ -67,14 +67,34 @@ Installation
 	- A second network interface (eth1) assigned to the VM
 	- 100GB of disk space
 	- 2 Elastic IPs. Each assigned to each NIC. (One for a managment endpoint and another to passthrough for the application instance.)
+	- Ports to be opened inbound: ssh, icmp, and rdp
 
 2. Download and Install Cloud Menus
 
 		sudo yum install git
 		git clone https://github.com/mykol-com/MSCloudServer.git
-		cd ./MSCloudServer ; sudo ./MENU
+		cd ./MSCloudServer
+		sudo ./MENU
 		
-		10:18:27 - Not Installed
+		12:24:33 - Not Installed
+		┏━━━━━━━━━━
+		┃ MS Cloud Menu
+		┣━
+		┃ 1. Backup Service
+		┃ 2. RTI Service
+		┃ 3. CentOS Repo
+		┃ 4. Admin Tasks
+		┃
+		┃ d. I/C/U Deps
+		┃ a. I/C/U AWS
+		┃ i. Info
+		┃ x. Exit
+		┗━
+		Enter selection: 
+
+		Select "2" to load the RTI Cloud Menu
+		
+		10:18:27 - 12345678
 		┏━━━━━━━━━━━━
 		┃ RTI Cloud Menu
 		┣━
@@ -103,18 +123,17 @@ Installation
 		┗━
 		Enter selection: 
 		
-		Select "d" to I/C/U Deps (Install/Configure/Upgrade; need Redhat support login)
-		Select "a" to I/C/U AWS (Need AWS Account Keys, region, text output)
-		Select "2" to load the RTI cloud admin menu
+		Select "d" to Install/Configure/Upgrade Dependant packages; need Redhat support login the first time.
+		Select "a" to I/C/U AWS - Need AWS Account Keys, region, and enter "text" for output.
 
-3. Start with Building the OS Media; then create a VPN connection; and finally Deploy.
+3. Start with Build OS Media; then create a VPN connection; lastly, stage and restore data.
 
 
 
 PCI/Security Considerations
 ------------------------
 
-In my opinion, the most important quote from any of these articles to be aware of: "And while there are hurdles to be jumped and special attention that is needed when using containers in a cardholder data environment, there are no insurmountable obstacles to achieving PCI compliance."
+In my opinion, the most important quote from any of these articles to be aware of: "And while there are hurdles to be jumped and special attention that is needed when using containers in a cardholder data environment, there are no insurmountable obstacles to achieving PCI compliance." - Phil Dorzuk.
 
 - Good Container/PCI Article:
 
@@ -136,25 +155,38 @@ In my opinion, the most important quote from any of these articles to be aware o
 
 	https://learn.cisecurity.org/benchmarks
 
+- Free container vulnerability scanners:
+	
+	https://github.com/coreos/clair
+	https://github.com/OpenSCAP/container-compliance
+
+- Docker hardening standards:
+
+	https://benchmarks.cisecurity.org/tools2/docker/CIS_Docker_1.12.0_Benchmark_v1.0.0.pdf
+	https://web.nvd.nist.gov/view/ncp/repository/checklistDetail?id=655
 
 
-Other Resources
+
+Resources
 ------------------------
 
 - Amazon AWS
 
 	https://aws.amazon.com/
+	https://aws.amazon.com/cli/
 
 - Redhat Containers
 
-	https://www.redhat.com/
+	https://access.redhat.com/containers/
 
 - CentOS
 
 	https://www.centos.org/
+	https://www.centos.org/forums/
 
 - Docker
 
+	https://www.docker.com/
 	https://docs.docker.com/ 
 
 - OpenVPN
@@ -172,6 +204,10 @@ Other Resources
 - Teleflora Managed Services OSTools
 
 	http://rtihardware.homelinux.com/ostools/ostools.html 
+
+- PCI Council
+	
+	https://www.pcisecuritystandards.org/
 
 
 
