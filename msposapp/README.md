@@ -66,11 +66,11 @@ Installation
 
 2. Download and Install Cloud Menus:
 
-	- sudo yum install git
-	- git clone https://github.com/mykol-com/MSCloudServer.git
-	- cd ./MSCloudServer ; sudo ./MENU
-		- Select "d" to I/C/U Deps (Install/Configure/Upgrade; need Redhat support login)
-		- Select "a" to I/C/U AWS (Need AWS Account Keys, region, text output)
+	sudo yum install git
+	git clone https://github.com/mykol-com/MSCloudServer.git
+	cd ./MSCloudServer ; sudo ./MENU
+	Select "d" to I/C/U Deps (Install/Configure/Upgrade; need Redhat support login)
+	Select "a" to I/C/U AWS (Need AWS Account Keys, region, text output)
 
 3. Start with Building the OS Media; then create a VPN connection; and finally Deploy.
 
@@ -78,6 +78,8 @@ Installation
 
 PCI/Security Considerations
 ------------------------
+
+	In my opinion, the most important quote from any of these articles to be aware of: "And while there are hurdles to be jumped and special attention that is needed when using containers in a cardholder data environment, there are no insurmountable obstacles to achieving PCI compliance."
 
 - Good Container/PCI Article:
 
@@ -101,7 +103,7 @@ PCI/Security Considerations
 
 
 
-Resources
+Other Resources
 ------------------------
 
 - Amazon AWS
@@ -128,7 +130,7 @@ Resources
 
 	https://github.com/CentOS/sig-cloud-instance-build/tree/master/docker 
 
-- NIC Configuration
+- Host to Container Network Configuration
 
 	https://github.com/jpetazzo/pipework 
 
