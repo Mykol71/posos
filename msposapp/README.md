@@ -1,45 +1,46 @@
 RTI Cloud Service
 ------------------------
 
-Teleflora Managed Services RTI Application in Amazon AWS.
+Teleflora Managed Services Linux POS Applications in Amazon AWS.
 
 
 
 Overview
 ------------------------
 
+	Create Overview Here
 
 
 Requirements
 ------------------------
 
-- Low Cost
+- Low cost.
 
-- Minimal use of support time or resources
+- Minimal use of support time or resources.
 
-- Automated Build Process
+- Automated build process.
 
-- PCI/PA-DSS Compliant
+- PCI/PA-DSS compliant.
 
-- Minimal impact to other processes
+- Minimal impact to other processes.
 
-- Able to expand to a share-hosted style, or host multiple florists with one cloud account
+- Able to expand to a share-hosted style, or host multiple customers with one cloud account.
 
-- Repeatable installation and configuration of Prod, QA, and Dev Instances
+- Fast, repeatable, installation and configuration of Prod, QA, and Dev instances.
 
-- Allow for ease to add other Teleflora POS Linux applications
+- Allow for ease to add other Teleflora POS Linux applications.
 
 - Teleflora Managed Services Linux Cloud Backup Service (To be upgraded from by the end of this process).
 
-- Minimal to no maintenance added to what is already done for the instance itself
+- Minimal to no maintenance added to what is already done for the instance itself.
 
-- Reporting; track use for billing purposes
+- Reporting; track use for billing, performance, and compliance purposes.
 
 
 Design
 ------------------------
 
-The solution can be considered in 4 peices (Each having different PCI/PA-DSS implications):
+The solution can be considered in 4 peices (Each having different compliance implications):
 
 1. Build (media creation)
 
@@ -62,14 +63,14 @@ The solution can be considered in 4 peices (Each having different PCI/PA-DSS imp
 Installation
 ------------------------
 
-1. Create a base RHEL7 install in AWS with the following confuration options.
+1. Launch an RHEL7 EC2 instance in AWS with the following confuration options:
 
-	- A second network interface (eth1) assigned to the VM
-	- 100GB of disk space
+	- A second network interface (eth1) assigned to the VM.
+	- 100GB of disk space.
 	- 2 Elastic IPs. Each assigned to each NIC. (One for a managment endpoint and another to passthrough for the application instance.)
-	- Ports to be opened inbound: ssh, icmp, and rdp
+	- Ports to be opened inbound: ssh, icmp, and rdp.
 
-2. Download and Install Cloud Menus
+2. Download and install cloud admin menus:
 
 		sudo yum install git
 		git clone https://github.com/mykol-com/MSCloudServer.git
@@ -155,11 +156,9 @@ In my opinion, the most important quote from any of these articles to be aware o
 
 	https://learn.cisecurity.org/benchmarks
 
-- Free container vulnerability scanners:
+- Free container vulnerability scanner:
 	
-	https://github.com/coreos/clair
-	
-	https://github.com/OpenSCAP/container-compliance
+	https://www.open-scap.org/resources/documentation/security-compliance-of-rhel7-docker-containers/
 
 - Docker hardening standards:
 
@@ -214,7 +213,11 @@ Other Resources
 	
 	https://www.pcisecuritystandards.org/
 
+- OpenSCAP:
+
+	https://www.open-scap.org/
+
 
 
 ------------------------
-Mike Green - Systems Architect - Teleflora Managed Services - mgreen@teleflora.com
+Mike Green / Systems Architect / Teleflora Managed Services / mgreen@teleflora.com
