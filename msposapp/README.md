@@ -39,7 +39,7 @@ Requirements
 Design
 ------------------------
 
-The solution can be considered in 3 peices:
+The solution can be considered in 4 peices:
 
 1. Build (media creation)
 
@@ -53,6 +53,10 @@ The solution can be considered in 3 peices:
 
 	Create VPN connection, start application instance prepared above, restore data (if desired).
 
+4. Reporting 
+
+	Creation of reporting sufficient enough to produce historical use for both billing and performance purposes.
+
 
 
 Installation
@@ -65,14 +69,14 @@ Installation
 	- 2 Elastic IPs. Each assigned to each NIC. (One for a managment endpoint and another to passthrough for the application instance.)
 
 2. Download and Install Cloud Menus:
--
 
 	sudo yum install git
 	git clone https://github.com/mykol-com/MSCloudServer.git
 	cd ./MSCloudServer ; sudo ./MENU
+	
 	Select "d" to I/C/U Deps (Install/Configure/Upgrade; need Redhat support login)
 	Select "a" to I/C/U AWS (Need AWS Account Keys, region, text output)
-
+	Select "2" to load the RTI cloud admin menu
 
 3. Start with Building the OS Media; then create a VPN connection; and finally Deploy.
 
@@ -143,5 +147,4 @@ Other Resources
 
 
 ------------------------
-
-	Mike Green - mgreen@teleflora.com
+Mike Green - mgreen@teleflora.com
