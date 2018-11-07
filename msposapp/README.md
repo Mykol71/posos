@@ -68,8 +68,8 @@ Installation
 	- 100GB of disk space
 	- 2 Elastic IPs. Each assigned to each NIC. (One for a managment endpoint and another to passthrough for the application instance.)
 
-2. Download and Install Cloud Menus-
-
+2. Download and Install Cloud Menus
+--
 	sudo yum install git
 	git clone https://github.com/mykol-com/MSCloudServer.git
 	cd ./MSCloudServer ; sudo ./MENU
