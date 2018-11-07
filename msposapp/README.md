@@ -69,13 +69,13 @@ Installation
 	- 2 Elastic IPs. Each assigned to each NIC. (One for a managment endpoint and another to passthrough for the application instance.)
 
 2. Download and Install Cloud Menus
---
-	sudo yum install git
-	git clone https://github.com/mykol-com/MSCloudServer.git
-	cd ./MSCloudServer ; sudo ./MENU
-	Select "d" to I/C/U Deps (Install/Configure/Upgrade; need Redhat support login)
-	Select "a" to I/C/U AWS (Need AWS Account Keys, region, text output)
-	Select "2" to load the RTI cloud admin menu
+
+		sudo yum install git
+		git clone https://github.com/mykol-com/MSCloudServer.git
+		cd ./MSCloudServer ; sudo ./MENU
+		Select "d" to I/C/U Deps (Install/Configure/Upgrade; need Redhat support login)
+		Select "a" to I/C/U AWS (Need AWS Account Keys, region, text output)
+		Select "2" to load the RTI cloud admin menu
 
 3. Start with Building the OS Media; then create a VPN connection; and finally Deploy.
 
