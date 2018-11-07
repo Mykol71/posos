@@ -1,17 +1,15 @@
 #RTI Cloud Service
-------------------------
 
 Teleflora Managed Services Linux POS Applications in Amazon AWS.
 
 
 
 ##Overview
-------------------------
 
 	Create Overview Here
 
 
-#####Requirements
+Requirements
 ------------------------
 
 - Low cost.
@@ -37,7 +35,7 @@ Teleflora Managed Services Linux POS Applications in Amazon AWS.
 - Reporting; track use for billing, performance, and compliance purposes.
 
 
-#####Design
+Design
 ------------------------
 
 The solution can be considered in 4 peices (Each having different compliance implications):
@@ -60,7 +58,7 @@ The solution can be considered in 4 peices (Each having different compliance imp
 
 
 
-#####Installation
+Installation
 ------------------------
 
 1. Launch an RHEL7 EC2 instance in AWS with the following confuration options:
@@ -131,7 +129,7 @@ The solution can be considered in 4 peices (Each having different compliance imp
 
 
 
-######PCI/Security Considerations
+PCI/Security Considerations
 ------------------------
 
 In my opinion, the most important quote from any of these articles to be aware of: _"And while there are hurdles to be jumped and special attention that is needed when using containers in a cardholder data environment, there are no insurmountable obstacles to achieving PCI compliance."_ - Phil Dorzuk.
@@ -168,7 +166,7 @@ In my opinion, the most important quote from any of these articles to be aware o
 
 
 
-#####Other Resources
+Other Resources
 ------------------------
 
 - Amazon AWS:
