@@ -169,52 +169,52 @@ In my opinion, the most important quote from any of these articles to be aware o
 
 
 
-Resources
+Other Resources
 ------------------------
 
-- Amazon AWS
+- Amazon AWS:
 
 	https://aws.amazon.com/
 	
 	https://aws.amazon.com/cli/
 
-- Redhat Containers
+- Redhat Containers:
 
 	https://access.redhat.com/containers/
 
-- CentOS
+- CentOS:
 
 	https://www.centos.org/
 	
 	https://www.centos.org/forums/
 
-- Docker
+- Docker:
 
 	https://www.docker.com/
 	
 	https://docs.docker.com/ 
 
-- OpenVPN
+- OpenVPN:
 
 	https://openvpn.net/
 
-- Kickstart Info
+- Kickstart Info:
 
 	https://github.com/CentOS/sig-cloud-instance-build/tree/master/docker 
 
-- Host to Container Network Configuration
+- Host to Container Network Configuration:
 
 	https://github.com/jpetazzo/pipework 
 
-- Teleflora Managed Services OSTools
+- Teleflora Managed Services OSTools:
 
 	http://rtihardware.homelinux.com/ostools/ostools.html 
 
-- PCI Council
+- PCI Council:
 	
 	https://www.pcisecuritystandards.org/
 
 
 
 ------------------------
-Mike Green - mgreen@teleflora.com
+Mike Green - Systems Architect - Teleflora Managed Services - mgreen@teleflora.com
