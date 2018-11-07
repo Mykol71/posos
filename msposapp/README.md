@@ -74,6 +74,35 @@ Installation
 		git clone https://github.com/mykol-com/MSCloudServer.git
 		cd ./MSCloudServer ; sudo ./MENU
 		
+		10:18:27 - Not Installed
+		┏━━━━━━━━━━━━
+		┃ RTI Cloud Menu
+		┣━
+		┃ 1. Running Instances
+		┃ 2. Start Instance
+		┃ 3. Stop Instance
+		┃ 4. Connect to Instance
+		┃ 5. List NICs
+		┃
+		┃ 11. Build OS Media
+		┃ 12. Stage a Server
+		┃ 13. List Images
+		┃ 14. Delete Image(s)
+		┃ 15.
+		┃
+		┃ 111. Instance Snapshot
+		┃ 112. List VPNs
+		┃ 113. Create VPN
+		┃ 114. Delete VPN
+		┃ 115.
+		┃
+		┃ p. Purge All
+		┃ d. I/C/U Deps
+		┃ a. I/C/U AWS
+		┃ x. Exit
+		┗━
+		Enter selection: 
+		
 		Select "d" to I/C/U Deps (Install/Configure/Upgrade; need Redhat support login)
 		Select "a" to I/C/U AWS (Need AWS Account Keys, region, text output)
 		Select "2" to load the RTI cloud admin menu
