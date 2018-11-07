@@ -158,11 +158,13 @@ In my opinion, the most important quote from any of these articles to be aware o
 - Free container vulnerability scanners:
 	
 	https://github.com/coreos/clair
+	
 	https://github.com/OpenSCAP/container-compliance
 
 - Docker hardening standards:
 
 	https://benchmarks.cisecurity.org/tools2/docker/CIS_Docker_1.12.0_Benchmark_v1.0.0.pdf
+	
 	https://web.nvd.nist.gov/view/ncp/repository/checklistDetail?id=655
 
 
@@ -173,6 +175,7 @@ Resources
 - Amazon AWS
 
 	https://aws.amazon.com/
+	
 	https://aws.amazon.com/cli/
 
 - Redhat Containers
@@ -182,11 +185,13 @@ Resources
 - CentOS
 
 	https://www.centos.org/
+	
 	https://www.centos.org/forums/
 
 - Docker
 
 	https://www.docker.com/
+	
 	https://docs.docker.com/ 
 
 - OpenVPN
