@@ -1,7 +1,7 @@
 RTI Cloud Service
 ------------------------
 
-Teleflora Managed Services Linux POS Applications in Amazon AWS.
+Teleflora Managed Services Linux Point of Sale Applications deployed in Amazon AWS.
 
 
 
@@ -36,7 +36,7 @@ Requirements
 
 - Teleflora Managed Services Linux Cloud Backup Service.
 
-- Minimal maintenance added to what is already done for the instance itself.
+- Minimal maintenance added to what is already done for the point of sale instance itself.
 
 - Reporting; track use for billing, performance, and compliance purposes.
 
@@ -63,7 +63,7 @@ The solution can be considered in 4 peices (Each having different compliance imp
 
 	Creation of reporting sufficient enough to produce historical info for billing, performance, and compliance purposes.
 
-The resulting, EC2 instance, will be hardened with existing processes as well as address the gaps covered by the PCI references below. It will run the linux POS application in a container that is built with the same processes as the physical servers sold to the florists now. There will be a 1-to-1 container to host ratio to allow all host resources to be used by the point of sale application, as well as simplify the requirements on segregation of customer data per PCI recommendations. The instance will intiate a VPN connection to the florist's network(s), and route all traffic through the florist via the VPN tunnel. This allows us to block all ports inbound to the container because we are using the POS application server as the VPN client, which instigates the connection.
+The resulting EC2 instance will be hardened with existing processes, as well as address the gaps covered by the PCI references below. It will run the linux POS application in a container that is built with the same processes as the physical servers sold to the florists now. There will be a 1-to-1 container to host ratio to allow all host resources to be used by the point of sale application, as well as simplify the segregation of customer data per PA-DSS requirements. The point of sale instance will intiate a VPN connection to the florist's network(s), and route all traffic through the florist via the VPN tunnel. This allows us to block all ports inbound to the container because we are using the POS application server as the VPN client.
 
 
 
@@ -107,13 +107,11 @@ Installation
 		┃ 12. Stage a Server
 		┃ 13. List Images
 		┃ 14. Delete Image(s)
-		┃ 15.
 		┃
 		┃ 111. Instance Snapshot
 		┃ 112. List VPNs
 		┃ 113. Create VPN
 		┃ 114. Delete VPN
-		┃ 115.
 		┃
 		┃ p. Purge All
 		┃ d. I/C/U Deps
@@ -125,7 +123,7 @@ Installation
 		Select "d" to Install/Configure/Upgrade Dependant packages; 1st time need Redhat support login.
 		Select "a" to I/C/U AWS - Need AWS Account Keys, region, and enter "text" for output.
 
-- Next, build the OS media, create a VPN connection, then stage and restore data.
+- Next, build the OS media, stage an instance, create a VPN connection, mount persisted data, then start the point of sale appliation.
 
 
 
