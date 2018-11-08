@@ -126,7 +126,7 @@ Installation
 		┗━
 		Enter selection: 
 		
-		Select "d" to Install/Configure/Upgrade Dependant packages; need Redhat support login the first time.
+		Select "d" to Install/Configure/Upgrade Dependant packages; 1st time need Redhat support login.
 		Select "a" to I/C/U AWS - Need AWS Account Keys, region, and enter "text" for output.
 
 3. Start with Build OS Media; then create a VPN connection; lastly, stage and restore data.
@@ -136,7 +136,9 @@ Installation
 PCI/Security Considerations
 ------------------------
 
-In my opinion, the most important quote from any of these articles to be aware of: _"And while there are hurdles to be jumped and special attention that is needed when using containers in a cardholder data environment, there are no insurmountable obstacles to achieving PCI compliance."_ - Phil Dorzuk.
+In my opinion, the most important quote from any of these articles: 
+
+>_"And while there are hurdles to be jumped and special attention that is needed when using containers in a cardholder data environment, there are no insurmountable obstacles to achieving PCI compliance."_ - Phil Dorzuk.
 
 - Good Container/PCI Article:
 
