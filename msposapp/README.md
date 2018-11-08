@@ -8,7 +8,7 @@ Teleflora Managed Services Linux POS Applications in Amazon AWS.
 Overview
 ------------------------
 
-This solution provides for the Teleflora Managed Services Linux point of sale applications to run in the cloud on a single host Docker env with a 1:1 contanier to host ratio, in a private cloud network accessible by all branch stores of the florist. It will utilize as many of the existing, proven compliant, internal processes for delivering a point of sale system to the florist. This application serves to manage those processes as well as the additions for inserting the container layer. The end result will be a simple set of instructions to build, stage, and deploy a customer's point of sale application into the cloud in a small amount of time, successully, with no loss of data.
+This solution provides for the Teleflora Managed Services Linux point of sale applications to run in the cloud on a single-host Docker environment with a 1:1 contanier to host ratio, in a private cloud network accessible by all branch locations of the florist. It will utilize as many of the existing, proven compliant, internal processes for delivering a point of sale system to the florist as possible. This application serves to manage those processes as well as the a few additional ones for inserting the container layer. The end result will be a simple set of instructions to build, stage, and deploy a customer's point of sale application into the cloud in a small amount of time, with no loss of data.
 
 Example pic here
 ![](https://github.com/mykol-com/MSCloudServer/blob/master/msposapp/pics/docker_single_host.png)
@@ -24,7 +24,7 @@ Requirements
 
 - Automated build process.
 
-- PCI/PA-DSS compliant.
+- PA-DSS compliant.
 
 - Minimal impact to other processes.
 
@@ -36,7 +36,7 @@ Requirements
 
 - Teleflora Managed Services Linux Cloud Backup Service.
 
-- Minimal to no maintenance added to what is already done for the instance itself.
+- Minimal maintenance added to what is already done for the instance itself.
 
 - Reporting; track use for billing, performance, and compliance purposes.
 
@@ -57,13 +57,15 @@ The solution can be considered in 4 peices (Each having different compliance imp
 
 3. Deployment (with data)
 
-	Assign to a customer, create VPN connection, start application instance prepared above, restore data (if desired).
+	Assign to a customer, create VPN connection, mount persisted data, and start application instance.
 
 4. Reporting 
 
 	Creation of reporting sufficient enough to produce historical info for billing, performance, and compliance purposes.
 
-The resulting, running, EC2 instance, will be hardened with existing processes as well as address the gaps covered by the PCI references below. It will run the linux POS application in a container that is built with the same processes as the physical servers sold to the florists now. There will be a 1-to-1 container to host ratio to allow all host resources to be used by the point of sale application, as well as simplify the requirements on segregation of customer data per PCI/PA-DSS requirements. The instance will be connected via a VPN to the florist's networks, and route all traffic, through the florist via the VPN tunnel.
+The resulting, EC2 instance, will be hardened with existing processes as well as address the gaps covered by the PCI references below. It will run the linux POS application in a container that is built with the same processes as the physical servers sold to the florists now. There will be a 1-to-1 container to host ratio to allow all host resources to be used by the point of sale application, as well as simplify the requirements on segregation of customer data per PCI recommendations. The instance will intiate a VPN connection to the florist's network(s), and route all traffic through the florist via the VPN tunnel. This allows us to block all ports inbound to the container because we are using the POS application server as the VPN client, which instigates the connection.
+
+
 
 Example1 pic here
 ![](https://github.com/mykol-com/MSCloudServer/blob/master/msposapp/pics/docker_single_host.png)
@@ -80,36 +82,18 @@ Installation
 
 	- A second network interface (eth1) assigned to the VM.
 	- 100GB of disk space.
-	- 2 Elastic IPs. Each assigned to each NIC. (One for a managment endpoint and another for the VPN connection end point.)
-	- Ports to be opened inbound nic1 (eth0): ssh.
-	- Ports to be opened inbound nic2 (eth1): ssh, icmp, rdp. (required for VPN)
+	- 2 Elastic IPs. Each assigned to each NIC. (One for the Docker host, one for the container.)
+	- Ports to be opened inbound to host (eth0): ssh (22).
+	- Ports to be opened inbound to container (eth1): None (Block all inbound initiated connections).
 
 2. Download and install cloud admin menus:
 
 		sudo yum install git
 		git clone https://github.com/mykol-com/MSCloudServer.git
-		cd ./MSCloudServer
+		cd ./MSCloudServer/msposapp
 		sudo ./MENU
 		
-		12:24:33 - Not Installed
-		┏━━━━━━━━━━
-		┃ MS Cloud Menu
-		┣━
-		┃ 1. Backup Service
-		┃ 2. RTI Service
-		┃ 3. CentOS Repo
-		┃ 4. Admin Tasks
-		┃
-		┃ d. I/C/U Deps
-		┃ a. I/C/U AWS
-		┃ i. Info
-		┃ x. Exit
-		┗━
-		Enter selection: 
-
-		Select "2" to load the RTI Cloud Menu
-		
-		10:18:27 - 12345678
+		10:18:27 - Not Installed
 		┏━━━━━━━━━━━━
 		┃ RTI Cloud Menu
 		┣━
@@ -141,11 +125,18 @@ Installation
 		Select "d" to Install/Configure/Upgrade Dependant packages; 1st time need Redhat support login.
 		Select "a" to I/C/U AWS - Need AWS Account Keys, region, and enter "text" for output.
 
-3. Next, build the OS media, create a VPN connection, then stage and restore data.
+- Next, build the OS media, create a VPN connection, then stage and restore data.
 
 
 
-PCI/Security Considerations
+Costs
+------------------------
+
+		Pricing info here.
+
+
+
+PCI/Security References
 ------------------------
 
 In my opinion, the most important quote from any of these articles: 
@@ -184,13 +175,7 @@ In my opinion, the most important quote from any of these articles:
 
 
 
-Costs
-------------------------
-
-		Pricing info here.
-
-
-Other Resources
+Other References
 ------------------------
 
 - Amazon AWS:
@@ -234,6 +219,10 @@ Other Resources
 - OpenSCAP:
 
 	https://www.open-scap.org/
+
+- SSL VPN Client Creation from linux command line:
+
+	http://www.tldp.org/HOWTO/VPN-HOWTO/x346.html
 
 
 
