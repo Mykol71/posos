@@ -8,6 +8,9 @@ Teleflora Managed Services Linux POS Applications in Amazon AWS.
 Overview
 ------------------------
 
+This solution provides for the Teleflora Managed Services Linux point of sale applications to run in the cloud on a single host Docker env with a 1:1 contanier to host ratio, in a private cloud network accessible by all branch stores of the florist. It will utilize as many of the existing, proven compliant, internal processes for delivering a point of sale system to the florist. This application serves to manage those processes as well as the additions for inserting the container layer. The end result will be a simple set of instructions to build, stage, and deploy a customer's point of sale application into the cloud in a small amount of time, successully, with no loss of data.
+
+Example pic here
 ![](https://github.com/mykol-com/MSCloudServer/blob/master/msposapp/pics/docker_single_host.png)
 
 
@@ -31,7 +34,7 @@ Requirements
 
 - Allow for ease to add other Teleflora POS Linux applications.
 
-- Teleflora Managed Services Linux Cloud Backup Service (To be upgraded from by the end of this process).
+- Teleflora Managed Services Linux Cloud Backup Service.
 
 - Minimal to no maintenance added to what is already done for the instance itself.
 
@@ -60,6 +63,14 @@ The solution can be considered in 4 peices (Each having different compliance imp
 
 	Creation of reporting sufficient enough to produce historical info for billing, performance, and compliance purposes.
 
+The resulting, running, EC2 instance, will be hardened with existing processes as well as address the gaps covered by the PCI references below. It will run the linux POS application in a container that is built with the same processes as the physical servers sold to the florists now. There will be a 1-to-1 container to host ratio to allow all host resources to be used by the point of sale application, as well as simplify the requirements on segregation of customer data per PCI/PA-DSS requirements. The instance will be connected via a VPN to the florist's networks, and route all traffic, through the florist via the VPN tunnel.
+
+Example1 pic here
+![](https://github.com/mykol-com/MSCloudServer/blob/master/msposapp/pics/docker_single_host.png)
+
+Example2 pic here
+![](https://github.com/mykol-com/MSCloudServer/blob/master/msposapp/pics/docker_single_host.png)
+
 
 
 Installation
@@ -69,8 +80,9 @@ Installation
 
 	- A second network interface (eth1) assigned to the VM.
 	- 100GB of disk space.
-	- 2 Elastic IPs. Each assigned to each NIC. (One for a managment endpoint and another to passthrough for the application instance.)
-	- Ports to be opened inbound: ssh, icmp, and rdp.
+	- 2 Elastic IPs. Each assigned to each NIC. (One for a managment endpoint and another for the VPN connection end point.)
+	- Ports to be opened inbound nic1 (eth0): ssh.
+	- Ports to be opened inbound nic2 (eth1): ssh, icmp, rdp. (required for VPN)
 
 2. Download and install cloud admin menus:
 
@@ -129,7 +141,7 @@ Installation
 		Select "d" to Install/Configure/Upgrade Dependant packages; 1st time need Redhat support login.
 		Select "a" to I/C/U AWS - Need AWS Account Keys, region, and enter "text" for output.
 
-3. Start with Build OS Media; then create a VPN connection; lastly, stage and restore data.
+3. Next, build the OS media, create a VPN connection, then stage and restore data.
 
 
 
@@ -140,11 +152,11 @@ In my opinion, the most important quote from any of these articles:
 
 >_"And while there are hurdles to be jumped and special attention that is needed when using containers in a cardholder data environment, there are no insurmountable obstacles to achieving PCI compliance."_ - Phil Dorzuk.
 
-- Good Container/PCI Article:
+- Good Container/PCI article:
 
 	https://thenewstack.io/containers-pose-different-operational-security-challenges-pci-compliance/
 
-- Another, with downloadable container specific, PA-DSS Guide:
+- Another, with downloadable container specific, PA-DSS guide:
 
 	https://blog.aquasec.com/why-container-security-matters-for-pci-compliant-organizations
 
@@ -152,11 +164,11 @@ In my opinion, the most important quote from any of these articles:
 
 	https://www.schellman.com/blog/docker-pci-compliance
 
-- PCI Cloud Computing general document:
+- PCI Cloud Computing Guidelines:
 
 	https://www.pcisecuritystandards.org/pdfs/PCI_DSS_v2_Cloud_Guidelines.pdf
 
-- CIS Hardening Benchmarks for OS, Virtualization, Containers, etc., with downloadable pdf:
+- CIS Hardening benchmarks for OS, virtualization, containers, etc., with downloadable pdf:
 
 	https://learn.cisecurity.org/benchmarks
 
@@ -170,6 +182,12 @@ In my opinion, the most important quote from any of these articles:
 	
 	https://web.nvd.nist.gov/view/ncp/repository/checklistDetail?id=655
 
+
+
+Costs
+------------------------
+
+		Pricing info here.
 
 
 Other Resources
@@ -197,10 +215,6 @@ Other Resources
 	
 	https://docs.docker.com/ 
 
-- OpenVPN:
-
-	https://openvpn.net/
-
 - Kickstart Info:
 
 	https://github.com/CentOS/sig-cloud-instance-build/tree/master/docker 
@@ -224,4 +238,4 @@ Other Resources
 
 
 ------------------------
-Mike Green / Systems Architect / Teleflora Managed Services / mgreen@teleflora.com
+Mike Green - Systems Architect - Teleflora Managed Services - mgreen@teleflora.com
