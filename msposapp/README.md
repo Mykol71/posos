@@ -225,4 +225,4 @@ Other References
 
 
 ------------------------
-Mike Green - Systems Architect - Teleflora Managed Services - mgreen@teleflora.com
+Mike Green - mgreen@teleflora.com
