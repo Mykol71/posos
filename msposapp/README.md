@@ -8,7 +8,7 @@ Teleflora Managed Services Linux POS Applications in Amazon AWS.
 Overview
 ------------------------
 
-![Docker Single Host](https://d3ansictanv2wj.cloudfront.net/dnsd_0201-7c6df9623cb9dc0bb0276d02ac921b39.png "Docker Single Host Configuration")
+<img https://d3ansictanv2wj.cloudfront.net/dnsd_0201-7c6df9623cb9dc0bb0276d02ac921b39.png height=60 width=60 \>
 
 
 
