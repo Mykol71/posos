@@ -8,7 +8,7 @@ Teleflora Managed Services Linux POS Applications in Amazon AWS.
 Overview
 ------------------------
 
-![](https://d3ansictanv2wj.cloudfront.net/dnsd_0201-7c6df9623cb9dc0bb0276d02ac921b39.png?&s=100)
+![](https://github.com/mykol-com/MSCloudServer/blob/master/msposapp/pics/docker_single_host.png)
 
 
 
