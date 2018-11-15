@@ -1,0 +1,38 @@
+#!/bin/bash
+
+YOUR_VPN_SERVER_IP=`cat .vpnserver`
+CLOUD_PUBLIC_IP=`cat .public`
+
+# create xl2tpd control file
+
+mkdir -p /var/run/xl2tpd
+touch /var/run/xl2tpd/l2tp-control
+
+# restart services
+
+service strongswan restart
+service xl2tpd restart
+
+# start the ipsec connection
+
+strongswan up myvpn
+
+# start the l2tp connection
+
+echo "c myvpn" > /var/run/xl2tpd/l2tp-control
+
+#check default route, get GW IP
+ip route
+
+#exclude your VPN servers IP from the new default route
+route add $YOUR_VPN_SERVER_IP gw 192.168.222.1
+
+#also exclude local public ip to prevent ssh session discos
+route add $CLOUD_PUBLIC_IP gw 192.168.222.1
+
+#add a new default route to start routing traffic through the VPN server
+route add default dev ppp0
+
+#Test: the below command should return your VPN server IP
+echo "This should be your VPN server IP..."
+wget -qO- http://ipv4.icanhazip.com; echo

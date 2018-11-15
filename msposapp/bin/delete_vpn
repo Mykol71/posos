@@ -27,7 +27,7 @@ if [ $REPLY == "n" ]; then
 else
 # do action
 echo "Deleting VPN Connection......"
-aws ec2 delete-vpn-connection --vpn-connection-id $VPNID
+# TODO
 echo "VPN Connection deleted."
 fi
 else

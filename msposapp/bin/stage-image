@@ -3,15 +3,22 @@
 OS=rhel
 echo -n "SHOPCODE: "
 read SHOPCODE
+echo -n "daisy or rti?: "
+read POSTYPE
+[ "$POSTYPE" == "daisy" ] && VER="10.1.17" && POSDIR="d"
+[ "$POSTYPE" == "rti" ] && VER="16.1.3" && POSDIR="usr2"
 
 #start container
-CONTAINER=`docker run -d -it --name=$SHOPCODE.teleflora.com --rm --privileged -v usr2:/usr2  -w="/usr/local/bin" -i ${OS}7-rti-16.1.3 /usr/sbin/init`
-./pipework --direct-phys eth1 $CONTAINER 192.168.222.22/24@192.168.222.1
+CONTAINER=`docker run -d -it --name=$SHOPCODE.teleflora.com --rm --privileged -v "${POSDIR}:/${POSDIR}"  -w="/usr/local/bin" -i ${OS}7-${POSTYPE}-${VER} /usr/sbin/init`
+echo $CONTAINER>.container
+
+#configure the second nic for host networking by passing eth1 through to the container
+./pipework --direct-phys eth1 $CONTAINER 192.168.222.222/24@192.168.222.1
 
 #RHEL changed from /bin to /usr/bin at some point. Created link to avoid changing scripts.
 docker exec $CONTAINER ln -s /usr/bin /bin
 
-#Make loop back device in container
+#Make loop back device in container so we can mount isos inside the container
 docker exec $CONTAINER mknod /dev/loop0 b 7 0
 
 #install ostools
@@ -22,10 +29,14 @@ docker exec $CONTAINER ./bin/install-ostools.pl --noharden-linux ./ostools-1.15-
 #configure system with ostools
 docker exec $CONTAINER ./bin/updateos.pl --hostname=$SHOPCODE.teleflora.com >/dev/null 2>&1
 
-#Run RTI staging script.
-docker exec $CONTAINER chmod +x ./ksrti.sh
-docker exec $CONTAINER chmod +x ./ksrti_install.sh
+#install vpnc
+docker exec $CONTAINER wget http://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+docker exec $CONTAINER yum -y localinstall ./epel-release-latest-7.noarch.rpm
+docker exec $CONTAINER yum -y install strongswan xl2tpd
 
+#Run RTI staging script.
+docker exec $CONTAINER chmod +x ./ks*.sh
+docker exec $CONTAINER chmod +x ./ks*_install.sh
 #ISSUE TO FIGURE OUT: No terminal input passed to this script for password entry etc.
 #ALSO: Look again for a completely silent install for bbj?
 #docker exec $CONTAINER ./ksrti.sh
@@ -37,7 +48,8 @@ docker exec $CONTAINER yum -y update
 docker commit $CONTAINER $SHOPCODE.teleflora.com
 
 #Done
-echo "${OS}7-rti-$SHOPCODE instance is ready!"
+echo "---"
+echo "${OS}7-$POSTYPE-$SHOPCODE instance is ready!"
 echo "---"
 docker exec $CONTAINER /usr/local/bin/bin/updateos.pl --version
 docker exec $CONTAINER cat /etc/redhat-release

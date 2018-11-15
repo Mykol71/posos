@@ -4,7 +4,9 @@ echo -n "Enter container ID (* for all): "
 read CONTAINER_ID
 if [ "$CONTAINER_ID" == "*" ]; then
 docker container stop $(docker container ps -a -q)
+docker container prune
 else
 docker container stop $CONTAINER_ID
-docker container rm $CONTAINER_ID
+docker container prune
 fi
+rm -f .container

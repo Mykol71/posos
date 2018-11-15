@@ -1,0 +1,7 @@
+#!/bin/bash
+
+# stop routing traffic via the VPN server
+route del default dev ppp0
+
+# disconnect
+strongswan down myvpn

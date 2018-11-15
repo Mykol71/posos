@@ -1,0 +1,4 @@
+#!/bin/bash
+
+mkdir -p /var/lib/docker/volumes/usr2/_data/vpn
+cp -f ./*vpn* /var/lib/docker/volumes/usr2/_data/vpn/.

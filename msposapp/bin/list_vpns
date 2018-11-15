@@ -1,4 +1,3 @@
 #!/bin/bash
 
-#aws ec2 describe-vpn-connections | grep vpn_connection | grep -v type
-aws ec2 describe-customer-gateways
+strongswan statusall

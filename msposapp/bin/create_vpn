@@ -1,18 +1,19 @@
 #!/usr/bin/bash
 
+# this script gets passed to the created pos container. the vpn connection needs to be initiated from there.
+#
 # verify root
 ID=`/usr/bin/id -u`
 [ $ID -ne 0 ] && echo "You must be root to run $0." && exit 1
 
 # gather user input
-INPUTS="SHOPCODE SHOPTYPE SHOPPUBLICIP"
+INPUTS="SHOPCODE SHOPTYPE VPN_SERVER_IP VPN_IPSEC_PSK VPN_USER VPN_PASSWORD CLOUD_PUBLIC_IP"
 
 echo "Gathering required information...."
 for var in $INPUTS; do
-  echo -n "Enter $var:"
+  echo -n "Enter $var: "
   read -p ""
   export $var=$REPLY
-  TYPE="ipsec.1"
 done
 
 # verify input
@@ -24,20 +25,83 @@ read -p ""
 if [ $REPLY == "n" ]; then
   exit 1
 else
-# do action
+echo $CLOUD_PUBLIC_IP>.public
+echo $VPN_SERVER_IP>.vpnserver
+# configure strongSwan
 echo "Creating VPN Connection......"
-echo "1. Creating Customer Gateway...."
-CUSTGATEWAY=`aws ec2 create-customer-gateway --bgp-asn 34545 --public-ip $SHOPPUBLICIP --type $TYPE`
-CUSTGATEWAYID=`echo $CUSTGATEWAY | awk '{print $3}'`
-echo "$CUSTGATEWAYID"
-echo "Done...."
-echo "2. Creating VPN Gateway...."
-VPNGATEWAY=`aws ec2 create-vpn-gateway --type ipsec.1`
-VPNGATEWAYID=`echo $VPNGATEWAY | awk '{print $5}'`
-echo "$VPNGATEWAYID"
-echo "Done...."
-echo "3. Creating VPN Connection...."
-aws ec2 create-vpn-connection --customer-gateway-id $CUSTGATEWAYID --type $TYPE --vpn-gateway-id $VPNGATEWAYID
+cat > /etc/ipsec.conf <<EOF
+# ipsec.conf - strongSwan IPsec configuration file
+
+# basic configuration
+
+config setup
+  # strictcrlpolicy=yes
+  # uniqueids = no
+
+# Add connections here.
+
+# Sample VPN connections
+
+conn %default
+  ikelifetime=60m
+  keylife=20m
+  rekeymargin=3m
+  keyingtries=1
+  keyexchange=ikev1
+  authby=secret
+  ike=aes256-sha1-modp2048,aes128-sha1-modp2048!
+  esp=aes256-sha1-modp2048,aes128-sha1-modp2048!
+
+conn myvpn
+  keyexchange=ikev1
+  left=%defaultroute
+  auto=add
+  authby=secret
+  type=transport
+  leftprotoport=17/1701
+  rightprotoport=17/1701
+  right=$VPN_SERVER_IP
+EOF
+
+cat > /etc/ipsec.secrets <<EOF
+: PSK "$VPN_IPSEC_PSK"
+EOF
+
+chmod 600 /etc/ipsec.secrets
+
+mv /etc/strongswan/ipsec.conf /etc/strongswan/ipsec.conf.old 2>/dev/null
+mv /etc/strongswan/ipsec.secrets /etc/strongswan/ipsec.secrets.old 2>/dev/null
+ln -s /etc/ipsec.conf /etc/strongswan/ipsec.conf
+ln -s /etc/ipsec.secrets /etc/strongswan/ipsec.secrets
+
+# configure xl2tpd
+cat > /etc/xl2tpd/xl2tpd.conf <<EOF
+[lac myvpn]
+lns = $VPN_SERVER_IP
+ppp debug = yes
+pppoptfile = /etc/ppp/options.l2tpd.client
+length bit = yes
+EOF
+
+cat > /etc/ppp/options.l2tpd.client <<EOF
+ipcp-accept-local
+ipcp-accept-remote
+refuse-eap
+require-chap
+noccp
+noauth
+mtu 1280
+mru 1280
+noipdefault
+defaultroute
+usepeerdns
+connect-delay 5000
+name $VPN_USER
+password $VPN_PASSWORD
+EOF
+
+chmod 600 /etc/ppp/options.l2tpd.client
+
 echo "VPN Connection Created."
 fi
 else

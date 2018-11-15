@@ -1,0 +1,7 @@
+#!/usr/bin/bash
+
+cp -f ./rhel7-daisy-dockerfile /var/tmp/containers/`date +%Y%m%d`/rhel7-daisy/docker/Dockerfile
+cp -f /var/tmp/rhel7-daisy-docker.tar.xz /var/tmp/containers/`date +%Y%m%d`/rhel7-daisy/docker
+cd /var/tmp/containers/`date +%Y%m%d`/rhel7-daisy/docker
+docker build --rm -t rhel7-daisy-10.1.17 .
+cd -

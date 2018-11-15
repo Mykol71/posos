@@ -14,30 +14,30 @@ trap '' 2
 while :; do
 	clear
 echo -en "$(date +%T) - `[ -f .envtype ] && cat .envtype || echo -n Not Installed`\n"
-printf '\u250f''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\n'
-printf '\u2503''\033[1m RTI Cloud Menu\033[0m''\n'
+printf '\u250f''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501'
+printf '\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\n'
+printf '\u2503''\033[1m MS POS Cloud Menu\033[0m''\n'
 printf '\u2523''\u2501''\n'
-printf '\u2503''\033[1m'" 1.\033[0m Running Instances"'\n'
-printf '\u2503''\033[1m'" 2.\033[0m Start Instance"'\n'
-printf '\u2503''\033[1m'" 3.\033[0m Stop Instance"'\n'
-printf '\u2503''\033[1m'" 4.\033[0m Connect to Instance"'\n'
-printf '\u2503''\033[1m'" 5.\033[0m List NICs"'\n'
+printf '\u2503''\033[1m'" 1.\033[0m Server Status"'\n'
+printf '\u2503''\033[1m'" 2.\033[0m Start Server"'\n'
+printf '\u2503''\033[1m'" 3.\033[0m Stop Server(s)"'\n'
+printf '\u2503''\033[1m'" 4.\033[0m Connect to Server"'\n'
+printf '\u2503''\033[1m'" 5.\033[0m Restore Florist Data"'\n'
 printf '\u2503''\n'
-printf '\u2503''\033[1m'" 11.\033[0m Build OS Media"'\n'
-printf '\u2503''\033[1m'" 12.\033[0m Stage a Server"'\n'
-printf '\u2503''\033[1m'" 13.\033[0m List Images"'\n'
+printf '\u2503''\033[1m'" 11.\033[0m List Images"'\n'
+printf '\u2503''\033[1m'" 12.\033[0m Build OS Media"'\n'
+printf '\u2503''\033[1m'" 13.\033[0m Stage a Server"'\n'
 printf '\u2503''\033[1m'" 14.\033[0m Delete Image(s)"'\n'
-printf '\u2503''\033[1m'" 15."'\n'
+printf '\u2503''\033[1m'" 15.\033[0m Server Snapshot"'\n'
 printf '\u2503''\n'
-printf '\u2503''\033[1m'" 111.\033[0m Instance Snapshot"'\n'
-printf '\u2503''\033[1m'" 112.\033[0m List VPNs"'\n'
-printf '\u2503''\033[1m'" 113.\033[0m Create VPN"'\n'
-printf '\u2503''\033[1m'" 114.\033[0m Delete VPN"'\n'
-printf '\u2503''\033[1m'" 115."'\n'
+printf '\u2503''\033[1m'" 111.\033[0m VPN Status"'\n'
+printf '\u2503''\033[1m'" 112.\033[0m Create VPN"'\n'
+printf '\u2503''\033[1m'" 113.\033[0m Start VPN(s)"'\n'
+printf '\u2503''\033[1m'" 114.\033[0m Stop VPN(s)"'\n'
+printf '\u2503''\033[1m'" 115.\033[0m Delete VPN(s)"'\n'
 printf '\u2503''\n'
 printf '\u2503''\033[1m'" p.\033[0m Purge All"'\n'
 printf '\u2503''\033[1m'" d.\033[0m I/C/U Deps"'\n'
-printf '\u2503''\033[1m'" a.\033[0m I/C/U AWS"'\n'
 printf '\u2503''\033[1m'" x.\033[0m Exit"'\n'
 printf '\u2517''\u2501''\n'
 	echo -n "Enter selection: "
@@ -85,21 +85,21 @@ printf '\u2517''\u2501''\n'
 		read
 		cd -
 		;;
-	11)
+	12)
 		cd $ROOTDIR/bin
 		time ./create-base-image
 		echo "Press enter to continue.."
 		read
 		cd -
 		;;
-	12)
+	13)
 		cd $ROOTDIR/bin
 		time ./stage-image
 		echo "Press enter to continue.."
 		read
 		cd -
 		;;
-	13)
+	11)
 		cd $ROOTDIR/bin
 		./list_image
 		echo "Press enter to continue.."
@@ -113,37 +113,61 @@ printf '\u2517''\u2501''\n'
 		read
 		cd -
 		;;
-	111)
+	15)
 		cd $ROOTDIR/bin
 		time ./snapshot_instance
 		echo "Press enter to continue.."
 		read
 		cd -
 		;;
+	111)
+		cd $ROOTDIR/bin
+		CONTAINER=`cat .container`
+		./cp_to_container
+		docker exec $CONTAINER /usr2/vpn/list_vpns
+		echo "Press enter to continue.."
+		read
+		cd -
+		;;
 	112)
 		cd $ROOTDIR/bin
-		time ./list_vpns
+		export CONTAINER=`cat .container`
+		./cp_to_container
+		docker exec $CONTAINER /usr2/vpn/create_vpn
 		echo "Press enter to continue.."
 		read
 		cd -
 		;;
 	113)
 		cd $ROOTDIR/bin
-		time ./create_vpn
+		CONTAINER=`cat .container`
+		./cp_to_container
+		docker exec $CONTAINER /usr2/vpn/start_vpn
 		echo "Press enter to continue.."
 		read
 		cd -
 		;;
 	114)
 		cd $ROOTDIR/bin
-		time ./delete_vpn
+		CONTAINER=`cat .container`
+		./cp_to_container
+		docker exec $CONTAINER /usr2/vpn/stop_vpn
+		echo "Press enter to continue.."
+		read
+		cd -
+		;;
+	115)
+		cd $ROOTDIR/bin
+		CONTAINER=`cat .container`
+		./cp_to_container
+		docker exec $CONTAINER /usr2/vpn/delete_vpn
 		echo "Press enter to continue.."
 		read
 		cd -
 		;;
 	d)
 		cd $ROOTDIR/bin
-		./install
+		time ./install
 		echo "Press enter to continue.."
 		read
 		cd -
