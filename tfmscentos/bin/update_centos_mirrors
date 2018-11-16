@@ -1,10 +1,16 @@
 #-Populate/Refresh local mirror
 
+DIR=`pwd`
+mkdir -p /var/www/html/repos/7/os/x86_64
 cd /var/www/html/repos/7/os/x86_64
 rsync -rz --progress rsync://mirrors.ocf.berkeley.edu/centos/7/os/x86_64 .
 createrepo --update /var/www/html/repos/7/os/x86_64/x86_64
+cp $DIR/tfmscentos.repo /var/www/html/repos/7/os/x86_64/x86_64/.
 cd x86_64
 echo "CentOS 7.5">.repos
+echo -------
+echo `cat tfmscentos.repo`
+echo -------
 cd -
 
 #-
