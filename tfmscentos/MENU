@@ -14,10 +14,11 @@ trap '' 2
 while :; do
 	clear
 echo -en "$(date +%T)\n"
-printf '\u250f''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\n'
+printf '\u250f''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501'
+printf '\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\n'
 printf '\u2503''\033[1m CentOS Repo Menu\033[0m''\n'
 printf '\u2523''\u2501''\n'
-printf '\u2503'" Status: `systemctl status httpd | grep Active | cut -d" " -f5`"'\n'
+printf '\u2503'" Status: `systemctl status httpd 2>/dev/null | grep Active | cut -d" " -f5`"'\n'
 printf '\u2503''\n'
 printf '\u2503''\033[1m'" 1.\033[0m Start Repo"'\n'
 printf '\u2503''\033[1m'" 2.\033[0m Stop Repo"'\n'
