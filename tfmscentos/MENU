@@ -32,7 +32,7 @@ printf '\u2517''\u2501''\n'
 	case $selection in
 	d)
 		cd $ROOTDIR/bin
-		./install_deps
+		time ./install_deps
 		echo "Press enter to continue.."
 		read
 		cd -
@@ -53,7 +53,7 @@ printf '\u2517''\u2501''\n'
 		;;
 	3)
 		cd $ROOTDIR/bin
-		./update_centos_mirrors
+		time ./update_centos_mirrors
 		echo "Press enter to continue.."
 		read
 		cd -
