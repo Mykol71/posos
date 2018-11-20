@@ -4,7 +4,6 @@ TFMS CentOS Repository
 Teleflora Managed Services CentOS Repository deployed in Amazon AWS.
 
 
-
 Overview
 ------------------------
 
@@ -122,10 +121,6 @@ This will create the repository if it isnt there, and update it if it is.
 	Press enter to continue..
 
   ```
-
-  ```
-
-
 
 Installation
 ------------------------
