@@ -99,7 +99,7 @@ This will create the repository if it isnt there, and update it if it is.
 	sed -i 's/enabled = 1/enabled = 0/g' redhat.repo
 	
 	#2. Install CentOS repo provided by Teleflora.
-	wget http://tfmscentos.homelinux.com/repos/centos7/x86_64/tfmscentos.repo
+	wget http://tfmscentos.homelinux.com/repos/centos7/x86_64/x86_84/tfmscentos.repo
 	echo "enabled=1">>/etc/yum.repos.d/tfmscentos.repo
 	
 	#3. Replace redhat-release with centos-release
