@@ -36,7 +36,7 @@ Install
 
 ___Cloud Backup Service___ - Current Cloud Backup Service.
 
-___POS Cloud Service__ - Point of Sale Systems Running in AWS.
+___POS Cloud Service___ - Point of Sale Systems Running in AWS.
 
 ___CentOS Repository___ - Creation and Maintenance of Teleflora's CentOS Repository.
 
