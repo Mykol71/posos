@@ -30,17 +30,17 @@ Install
 	┗━
 	Enter selection: 
 	
-      Select "d" to I/C/U Deps (Install/Configure/Upgrade)
-      Select "a" to I/C/U AWS (Need AWS Account public/private Key pair)
+      Select "d" to I/C/U Deps (Install/Configure/Upgrade - Need Redhat login 1st time)
+      Select "a" to I/C/U AWS (Need AWS Account public/private Key pair, Region, text output)
 ```
 
-_Cloud Backup Service_ - Current Cloud Backup Service.
+___Cloud Backup Service___ - Current Cloud Backup Service.
 
-_POS Cloud Service_ - RTI Running in the Cloud.
+___POS Cloud Service__ - Point of Sale Systems Running in AWS.
 
-_CentOS Repo_ - Creation and Maintenance of Teleflora's CentOS Repo.
+___CentOS Repository___ - Creation and Maintenance of Teleflora's CentOS Repository.
 
-_Admin tasks_ - Various Admin tasks.
+___Linux Admin Tasks___ - Various Linux Administration tasks.
 
 ---------
 Mike Green - mgreen@teleflora.com
