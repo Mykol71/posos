@@ -10,7 +10,7 @@ Overview
 
 This solution provides for the Teleflora Managed Services Linux Point of Sale applications to run in the cloud on a single-host Docker environment with a 1:1 container to host ratio, in a private cloud network accessible by all branch locations of the customer. It will utilize as many of the existing, proven compliant, internal processes for delivering a Point of Sale system as possible. This application serves to manage those processes as well as a few additional ones from inserting the container layer. The end result will be a simple set of instructions (menu driven) to: Build, stage, and deploy a customer's Point of Sale server into the cloud, quickly, with no loss of data and minimal downtime.
 
-![](https://github.com/mykol-com/msposapp/blob/master/pics/RTI_cloud1.png)
+![](https://github.com/mykol-com/MSCloudServer/blob/master/msposapp/pics/RTI_cloud1.png)
 
 Requirements
 ------------------------
