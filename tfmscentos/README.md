@@ -171,5 +171,17 @@ Installation
 
 - Next, create/update the repo (3), start repo (1).
 
+- /etc/yum.repos.d/tfmscentos.repo:
+
+```
+
+[Teleflora Managed Services CentOS 7]
+name=TFMSCentOS
+baseurl=http://tfmscentos.homelinux.com/repos/7/os/x86_64/x86_64
+gpgcheck=0
+enabled=1
+
+```
+
 ------------------------
 Mike Green -- mgreen@teleflora.com
