@@ -33,10 +33,10 @@ docker exec $CONTAINER ./bin/updateos.pl --hostname=$SHOPCODE.teleflora.com >/de
 docker exec $CONTAINER wget http://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
 docker exec $CONTAINER yum -y localinstall ./epel-release-latest-7.noarch.rpm
 docker exec $CONTAINER yum -y install strongswan xl2tpd
+docker exec $CONTAINER systemctl enable strongswan
+docker exec $CONTAINER systemctl enable xlt2pd
 
 #Run RTI staging script.
-docker exec $CONTAINER chmod +x ./ks*.sh
-docker exec $CONTAINER chmod +x ./ks*_install.sh
 #ISSUE TO FIGURE OUT: No terminal input passed to this script for password entry etc.
 #ALSO: Look again for a completely silent install for bbj?
 #docker exec $CONTAINER ./ksrti.sh
@@ -55,7 +55,7 @@ docker exec $CONTAINER /usr/local/bin/bin/updateos.pl --version
 docker exec $CONTAINER cat /etc/redhat-release
 rm -f ~/.ssh/known_hosts
 echo "---"
-echo -n "Next: Add Customer Data?(y/n): "
-read DATA
-[ "$DATA" == "y" ] && echo Restore Data Here
+#echo -n "Next: Add Customer Data?(y/n): "
+#read DATA
+#[ "$DATA" == "y" ] && echo Restore Data Here
 exit 0

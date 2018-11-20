@@ -5,18 +5,10 @@
 OS=rhel
 echo -n "Enter Shop Code: "
 read selection
-CONTAINER=`docker run --privileged -i -d -t --name=${selection}.teleflora.com -i ${selection}.teleflora.com /usr/sbin/init`
-#set hostname
-#docker exec $CONTAINER hostnamectl set-hostname $selection.teleflora.com 2>/dev/null
-#add customer data mount
-#docker exec $CONTAINER echo "               ">>/etc/fstab
-#docker exec $CONTAIENR mount -a
-#restart RTI
-docker exec $CONTAINER systemctl restart blm
-docker exec $CONTAINER systemctl restart bbj
-docker exec $CONTAINER systemctl restart rti
-docker exec $CONTAINER hostnamectl set-hostname $selection.teleflora.com 2>/dev/null
-CONTAINER_IP=`nmap -sS -p 22 172.17.0.1/24 | grep 172 | cut -d" " -f5 | sort | tail -1`
-rm -f ~/.ssh/known_hosts
+echo -n "Daisy or RTI?: "
+read postype
+[ "$postype" == "RTI" ] && POSDIR=usr2
+[ "$postype" == "Daisy" ] && POSDIR=d
+CONTAINER=`docker run --privileged -i -d -t --name=${selection}.teleflora.com -v "${POSDIR}:/${POSDIR}" -i ${selection}.teleflora.com /usr/sbin/init`
 docker exec $CONTAINER echo export TERM=linux >/etc/profile.d/rti-term.sh
-ssh tfsupport@$CONTAINER_IP
+echo "$CONTAINER">.container
