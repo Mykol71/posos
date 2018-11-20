@@ -293,18 +293,18 @@ Costs
 
 __Small Server Option:__
 
-![](https://github.com/mykol-com/msposapp/blob/master/pics/ss1.png)
+![](https://github.com/mykol-com/MSCloudServer/blob/master/msposapp/pics/ss1.png)
 
 
-![](https://github.com/mykol-com/msposapp/blob/master/pics/ss2.png)
+![](https://github.com/mykol-com/MSCloudServer/blob/master/msposapp/pics/ss2.png)
 
 
 __Large Server Option:__
 
-![](https://github.com/mykol-com/msposapp/blob/master/pics/ss4.png)
+![](https://github.com/mykol-com/MSCloudServer/blob/master/msposapp/pics/ss4.png)
 
 
-![](https://github.com/mykol-com/msposapp/blob/master/pics/ss3.png)
+![](https://github.com/mykol-com/MSCloudServer/blob/master/msposapp/pics/ss3.png)
 
 
 
