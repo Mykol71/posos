@@ -32,9 +32,9 @@ docker exec $CONTAINER ./bin/updateos.pl --hostname=$SHOPCODE.teleflora.com >/de
 #install vpnc
 docker exec $CONTAINER wget http://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
 docker exec $CONTAINER yum -y localinstall ./epel-release-latest-7.noarch.rpm
-docker exec $CONTAINER yum -y install strongswan xl2tpd
-docker exec $CONTAINER systemctl enable strongswan
-docker exec $CONTAINER systemctl enable xlt2pd
+docker exec $CONTAINER yum -y install strongswan xl2tpd strongswan-libipsec
+#docker exec $CONTAINER systemctl enable strongswan
+#docker exec $CONTAINER systemctl enable xlt2pd
 
 #Run RTI staging script.
 #ISSUE TO FIGURE OUT: No terminal input passed to this script for password entry etc.
