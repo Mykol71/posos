@@ -10,7 +10,8 @@ read POSTYPE
 
 #start container
 CONTAINER=`docker run -d -it --name=$SHOPCODE.teleflora.com --rm --privileged -v "${POSDIR}:/${POSDIR}"  -w="/usr/local/bin" -i ${OS}7-${POSTYPE}-${VER} /usr/sbin/init`
-echo $CONTAINER>.container
+echo $CONTAINER>.$SHOPCODE.container
+echo $CONTAINER>/${POSDIR}/vpn/.$SHOPCODE.container
 
 #configure the second nic for host networking by passing eth1 through to the container
 ./pipework --direct-phys eth1 $CONTAINER 192.168.222.222/24@192.168.222.1
@@ -55,7 +56,4 @@ docker exec $CONTAINER /usr/local/bin/bin/updateos.pl --version
 docker exec $CONTAINER cat /etc/redhat-release
 rm -f ~/.ssh/known_hosts
 echo "---"
-#echo -n "Next: Add Customer Data?(y/n): "
-#read DATA
-#[ "$DATA" == "y" ] && echo Restore Data Here
 exit 0

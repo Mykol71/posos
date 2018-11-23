@@ -11,4 +11,4 @@ read postype
 [ "$postype" == "Daisy" ] && POSDIR=d
 CONTAINER=`docker run --privileged -i -d -t --name=${selection}.teleflora.com -v "${POSDIR}:/${POSDIR}" -i ${selection}.teleflora.com /usr/sbin/init`
 docker exec $CONTAINER echo export TERM=linux >/etc/profile.d/rti-term.sh
-echo "$CONTAINER">.container
+echo "$CONTAINER">${selection}.container
