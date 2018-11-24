@@ -49,6 +49,8 @@ while :; do
 	i)
 		cat ./README.md | more
 		;;
+	x)	exit
+		;;
 	*) ;;
 	esac
 done
