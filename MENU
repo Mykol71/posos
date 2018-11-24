@@ -16,10 +16,10 @@ while :; do
     CYAN='\033[1;36m'
     NC='\033[0m'
     clear
-    echo -e "${BLUE} $(date +'%a, %b %d, %Y')${NC}"
+    echo -e "${BLUE}$(date +'%x%l:%M %p')${NC}"
     printf '\u250f''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501'
     printf '\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\n'
-    printf '\u2503'${GREY}' MS Cloud Menu'${NC}'\n'
+    printf '\u2503'🌷${GREY}' MS Cloud Menu'${NC}'\n'
     printf '\u2523''\u2501''\n'
     printf '\u2503''\033[1m'" 1.\033[0m Backup Service"'\n'
     printf '\u2503''\033[1m'" 2.\033[0m POS Service"'\n'

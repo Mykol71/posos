@@ -17,12 +17,13 @@ while :; do
     CYAN='\033[1;36m'
     NC='\033[0m'
     clear
-    echo -e "${BLUE} $(date +'%H:%M')${NC} - ${CYAN}`[ -f .envtype ] && cat .envtype || echo -e Not Installed`${NC}"
+echo -e "${BLUE}$(date +'%x%l:%M %p')${NC}\n${CYAN}`[ -f .envtype ] && cat .envtype || echo -e - Not Installed`${NC}"
 printf '\u250f''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501'
 printf '\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\n'
-echo -e "\u2503${GREY} Cloud Backup Menu ${NC}"
-printf '\u2503'"${GREY} Free Space: ${NC} $(df -h /backups | tail -1 | awk '{print $4}')"'\n'
+echo -e "\u2503🌷${GREY} POS Backup Menu ${NC}"
 printf '\u2523''\u2501''\n'
+printf '\u2503'"${GREY} Free Space: ${NC} $(df -h /backups | tail -1 | awk '{print $4}')"'\n'
+printf '\u2503''\n'
 printf '\u2503''\033[1m'" 1.\033[0m List Accounts"'\n'
 printf '\u2503''\033[1m'" 2.\033[0m Create Account"'\n'
 printf '\u2503''\033[1m'" 3.\033[0m Change Key"'\n'
