@@ -21,26 +21,16 @@ subscription-manager repos --enable=rhel-7-server-extras-rpms
 subscription-manager repos --enable=rhel-7-server-optional-rpms
 subscription-manager repos --enable=rhel-server-rhscl-7-rpms
 
-# install ntp
+# install ntp; sync time
 yum -y install ntp
-# sync date/time otherwise AWS auth will fail
 ntpdate pool.ntp.org
 # set timezone
 timedatectl set-timezone America/Chicago
 
 #install required packages
-yum -y install net-tools yum-langpacks gtk3 ksh wget firewalld tigervnc-server-minimal mailx nmap nfs-server time
-yum -y install nfs-utils libnfsidmap bridge-utils zsh
-systemctl enable rpcbind
-systemctl enable nfs-server
-systemctl start rpcbind
-systemctl start nfs-server
-systemctl start rpc-statd
-
-#install python-pip
-curl "https://bootstrap.pypa.io/get-pip.py" -o "get-pip.py"
-python get-pip.py
-rm -f get-pip.py
+yum -y install net-tools yum-langpacks gtk3 ksh wget firewalld tigervnc-server-minimal mailx nmap time
+yum -y install bridge-utils zsh
+#systemctl start rpc-statd
 
 #install vpn client software
 wget http://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
@@ -75,12 +65,9 @@ find . -name "*recon.sh" -exec cp -f {} /usr/local/bin/. \;
 [ ! -d /home/tfsupport ] && useradd tfsupport
 [ ! -d /home/tfsupport/keys ] && mkdir /home/tfsupport/keys && chown tfsupport:tfsupport /home/tfsupport/keys
 
-# if not there, copy ec2-users key to tfsupport
-# copy into place.
-mkdir /home/tfsupport/.ssh
-chown -R tfsupport:tfsupport /home/tfsupport/.ssh
-chmod 640 /home/tfsupport/.ssh
-[ ! -f /home/tfsupport/.ssh/authorized_keys ] && cp -f /home/ec2-user/.ssh/authorized_keys /home/tfsupport/.ssh/authorized_keys
+# make ssh folder if not there, and copy authorized keys from ec2-user
+[ ! -d /home/tfsupport ] && mkdir /home/tfsupport/.ssh && chown -R tfsupport:tfsupport /home/tfsupport/.ssh && chmod 600 /home/tfsupport/.ssh
+[ ! -f /home/tfsupport/.ssh/authorized_keys ] && cp -f /home/ec2-user/.ssh/authorized_keys /home/tfsupport/.ssh/authorized_keys && chown tfsupport:tfsupport /home/tfsupport/.ssh/authorized_keys
 #
 # Add tfsupport to sudoers, if not there.
 [ "`grep tfsupport /etc/sudoers`" == "" ] && echo "tfsupport        ALL=(ALL)       NOPASSWD: ALL">>/etc/sudoers
@@ -92,7 +79,7 @@ chmod 640 /home/tfsupport/.ssh
 sed -i 's/\/home/\/backups/' /etc/default/useradd
 #
 # add /etc/skel/tfrsync
-#cp -f ./tfrsync /etc/skel/.
+cp -f ./tfrsync /etc/skel/.
 #
 # make backups folder if its not there.
 [ ! -d /backups ] && mkdir /backups
@@ -101,11 +88,11 @@ sed -i 's/\/home/\/backups/' /etc/default/useradd
 setenforce 0
 sed -i 's/enforcing/permissive/' /etc/selinux/config
 #
-# Copy cloud backup programs into place for tfsupport..
+# Copy cloud admin scripts into place for tfsupport..
 cp -rf ../* /home/tfsupport/.
 
 # create cron jobs
-# TODO Add Cron jobs
+# TODO Add Cron jobs?
 
 # lastly, update everything
 yum -y update
