@@ -80,7 +80,7 @@ find . -name "*recon.sh" -exec cp -f {} /usr/local/bin/. \;
 mkdir /home/tfsupport/.ssh
 chown -R tfsupport:tfsupport /home/tfsupport/.ssh
 chmod 640 /home/tfsupport/.ssh
-[ ! -f /home/tfsupport/.ssh/authorized_keys ] && cp -f /home/ec2-user/.ssh/authorized_keys /home/tfsupport/.ssh/authorized_keys
+[ ! -f /home/tfsupport/.ssh/authorized_keys ] && cp -f /home/ec2-user/.ssh/authorized_keys /home/tfsupport/.ssh/authorized_keys && chown tfsupport:tfsupport /home/tfsupport/.ssh/authorized_keys
 #
 # Add tfsupport to sudoers, if not there.
 [ "`grep tfsupport /etc/sudoers`" == "" ] && echo "tfsupport        ALL=(ALL)       NOPASSWD: ALL">>/etc/sudoers
