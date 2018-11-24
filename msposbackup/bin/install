@@ -1,0 +1,116 @@
+#!/usr/bin/bash
+
+#git sample commands
+#  git clone https://github.com/mykol71/mscloudserver.git
+#  git config --global user.name "Mike Green"
+#  git config --global user.email mgreen@teleflora.com
+#  git config --global push.default simple
+#  git add -A .
+#  git commit -m "2018-08-31 24:00"
+#  git push
+
+#Environment Name
+[ ! -f ../.envtype ] && echo -n "Env Name: " && read ENVTYPE && echo "$ENVTYPE" >../.envtype
+
+#register rhsm
+subscription-manager register --org=4508688 --auto-attach
+
+#enable redhat yum repos
+subscription-manager repos --enable=rhel-7-server-rpms
+subscription-manager repos --enable=rhel-7-server-extras-rpms
+subscription-manager repos --enable=rhel-7-server-optional-rpms
+subscription-manager repos --enable=rhel-server-rhscl-7-rpms
+
+# install ntp
+yum -y install ntp
+# sync date/time otherwise AWS auth will fail
+ntpdate pool.ntp.org
+# set timezone
+timedatectl set-timezone America/Chicago
+
+#install required packages
+yum -y install net-tools yum-langpacks gtk3 ksh wget firewalld tigervnc-server-minimal mailx nmap nfs-server time
+yum -y install nfs-utils libnfsidmap bridge-utils zsh
+systemctl enable rpcbind
+systemctl enable nfs-server
+systemctl start rpcbind
+systemctl start nfs-server
+systemctl start rpc-statd
+
+#install python-pip
+curl "https://bootstrap.pypa.io/get-pip.py" -o "get-pip.py"
+python get-pip.py
+rm -f get-pip.py
+
+#install vpn client software
+wget http://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+yum -y localinstall ./epel-release-latest-7.noarch.rpm
+yum -y install strongswan xl2tpd NetworkManager-strongswan strongswan-libipsec
+rm -f ./epel-release-latest-7.noarch.rpm
+
+#ip port forwarding
+[ "`grep net.ipv4.ip_forward /etc/sysctl.conf`" == "" ] &&  echo "net.ipv4.ip_forward = 1">>/etc/sysctl.conf
+sysctl -p /etc/sysctl.conf
+systemctl restart network.service
+
+#install docker
+yum -y install docker device-mapper-libs device-mapper-event-libs
+#add redhat container registry
+echo "ADD_REGISTRY='--add-registry registry.access.redhat.com'">>/etc/sysconfig/docker
+
+#copy in custom configs for docker
+cp -f ./99-docker.conf /usr/lib/sysctl.d/99-docker.conf
+systemctl start docker
+systemctl enable docker
+
+#createcontainer.sh reqs
+yum -y install lorax
+yum -y install anaconda-tui
+
+# add custom cloud backup server scripts to /usr/local/bin
+find . -name "*monthname.sh" -exec cp -f {} /usr/local/bin/. \;
+find . -name "*recon.sh" -exec cp -f {} /usr/local/bin/. \;
+
+# add tfsupport usr and generate key, if not there.
+[ ! -d /home/tfsupport ] && useradd tfsupport
+[ ! -d /home/tfsupport/keys ] && mkdir /home/tfsupport/keys && chown tfsupport:tfsupport /home/tfsupport/keys
+
+# if not there, copy ec2-users key to tfsupport
+# copy into place.
+mkdir /home/tfsupport/.ssh
+chown -R tfsupport:tfsupport /home/tfsupport/.ssh
+chmod 640 /home/tfsupport/.ssh
+[ ! -f /home/tfsupport/.ssh/authorized_keys ] && cp -f /home/ec2-user/.ssh/authorized_keys /home/tfsupport/.ssh/authorized_keys
+#
+# Add tfsupport to sudoers, if not there.
+[ "`grep tfsupport /etc/sudoers`" == "" ] && echo "tfsupport        ALL=(ALL)       NOPASSWD: ALL">>/etc/sudoers
+
+# Add Admin Menu to tfsupports .profile to be exec on login
+[ "`grep MENU ~/.bash_profile`" == "" ] && echo "sudo ./MENU">>/home/tfsupport/.bash_profile
+
+# change default home dir to /backups from now on
+sed -i 's/\/home/\/backups/' /etc/default/useradd
+#
+# add /etc/skel/tfrsync
+#cp -f ./tfrsync /etc/skel/.
+#
+# make backups folder if its not there.
+[ ! -d /backups ] && mkdir /backups
+#
+# set selinux to permissive
+setenforce 0
+sed -i 's/enforcing/permissive/' /etc/selinux/config
+#
+# Copy cloud backup programs into place for tfsupport..
+cp -rf ../* /home/tfsupport/.
+
+# create cron jobs
+# TODO Add Cron jobs
+
+# lastly, update everything
+yum -y update
+#
+echo ""
+echo ""
+echo "Done!"
+exit 0

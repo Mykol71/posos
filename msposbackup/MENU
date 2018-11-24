@@ -10,7 +10,7 @@ export ROOTDIR
 trap '' 2
 while :; do
 	clear
-echo -en "$(date +%T)\n"
+echo -en "$(date +%T) - `[ -f .envtype ] && cat .envtype || echo -n Not Installed`\n"
 printf '\u250f''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\n'
 printf '\u2503''\033[1m Cloud Backup Menu\033[0m''\n'
 printf '\u2523''\u2501''\n'
@@ -25,6 +25,7 @@ printf '\u2503''\033[1m'" 6.\033[0m Delete Account"'\n'
 printf '\u2503''\033[1m'" 7.\033[0m Is Subscriber?"'\n'
 printf '\u2503''\n'
 printf '\u2503''\033[1m'" i.\033[0m Info"'\n'
+printf '\u2503''\033[1m'" d.\033[0m I/C/U Deps"'\n'
 printf '\u2503''\033[1m'" x.\033[0m Exit"'\n'
 printf '\u2517''\u2501''\n'
 	echo -n "Enter selection: "
@@ -65,10 +66,15 @@ printf '\u2517''\u2501''\n'
 		echo "Press enter to continue.."
 		read
 		;;
-	i)
-		cat ./README.md
+	d)
+		cd bin
+		./install
 		echo "Press enter to continue.."
 		read
+		cd -
+		;;
+	i)
+		cat ./README.md | more
 		;;
 	x)
 		cd ..

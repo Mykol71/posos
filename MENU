@@ -10,7 +10,7 @@ export ROOTDIR
 trap '' 2
 while :; do
     clear
-    echo -en "$(date +%T) - `[ -f .envtype ] && cat .envtype || echo -n Not Installed`\n"
+    echo -en "$(date +%T)\n"
     printf '\u250f''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501'
     printf '\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\n'
     printf '\u2503''\033[1m MS Cloud Menu\033[0m''\n'
@@ -20,8 +20,8 @@ printf '\u2503''\033[1m'" 2.\033[0m POS Service"'\n'
 printf '\u2503''\033[1m'" 3.\033[0m CentOS Repo"'\n'
 printf '\u2503''\033[1m'" 4.\033[0m Admin Tasks"'\n'
 printf '\u2503''\n'
-printf '\u2503''\033[1m'" d.\033[0m I/C/U Deps"'\n'
-printf '\u2503''\033[1m'" a.\033[0m I/C/U AWS"'\n'
+#printf '\u2503''\033[1m'" d.\033[0m I/C/U Deps"'\n'
+#printf '\u2503''\033[1m'" a.\033[0m I/C/U AWS"'\n'
 printf '\u2503''\033[1m'" i.\033[0m Info"'\n'
 printf '\u2503''\033[1m'" x.\033[0m Exit"'\n'
 printf '\u2517''\u2501''\n'
@@ -56,9 +56,7 @@ printf '\u2517''\u2501''\n'
 		cd -
 		;;
 	i)
-		cat ./README.md
-		echo "Press enter to continue.."
-		read
+		cat ./README.md | more
 		;;
 	a)
 		cd $ROOTDIR/bin

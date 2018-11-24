@@ -63,11 +63,6 @@ cp -f ./99-docker.conf /usr/lib/sysctl.d/99-docker.conf
 systemctl start docker
 systemctl enable docker
 
-#install docker-machine
-base=https://github.com/docker/machine/releases/download/v0.14.0 &&
-curl -L $base/docker-machine-$(uname -s)-$(uname -m) >/tmp/docker-machine &&
-install /tmp/docker-machine /usr/local/bin/docker-machine
-
 #createcontainer.sh reqs
 yum -y install lorax
 yum -y install anaconda-tui
@@ -80,15 +75,12 @@ find . -name "*recon.sh" -exec cp -f {} /usr/local/bin/. \;
 [ ! -d /home/tfsupport ] && useradd tfsupport
 [ ! -d /home/tfsupport/keys ] && mkdir /home/tfsupport/keys && chown tfsupport:tfsupport /home/tfsupport/keys
 
-# if not there, generate tfsupport ssh key
-rm -f ./id_rsa*
-[ ! -f /home/tfsupport/.ssh/id_rsa.pub ] && ssh-keygen -t rsa -N "" -f id_rsa  && GENKEY=1
+# if not there, copy ec2-users key to tfsupport
 # copy into place.
 mkdir /home/tfsupport/.ssh
-mv -f ./id_rsa /home/tfsupport/.ssh
-mv -f ./id_rsa.pub /home/tfsupport/.ssh
 chown -R tfsupport:tfsupport /home/tfsupport/.ssh
 chmod 640 /home/tfsupport/.ssh
+[ ! -f /home/tfsupport/.ssh/authorized_keys ] && cp -f /home/ec2-user/.ssh/authorized_keys /home/tfsupport/.ssh/authorized_keys
 #
 # Add tfsupport to sudoers, if not there.
 [ "`grep tfsupport /etc/sudoers`" == "" ] && echo "tfsupport        ALL=(ALL)       NOPASSWD: ALL">>/etc/sudoers
@@ -118,8 +110,6 @@ cp -rf ../* /home/tfsupport/.
 # lastly, update everything
 yum -y update
 #
-# if produced, show tfsupports new private key once
-[ "$GENKEY" == "1" ] && echo "tfsupport's private key (to be used with ssh connect):" && cat /home/tfsupport/.ssh/id_rsa.pub>/home/tfsupport/.ssh/authorized_keys2 && cat /home/tfsupport/.ssh/id_rsa
 echo ""
 echo ""
 echo "Done!"

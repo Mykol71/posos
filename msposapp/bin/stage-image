@@ -10,6 +10,7 @@ read POSTYPE
 
 #start container
 CONTAINER=`docker run -d -it --name=$SHOPCODE.teleflora.com --rm --privileged -v "${POSDIR}:/${POSDIR}"  -w="/usr/local/bin" -i ${OS}7-${POSTYPE}-${VER} /usr/sbin/init`
+echo $CONTAINER>.container
 echo $CONTAINER>.$SHOPCODE.container
 echo $CONTAINER>/${POSDIR}/vpn/.$SHOPCODE.container
 
