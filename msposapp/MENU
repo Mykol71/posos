@@ -7,9 +7,6 @@ ID=$(/usr/bin/id -u)
 ROOTDIR="$(pwd)"
 export ROOTDIR
 
-#figure out why I have to do the next command manually
-#scl enable python27 /usr/bin/bash
-
 trap '' 2
 while :; do
 	clear

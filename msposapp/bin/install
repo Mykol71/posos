@@ -18,8 +18,6 @@ subscription-manager register --org=4508688 --auto-attach
 #enable redhat yum repos
 subscription-manager repos --enable=rhel-7-server-rpms
 subscription-manager repos --enable=rhel-7-server-extras-rpms
-subscription-manager repos --enable=rhel-7-server-optional-rpms
-subscription-manager repos --enable=rhel-server-rhscl-7-rpms
 
 # install ntp; sync time
 yum -y install ntp
@@ -28,9 +26,7 @@ ntpdate pool.ntp.org
 timedatectl set-timezone America/Chicago
 
 #install required packages
-yum -y install net-tools yum-langpacks gtk3 ksh wget firewalld tigervnc-server-minimal mailx nmap time
-yum -y install bridge-utils zsh
-#systemctl start rpc-statd
+yum -y install net-tools yum-langpacks gtk3 ksh wget firewalld tigervnc-server-minimal mailx nmap time bridge-utils docker device-mapper-libs device-mapper-event-libs
 
 #install vpn client software
 wget http://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
@@ -39,16 +35,12 @@ yum -y install strongswan xl2tpd NetworkManager-strongswan strongswan-libipsec
 rm -f ./epel-release-latest-7.noarch.rpm
 
 #ip port forwarding
-[ "`grep net.ipv4.ip_forward /etc/sysctl.conf`" == "" ] &&  echo "net.ipv4.ip_forward = 1">>/etc/sysctl.conf
-sysctl -p /etc/sysctl.conf
-systemctl restart network.service
+[ "`grep net.ipv4.ip_forward /etc/sysctl.conf`" == "" ] &&  echo "net.ipv4.ip_forward = 1">>/etc/sysctl.conf &&  sysctl -p /etc/sysctl.conf && systemctl restart network.service
 
-#install docker
-yum -y install docker device-mapper-libs device-mapper-event-libs
 #add redhat container registry
 echo "ADD_REGISTRY='--add-registry registry.access.redhat.com'">>/etc/sysconfig/docker
 
-#copy in custom configs for docker
+#copy in port forwrd config for docker
 cp -f ./99-docker.conf /usr/lib/sysctl.d/99-docker.conf
 systemctl start docker
 systemctl enable docker
@@ -66,7 +58,7 @@ find . -name "*recon.sh" -exec cp -f {} /usr/local/bin/. \;
 [ ! -d /home/tfsupport/keys ] && mkdir /home/tfsupport/keys && chown tfsupport:tfsupport /home/tfsupport/keys
 
 # make ssh folder if not there, and copy authorized keys from ec2-user
-[ ! -d /home/tfsupport ] && mkdir /home/tfsupport/.ssh && chown -R tfsupport:tfsupport /home/tfsupport/.ssh && chmod 600 /home/tfsupport/.ssh
+[ ! -d /home/tfsupport/.ssh ] && mkdir /home/tfsupport/.ssh && chown -R tfsupport:tfsupport /home/tfsupport/.ssh && chmod 700 /home/tfsupport/.ssh
 [ ! -f /home/tfsupport/.ssh/authorized_keys ] && cp -f /home/ec2-user/.ssh/authorized_keys /home/tfsupport/.ssh/authorized_keys && chown tfsupport:tfsupport /home/tfsupport/.ssh/authorized_keys
 #
 # Add tfsupport to sudoers, if not there.
@@ -89,7 +81,7 @@ setenforce 0
 sed -i 's/enforcing/permissive/' /etc/selinux/config
 #
 # Copy cloud admin scripts into place for tfsupport..
-cp -rf ../* /home/tfsupport/.
+cp -rf ../../* /home/tfsupport/.
 
 # create cron jobs
 # TODO Add Cron jobs?
@@ -97,7 +89,6 @@ cp -rf ../* /home/tfsupport/.
 # lastly, update everything
 yum -y update
 #
-echo ""
 echo ""
 echo "Done!"
 exit 0
