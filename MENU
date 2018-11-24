@@ -6,6 +6,7 @@ ID=$(/usr/bin/id -u)
 
 ROOTDIR="$(pwd)"
 export ROOTDIR
+[ ! -d /backups ] && mkdir /backups
 
 trap '' 2
 while :; do
