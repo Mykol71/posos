@@ -2,6 +2,7 @@
 
 rm -rf /var/tmp/containers
 rm -f /var/tmp/rhel7*xz
+rm -f /var/tmp/daisy*xz
 docker container stop $(docker container ps -a -q)
 docker system prune --all
-rm -f .container
+find .. -name ".*" -exec rm -f {} \;
