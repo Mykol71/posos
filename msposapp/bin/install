@@ -13,7 +13,7 @@
 [ ! -f ../.envtype ] && echo -n "Env Name: " && read ENVTYPE && echo "$ENVTYPE" >../.envtype
 
 #register rhsm
-subscription-manager register --org=4508688
+subscription-manager register --org=4508688 --auto-attach 2>/dev/null
 
 #enable redhat yum repos
 subscription-manager repos --enable=rhel-7-server-rpms
