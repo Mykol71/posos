@@ -13,20 +13,20 @@
 [ ! -f ../.envtype ] && echo -n "Env Name: " && read ENVTYPE && echo "$ENVTYPE" >../.envtype
 
 #register rhsm
-subscription-manager register --org=4508688 --auto-attach
+subscription-manager register --org=4508688
 
 #enable redhat yum repos
 subscription-manager repos --enable=rhel-7-server-rpms
 subscription-manager repos --enable=rhel-7-server-extras-rpms
 
-# install ntp; sync time
-yum -y install ntp
+#install required packages
+yum -y install net-tools yum-langpacks gtk3 ksh wget firewalld tigervnc-server-minimal mailx nmap time bridge-utils docker device-mapper-libs device-mapper-event-libs ntp lorax anaconda-tui
+
+# sync time
 ntpdate pool.ntp.org
+
 # set timezone
 timedatectl set-timezone America/Chicago
-
-#install required packages
-yum -y install net-tools yum-langpacks gtk3 ksh wget firewalld tigervnc-server-minimal mailx nmap time bridge-utils docker device-mapper-libs device-mapper-event-libs
 
 #install vpn client software
 wget http://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
@@ -45,22 +45,18 @@ cp -f ./99-docker.conf /usr/lib/sysctl.d/99-docker.conf
 systemctl start docker
 systemctl enable docker
 
-#createcontainer.sh reqs
-yum -y install lorax
-yum -y install anaconda-tui
-
 # add custom cloud backup server scripts to /usr/local/bin
 find . -name "*monthname.sh" -exec cp -f {} /usr/local/bin/. \;
 find . -name "*recon.sh" -exec cp -f {} /usr/local/bin/. \;
 
-# add tfsupport usr and generate key, if not there.
+# add tfsupport usr and generate keys folder, if not there.
 [ ! -d /home/tfsupport ] && useradd tfsupport
 [ ! -d /home/tfsupport/keys ] && mkdir /home/tfsupport/keys && chown tfsupport:tfsupport /home/tfsupport/keys
 
 # make ssh folder if not there, and copy authorized keys from ec2-user
 [ ! -d /home/tfsupport/.ssh ] && mkdir /home/tfsupport/.ssh && chown -R tfsupport:tfsupport /home/tfsupport/.ssh && chmod 700 /home/tfsupport/.ssh
 [ ! -f /home/tfsupport/.ssh/authorized_keys ] && cp -f /home/ec2-user/.ssh/authorized_keys /home/tfsupport/.ssh/authorized_keys && chown tfsupport:tfsupport /home/tfsupport/.ssh/authorized_keys
-#
+ 
 # Add tfsupport to sudoers, if not there.
 [ "`grep tfsupport /etc/sudoers`" == "" ] && echo "tfsupport        ALL=(ALL)       NOPASSWD: ALL">>/etc/sudoers
 
@@ -69,26 +65,26 @@ find . -name "*recon.sh" -exec cp -f {} /usr/local/bin/. \;
 
 # change default home dir to /backups from now on
 sed -i 's/\/home/\/backups/' /etc/default/useradd
-#
+ 
 # add /etc/skel/tfrsync
 cp -f ./tfrsync /etc/skel/.
-#
+ 
 # make backups folder if its not there.
 [ ! -d /backups ] && mkdir /backups
-#
+ 
 # set selinux to permissive
 setenforce 0
 sed -i 's/enforcing/permissive/' /etc/selinux/config
-#
+ 
 # Copy cloud admin scripts into place for tfsupport..
-cp -rf ../../* /home/tfsupport/.
+[ ! -f /home/tfsupport/MENU ] && cp -rf /home/ec2-user/MSCloudServer/* /home/tfsupport/.
 
 # create cron jobs
 # TODO Add Cron jobs?
 
 # lastly, update everything
 yum -y update
-#
+ 
 echo ""
 echo "Done!"
 exit 0
