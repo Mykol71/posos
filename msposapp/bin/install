@@ -10,9 +10,7 @@
 #  git push
 
 #Environment Name
-echo -n "Env Name: "
-read ENVTYPE
-echo "$ENVTYPE" >../.envtype
+[ ! -f ../.envtype ] && echo -n "Env Name: " && read ENVTYPE && echo "$ENVTYPE" >../.envtype
 
 #register rhsm
 subscription-manager register --org=4508688 --auto-attach
@@ -87,7 +85,8 @@ rm -f ./id_rsa*
 [ ! -f /home/tfsupport/.ssh/id_rsa.pub ] && ssh-keygen -t rsa -N "" -f id_rsa  && GENKEY=1
 # copy into place.
 mkdir /home/tfsupport/.ssh
-mv -f ./id_rsa* /home/tfsupport/.ssh
+mv -f ./id_rsa /home/tfsupport/.ssh
+mv -f ./id_rsa.pub /home/tfsupport/.ssh
 chown -R tfsupport:tfsupport /home/tfsupport/.ssh
 chmod 640 /home/tfsupport/.ssh
 #
@@ -119,7 +118,7 @@ cp -rf ../* /home/tfsupport/.
 # lastly, update everything
 yum -y update
 #
-# if produced, show tfsupports new public key
+# if produced, show tfsupports new private key once
 [ "$GENKEY" == "1" ] && echo "tfsupport's private key (to be used with ssh connect):" && cat /home/tfsupport/.ssh/id_rsa.pub>/home/tfsupport/.ssh/authorized_keys2 && cat /home/tfsupport/.ssh/id_rsa
 echo ""
 echo ""
