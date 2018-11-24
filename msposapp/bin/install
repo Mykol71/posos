@@ -65,7 +65,7 @@ find . -name "*recon.sh" -exec cp -f {} /usr/local/bin/. \;
 [ "`grep tfsupport /etc/sudoers`" == "" ] && echo "tfsupport        ALL=(ALL)       NOPASSWD: ALL">>/etc/sudoers
 
 # Add Admin Menu to tfsupports .profile to be exec on login
-[ "`grep MENU ~/.bash_profile`" == "" ] && echo "sudo ./MENU">>/home/tfsupport/.bash_profile
+[ "`grep MENU ~/.bash_profile`" == "" ] && echo "sudo ./MENU" >>/home/tfsupport/.bash_profile && echo "exit">>/home/tfsupport/.bash_profile
 
 # change default home dir to /backups from now on
 sed -i 's/\/home/\/backups/' /etc/default/useradd
