@@ -77,7 +77,7 @@ setenforce 0
 sed -i 's/enforcing/permissive/' /etc/selinux/config
  
 # Copy cloud admin scripts into place for tfsupport..
-[ ! -f /home/tfsupport/MENU ] && cp -rf /home/ec2-user/MSCloudServer/* /home/tfsupport/.
+cp -rf /home/ec2-user/MSCloudServer/* /home/tfsupport/.
 
 # create cron jobs
 # TODO Add Cron jobs?

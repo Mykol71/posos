@@ -17,12 +17,12 @@ while :; do
     CYAN='\033[1;36m'
     NC='\033[0m'
     clear
-echo -e "${BLUE}$(date +'%x%l:%M %p')${NC}\n${CYAN}`[ -f .envtype ] && cat .envtype || echo -e - Not Installed`${NC}"
-printf '\u250f''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501'
-printf '\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\n'
+echo -e "${BLUE} $(date +'%x%l:%M %p')${NC}"
+printf '\u250f''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\n'
 echo -e "\u2503🌷${GREY} POS Backup Menu ${NC}"
 printf '\u2523''\u2501''\n'
-printf '\u2503'"${GREY} Free Space: ${NC} $(df -h /backups | tail -1 | awk '{print $4}')"'\n'
+printf '\u2503'"${CYAN} `[ -f .envtype ] && cat .envtype || echo -e Not Installed`${NC}"'\n'
+printf '\u2503'"${GREY} Free Space:${NC} $(df -h /backups | tail -1 | awk '{print $4}')"'\n'
 printf '\u2503''\n'
 printf '\u2503''\033[1m'" 1.\033[0m List Accounts"'\n'
 printf '\u2503''\033[1m'" 2.\033[0m Create Account"'\n'
@@ -36,48 +36,48 @@ printf '\u2503''\033[1m'" i.\033[0m Info"'\n'
 printf '\u2503''\033[1m'" d.\033[0m I/C/U Deps"'\n'
 printf '\u2503''\033[1m'" x.\033[0m Exit"'\n'
 printf '\u2517''\u2501''\n'
-	echo -n "Enter selection: "
+	echo -ne "${CYAN}Enter selection:${NC} "
 	read selection
 	case $selection in
 	1)
 		$ROOTDIR/bin/list_cloud_account
-		echo "Press enter to continue.."
+		echo -ne "${CYAN}Press enter to continue..${NC}"
 		read
 		;;
 	2)
 		$ROOTDIR/bin/create_cloud_account
-		echo "Press enter to continue.."
+		echo -ne "${CYAN}Press enter to continue..${NC}"
 		read
 		;;
 	3)
 		$ROOTDIR/bin/change_account_key
-		echo "Press enter to continue.."
+		echo -ne "${CYAN}Press enter to continue..${NC}"
 		read
 		;;
 	4)
 		$ROOTDIR/bin/view_cloud_key
-		echo "Press enter to continue.."
+		echo -ne "${CYAN}Press enter to continue..${NC}"
 		read
 		;;
 	5)
 		$ROOTDIR/bin/get_cloud_key
-		echo "Press enter to continue.."
+		echo -ne "${CYAN}Press enter to continue..${NC}"
 		read
 		;;
 	6)
 		$ROOTDIR/bin/delete_cloud_account
-		echo "Press enter to continue.."
+		echo -ne "${CYAN}Press enter to continue..${NC}"
 		read
 		;;
 	7)
 		$ROOTDIR/bin/is_subscriber
-		echo "Press enter to continue.."
+		echo -ne "${CYAN}Press enter to continue..${NC}"
 		read
 		;;
 	d)
 		cd bin
 		./install
-		echo "Press enter to continue.."
+		echo -ne "${CYAN}Press enter to continue..${NC}"
 		read
 		cd -
 		;;

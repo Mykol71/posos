@@ -21,8 +21,7 @@ while :; do
     NC='\033[0m'
     clear
 echo -e "${BLUE}$(date +'%x%l:%M %p')${NC}"
-printf '\u250f''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501'
-printf '\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\n'
+printf '\u250f''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\n'
 echo -e "\u2503🌷${GREY} CentOS Repo Menu ${NC}"
 printf '\u2523''\u2501''\n'
 echo -e "\u2503${GREY} Status: ${NC}`systemctl status httpd 2>/dev/null | grep Active | cut -d" " -f5`"

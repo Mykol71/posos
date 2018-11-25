@@ -16,11 +16,11 @@ while :; do
     CYAN='\033[1;36m'
     NC='\033[0m'
     clear
-echo -e "${BLUE}$(date +'%x%l:%M %p')${NC}\n${CYAN}`[ -f .envtype ] && cat .envtype || echo -e - Not Installed`${NC}"
-printf '\u250f''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501'
-printf '\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\n'
+echo -e "${BLUE} $(date +'%x%l:%M %p')${NC}"
+printf '\u250f''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\n'
 echo -e "\u2503🌷${GREY} POS Cloud Menu ${NC}"
 printf '\u2523''\u2501''\n'
+echo -e "\u2503${CYAN} `[ -f .envtype ] && cat .envtype || echo -e Not Installed`${NC}"
 echo -e "\u2503${GREY} Status: ${NC}"
 printf '\u2503''\n'
 printf '\u2503''\033[1m'" 1.\033[0m Server Status"'\n'
@@ -46,83 +46,83 @@ printf '\u2503''\033[1m'" d.\033[0m I/C/U Deps"'\n'
 printf '\u2503''\033[1m'" i.\033[0m Info"'\n'
 printf '\u2503''\033[1m'" x.\033[0m Exit"'\n'
 printf '\u2517''\u2501''\n'
-	echo -n "Enter selection: "
+	echo -ne "${CYAN}Enter selection: ${NC}"
 	read selection
 	case $selection in
 	1)
 		cd $ROOTDIR/bin
 		./container_status
-		echo "Press enter to continue.."
+		echo -ne "${CYAN}Press enter to continue..${NC}"
 		read
 		cd -
 		;;
 	2)
 		cd $ROOTDIR/bin
 		./launch_container
-		echo "Press enter to continue.."
+		echo -ne "${CYAN}Press enter to continue..${NC}"
 		read
 		cd -
 		;;
 	3)
 		cd $ROOTDIR/bin
 		./stop_container
-		echo "Press enter to continue.."
+		echo -ne "${CYAN}Press enter to continue..${NC}"
 		read
 		cd -
 		;;
 	4)
 		cd $ROOTDIR/bin
 		./container_connect
-		echo "Press enter to continue.."
+		echo -ne "${CYAN}Press enter to continue..${NC}"
 		read
 		cd -
 		;;
 	5)
 		cd $ROOTDIR/bin
 		./list_nics
-		echo "Press enter to continue.."
+		echo -ne "${CYAN}Press enter to continue..${NC}"
 		read
 		cd -
 		;;
 	p)
 		cd $ROOTDIR/bin
 		./prune-docker
-		echo "Press enter to continue.."
+		echo -ne "${CYAN}Press enter to continue..${NC}"
 		read
 		cd -
 		;;
 	12)
 		cd $ROOTDIR/bin
 		time ./create-base-image
-		echo "Press enter to continue.."
+		echo -ne "${CYAN}Press enter to continue..${NC}"
 		read
 		cd -
 		;;
 	13)
 		cd $ROOTDIR/bin
 		time ./stage-image
-		echo "Press enter to continue.."
+		echo -ne "${CYAN}Press enter to continue..${NC}"
 		read
 		cd -
 		;;
 	11)
 		cd $ROOTDIR/bin
 		./list_image
-		echo "Press enter to continue.."
+		echo -ne "${CYAN}Press enter to continue..${NC}"
 		read
 		cd -
 		;;
 	14)
 		cd $ROOTDIR/bin
 		./wipe_images
-		echo "Press enter to continue.."
+		echo -ne "${CYAN}Press enter to continue..${NC}"
 		read
 		cd -
 		;;
 	15)
 		cd $ROOTDIR/bin
 		time ./snapshot_instance
-		echo "Press enter to continue.."
+		echo -ne "${CYAN}Press enter to continue..${NC}"
 		read
 		cd -
 		;;
@@ -131,7 +131,7 @@ printf '\u2517''\u2501''\n'
 		CONTAINER=`cat .container`
 		./cp_to_container
 		docker exec $CONTAINER /usr2/vpn/list_vpns
-		echo "Press enter to continue.."
+		echo -ne "${CYAN}Press enter to continue..${NC}"
 		read
 		cd -
 		;;
@@ -140,7 +140,7 @@ printf '\u2517''\u2501''\n'
 		export CONTAINER=`cat .container`
 		./cp_to_container
 		docker exec $CONTAINER /usr2/vpn/create_vpn
-		echo "Press enter to continue.."
+		echo -ne "${CYAN}Press enter to continue..${NC}"
 		read
 		cd -
 		;;
@@ -149,7 +149,7 @@ printf '\u2517''\u2501''\n'
 		CONTAINER=`cat .container`
 		./cp_to_container
 		docker exec $CONTAINER /usr2/vpn/start_vpn
-		echo "Press enter to continue.."
+		echo -ne "${CYAN}Press enter to continue..${NC}"
 		read
 		cd -
 		;;
@@ -158,7 +158,7 @@ printf '\u2517''\u2501''\n'
 		CONTAINER=`cat .container`
 		./cp_to_container
 		docker exec $CONTAINER /usr2/vpn/stop_vpn
-		echo "Press enter to continue.."
+		echo -ne "${CYAN}Press enter to continue..${NC}"
 		read
 		cd -
 		;;
@@ -167,14 +167,15 @@ printf '\u2517''\u2501''\n'
 		CONTAINER=`cat .container`
 		./cp_to_container
 		docker exec $CONTAINER /usr2/vpn/delete_vpn
-		echo "Press enter to continue.."
+		echo -ne "${CYAN}Press enter to continue..${NC}"
 		read
 		cd -
 		;;
 	d)
 		cd $ROOTDIR/bin
+		echo -e "${CYAN}"
 		time ./install
-		echo "Press enter to continue.."
+		echo -ne "Press enter to continue..${NC}"
 		read
 		cd -
 		;;

@@ -16,9 +16,10 @@ while :; do
     CYAN='\033[1;36m'
     NC='\033[0m'
     clear
-    echo -e "${BLUE}$(date +'%x%l:%M %p')${NC}"
-    printf '\u250f''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501'
-    printf '\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\n'
+
+
+    echo -e "${BLUE} $(date +'%x%l:%M %p')${NC}"
+    printf '\u250f''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\n'
     printf '\u2503'🌷${GREY}' MS Cloud Menu'${NC}'\n'
     printf '\u2523''\u2501''\n'
     printf '\u2503''\033[1m'" 1.\033[0m Backup Service"'\n'
@@ -29,7 +30,7 @@ while :; do
     printf '\u2503''\033[1m'" i.\033[0m Info"'\n'
     printf '\u2503''\033[1m'" x.\033[0m Exit"'\n'
     printf '\u2517''\u2501''\n'
-	echo -n "Enter selection: "
+	echo -ne "${CYAN}Enter selection:${NC} "
 	read selection
 	case $selection in
 	1)
