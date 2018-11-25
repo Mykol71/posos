@@ -20,7 +20,7 @@ subscription-manager repos --enable=rhel-7-server-rpms
 subscription-manager repos --enable=rhel-7-server-extras-rpms
 
 #install required packages
-yum -y install net-tools yum-langpacks gtk3 ksh wget firewalld tigervnc-server-minimal mailx nmap time bridge-utils docker device-mapper-libs device-mapper-event-libs ntp lorax anaconda-tui
+yum -y install net-tools yum-langpacks gtk3 ksh wget firewalld tigervnc-server-minimal mailx nmap time bridge-utils docker device-mapper-libs device-mapper-event-libs ntp lorax anaconda-tui unzip
 
 # sync time
 ntpdate pool.ntp.org
@@ -78,6 +78,13 @@ sed -i 's/enforcing/permissive/' /etc/selinux/config
  
 # Copy cloud admin scripts into place for tfsupport..
 cp -rf /home/ec2-user/MSCloudServer/* /home/tfsupport/.
+
+# Install ununtu terminal fonts
+rm -rf /usr/share/fonts/*
+unzip ubuntu-font-family-0.83.zip
+cp -rvf ubuntu-font-family-0.83 /usr/share/fonts/
+fc-cache -fv
+rm -rf ubuntu-font-family-0.83
 
 # create cron jobs
 # TODO Add Cron jobs?
