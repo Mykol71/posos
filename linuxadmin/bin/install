@@ -1,14 +1,5 @@
 #!/usr/bin/bash
 
-#git sample commands
-#  git clone https://github.com/mykol71/mscloudserver.git
-#  git config --global user.name "Mike Green"
-#  git config --global user.email mgreen@teleflora.com
-#  git config --global push.default simple
-#  git add -A .
-#  git commit -m "2018-08-31 24:00"
-#  git push
-
 #Environment Name
 [ ! -f ../.envtype ] && echo -n "Env Name: " && read ENVTYPE && echo "$ENVTYPE" >../.envtype
 
@@ -72,14 +63,11 @@ cp -f ./tfrsync /etc/skel/.
 # make backups folder if its not there.
 [ ! -d /backups ] && mkdir /backups
  
-# set selinux to permissive
-setenforce 0
-sed -i 's/enforcing/permissive/' /etc/selinux/config
- 
 # Copy cloud admin scripts into place for tfsupport..
 cp -rf /home/ec2-user/MSCloudServer/* /home/tfsupport/.
 
 # Install ununtu terminal fonts
+# This doesnt work
 rm -rf /usr/share/fonts/*
 unzip ubuntu-font-family-0.83.zip
 cp -rvf ubuntu-font-family-0.83 /usr/share/fonts/
