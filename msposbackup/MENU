@@ -17,7 +17,7 @@ while :; do
     CYAN='\033[1;36m'
     NC='\033[0m'
     clear
-echo -e "${BLUE} $(date +'%x%l:%M %p')${NC}"
+echo -e "${BLUE} $(date +'%x %l:%M %p')${NC}"
 printf '\u250f''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\n'
 echo -e "\u2503🌷${GREY} POS Backup Menu ${NC}"
 printf '\u2523''\u2501''\n'
@@ -32,8 +32,8 @@ printf '\u2503''\033[1m'" 5.\033[0m Get Key"'\n'
 printf '\u2503''\033[1m'" 6.\033[0m Delete Account"'\n'
 printf '\u2503''\033[1m'" 7.\033[0m Is Subscriber?"'\n'
 printf '\u2503''\n'
-printf '\u2503''\033[1m'" i.\033[0m Info"'\n'
-printf '\u2503''\033[1m'" d.\033[0m I/C/U Deps"'\n'
+printf '\u2503''\033[1m'" i.\033[0m I/C/U Deps"'\n'
+printf '\u2503''\033[1m'" r.\033[0m Readme"'\n'
 printf '\u2503''\033[1m'" x.\033[0m Exit"'\n'
 printf '\u2517''\u2501''\n'
 	echo -ne "${CYAN}Enter selection:${NC} "
@@ -74,14 +74,14 @@ printf '\u2517''\u2501''\n'
 		echo -ne "${CYAN}Press enter to continue..${NC}"
 		read
 		;;
-	d)
+	i)
 		cd bin
 		./install
 		echo -ne "${CYAN}Press enter to continue..${NC}"
 		read
 		cd -
 		;;
-	i)
+	r)
 		cat ./README.md | more
 		;;
 	x)

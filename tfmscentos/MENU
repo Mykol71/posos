@@ -20,7 +20,7 @@ while :; do
     CYAN='\033[1;36m'
     NC='\033[0m'
     clear
-echo -e "${BLUE}$(date +'%x%l:%M %p')${NC}"
+echo -e "${BLUE} $(date +'%x %l:%M %p')${NC}"
 printf '\u250f''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\n'
 echo -e "\u2503🌷${GREY} CentOS Repo Menu ${NC}"
 printf '\u2523''\u2501''\n'
@@ -30,13 +30,14 @@ printf '\u2503''\033[1m'" 1.\033[0m Start Repo"'\n'
 printf '\u2503''\033[1m'" 2.\033[0m Stop Repo"'\n'
 printf '\u2503''\033[1m'" 3.\033[0m Create/Update Repo"'\n'
 printf '\u2503''\n'
-printf '\u2503''\033[1m'" d.\033[0m I/C/U Deps"'\n'
+printf '\u2503''\033[1m'" i.\033[0m I/C/U Deps"'\n'
+printf '\u2503''\033[1m'" r.\033[0m Readme"'\n'
 printf '\u2503''\033[1m'" x.\033[0m Exit"'\n'
 printf '\u2517''\u2501''\n'
 	echo -n "Enter selection: "
 	read selection
 	case $selection in
-	d)
+	i)
 		cd $ROOTDIR/bin
 		time ./install_deps
 		echo "Press enter to continue.."
@@ -71,8 +72,8 @@ printf '\u2517''\u2501''\n'
 		read
 		cd -
 		;;
-	i)
-		./readme.sh | more
+	r)
+		cat README.md | more
 		echo "Press enter to continue.."
 		read
 		cd -

@@ -17,7 +17,7 @@ while :; do
     CYAN='\033[1;36m'
     NC='\033[0m'
     clear
-echo -e "${BLUE}$(date +'%x%l:%M %p')${NC}"
+echo -e "${BLUE} $(date +'%x %l:%M %p')${NC}"
 printf '\u250f''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\n'
 echo -e "\u2503🌷${GREY} Linux Admin Tasks ${NC}"
 printf '\u2523''\u2501''\n'
@@ -25,7 +25,8 @@ printf '\u2503''\033[1m'" 1.\033[0m Configure Sendgrid Relay"'\n'
 printf '\u2503''\033[1m'" 2.\033[0m Convert to CentOS"'\n'
 printf '\u2503''\033[1m'" 3.\033[0m Daisy Conversion Script"'\n'
 printf '\u2503''\n'
-printf '\u2503''\033[1m'" i.\033[0m Info"'\n'
+printf '\u2503''\033[1m'" i.\033[0m I/C/U Deps"'\n'
+printf '\u2503''\033[1m'" r.\033[0m Readme"'\n'
 printf '\u2503''\033[1m'" x.\033[0m Exit"'\n'
 printf '\u2517''\u2501''\n'
 	echo -n "Enter selection: "
@@ -62,8 +63,14 @@ printf '\u2517''\u2501''\n'
 		echo "Press enter to continue.."
 		read
 		;;
+	r)
+		cat README.md
+		echo "Press enter to continue.."
+		read
+		;;
 	i)
-		./readme.sh
+		cd bin
+		./install
 		echo "Press enter to continue.."
 		read
 		;;
