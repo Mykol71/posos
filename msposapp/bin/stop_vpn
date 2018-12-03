@@ -1,7 +1,12 @@
 #!/bin/bash
 
-# stop routing traffic via the VPN server
-route del default dev ppp0
+# check for running container
+if [ -f ./.container ]; then
+  CONTAINER="`cat .container`"
+else
+  echo "No Running Container!"
+  exit 1
+fi
 
 # disconnect
-strongswan down myvpn
+docker exec $CONTAINER strongswan stop

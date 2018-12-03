@@ -1,3 +1,11 @@
 #!/bin/bash
 
-strongswan status
+# check for running container
+if [ -f ./.container ]; then
+  CONTAINER="`cat .container`"
+else
+  echo "No Running Container!"
+  exit 1
+fi
+
+docker exec $CONTAINER strongswan status
