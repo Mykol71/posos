@@ -66,17 +66,6 @@ cp -f ./tfrsync /etc/skel/.
 # Copy cloud admin scripts into place for tfsupport..
 cp -rf /home/ec2-user/MSCloudServer/* /home/tfsupport/.
 
-# Install ununtu terminal fonts
-# This doesnt work
-rm -rf /usr/share/fonts/*
-unzip ubuntu-font-family-0.83.zip
-cp -rvf ubuntu-font-family-0.83 /usr/share/fonts/
-fc-cache -fv
-rm -rf ubuntu-font-family-0.83
-
-# create cron jobs
-# TODO Add Cron jobs?
-
 # lastly, update everything
 yum -y update
  

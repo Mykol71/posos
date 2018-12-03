@@ -1,7 +1,5 @@
 #!/bin/bash
 
-# this script gets passed to the created pos container. the vpn connection needs to be initiated from there.
-#
 # verify root
 ID=`/usr/bin/id -u`
 [ $ID -ne 0 ] && echo "You must be root to run $0." && exit 1
