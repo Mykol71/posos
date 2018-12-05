@@ -1,0 +1,83 @@
+#!/bin/bash
+
+# verify root
+ID=`/usr/bin/id -u`
+[ $ID -ne 0 ] && echo "You must be root to run $0." && exit 1
+
+# check for running container
+if [ -f ./.container ]; then
+  CONTAINER="`cat .container`"
+else
+  echo "No Running Container!"
+  exit 1
+fi
+
+# gather user input
+INPUTS="REMOTE_NAME AWS_PUBLIC AWS_NETWORK REMOTE_PUBLIC REMOTE_NET PASSPHRASE"
+
+echo "Gathering required information...."
+for var in $INPUTS; do
+  echo -n "Enter $var: "
+  read REPLY
+  export $var=$REPLY
+done
+
+# verify input
+if [ "$INPUTS" != "" ]; then
+echo "ipsec VPN Connection about to be created:"
+echo "--------------------"
+echo "Continue y/n?"
+read -p ""
+if [ $REPLY == "n" ]; then
+  exit 1
+else
+# configure strongSwan
+echo "Creating VPN Connection......"
+cat > ipsec.conf <<EOF
+# ipsec.conf - strongSwan IPsec configuration file
+
+# basic configuration
+config setup
+        charondebug="all"
+        uniqueids=yes
+        strictcrlpolicy=no
+
+# connection to $REMOTE_NAME
+conn $REMOTE_NAME
+  keyexchange=ikev1
+  authby=secret
+  left=%defaultroute
+  leftid=${AWS_PUBLIC}
+  leftsubnet="${AWS_NETWORK}/24"
+  right=${REMOTE_PUBLIC}
+  rightsubnet="${REMOTE_NET}/24"
+  ike=aes128-sha1-modp1024!
+  esp=aes128-sha1-modp1024!
+  keyingtries=0
+  ikelifetime=1h
+  lifetime=8h
+  dpddelay=30
+  dpdtimeout=120
+  dpdaction=restart
+  auto=start
+EOF
+
+cat  > ipsec.secrets <<EOF
+# ipsec.secrets - strongSwan IPsec secrets file
+# source destination secret
+${AWS_PUBLIC} ${REMOTE_PUBLIC} : PSK "${PASSPHRASE}"
+EOF
+
+# set passphrase file perms
+chmod 600 ipsec.secrets
+
+# copy produced config files to container
+docker cp ipsec.conf "${CONTAINER}:/etc/strongswan/ipsec.conf"
+docker cp ipsec.secrets "${CONTAINER}:/etc/strongswan/ipsec.secrets"
+
+echo "VPN Connection Created."
+fi
+else
+echo "Nothing to do."
+fi
+exit 0

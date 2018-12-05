@@ -8,6 +8,15 @@ read POSTYPE
 [ "$POSTYPE" == "daisy" ] && VER="10.1.17" && POSDIR="d"
 [ "$POSTYPE" == "rti" ] && VER="16.1.3" && POSDIR="usr2"
 
+#create main store vpn if desired
+echo -n "Create Primary VPN? (y/n): "
+read PRIMARY_VPN
+[ "$PRIMARY_VPN" == "y" ] && ./create_mainstore_vpn
+
+echo -n "Continue? (y/n): "
+read CONTINUE
+[ "$CONTINUE" == "n" ] && exit
+
 #start container
 CONTAINER=`docker run -d -it --name=$SHOPCODE.teleflora.com --rm --privileged -v "${POSDIR}:/${POSDIR}"  -w="/usr/local/bin" -i ${OS}7-${POSTYPE}-${VER} /usr/sbin/init`
 echo $CONTAINER>.container
