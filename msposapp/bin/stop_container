@@ -1,5 +1,6 @@
 #!/usr/bin/bash
 
+CONTAINER=`cat .container`
+docker commit $CONTAINER
 docker container stop $(docker container ps -a -q)
-docker container prune
 rm -f .container

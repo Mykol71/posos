@@ -13,7 +13,7 @@ else
 fi
 
 # gather user input
-INPUTS="REMOTE_NAME AWS_PUBLIC AWS_NETWORK REMOTE_PUBLIC REMOTE_NET PASSPHRASE"
+INPUTS="SHOPCODE REMOTE_NAME AWS_PUBLIC AWS_NETWORK REMOTE_PUBLIC REMOTE_NET PASSPHRASE"
 
 echo "Gathering required information...."
 for var in $INPUTS; do
@@ -33,7 +33,7 @@ if [ $REPLY == "n" ]; then
 else
 # configure strongSwan
 echo "Creating VPN Connection......"
-cat > ipsec.conf <<EOF
+cat >> ipsec.conf <<EOF
 # ipsec.conf - strongSwan IPsec configuration file
 
 # basic configuration
@@ -62,7 +62,7 @@ conn $REMOTE_NAME
   auto=start
 EOF
 
-cat  > ipsec.secrets <<EOF
+cat >> ipsec.secrets <<EOF
 # ipsec.secrets - strongSwan IPsec secrets file
 # source destination secret
 ${AWS_PUBLIC} ${REMOTE_PUBLIC} : PSK "${PASSPHRASE}"
@@ -74,6 +74,9 @@ chmod 600 ipsec.secrets
 # copy produced config files to container
 docker cp ipsec.conf "${CONTAINER}:/etc/strongswan/ipsec.conf"
 docker cp ipsec.secrets "${CONTAINER}:/etc/strongswan/ipsec.secrets"
+
+# commit to image
+docker commit $CONTAINER $SHOPCODE.teleflora.com
 
 echo "VPN Connection Created."
 fi

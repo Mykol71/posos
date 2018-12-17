@@ -66,10 +66,9 @@ printf '\u2517''\u2501''\n'
 		;;
 	3)
 		cd $ROOTDIR/bin
-		echo -e "${CYAN}About to shutdown server!!${NC}"
 		echo -ne "${CYAN}Press enter to continue..${NC}"
 		read
-		./reboot
+		./stop_container
 		;;
 	4)
 		cd $ROOTDIR/bin

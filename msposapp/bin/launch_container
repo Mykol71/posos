@@ -7,8 +7,7 @@ read postype
 [ "$postype" == "rti" ] && POSDIR=usr2
 [ "$postype" == "daisy" ] && POSDIR=d
 CONTAINER=`docker run --privileged -i -d -t --name=${selection}.teleflora.com -v "${POSDIR}:/${POSDIR}" -i ${selection}.teleflora.com /usr/sbin/init`
-docker exec $CONTAINER echo export TERM=linux >/etc/profile.d/rti-term.sh
 echo "$CONTAINER">.container
-2>&1
+docker exec $CONTAINER echo "export TERM=linux >/etc/profile.d/rti-term.sh"
 ./pipework --direct-phys eth1 $CONTAINER 192.168.222.222/24@192.168.222.1
-docker exec $CONTAINER ${POSDIR}/ostools/bin/updateos.pl --hostname=$SHOPCODE.teleflora.com >/dev/null
+docker exec $CONTAINER "${POSDIR}/ostools/bin/updateos.pl --hostname=$SHOPCODE.teleflora.com >/dev/null 2&>1"
