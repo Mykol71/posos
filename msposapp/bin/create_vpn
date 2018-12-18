@@ -40,7 +40,6 @@ conn $REMOTE_NAME
   keyexchange=ikev1
   authby=secret
   left=%defaultroute
-  left="${REMOTE_NET}"
   leftid=${AWS_PUBLIC}
   leftsubnet="${AWS_NETWORK}/24"
   right=${REMOTE_PUBLIC}
