@@ -22,7 +22,7 @@ echo -e "\u2503🌷${GREY} POS Cloud Menu ${NC}"
 printf '\u2523''\u2501''\n'
 echo -e "\u2503${CYAN} `[ -f .envtype ] && cat .envtype || echo -e Not Installed`${NC}"
 echo -e "\u2503${GREY} Status: ${NC}${LGGRN}`docker ps --format "{{.Status}}" 2>/dev/null`${NC}"
-echo -e "\u2503${GREY}    POS: ${NC}${LGGRN}192.168.222.222${NC}"
+echo -e "\u2503${GREY}    POS: ${NC}${LGGRN}`cat ./bin/.posip 2>/dev/null`${NC}"
 printf '\u2503''\n'
 printf '\u2503''\033[1m'" 1.\033[0m POS Status"'\n'
 printf '\u2503''\033[1m'" 2.\033[0m Start POS"'\n'

@@ -33,20 +33,14 @@ if [ $REPLY == "n" ]; then
 else
 # configure strongSwan
 echo "Creating VPN Connection......"
-cat > ipsec.conf <<EOF
-# ipsec.conf - strongSwan IPsec configuration file
-
-# basic configuration
-config setup
-        charondebug="all"
-        uniqueids=yes
-        strictcrlpolicy=no
+cat >> ipsec.conf <<EOF
 
 # connection to $REMOTE_NAME
 conn $REMOTE_NAME
   keyexchange=ikev1
   authby=secret
   left=%defaultroute
+  left="${REMOTE_NET}"
   leftid=${AWS_PUBLIC}
   leftsubnet="${AWS_NETWORK}/24"
   right=${REMOTE_PUBLIC}
@@ -62,9 +56,7 @@ conn $REMOTE_NAME
   auto=start
 EOF
 
-cat  > ipsec.secrets <<EOF
-# ipsec.secrets - strongSwan IPsec secrets file
-# source destination secret
+cat  >> ipsec.secrets <<EOF
 ${AWS_PUBLIC} ${REMOTE_PUBLIC} : PSK "${PASSPHRASE}"
 EOF
 

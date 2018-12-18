@@ -11,6 +11,7 @@ read POSTYPE
 #start container
 CONTAINER=`docker run -d -it --name=$SHOPCODE.teleflora.com --rm --privileged -v "${POSDIR}:/${POSDIR}"  -w="/usr/local/bin" -i ${OS}7-${POSTYPE}-${VER} /usr/sbin/init`
 echo $CONTAINER>.container
+docker exec $CONTAINER ifconfig eth1 | grep 'inet addr' | cut -d: -f2 | awk '{print $1}' >.posip 
 
 #configure the second nic for host networking by passing eth1 through to the container
 ./pipework --direct-phys eth1 $CONTAINER 192.168.222.222/24@192.168.222.1

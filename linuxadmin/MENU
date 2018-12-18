@@ -29,7 +29,7 @@ printf '\u2503''\033[1m'" i.\033[0m I/C/U Deps"'\n'
 printf '\u2503''\033[1m'" r.\033[0m Readme"'\n'
 printf '\u2503''\033[1m'" x.\033[0m Exit"'\n'
 printf '\u2517''\u2501''\n'
-	echo -n "Enter selection: "
+	echo -ne "${CYAN}Enter selection:${NC} "
 	read selection
 	case $selection in
 	1)
