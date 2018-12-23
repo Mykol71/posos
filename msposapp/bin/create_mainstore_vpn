@@ -75,9 +75,6 @@ chmod 600 ipsec.secrets
 docker cp ipsec.conf "${CONTAINER}:/etc/strongswan/ipsec.conf"
 docker cp ipsec.secrets "${CONTAINER}:/etc/strongswan/ipsec.secrets"
 
-# commit to image
-docker commit $CONTAINER $SHOPCODE.teleflora.com
-
 echo "VPN Connection Created."
 fi
 else

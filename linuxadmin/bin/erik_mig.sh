@@ -36,7 +36,7 @@ for DRIVE in $DRIVE_LIST
 		[ ! -d /mnt/usb/Conversion ] && echo "Not a conversion drive. Remove $DRIVE and try again." && umount /mnt/usb && exit 1
 		cd /d/conversion
 		echo "Running conversion for $SHOPCODE against $DRIVE...."
-		#[ ! -f /mnt/usb/Conversion/$SHOPCODE_datafile.tgz ] && echo "No data file found for ${SHOPCODE}." && exit 1
+		[ ! -f /mnt/usb/Conversion/$SHOPCODE_datafile.tgz ] && echo "No data file found for ${SHOPCODE}." && exit 1
 #2. Extracting datafile.tgz from conversion USB stick.
 		tar xvfz /mnt/usb/Conversion/$SHOPCODE_datafile.tgz
 		chmod 777 *.dsy
@@ -46,7 +46,7 @@ for DRIVE in $DRIVE_LIST
 		./notedump export/$SHOPCODE_notes.txt
 #4. Copying florist notes to USB stick.
 		echo "Copying $SHOPCODE notes back to USB conversion stick."
-$5. Run PLIST
+#5. Run PLIST
 		echo "Running PLIST."
 		cd /d/conversion
 		./plist
