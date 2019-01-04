@@ -11,10 +11,12 @@ read POSTYPE
 #start container
 CONTAINER=`docker run -d -it --name=$SHOPCODE.teleflora.com --rm --privileged -v "${POSDIR}:/${POSDIR}"  -w="/usr/local/bin" -i ${OS}7-${POSTYPE}-${VER} /usr/sbin/init`
 echo $CONTAINER>.container
-docker exec $CONTAINER "/usr/sbin/ifconfig eth1 | grep 'inet addr' | cut -d: -f2 | awk '{print $1}'" >.posip 
 
 #configure the second nic for host networking by passing eth1 through to the container
 ./pipework --direct-phys eth1 $CONTAINER 192.168.222.222/24@192.168.222.1
+#FIX THIS. In the mean time will hard code 222.222
+#docker exec $CONTAINER "/usr/sbin/ifconfig eth1 | grep broad | sed -e 's/    //g' | cut -d " " -f2" >.posip
+docker exec $CONTAINER "echo 192.68.222.222" >.posip
 
 #RHEL changed from /bin to /usr/bin at some point. Created link to avoid changing scripts.
 docker exec $CONTAINER ln -s /usr/bin /bin
@@ -30,7 +32,7 @@ docker exec $CONTAINER ./bin/install-ostools.pl --noharden-linux ./ostools-1.15-
 #configure system with ostools
 docker exec $CONTAINER ./bin/updateos.pl --hostname=$SHOPCODE.teleflora.com >/dev/null 2>&1
 
-#install vpnc
+#install vpn software
 docker exec $CONTAINER wget http://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
 docker exec $CONTAINER yum -y localinstall ./epel-release-latest-7.noarch.rpm
 docker exec $CONTAINER yum -y install strongswan strongswan-libipsec
