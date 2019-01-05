@@ -1,6 +1,5 @@
 #!/usr/bin/bash
 
 CONTAINER=`cat .container`
-docker commit $CONTAINER
+docker exec $CONTAINER docker commit
 docker container stop $(docker container ps -a -q)
-rm -f .container

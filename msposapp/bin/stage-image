@@ -14,9 +14,8 @@ echo $CONTAINER>.container
 
 #configure the second nic for host networking by passing eth1 through to the container
 ./pipework --direct-phys eth1 $CONTAINER 192.168.222.222/24@192.168.222.1
-#FIX THIS. In the mean time will hard code 222.222
-#docker exec $CONTAINER "/usr/sbin/ifconfig eth1 | grep broad | sed -e 's/    //g' | cut -d " " -f2" >.posip
-docker exec $CONTAINER "echo 192.68.222.222" >.posip
+POSIP=`docker exec $CONTAINER /usr/sbin/ifconfig eth1 | grep broad | sed -e 's/    //g' | cut -d ' ' -f2`
+echo "$POSIP" > .posip
 
 #RHEL changed from /bin to /usr/bin at some point. Created link to avoid changing scripts.
 docker exec $CONTAINER ln -s /usr/bin /bin
