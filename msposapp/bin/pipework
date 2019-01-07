@@ -138,8 +138,8 @@ if [ -z "$WAIT" ]; then
   fi
 fi
 
-# Set the default container interface name to eth1 if not already set
-CONTAINER_IFNAME=${CONTAINER_IFNAME:-eth1}
+# Set the default container interface name to ens6 if not already set
+CONTAINER_IFNAME=${CONTAINER_IFNAME:-ens6}
 
 [ "$WAIT" ] && {
   while true; do
