@@ -5,7 +5,6 @@ read POSTYPE
 
 rm -rf /var/tmp/containers
 rm -f /var/tmp/centos*xz
-#docker pull centos7:latest
 
 if [ "$POSTYPE" == "rti" ]; then
 ./containerbuild.sh centos7-rti.ks 2>/tmp/build-rti-container.error.log

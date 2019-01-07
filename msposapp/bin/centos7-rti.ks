@@ -114,7 +114,6 @@ iptables-services
 perl-Digest
 perl-Digest-MD5
 deltarpm
-sh
 -chrony
 %end
 %post --log=/anaconda-post.log
