@@ -30,7 +30,7 @@ logging --level=info
 # Repositories to use
 repo --name="CentOS" --baseurl=http://mirrors.kernel.org/centos/7/os/x86_64/ --cost=100
 ## Uncomment for rolling builds
-repo --name="Updates" --baseurl=http://mirror.centos.org/centos/7/updates/x86_64/ --cost=100
+repo --name="CentOS Updates" --baseurl=http://mirror.centos.org/centos/7/updates/x86_64/ --cost=100
 
 # Disk setup
 zerombr
@@ -128,11 +128,11 @@ cat << xxxEOFxxx > /usr/local/bin/ksrti_install.sh
 #!/usr/bin/bash
 cd /usr/local/bin
 #Download RTI specific media
-SERVER=rtihardware.homelinux.com/aws
-for PACKAGE in "ostools-1.15-latest.tar.gz 2145830.jar.gz jdk-8u65-linux-x64.tar.gz jre-latest-linux-x64-rpm.bin RTI-16.1.5-Linux.iso.gz update_bbj_15.pl tfsupport-authorized_keys 14_rhel6.tar.gz twofactor-20090723.tar multiserver.pwd";
-do
-wget http://\${SERVER}/\${PACKAGE}
-done
+SERVER="rtihardware.homelinux.com/aws"
+#for PACKAGE in "ostools-1.15-latest.tar.gz 2145830.jar.gz jdk-8u65-linux-x64.tar.gz jre-latest-linux-x64-rpm.bin RTI-16.1.5-Linux.iso.gz update_bbj_15.pl tfsupport-authorized_keys 14_rhel6.tar.gz twofactor-20090723.tar multiserver.pwd";
+#do
+#wget http://\${SERVER}/\${PACKAGE}
+#done
 echo "\`date\` -- Beginning RTI Install \${1}.teleflora.com" >/var/log/verify.txt
 systemctl disable firewalld
 systemctl enable iptables
@@ -142,7 +142,9 @@ echo "Extracting files...."
 tar xvfz /usr/local/bin/14_rhel6.tar.gz
 gunzip /usr/local/bin/RTI-16.1.5-Linux.iso.gz
 export TERM=linux
+/usr2/ostools/bin/updateos.pl --ostools
 /usr2/ostools/bin/updateos.pl --rti14
+/usr2/ostools/bin/updateos.pl --ospatches
 service blm start
 sleep 3
 ps -ef | grep basis
@@ -171,18 +173,16 @@ cd /mnt
 ./install_rti-16.1.5.pl --nobbxt /usr2/bbx
 /usr2/ostools/bin/updateos.pl --samba-set-passdb
 umount /mnt
-#systemctl enable blm
-#systemctl enable bbj
-#systemctl enable rti
 cd /usr/local/bin
 echo "Installing bbj 15......"
 chmod +x /usr/local/bin/update_bbj_15.pl
 /usr/local/bin/update_bbj_15.pl --bbj15
 echo "Fixing init.d service files....."
-sed -i '1s/^/#Required-Start:\ \$network\n/' /etc/init.d/blm
-sed -i '1s/^/#Required-Start:\ blm\ \$network\n/' /etc/init.d/bbj
 sed -i '1s/^/#\!\/bin\/sh\n/' /etc/init.d/blm
 sed -i '1s/^/#\!\/bin\/sh\n/' /etc/init.d/bbj
+systemctl enable blm
+systemctl enable bbj
+systemctl enable rti
 echo "Installing RTI Florist Directory...."
 wget http://tposlinux.blob.core.windows.net/rti-edir/rti-edir-tel-latest.patch
 wget http://tposlinux.blob.core.windows.net/rti-edir/applypatch.pl
@@ -193,11 +193,10 @@ chmod 700 /home/tfsupport/.ssh
 chown tfsupport:rti /home/tfsupport/.ssh
 tar xvf /usr/local/bin/twofactor-20090723.tar
 chmod +x /usr/local/bin/*.pl
+chmod +x /usr/local/bin/*.sh
 cp /usr/local/bin/tfsupport-authorized_keys /home/tfsupport/.ssh/authorized_keys
 chmod 700 /home/tfsupport/.ssh/authorized_keys
 chown tfsupport:root /home/tfsupport/.ssh/authorized_keys
-echo "Installing admin menus....."
-/usr/local/bin/install_adminmenus.pl --run
 rm -f /etc/cron.d/nightly-backup
 rm -f /usr/local/bin/rtibackup.pl
 cd /usr/local/bin
@@ -210,6 +209,7 @@ chmod 777 /usr2/bbx/config/backups.config
 chown tfsupport:rtiadmins /usr2/bbx/config/backups.config
 echo "Adding multiserver.pwd fix....."
 cp -f /usr/local/bin/multiserver.pwd /usr2/bbx/config/
+
 # Install tcc
 echo "Installing tcc....."
 cd /usr2/bbx/bin
@@ -220,14 +220,11 @@ rm -f ./tcc_tws
 ln -s ./tcc2_rhel7 ./tcc
 ln -s ./tcc_rhel7 ./tcc_tws
 cd /usr/local/bin
-echo "Done installing tcc..."
+
 echo "Installing Kaseya....."
 wget http://rtihardware.homelinux.com/support/KcsSetup.sh
 chmod +x /usr/local/bin/KcsSetup.sh
 /usr/local/bin/KcsSetup.sh
-echo "\`date\` -- End RTI Install \${1}.teleflora.com" >>/usr/local/bin/verify.txt
-# Verify
-/usr/local/bin/verify.sh
 
 if [[ ! -e /etc/profile.d/term.sh ]]; then
 cat << xxxEOFxxx > /etc/profile.d/term.sh
@@ -258,7 +255,7 @@ echo "--------------------">>/usr/local/bin/verify.txt
 echo "/etc/hosts.allow">>/usr/local/bin/verify.txt
 cat /etc/hosts.allow >>/usr/local/bin/verify.txt
 echo "--------------------">>/usr/local/bin/verify.txt
-mail -s \`hostname\` mgreen@teleflora.com,kpugh@teleflora.com,sjackson@teleflora.com </usr/local/bin/verify.txt
+mail -s \`hostname\` mgreen@teleflora.com,kpugh@teleflora.com </usr/local/bin/verify.txt
 xxxEOFxxx
 
 cd /usr/local/bin
@@ -299,16 +296,15 @@ mv /etc/yum.conf.new /etc/yum.conf
 echo 'container' > /etc/yum/vars/infra
 
 ##Setup locale properly
-# Commenting out, as this seems to no longer be needed
-#rm -f /usr/lib/locale/locale-archive
-#localedef -v -c -i en_US -f UTF-8 en_US.UTF-8
+rm -f /usr/lib/locale/locale-archive
+localedef -v -c -i en_US -f UTF-8 en_US.UTF-8
 
 ## Remove some things we don't need
-rm -rf /var/cache/yum/x86_64
-rm -f /tmp/ks-script*
-rm -rf /var/log/anaconda
-rm -rf /tmp/ks-script*
-rm -rf /etc/sysconfig/network-scripts/ifcfg-*
+#rm -rf /var/cache/yum/x86_64
+#rm -f /tmp/ks-script*
+#rm -rf /var/log/anaconda
+#rm -rf /tmp/ks-script*
+#rm -rf /etc/sysconfig/network-scripts/ifcfg-*
 # do we really need a hardware database in a container?
 rm -rf /etc/udev/hwdb.bin
 rm -rf /usr/lib/udev/hwdb.d/*
@@ -324,5 +320,9 @@ rm /var/run/nologin
 
 #Generate installtime file record
 /bin/date +%Y%m%d_%H%M > /etc/BUILDTIME
+
+echo "\`date\` -- End RTI Install \${1}.teleflora.com" >>/usr/local/bin/verify.txt
+# Verify
+/usr/local/bin/verify.sh
 
 %end
