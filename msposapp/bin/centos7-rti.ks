@@ -128,10 +128,9 @@ cat << xxxEOFxxx > /usr/local/bin/ksrti_install.sh
 #!/usr/bin/bash
 cd /usr/local/bin
 #Download RTI specific media
-KS_SERVER="rtihardware.homelinux.com/aws"
-for PACKAGE in RTI-16.1.5-Linux.iso.gz update_bbj_15.pl tfsupport-authorized_keys twofactor-20090723.tar multiserver.pwd;
+for PACKAGE in RTI-16.1.5-Linux.iso.gz update_bbj_15.pl tfsupport-authorized_keys twofactor-20090723.tar multiserver.pwd
 do
-wget "http://\${KS_SERVER}/\${PACKAGE}"
+wget "http://rtihardware.homelinux.com/aws/${PACKAGE}"
 done
 echo "\`date\` -- Beginning RTI Install \${1}.teleflora.com" >/var/log/verify.txt
 systemctl disable firewalld
@@ -144,15 +143,12 @@ gunzip /usr/local/bin/RTI-16.1.5-Linux.iso.gz
 export TERM=linux
 /usr2/ostools/bin/updateos.pl --ostools
 /usr2/ostools/bin/updateos.pl --rti14
-/usr2/ostools/bin/updateos.pl --ospatches
 service blm start
 sleep 3
 ps -ef | grep basis
 echo ; echo ; echo
 echo "Make sure that you see the -T above and Press enter to continue"
 read X
-mkdir /usr2/bbx
-mkdir /usr2/bbx/bin
 ln -s /usr2/ostools/bin/rtiuser.pl /usr2/bbx/bin/rtiuser.pl
 echo "bbj 8 installed......"
 service blm start
@@ -167,12 +163,7 @@ ln -s /usr2/ostools/bin/rtiuser.pl /usr2/bbx/bin/rtiuser.pl
 echo "bbj 8 installed......"
 service blm start
 service bbj start
-echo "Installing RTI...."
-mount -o loop /usr/local/bin/RTI-16.1.5-Linux.iso /mnt
-cd /mnt
-./install_rti-16.1.5.pl --nobbxt /usr2/bbx
-/usr2/ostools/bin/updateos.pl --samba-set-passdb
-umount /mnt
+
 cd /usr/local/bin
 echo "Installing bbj 15......"
 chmod +x /usr/local/bin/update_bbj_15.pl
@@ -182,6 +173,13 @@ sed -i '1s/^/#\!\/bin\/sh\n/' /etc/init.d/blm
 sed -i '1s/^/#\!\/bin\/sh\n/' /etc/init.d/bbj
 systemctl enable blm
 systemctl enable bbj
+
+echo "Installing RTI...."
+mount -o loop /usr/local/bin/RTI-16.1.5-Linux.iso /mnt
+cd /mnt
+./install_rti-16.1.5.pl --nobbxt /usr2/bbx
+/usr2/ostools/bin/updateos.pl --samba-set-passdb
+umount /mnt
 systemctl enable rti
 echo "Installing RTI Florist Directory...."
 wget http://tposlinux.blob.core.windows.net/rti-edir/rti-edir-tel-latest.patch
@@ -226,11 +224,11 @@ wget http://rtihardware.homelinux.com/support/KcsSetup.sh
 chmod +x /usr/local/bin/KcsSetup.sh
 /usr/local/bin/KcsSetup.sh
 
-if [[ ! -f /etc/profile.d/term.sh ]]; then
-cat << xxxEOFxxx > /etc/profile.d/term.sh
-unicode_stop
-xxxEOFxxx
-fi
+echo "Patching OS...."
+/usr2/ostools/bin/updateos.pl --ospatches
+
+echo "Creating /etc/profile.d/term.sh"
+[ ! -f /etc/profile.d/term.sh ] && echo "unicode_stop" > /etc/profile.d/term.sh
 chmod +x /etc/profile.d/term.sh
 
 cat << xxxEOFxxx >> /usr/local/bin/verify.sh
