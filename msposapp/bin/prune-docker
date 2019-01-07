@@ -1,8 +1,9 @@
 #!/bin/bash
 
 rm -rf /var/tmp/containers
-rm -f /var/tmp/rhel7*xz
+rm -f /var/tmp/centos7*xz
 rm -f /var/tmp/daisy*xz
+rm -f /var/tmp/rti*xz
 rm -f ./ipsec*
 docker container stop $(docker container ps -a -q)
 docker system prune --all

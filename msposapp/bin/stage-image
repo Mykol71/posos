@@ -1,6 +1,6 @@
 #!/bin/bash
 
-OS=rhel
+OS=centos
 echo -n "SHOPCODE: "
 read SHOPCODE
 echo -n "daisy or rti?: "

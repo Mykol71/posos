@@ -4,17 +4,17 @@ echo -n "daisy or rti?: "
 read POSTYPE
 
 rm -rf /var/tmp/containers
-rm -f /var/tmp/rhel*xz
-#docker pull rhel7:latest
+rm -f /var/tmp/centos*xz
+docker pull centos7:latest
 
 if [ "$POSTYPE" == "rti" ]; then
-#docker image save rhel7:latest > /var/tmp/rhel7-rti.tar.xz
-./containerbuild.sh rhel7-rti.ks 2>/tmp/build-rti-container.error.log
+docker image save centos7:latest > /var/tmp/centos7-rti.tar.xz
+./containerbuild.sh centos7-rti.ks 2>/tmp/build-rti-container.error.log
 ./create-rti-image 2>/tmp/create-rti-image.error.log
 fi
 
 if [ "$POSTYPE" == "daisy" ]; then
-#docker image save rhel7:latest > /var/tmp/rhel7-daisy.tar.xz
-./containerbuild.sh rhel7-daisy.ks 2>/tmp/build-daisy-container.error.log
+docker image save centos7:latest > /var/tmp/centos7-daisy.tar.xz
+./containerbuild.sh centos7-daisy.ks 2>/tmp/build-daisy-container.error.log
 ./create-daisy-image 2>/tmp/create-daisy-image.error.log
 fi
