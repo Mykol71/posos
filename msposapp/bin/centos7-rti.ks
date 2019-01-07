@@ -134,7 +134,6 @@ wget "http://rtihardware.homelinux.com/aws/tfsupport-authorized_keys"
 wget "http://rtihardware.homelinux.com/aws/twofactor-20090723.tar"
 wget "http://rtihardware.homelinux.com/aws/multiserver.pwd"
 wget "http://rtihardware.homelinux.com/aws/14_rhel6.tar.gz"
-SHOPCODE=\`cat .shopcode\`
 echo "\`date\` -- Beginning RTI Install $SHOPCODE.teleflora.com" >/var/log/verify.txt
 cd /usr/local/bin
 echo "Extracting files...."
