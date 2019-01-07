@@ -13,7 +13,7 @@ else
 fi
 
 # gather user input
-INPUTS="SHOPCODE REMOTE_NAME AWS_PUBLIC AWS_NETWORK REMOTE_PUBLIC REMOTE_NET PASSPHRASE"
+INPUTS="SHOPCODE REMOTE_NAME AWS_PUBLIC AWS_NETWORK MAINSTORE_PUBLIC MAINSTORE_NET PRESHAREDKEY"
 
 echo "Gathering required information...."
 for var in $INPUTS; do
@@ -49,8 +49,8 @@ conn $REMOTE_NAME
   left=%defaultroute
   leftid=${AWS_PUBLIC}
   leftsubnet="${AWS_NETWORK}/24"
-  right=${REMOTE_PUBLIC}
-  rightsubnet="${REMOTE_NET}/24"
+  right=${MAINSTORE_PUBLIC}
+  rightsubnet="${MAINSTORE_NET}/24"
   ike=aes128-sha1-modp1024!
   esp=aes128-sha1-modp1024!
   keyingtries=0
@@ -65,7 +65,7 @@ EOF
 cat >> ipsec.secrets <<EOF
 # ipsec.secrets - strongSwan IPsec secrets file
 # source destination secret
-${AWS_PUBLIC} ${REMOTE_PUBLIC} : PSK "${PASSPHRASE}"
+${AWS_PUBLIC} ${MAINSTORE_PUBLIC} : PSK "${PRESHAREDKEY}"
 EOF
 
 # set passphrase file perms
