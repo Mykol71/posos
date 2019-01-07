@@ -152,6 +152,7 @@ echo "Make sure that you see the -T above and Press enter to continue"
 read X
 ln -s /usr2/ostools/bin/rtiuser.pl /usr2/bbx/bin/rtiuser.pl
 echo "bbj 8 installed......"
+systemctl daemon-reload
 service blm start
 sleep 3
 ps -ef | grep basis
@@ -170,6 +171,7 @@ chmod +x /usr/local/bin/update_bbj_15.pl
 echo "Fixing init.d service files....."
 sed -i '1s/^/#\!\/bin\/sh\n/' /etc/init.d/blm
 sed -i '1s/^/#\!\/bin\/sh\n/' /etc/init.d/bbj
+systemctl daemon-reload
 service blm start
 service  bbj start
 
