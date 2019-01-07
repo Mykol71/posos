@@ -32,7 +32,7 @@ rm -f ./epel-release-latest-7.noarch.rpm
 
 #copy in port forwrd config for docker
 cp -f ./99-docker.conf /usr/lib/sysctl.d/99-docker.conf
-systemctl start docker
+systemctl restart docker 2>/dev/null
 systemctl enable docker
 
 # add custom cloud backup server scripts to /usr/local/bin

@@ -8,3 +8,5 @@ rm -f ./ipsec*
 docker container stop $(docker container ps -a -q)
 docker system prune --all
 find .. -name ".*" -type f -exec rm -f {} \;
+yum clean all
+systemctl restart docker
