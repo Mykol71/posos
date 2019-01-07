@@ -127,12 +127,14 @@ xxxEOFxxx
 cat << xxxEOFxxx > /usr/local/bin/ksrti_install.sh
 #!/usr/bin/bash
 cd /usr/local/bin
-#Download RTI specific media
-for PACKAGE in RTI-16.1.5-Linux.iso.gz update_bbj_15.pl tfsupport-authorized_keys twofactor-20090723.tar multiserver.pwd
-do
-wget "http://rtihardware.homelinux.com/aws/${PACKAGE}"
-done
-echo "\`date\` -- Beginning RTI Install \${1}.teleflora.com" >/var/log/verify.txt
+wget "http://rtihardware.homelinux.com/aws/RTI-16.1.5-Linux.iso.gz"
+wget "http://rtihardware.homelinux.com/aws/update_bbj_15.pl"
+wget "http://rtihardware.homelinux.com/aws/tfsupport-authorized_keys"
+wget "http://rtihardware.homelinux.com/aws/twofactor-20090723.tar"
+wget "http://rtihardware.homelinux.com/aws/multiserver.pwd"
+wget "http://rtihardware.homelinux.com/aws/14_rhel6.tar.gz"
+SHOPCODE=`cat .shopcode`
+echo "\`date\` -- Beginning RTI Install $SHOPCODE.teleflora.com" >/var/log/verify.txt
 systemctl disable firewalld
 systemctl enable iptables
 yum -y remove firewalld
@@ -143,7 +145,7 @@ gunzip /usr/local/bin/RTI-16.1.5-Linux.iso.gz
 export TERM=linux
 /usr2/ostools/bin/updateos.pl --ostools
 /usr2/ostools/bin/updateos.pl --rti14
-service blm start
+systemctl start blm
 sleep 3
 ps -ef | grep basis
 echo ; echo ; echo
@@ -151,7 +153,7 @@ echo "Make sure that you see the -T above and Press enter to continue"
 read X
 ln -s /usr2/ostools/bin/rtiuser.pl /usr2/bbx/bin/rtiuser.pl
 echo "bbj 8 installed......"
-service blm start
+systemctl start blm
 sleep 3
 ps -ef | grep basis
 echo ; echo ; echo
@@ -161,8 +163,6 @@ mkdir /usr2/bbx
 mkdir /usr2/bbx/bin
 ln -s /usr2/ostools/bin/rtiuser.pl /usr2/bbx/bin/rtiuser.pl
 echo "bbj 8 installed......"
-service blm start
-service bbj start
 
 cd /usr/local/bin
 echo "Installing bbj 15......"
@@ -171,6 +171,8 @@ chmod +x /usr/local/bin/update_bbj_15.pl
 echo "Fixing init.d service files....."
 sed -i '1s/^/#\!\/bin\/sh\n/' /etc/init.d/blm
 sed -i '1s/^/#\!\/bin\/sh\n/' /etc/init.d/bbj
+systemctl start blm
+systemctl start bbj
 systemctl enable blm
 systemctl enable bbj
 
@@ -254,7 +256,7 @@ echo "--------------------">>/usr/local/bin/verify.txt
 echo "/etc/hosts.allow">>/usr/local/bin/verify.txt
 cat /etc/hosts.allow >>/usr/local/bin/verify.txt
 echo "--------------------">>/usr/local/bin/verify.txt
-mail -s \`hostname\` mgreen@teleflora.com,kpugh@teleflora.com </usr/local/bin/verify.txt
+#mail -s \`hostname\` mgreen@teleflora.com,kpugh@teleflora.com </usr/local/bin/verify.txt
 xxxEOFxxx
 
 cd /usr/local/bin
@@ -320,7 +322,7 @@ rm /var/run/nologin
 #Generate installtime file record
 /bin/date +%Y%m%d_%H%M > /etc/BUILDTIME
 
-echo "\`date\` -- End RTI Install \${1}.teleflora.com" >>/usr/local/bin/verify.txt
+echo "\`date\` -- End RTI Install $SHOPCODE.teleflora.com" >>/usr/local/bin/verify.txt
 # Verify
 /usr/local/bin/verify.sh
 
