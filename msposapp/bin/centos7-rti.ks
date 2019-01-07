@@ -114,6 +114,7 @@ iptables-services
 perl-Digest
 perl-Digest-MD5
 deltarpm
+sh
 -chrony
 %end
 %post --log=/anaconda-post.log
@@ -133,18 +134,16 @@ wget "http://rtihardware.homelinux.com/aws/tfsupport-authorized_keys"
 wget "http://rtihardware.homelinux.com/aws/twofactor-20090723.tar"
 wget "http://rtihardware.homelinux.com/aws/multiserver.pwd"
 wget "http://rtihardware.homelinux.com/aws/14_rhel6.tar.gz"
-SHOPCODE=`cat .shopcode`
+SHOPCODE=\`cat .shopcode\`
 echo "\`date\` -- Beginning RTI Install $SHOPCODE.teleflora.com" >/var/log/verify.txt
-systemctl disable firewalld
-systemctl enable iptables
-yum -y remove firewalld
 cd /usr/local/bin
 echo "Extracting files...."
 tar xvfz /usr/local/bin/14_rhel6.tar.gz
 gunzip /usr/local/bin/RTI-16.1.5-Linux.iso.gz
 export TERM=linux
-/usr2/ostools/bin/updateos.pl --ostools
 /usr2/ostools/bin/updateos.pl --rti14
+sed -i '1s/^/#\!\/bin\/sh\n/' /etc/init.d/blm
+sed -i '1s/^/#\!\/bin\/sh\n/' /etc/init.d/bbj
 systemctl start blm
 sleep 3
 ps -ef | grep basis
@@ -153,7 +152,7 @@ echo "Make sure that you see the -T above and Press enter to continue"
 read X
 ln -s /usr2/ostools/bin/rtiuser.pl /usr2/bbx/bin/rtiuser.pl
 echo "bbj 8 installed......"
-systemctl start blm
+service blm start
 sleep 3
 ps -ef | grep basis
 echo ; echo ; echo
@@ -171,10 +170,8 @@ chmod +x /usr/local/bin/update_bbj_15.pl
 echo "Fixing init.d service files....."
 sed -i '1s/^/#\!\/bin\/sh\n/' /etc/init.d/blm
 sed -i '1s/^/#\!\/bin\/sh\n/' /etc/init.d/bbj
-systemctl start blm
-systemctl start bbj
-systemctl enable blm
-systemctl enable bbj
+service blm start
+service  bbj start
 
 echo "Installing RTI...."
 mount -o loop /usr/local/bin/RTI-16.1.5-Linux.iso /mnt
