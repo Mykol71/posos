@@ -13,7 +13,8 @@ else
 fi
 
 # gather user input
-INPUTS="SHOPCODE REMOTE_NAME AWS_PUBLIC AWS_NETWORK MAINSTORE_PUBLIC MAINSTORE_NET PRESHAREDKEY"
+INPUTS="SHOPCODE LOCATION_NAME POS_CLOUD_NETWORK MAINSTORE_PUBLIC MAINSTORE_NET PRESHAREDKEY"
+POS_CLOUD_PUBLIC=`wget -qO- http://ipv4.icanhazip.com`
 
 echo "Gathering required information...."
 for var in $INPUTS; do
@@ -42,13 +43,13 @@ config setup
         uniqueids=yes
         strictcrlpolicy=no
 
-# connection to $REMOTE_NAME
-conn $REMOTE_NAME
+# connection to $LOCATION_NAME
+conn $LOCATION_NAME
   keyexchange=ikev1
   authby=secret
   left=%defaultroute
-  leftid=${AWS_PUBLIC}
-  leftsubnet="${AWS_NETWORK}/24"
+  leftid=${POS_CLOUD_PUBLIC}
+  leftsubnet="${POS_CLOUD_NETWORK}/24"
   right=${MAINSTORE_PUBLIC}
   rightsubnet="${MAINSTORE_NET}/24"
   ike=aes128-sha1-modp1024!
@@ -65,7 +66,7 @@ EOF
 cat >> ipsec.secrets <<EOF
 # ipsec.secrets - strongSwan IPsec secrets file
 # source destination secret
-${AWS_PUBLIC} ${MAINSTORE_PUBLIC} : PSK "${PRESHAREDKEY}"
+${POS_CLOUD_PUBLIC} ${MAINSTORE_PUBLIC} : PSK "${PRESHAREDKEY}"
 EOF
 
 # set passphrase file perms

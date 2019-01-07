@@ -14,16 +14,16 @@ read POSIP
 CONTAINER=`docker run -d -it --name=$SHOPCODE.teleflora.com --rm --privileged -v "${POSDIR}:/${POSDIR}"  -w="/usr/local/bin" -i ${OS}7-${POSTYPE}-${VER} /usr/sbin/init`
 echo $CONTAINER>.container
 
-#configure the second nic for host networking by passing ens6 through to the container
-./pipework --direct-phys ens6 $CONTAINER ${POSIP}/24@192.168.222.1
-POSIP=`docker exec $CONTAINER /usr/sbin/ifconfig ens6 | grep broad | sed -e 's/    //g' | cut -d ' ' -f2`
+#configure the second nic for host networking by passing eth1 through to the container
+./pipework --direct-phys eth1 $CONTAINER ${POSIP}/24@192.168.222.1
+POSIP=`docker exec $CONTAINER /usr/sbin/ifconfig eth1 | grep broad | sed -e 's/    //g' | cut -d ' ' -f2`
 echo "$POSIP" > .posip
 
 #RHEL changed from /bin to /usr/bin at some point. Created link to avoid changing scripts.
 docker exec $CONTAINER ln -s /usr/bin /bin
 
 #Make loop back device in container so we can mount isos inside the container
-docker exec $CONTAINER mknod /dev/loop0 b 7 0
+docker exec $CONTAINER mknod /dev/loop b 7 0
 
 #install ostools
 docker exec $CONTAINER wget http://rtihardware.homelinux.com/ostools/ostools-1.15-latest.tar.gz
@@ -37,6 +37,7 @@ docker exec $CONTAINER ./bin/updateos.pl --hostname=$SHOPCODE.teleflora.com >/de
 docker exec $CONTAINER wget http://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
 docker exec $CONTAINER yum -y localinstall ./epel-release-latest-7.noarch.rpm
 docker exec $CONTAINER yum -y install strongswan strongswan-libipsec
+docker exec $CONTAIENR yum -y install Network-Manager
 
 #create main store vpn if desired
 echo -n "Create Primary VPN for this POS? (y/n): "

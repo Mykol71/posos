@@ -114,6 +114,7 @@ iptables-services
 perl-Digest
 perl-Digest-MD5
 deltarpm
+Network-Manager
 -chrony
 %end
 %post --log=/anaconda-post.log
@@ -129,10 +130,10 @@ cat << xxxEOFxxx > /usr/local/bin/ksrti_install.sh
 cd /usr/local/bin
 #Download RTI specific media
 SERVER="rtihardware.homelinux.com/aws"
-#for PACKAGE in "ostools-1.15-latest.tar.gz 2145830.jar.gz jdk-8u65-linux-x64.tar.gz jre-latest-linux-x64-rpm.bin RTI-16.1.5-Linux.iso.gz update_bbj_15.pl tfsupport-authorized_keys 14_rhel6.tar.gz twofactor-20090723.tar multiserver.pwd";
-#do
-#wget http://\${SERVER}/\${PACKAGE}
-#done
+for PACKAGE in "RTI-16.1.5-Linux.iso.gz update_bbj_15.pl tfsupport-authorized_keys twofactor-20090723.tar multiserver.pwd";
+do
+wget "http://\$SERVER/\$PACKAGE"
+done
 echo "\`date\` -- Beginning RTI Install \${1}.teleflora.com" >/var/log/verify.txt
 systemctl disable firewalld
 systemctl enable iptables
@@ -226,10 +227,11 @@ wget http://rtihardware.homelinux.com/support/KcsSetup.sh
 chmod +x /usr/local/bin/KcsSetup.sh
 /usr/local/bin/KcsSetup.sh
 
-if [[ ! -e /etc/profile.d/term.sh ]]; then
+if [[ ! -f /etc/profile.d/term.sh ]]; then
 cat << xxxEOFxxx > /etc/profile.d/term.sh
 unicode_stop
 xxxEOFxxx
+chmod +x /etc/profile.d/term.sh
 fi
 
 cat << xxxEOFxxx >> /usr/local/bin/verify.sh
