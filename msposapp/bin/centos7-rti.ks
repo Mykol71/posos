@@ -62,6 +62,7 @@ less
 iputils
 iproute
 systemd
+initscripts
 rootfiles
 -libteam
 -teamd
