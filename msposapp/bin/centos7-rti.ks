@@ -152,7 +152,7 @@ read X
 ln -s /usr2/ostools/bin/rtiuser.pl /usr2/bbx/bin/rtiuser.pl
 echo "bbj 8 installed......"
 systemctl daemon-reload
-service blm start
+systemctl start blm
 sleep 3
 ps -ef | grep basis
 echo ; echo ; echo
@@ -171,8 +171,8 @@ echo "Fixing init.d service files....."
 sed -i '1s/^/#\!\/bin\/sh\n/' /etc/init.d/blm
 sed -i '1s/^/#\!\/bin\/sh\n/' /etc/init.d/bbj
 systemctl daemon-reload
-service blm start
-service  bbj start
+systemctl start blm
+systemctl start  bbj
 
 echo "Installing RTI...."
 mount -o loop /usr/local/bin/RTI-16.1.5-Linux.iso /mnt
