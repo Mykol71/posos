@@ -1,8 +1,7 @@
 #!/bin/bash
 
-echo -n "Shop Code: "
-read SHOPCODE
 echo -n "Tag: "
 read TAG
+SHOPCODE=`cat .shopcode`
 
 docker tag $SHOPCODE.teleflora.com $SHOPCODE.teleflora.com:${TAG}

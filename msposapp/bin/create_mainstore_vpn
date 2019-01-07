@@ -13,8 +13,9 @@ else
 fi
 
 # gather user input
-INPUTS="SHOPCODE LOCATION_NAME POS_CLOUD_NETWORK MAINSTORE_PUBLIC MAINSTORE_NET PRESHAREDKEY"
+INPUTS="LOCATION_NAME POS_CLOUD_NETWORK MAINSTORE_PUBLIC MAINSTORE_NET PRESHAREDKEY"
 POS_CLOUD_PUBLIC=`wget -qO- http://ipv4.icanhazip.com`
+SHOPCODE=`cat .shopcode`
 
 echo "Gathering required information...."
 for var in $INPUTS; do

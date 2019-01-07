@@ -1,14 +1,12 @@
 #!/bin/bash
 
 OS=centos
-echo -n "SHOPCODE: "
-read SHOPCODE
 echo -n "daisy or rti?: "
 read POSTYPE
 [ "$POSTYPE" == "daisy" ] && VER="10.1.17" && POSDIR="d"
 [ "$POSTYPE" == "rti" ] && VER="16.1.3" && POSDIR="usr2"
-echo -n "POSIP: "
-read POSIP
+POSIP=`cat .posip`
+SHOPCODE=`cat .shopcode`
 
 #start container
 CONTAINER=`docker run -d -it --name=$SHOPCODE.teleflora.com --rm --privileged -v "${POSDIR}:/${POSDIR}"  -w="/usr/local/bin" -i ${OS}7-${POSTYPE}-${VER} /usr/sbin/init`
