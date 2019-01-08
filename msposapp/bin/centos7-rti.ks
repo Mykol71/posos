@@ -230,6 +230,7 @@ echo "Patching OS...."
 echo "Creating /etc/profile.d/term.sh"
 [ ! -f /etc/profile.d/term.sh ] && echo "unicode_stop" > /etc/profile.d/term.sh
 chmod +x /etc/profile.d/term.sh
+xxxEOFxxx
 
 cat << xxxEOFxxx >> /usr/local/bin/verify.sh
 echo "--------------------">>/usr/local/bin/verify.txt
@@ -254,7 +255,7 @@ echo "--------------------">>/usr/local/bin/verify.txt
 echo "/etc/hosts.allow">>/usr/local/bin/verify.txt
 cat /etc/hosts.allow >>/usr/local/bin/verify.txt
 echo "--------------------">>/usr/local/bin/verify.txt
-#mail -s \`hostname\` mgreen@teleflora.com,kpugh@teleflora.com </usr/local/bin/verify.txt
+mail -s \`hostname\` mgreen@teleflora.com,kpugh@teleflora.com </usr/local/bin/verify.txt
 xxxEOFxxx
 
 cd /usr/local/bin
@@ -310,7 +311,7 @@ rm -rf /usr/lib/udev/hwdb.d/*
 
 ## Systemd fixes
 # no machine-id by default.
-:> /etc/machine-id
+#:> /etc/machine-id
 # Fix /run/lock breakage since it's not usr/local/binfs in docker
 umount /run
 systemd-tmpfiles --create --boot
