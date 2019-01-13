@@ -139,20 +139,14 @@ cd /usr/local/bin
 echo "Extracting files...."
 tar xvfz /usr/local/bin/14_rhel6.tar.gz
 gunzip /usr/local/bin/RTI-16.1.5-Linux.iso.gz
-export TERM=linux
+export TERM=ansi
 /usr2/ostools/bin/updateos.pl --rti14
-sed -i '1s/^/#\!\/bin\/sh\n/' /etc/init.d/blm
-sed -i '1s/^/#\!\/bin\/sh\n/' /etc/init.d/bbj
-systemctl start blm
-sleep 3
-ps -ef | grep basis
-echo ; echo ; echo
-echo "Make sure that you see the -T above and Press enter to continue"
-read X
-ln -s /usr2/ostools/bin/rtiuser.pl /usr2/bbx/bin/rtiuser.pl
+sed -i '1s/^/#\!\/usr\/bin\/ksh\n/' /etc/init.d/blm
+sed -i '1s/^/#\!\/usr\/bin\/ksh\n/' /etc/init.d/bbj
 echo "bbj 8 installed......"
 systemctl daemon-reload
 systemctl start blm
+systemctl start bbj
 sleep 3
 ps -ef | grep basis
 echo ; echo ; echo
@@ -168,11 +162,11 @@ echo "Installing bbj 15......"
 chmod +x /usr/local/bin/update_bbj_15.pl
 /usr/local/bin/update_bbj_15.pl --bbj15
 echo "Fixing init.d service files....."
-sed -i '1s/^/#\!\/bin\/sh\n/' /etc/init.d/blm
-sed -i '1s/^/#\!\/bin\/sh\n/' /etc/init.d/bbj
+sed -i '1s/^/#\!\/usr\/bin\/ksh\n/' /etc/init.d/blm
+sed -i '1s/^/#\!\/usr\/bin\/ksh\n/' /etc/init.d/bbj
 systemctl daemon-reload
-systemctl start blm
-systemctl start  bbj
+systemctl restart blm
+systemctl restart bbj
 
 echo "Installing RTI...."
 mount -o loop /usr/local/bin/RTI-16.1.5-Linux.iso /mnt
