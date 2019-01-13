@@ -139,7 +139,7 @@ cd /usr/local/bin
 echo "Extracting files...."
 tar xvfz /usr/local/bin/14_rhel6.tar.gz
 gunzip /usr/local/bin/RTI-16.1.5-Linux.iso.gz
-export TERM=ansi
+export TERM=linux
 /usr2/ostools/bin/updateos.pl --rti14
 sed -i '1s/^/#\!\/usr\/bin\/ksh\n/' /etc/init.d/blm
 sed -i '1s/^/#\!\/usr\/bin\/ksh\n/' /etc/init.d/bbj
