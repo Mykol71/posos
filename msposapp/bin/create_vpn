@@ -13,7 +13,9 @@ else
 fi
 
 # gather user input
-INPUTS="REMOTE_NAME AWS_PUBLIC AWS_NETWORK REMOTE_PUBLIC REMOTE_NET PASSPHRASE"
+INPUTS="LOCATION_NAME POS_CLOUD_NETWORK LOCATION_PUBLIC LOCATION_NET PRESHAREDKEY"
+POS_CLOUD_PUBLIC=`wget -qO- http://ipv4.icanhazip.com`
+SHOPCODE=`cat .shopcode`
 
 echo "Gathering required information...."
 for var in $INPUTS; do
@@ -34,16 +36,23 @@ else
 # configure strongSwan
 echo "Creating VPN Connection......"
 cat >> ipsec.conf <<EOF
+# ipsec.conf - strongSwan IPsec configuration file
 
-# connection to $REMOTE_NAME
-conn $REMOTE_NAME
+# basic configuration
+config setup
+        charondebug="all"
+        uniqueids=yes
+        strictcrlpolicy=no
+
+# connection to $LOCATION_NAME
+conn $LOCATION_NAME
   keyexchange=ikev1
   authby=secret
   left=%defaultroute
-  leftid=${AWS_PUBLIC}
-  leftsubnet="${AWS_NETWORK}/24"
-  right=${REMOTE_PUBLIC}
-  rightsubnet="${REMOTE_NET}/24"
+  leftid=${POS_CLOUD_PUBLIC}
+  leftsubnet="${POS_CLOUD_NETWORK}/24"
+  right=${LOCATION_PUBLIC}
+  rightsubnet="${LOCATION_NET}/24"
   ike=aes128-sha1-modp1024!
   esp=aes128-sha1-modp1024!
   keyingtries=0
@@ -55,8 +64,10 @@ conn $REMOTE_NAME
   auto=start
 EOF
 
-cat  >> ipsec.secrets <<EOF
-${AWS_PUBLIC} ${REMOTE_PUBLIC} : PSK "${PASSPHRASE}"
+cat >> ipsec.secrets <<EOF
+# ipsec.secrets - strongSwan IPsec secrets file
+# source destination secret
+${POS_CLOUD_PUBLIC} ${LOCATION_PUBLIC} : PSK "${PRESHAREDKEY}"
 EOF
 
 # set passphrase file perms
