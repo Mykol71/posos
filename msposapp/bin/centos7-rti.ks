@@ -264,7 +264,7 @@ chmod +x /usr/local/bin/*.pl
 # kernel needs to be removed by rpm, because of grubby
 rpm -e kernel
 
-yum -y remove bind-libs bind-libs-lite dhclient dhcp-common dhcp-libs \
+#yum -y remove bind-libs bind-libs-lite dhclient dhcp-common dhcp-libs \
   dracut-network e2fsprogs e2fsprogs-libs ebtables ethtool file \
   firewalld freetype gettext gettext-libs groff-base grub2 grub2-tools \
   grubby initscripts iproute iptables kexec-tools libcroco libgomp \
