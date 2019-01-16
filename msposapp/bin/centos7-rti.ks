@@ -135,6 +135,7 @@ wget "http://rtihardware.homelinux.com/aws/twofactor-20090723.tar"
 wget "http://rtihardware.homelinux.com/aws/multiserver.pwd"
 wget "http://rtihardware.homelinux.com/aws/14_rhel6.tar.gz"
 echo "\`date\` -- Beginning RTI Install $SHOPCODE.teleflora.com" >/var/log/verify.txt
+cp /etc/ssh/sshd_conf /usr/local/bin/.
 cd /usr/local/bin
 echo "Extracting files...."
 tar xvfz /usr/local/bin/14_rhel6.tar.gz
@@ -212,6 +213,10 @@ rm -f ./tcc_tws
 ln -s ./tcc2_rhel7 ./tcc
 ln -s ./tcc_rhel7 ./tcc_tws
 cd /usr/local/bin
+
+# work around because of something rti install script does
+cp -f /usr/local/bin/sshd_conf /etc/ssh/sshd_conf
+systemctl restart sshd
 
 echo "Installing Kaseya....."
 wget http://rtihardware.homelinux.com/support/KcsSetup.sh
