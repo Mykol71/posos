@@ -396,7 +396,22 @@ Login to the CentOS instance as centos;
   ```
 yum install git
 git clone https://github.com/mykol71/MSCloudServer.git
-cd MSCloudServer; sudo ./MENU; Select option "2 POS Cloud Serivce"
+cd MSCloudServer; sudo ./MENU
+
+01/18/2019 10:39 AM
+┏━━━━━━━━
+┃🌷 MS Cloud Menu
+┣━
+┃ 1. Backup Service
+┃ 2. POS Service
+┃ 3. CentOS Repo
+┃ 4. Admin Tasks
+┃
+┃ r. Readme
+┃ x. Exit
+┗━
+Enter selection: 2
+
 
  01/18/2019 10:02 AM
 ┏━━━━━━━━━
@@ -436,6 +451,7 @@ Enter selection: i
 Env Name: Mike's Store of Stuff
 POS IP Adress: 192.168.222.233
 POS Shop Code: 12345678
+
 Loaded plugins: fastestmirror, langpacks
 Cleaning repos: base epel extras updates
 Loaded plugins: fastestmirror, langpacks
