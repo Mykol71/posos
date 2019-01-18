@@ -88,27 +88,64 @@ The solution can be considered in 4 peices (Each having different compliance imp
 ┃ x. Exit
 ┗━
 Enter selection: 12
-daisy or rti?: rti
-	Trying to pull repository registry.access.redhat.com/rhel7 ... 
-	latest: Pulling from registry.access.redhat.com/rhel7
-	50a402dbfd72: Pull complete 
-	c6796217be8f: Pull complete 
-	Digest: sha256:7ae7375bdbb23180d21dfed3408ba82f0d00dd049557cd62716a628367d31d61
+daisy or rti?: rti 
+
+Starting installer, one moment...
+anaconda argparse: terminal size detection failed, using default width
+[Errno 25] Inappropriate ioctl for device
+anaconda 21.48.22.147-1 for CentOS 7 Docker 7 (pre-release) started.
+Starting automated install............
+Checking software selection
+================================================================================
+================================================================================
+Installation
+
+ 1) [x] Language settings                 2) [x] Time settings
+        (English (United States))                (America/Chicago timezone)
+ 3) [x] Installation source               4) [x] Software selection
+        (http://mirrors.kernel.org/cent          (Custom software selected)
+        os/7/os/x86_64/)
+ 5) [x] Network configuration
+        (Connected: eth1, docker0 (),
+        ens5)
+================================================================================
+================================================================================
+Progress
+Setting up the installation environment
+.
+Running pre-installation scripts
+j.
+Starting package installation process
+Preparing transaction from installation source
+Installing libgcc (1/615)
+Installing fontpackages-filesystem (2/615)
+Installing poppler-data (3/615)
+Installing libreport-filesystem (4/615)
+Installing bind-license (5/615)
+Installing langtable (6/615)
 	.  
 	.. 
 	...
-	Removing intermediate container 0eca109df016
-	Step 29/29 : CMD [“/usr/bin/bash”]
-	 ---> Running in c5f8834ddbb8
-	 ---> d7acf0c663a2
-	Removing intermediate container c5f8834ddbb8
-	Successfully built d7acf0c663a2
-	/home/ec2-user/msposapp/bin
+Removing intermediate container bbd1052e4a93
+Step 29/31 : EXPOSE 445
+ ---> Running in d7e162ea6127
+ ---> 1eede00a7e58
+Removing intermediate container d7e162ea6127
+Step 30/31 : EXPOSE 631
+ ---> Running in ca7a4630aeb5
+ ---> d0ed99e5e25d
+Removing intermediate container ca7a4630aeb5
+Step 31/31 : CMD [“/usr/bin/bash”]
+ ---> Running in b6530f49b66c
+ ---> 8b1cc27630a5
+Removing intermediate container b6530f49b66c
+Successfully built 8b1cc27630a5
+/home/tfsupport/msposapp/bin
 
-	real    12m28.976s
-	user    12m9.770s
-	sys     0m44.830s
-	Press enter to continue..
+real    14m16.460s
+user    12m7.525s
+sys     0m40.405s
+Press enter to continue..
   ```
 
   ```
@@ -125,8 +162,41 @@ daisy or rti?: rti
 
 
   ```
-	Enter selection: 13
-	daisy or rti?: rti
+01/18/2019 10:27 AM
+┏━━━━━━━━━
+┃🌷 POS Cloud Menu 
+┣━
+┃ Mike's Store of Stuff
+┃ 12345678
+┃
+┃ Status: 
+┃ POS IP: 192.168.222.233
+┃
+┃ 1. POS Status
+┃ 2. Start POS
+┃ 3. Stop POS
+┃ 4. Connect to POS
+┃ 5. Restore POS Data
+┃
+┃ 11. List Images
+┃ 12. Build OS Media
+┃ 13. Stage POS
+┃ 14. Delete Image(s)
+┃ 15. POS Snapshot
+┃
+┃ 111. VPN Status
+┃ 112. Create VPN
+┃ 113. Start VPN(s)
+┃ 114. Stop VPN(s)
+┃ 115. Delete VPN(s)
+┃
+┃ p. Purge All
+┃ i. I/C/U Deps
+┃ r. Readme
+┃ x. Exit
+┗━
+Enter selection: 13
+daisy or rti?: rti
 	--2018-11-15 00:43:25--  http://rtihardware.homelinux.com/ostools/ostools-1.15-latest.tar.gz
 	Resolving rtihardware.homelinux.com (rtihardware.homelinux.com)... 209.141.208.120
 	Connecting to rtihardware.homelinux.com (rtihardware.homelinux.com)|209.141.208.120|:80... connected.
@@ -136,25 +206,58 @@ daisy or rti?: rti
 	
 	     0K .......... .......... .......... .......... .......... 13%  394K 1s
 	    50K .......... .......... .......... .......... .......... 27%  726K 1s
-	.  
-	.. 
-	...
-	No packages marked for update
-	sha256:1b69b029b807e52398b7446abbc5207d294b2dd0cc36703fb81ee93024a23dfb
-	---
-	centos7-rti-12345678 instance is ready!
-	---
-	OSTools Version: 1.15.0
-	updateos.pl: $Revision: 1.347 $
-	CentOS Linux release 7.5.1804 (Core) 
-	---
-	Press enter to continue..
+...
+..
+.
+```
+
+```
+Installed:
+  strongswan.x86_64 0:5.7.1-1.el7    strongswan-libipsec.x86_64 0:5.7.1-1.el7   
+
+Complete!
+Error response from daemon: No such container: yum
+Create Primary VPN for this POS? (y/n): y
+Gathering required information....
+Enter LOCATION_NAME: phonehome
+Enter POS_CLOUD_NETWORK: 192.168.222.0  
+Enter MAINSTORE_PUBLIC: 70.175.163.115
+Enter MAINSTORE_NET: 192.168.22.0
+Enter PRESHAREDKEY: Telefl0ra1
+ipsec VPN Connection about to be created:
+--------------------
+Continue y/n?
+y
+...
+..
+.
+```
+
+```
+  sos.noarch 0:3.6-11.el7.centos                                                
+  tzdata.noarch 0:2018i-1.el7                                                   
+  tzdata-java.noarch 0:2018i-1.el7                                              
+
+Complete!
+sha256:29cfbc5289cb096e5238aaf4b8b5379fdaba5f30c290e71d43ff743d4cc90721
+---
+centos7-rti-12345678 instance is ready!
+---
+OSTools Version: 1.15.0
+updateos.pl: $Revision: 1.347 $
+CentOS Linux release 7.6.1810 (Core) 
+---
+
+real    5m8.698s
+user    0m0.228s
+sys     0m0.277s
+Press enter to continue..
   ```
 
   ```
 	Enter selection: 1
 	CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS                                                                                    NAMES
-	9e2f3ba06379        centos7-rti-16.1.3    "/usr/sbin/init"    2 minutes ago       Up 2 minutes        22/tcp, 80/tcp, 111/tcp, 443/tcp, 445/tcp, 631/tcp, 2001-2006/tcp, 9100/tcp, 15022/tcp   1234.teleflora.com
+	9e2f3ba06379        centos7-rti-16.1.3  "/usr/sbin/init"    2 minutes ago       Up 2 minutes        22/tcp, 80/tcp, 111/tcp, 443/tcp, 445/tcp, 631/tcp, 2001-2006/tcp, 9100/tcp, 15022/tcp   1234.teleflora.com
 		Press enter to continue..
   ```
 
@@ -165,6 +268,15 @@ daisy or rti?: rti
 	rhel7-rti-16.1.3                   latest              05b1c483ffcf        7 minutes ago       1.38 GB
 	Press enter to continue..
   ```
+
+```
+Enter selection: 111
+Security Associations (1 up, 0 connecting):
+   phonehome[1]: ESTABLISHED 2 minutes ago, 192.168.222.233[35.182.191.52]...70.175.163.115[70.175.163.115]
+   phonehome{1}:  INSTALLED, TUNNEL, reqid 1, ESP in UDP SPIs: 032b7ac6_i 0e86eb3c_o
+   phonehome{1}:   192.168.222.0/24 === 192.168.22.0/24
+Press enter to continue..
+```
 
   ```
 	Enter selection: 4
@@ -273,7 +385,7 @@ Installation
 	- 100GB of disk space.
 	- 2 Elastic IPs. Each assigned to each NIC. (One for the Docker host, one for the container.)
 		- Leave the 1st NIC (eth0) an auto-assigned (DHCP) IP. 
-		- Assign the 2nd NIC (eth1) an IP of 192.168.222.222/24.
+		- Assign the 2nd NIC (eth1) an IP of 192.168.222.233/24.
 	- Ports to be opened inbound to host (elastic bound to eth0): ssh (22).
 	- Ports to be opened inbound to container (elastic bound to eth1): None (Block all inbound ___initiated___ connections).
 
