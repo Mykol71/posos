@@ -54,8 +54,41 @@ The solution can be considered in 4 peices (Each having different compliance imp
 
 
   ```
-	Enter selection: 12
-	Daisy or RTI?: RTI
+01/18/2019 10:09 AM
+┏━━━━━━━━━
+┃🌷 POS Cloud Menu 
+┣━
+┃ Mike's Store of Stuff
+┃ 12345678
+┃
+┃ Status: 
+┃ POS IP: 192.168.222.233
+┃
+┃ 1. POS Status
+┃ 2. Start POS
+┃ 3. Stop POS
+┃ 4. Connect to POS
+┃ 5. Restore POS Data
+┃
+┃ 11. List Images
+┃ 12. Build OS Media
+┃ 13. Stage POS
+┃ 14. Delete Image(s)
+┃ 15. POS Snapshot
+┃
+┃ 111. VPN Status
+┃ 112. Create VPN
+┃ 113. Start VPN(s)
+┃ 114. Stop VPN(s)
+┃ 115. Delete VPN(s)
+┃
+┃ p. Purge All
+┃ i. I/C/U Deps
+┃ r. Readme
+┃ x. Exit
+┗━
+Enter selection: 12
+daisy or rti?: rti
 	Trying to pull repository registry.access.redhat.com/rhel7 ... 
 	latest: Pulling from registry.access.redhat.com/rhel7
 	50a402dbfd72: Pull complete 
@@ -81,8 +114,7 @@ The solution can be considered in 4 peices (Each having different compliance imp
   ```
 	Enter selection: 11
 	REPOSITORY                         TAG                 IMAGE ID            CREATED             SIZE
-	rhel7-rti-16.1.3                   latest              05b1c483ffcf        19 seconds ago      1.38 GB
-	registry.access.redhat.com/rhel7   latest              eb205f07ce7d        2 weeks ago         203 MB
+	centos7-rti-16.1.3                 latest              05b1c483ffcf        19 seconds ago      1.38 GB
 	Press enter to continue..
   ```
 
@@ -94,7 +126,6 @@ The solution can be considered in 4 peices (Each having different compliance imp
 
   ```
 	Enter selection: 13
-	SHOPCODE: 1234
 	daisy or rti?: rti
 	--2018-11-15 00:43:25--  http://rtihardware.homelinux.com/ostools/ostools-1.15-latest.tar.gz
 	Resolving rtihardware.homelinux.com (rtihardware.homelinux.com)... 209.141.208.120
@@ -111,7 +142,7 @@ The solution can be considered in 4 peices (Each having different compliance imp
 	No packages marked for update
 	sha256:1b69b029b807e52398b7446abbc5207d294b2dd0cc36703fb81ee93024a23dfb
 	---
-	rhel7-rti-1234 instance is ready!
+	centos7-rti-12345678 instance is ready!
 	---
 	OSTools Version: 1.15.0
 	updateos.pl: $Revision: 1.347 $
@@ -123,16 +154,15 @@ The solution can be considered in 4 peices (Each having different compliance imp
   ```
 	Enter selection: 1
 	CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS                                                                                    NAMES
-	9e2f3ba06379        rhel7-rti-16.1.3    "/usr/sbin/init"    2 minutes ago       Up 2 minutes        22/tcp, 80/tcp, 111/tcp, 443/tcp, 445/tcp, 631/tcp, 2001-2006/tcp, 9100/tcp, 15022/tcp   1234.teleflora.com
+	9e2f3ba06379        centos7-rti-16.1.3    "/usr/sbin/init"    2 minutes ago       Up 2 minutes        22/tcp, 80/tcp, 111/tcp, 443/tcp, 445/tcp, 631/tcp, 2001-2006/tcp, 9100/tcp, 15022/tcp   1234.teleflora.com
 		Press enter to continue..
   ```
 
   ```
 	Enter selection: 11
 	REPOSITORY                         TAG                 IMAGE ID            CREATED             SIZE
-	1234.teleflora.com                 latest              1b69b029b807        3 minutes ago       1.58 GB
+	12345678.teleflora.com             latest              1b69b029b807        3 minutes ago       1.58 GB
 	rhel7-rti-16.1.3                   latest              05b1c483ffcf        7 minutes ago       1.38 GB
-	registry.access.redhat.com/rhel7   latest              eb205f07ce7d        2 weeks ago         203 MB
 	Press enter to continue..
   ```
 
@@ -237,7 +267,7 @@ The resulting container will be hardened, as well as address the gaps covered by
 Installation
 ------------------------
 
-1. Launch an RHEL7 EC2 instance in AWS with the following configuration options:
+1. Launch a CentOS7 EC2 instance in AWS with the following configuration options:
 
 	- A second network interface (eth1) assigned to the VM.
 	- 100GB of disk space.
@@ -249,42 +279,75 @@ Installation
 
 2. Download and install cloud admin menus:
 
-		sudo yum install git
-		git clone https://github.com/mykol-com/msposapp.git
-		cd ./msposapp
-		sudo ./MENU
-		
-		21:50:34 - Not Installed
-		┏━━━━━━━━━━━━
-		┃ MS POS Cloud Menu
-		┣━
-		┃ 1. Server Status
-		┃ 2. Start Server
-		┃ 3. Stop Server(s)
-		┃ 4. Connect to Server
-		┃ 5. Restore Florist Data
-		┃
-		┃ 11. List Images
-		┃ 12. Build OS Media
-		┃ 13. Stage a Server
-		┃ 14. Delete Image(s)
-		┃ 15. Server Snapshot
-		┃
-		┃ 111. VPN Status
-		┃ 112. Create VPN
-		┃ 113. Start VPN(s)
-		┃ 114. Stop VPN(s)
-		┃ 115. Delete VPN(s)
-		┃
-		┃ p. Purge All
-		┃ d. I/C/U Deps
-		┃ x. Exit
-		┗━
-		Enter selection: 
-		
-		Select "d" to Install/Configure/Upgrade Dependant packages; 1st time need Redhat support login.
+Login to the CentOS instance as centos; 
 
-- Next, build the OS media (12), stage an instance (13), create a VPN connection(s) (112), restore data (5 if desired), then start the Point of Sale server (2).
+  ```
+yum install git
+git clone https://github.com/mykol71/MSCloudServer.git
+cd MSCloudServer; sudo ./MENU; Select option "2 POS Cloud Serivce"
+
+ 01/18/2019 10:02 AM
+┏━━━━━━━━━
+┃🌷 POS Cloud Menu 
+┣━
+┃ Not Installed
+┃ 
+┃
+┃ Status: 
+┃ POS IP: 
+┃
+┃ 1. POS Status
+┃ 2. Start POS
+┃ 3. Stop POS
+┃ 4. Connect to POS
+┃ 5. Restore POS Data
+┃
+┃ 11. List Images
+┃ 12. Build OS Media
+┃ 13. Stage POS
+┃ 14. Delete Image(s)
+┃ 15. POS Snapshot
+┃
+┃ 111. VPN Status
+┃ 112. Create VPN
+┃ 113. Start VPN(s)
+┃ 114. Stop VPN(s)
+┃ 115. Delete VPN(s)
+┃
+┃ p. Purge All
+┃ i. I/C/U Deps
+┃ r. Readme
+┃ x. Exit
+┗━
+Enter selection: i
+
+Env Name: Mike's Store of Stuff
+POS IP Adress: 192.168.222.233
+POS Shop Code: 12345678
+Loaded plugins: fastestmirror, langpacks
+Cleaning repos: base epel extras updates
+Loaded plugins: fastestmirror, langpacks
+Determining fastest mirrors
+...
+..
+.
+Loaded plugins: fastestmirror, langpacks
+Loading mirror speeds from cached hostfile
+ * base: mirror.calgah.com
+ * epel: fedora-epel.mirrors.tds.net
+ * extras: mirror.calgah.com
+ * updates: mirror.calgah.com
+No packages marked for update
+
+Done!
+
+real    0m34.189s
+user    0m3.633s
+sys     0m0.686s
+Press enter to continue..
+  ```
+
+- Next, build the OS media (12), stage an instance (13), restore data (5 if desired), then start the Point of Sale server (2).
 
 
 
