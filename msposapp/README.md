@@ -39,7 +39,7 @@ Requirements
 
 - Self-contained: The intention is to promote the conversion of physical Point of Sale machines to virtual. The POS servers need to be independant of each other. (An outage by one doesnt affect the many.)
 
-- Ipsec VPN connection information for each remote location wanting to use this server.
+- Ipsec site-to-site VPN connection information for each remote location wanting to use this server.
 
 
 
@@ -209,14 +209,12 @@ daisy or rti?: rti
 ...
 ..
 .
-```
-
-```
 Installed:
   strongswan.x86_64 0:5.7.1-1.el7    strongswan-libipsec.x86_64 0:5.7.1-1.el7   
 
 Complete!
-Error response from daemon: No such container: yum
+```
+```
 Create Primary VPN for this POS? (y/n): y
 Gathering required information....
 Enter LOCATION_NAME: phonehome
@@ -228,12 +226,11 @@ ipsec VPN Connection about to be created:
 --------------------
 Continue y/n?
 y
-...
-..
+```
+```
 .
-```
-
-```
+..
+...
   sos.noarch 0:3.6-11.el7.centos                                                
   tzdata.noarch 0:2018i-1.el7                                                   
   tzdata-java.noarch 0:2018i-1.el7                                              
@@ -252,24 +249,59 @@ real    5m8.698s
 user    0m0.228s
 sys     0m0.277s
 Press enter to continue..
-  ```
-
-  ```
-	Enter selection: 1
-	CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS                                                                                    NAMES
-	9e2f3ba06379        centos7-rti-16.1.3  "/usr/sbin/init"    2 minutes ago       Up 2 minutes        22/tcp, 80/tcp, 111/tcp, 443/tcp, 445/tcp, 631/tcp, 2001-2006/tcp, 9100/tcp, 15022/tcp   1234.teleflora.com
-		Press enter to continue..
-  ```
-
-  ```
-	Enter selection: 11
-	REPOSITORY                         TAG                 IMAGE ID            CREATED             SIZE
-	12345678.teleflora.com             latest              1b69b029b807        3 minutes ago       1.58 GB
-	rhel7-rti-16.1.3                   latest              05b1c483ffcf        7 minutes ago       1.38 GB
-	Press enter to continue..
-  ```
+```
 
 ```
+01/18/2019  2:26 PM
+┏━━━━━━━━━
+┃🌷 POS Cloud Menu 
+┣━
+┃ Mike's Store of Stuff
+┃ 12345678
+┃
+┃ Status: Up 2 minutes
+┃ POS IP: 192.168.222.233
+┃
+┃ 1. POS Status
+┃ 2. Start POS
+┃ 3. Stop POS
+┃ 4. Connect to POS
+┃ 5. Restore POS Data
+┃
+┃ 11. List Images
+┃ 12. Build OS Media
+┃ 13. Stage POS
+┃ 14. Delete Image(s)
+┃ 15. POS Snapshot
+┃
+┃ 111. VPN Status
+┃ 112. Create VPN
+┃ 113. Start VPN(s)
+┃ 114. Stop VPN(s)
+┃ 115. Delete VPN(s)
+┃
+┃ p. Purge All
+┃ i. I/C/U Deps
+┃ r. Readme
+┃ x. Exit
+┗━
+Enter selection: 
+```
+
+```
+Enter selection: 1
+CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS                                                                                    NAMES
+9e2f3ba06379        centos7-rti-16.1.3  "/usr/sbin/init"    2 minutes ago       Up 2 minutes        22/tcp, 80/tcp, 111/tcp, 443/tcp, 445/tcp, 631/tcp, 2001-2006/tcp, 9100/tcp, 15022/tcp   12345678.teleflora.com
+Press enter to continue..
+
+
+Enter selection: 11
+REPOSITORY                         TAG                 IMAGE ID            CREATED             SIZE
+12345678.teleflora.com             latest              1b69b029b807        3 minutes ago       1.58 GB
+centos7-rti-16.1.3                 latest              05b1c483ffcf        7 minutes ago       1.38 GB
+Press enter to continue..
+
+
 Enter selection: 111
 Security Associations (1 up, 0 connecting):
    phonehome[1]: ESTABLISHED 2 minutes ago, 192.168.222.233[35.182.191.52]...70.175.163.115[70.175.163.115]
@@ -277,6 +309,7 @@ Security Associations (1 up, 0 connecting):
    phonehome{1}:   192.168.222.0/24 === 192.168.22.0/24
 Press enter to continue..
 ```
+Run staging script:
 
   ```
 	Enter selection: 4
@@ -286,83 +319,86 @@ Press enter to continue..
 	Are you sure you want to continue connecting (yes/no)? yes
 	Warning: Permanently added '172.17.0.2' (ECDSA) to the list of known hosts.
 	root@172.17.0.2's password: 
-	[root@1234 ~]# 
-	[root@1234 ~]# 
-	[root@1234 ~]# ifconfig
-	eth0: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 1500
-       	 	inet 172.17.0.2  netmask 255.255.0.0  broadcast 0.0.0.0
-       		inet6 fe80::42:acff:fe11:2  prefixlen 64  scopeid 0x20<link>
-       		ether 02:42:ac:11:00:02  txqueuelen 0  (Ethernet)
-       		RX packets 51  bytes 6271 (6.1 KiB)
-       		RX errors 0  dropped 0  overruns 0  frame 0
-       		TX packets 37  bytes 5667 (5.5 KiB)
-       		TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
-	
-	eth1: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 1500
-       		inet 192.168.222.222  netmask 255.255.255.0  broadcast 192.168.222.255
-       		inet6 fe80::6f:92ff:fec0:bde  prefixlen 64  scopeid 0x20<link>
-       		ether 02:6f:92:c0:0b:de  txqueuelen 1000  (Ethernet)
-       		RX packets 4038  bytes 5595840 (5.3 MiB)
-       		RX errors 0  dropped 0  overruns 0  frame 0
-       		TX packets 1984  bytes 139556 (136.2 KiB)
-       		TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
 
-	[root@1234 ~]# netstat -rn
+	[root@12345678 ~]# netstat -rn
 	Kernel IP routing table
 	Destination     Gateway         Genmask         Flags   MSS Window  irtt Iface
 	0.0.0.0         192.168.222.1   0.0.0.0         UG        0 0          0 eth1
 	172.17.0.0      0.0.0.0         255.255.0.0     U         0 0          0 eth0
 	192.168.222.0   0.0.0.0         255.255.255.0   U         0 0          0 eth1
 	
-	[root@1234 ~]# df -h
-	Filesystem      Size  Used Avail Use% Mounted on
-	overlay          10G  5.8G  4.3G  58% /
-	tmpfs           7.6G     0  7.6G   0% /dev
-	/dev/nvme0n1p2   10G  5.8G  4.3G  58% /usr2
-	shm              64M     0   64M   0% /dev/shm
-	tmpfs            64M  4.2M   60M   7% /run
-	tmpfs            64M     0   64M   0% /run/lock
-	tmpfs            64M     0   64M   0% /var/log/journal
-	tmpfs           7.6G  4.0K  7.6G   1% /tmp
-	tmpfs           1.6G     0  1.6G   0% /run/user/0
-	
-	[root@1234 ~]# /usr/local/bin/bin/updateos.pl --ospatches
-	Begin Installing OS Patches...
-	Timestamp: 20181115005113
-	Loaded plugins: fastestmirror, langpacks, ovl
-	Cleaning repos: base epel extras updates
-	Cleaning up everything
-	Maybe you want: rm -rf /var/cache/yum, to also free up space taken by orphaned data from disabled or removed repos
-	Cleaning up list of fastest mirrors
-	Loaded plugins: fastestmirror, langpacks, ovl
-	Determining fastest mirrors
-	 * base: mirror.steadfastnet.com
-	 * epel: mirror.steadfastnet.com
-	 * extras: mirror.siena.edu
-	 * updates: mirror.steadfastnet.com
-	No packages marked for update
-	Timestamp: 20181115005142
-	End Installing OS Patches...
-	[root@1234 ~]# 
-	
-	[root@1234 ~]# exit
-	logout
-	Connection to 172.17.0.2 closed.
-	Press enter to continue..
-  ```
+	[root@12345678 ~]# cd /usr/local/bin
+	[root@12345678 ~]# ./ksrti.sh
+...
+..
+.
+```
+You will need a valid Basis license and key.
+```
+.
+..
+...
+Basis License Install Screen here
+...
+..
+.
+end of commands here
+```
 
 
+3. Deployment (with data):
 
-3. Deployment (with or without data):
-
-	Create VPN connection(s), shutdown application on physical server (if exists), run final backup to sync data (if exists), restore customer data, then start the application instance in the cloud.
+	Create and start VPN connection(s) if you didnt during staging, shutdown application on physical server (if exists), run final backup to sync data (if exists), restore customer data, then start the application instance in the cloud.
 
 
-  ```
-	- Menu item: 112(create vpn), 5(restore data).
+```
+01/18/2019  2:26 PM
+┏━━━━━━━━━
+┃🌷 POS Cloud Menu 
+┣━
+┃ Mike's Store of Stuff
+┃ 12345678
+┃
+┃ Status: Up 3 hours
+┃ POS IP: 192.168.222.233
+┃
+┃ 1. POS Status
+┃ 2. Start POS
+┃ 3. Stop POS
+┃ 4. Connect to POS
+┃ 5. Restore POS Data
+┃
+┃ 11. List Images
+┃ 12. Build OS Media
+┃ 13. Stage POS
+┃ 14. Delete Image(s)
+┃ 15. POS Snapshot
+┃
+┃ 111. VPN Status
+┃ 112. Create VPN
+┃ 113. Start VPN(s)
+┃ 114. Stop VPN(s)
+┃ 115. Delete VPN(s)
+┃
+┃ p. Purge All
+┃ i. I/C/U Deps
+┃ r. Readme
+┃ x. Exit
+┗━
+```
+```
+Enter selection: 111
+Security Associations (1 up, 0 connecting):
+   phonehome[1]: ESTABLISHED 2 minutes ago, 192.168.222.233[35.182.191.52]...70.175.163.115[70.175.163.115]
+   phonehome{1}:  INSTALLED, TUNNEL, reqid 1, ESP in UDP SPIs: 032b7ac6_i 0e86eb3c_o
+   phonehome{1}:   192.168.222.0/24 === 192.168.22.0/24
+Press enter to continue..
+```
+```
+Enter selection: 5
 
 	SS NEEDED HERE
-  ```
+```
 
 
 4. Reporting: 
@@ -473,6 +509,41 @@ real    0m34.189s
 user    0m3.633s
 sys     0m0.686s
 Press enter to continue..
+
+01/18/2019 10:09 AM
+┏━━━━━━━━━
+┃🌷 POS Cloud Menu 
+┣━
+┃ Mike's Store of Stuff
+┃ 12345678
+┃
+┃ Status: 
+┃ POS IP: 192.168.222.233
+┃
+┃ 1. POS Status
+┃ 2. Start POS
+┃ 3. Stop POS
+┃ 4. Connect to POS
+┃ 5. Restore POS Data
+┃
+┃ 11. List Images
+┃ 12. Build OS Media
+┃ 13. Stage POS
+┃ 14. Delete Image(s)
+┃ 15. POS Snapshot
+┃
+┃ 111. VPN Status
+┃ 112. Create VPN
+┃ 113. Start VPN(s)
+┃ 114. Stop VPN(s)
+┃ 115. Delete VPN(s)
+┃
+┃ p. Purge All
+┃ i. I/C/U Deps
+┃ r. Readme
+┃ x. Exit
+┗━
+Enter selection:
   ```
 
 - Next, build the OS media (12), stage an instance (13), restore data (5 if desired), then start the Point of Sale server (2).
