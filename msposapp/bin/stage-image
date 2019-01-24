@@ -44,6 +44,10 @@ read PRIMARY_VPN
 #update OS
 docker exec $CONTAINER yum -y update
 
+#login to container and run ksrti.sh
+rm -f ~/.ssh/known_hosts
+./container_connect.expect 172.17.0.2 root password
+
 #save/export container
 docker commit $CONTAINER $SHOPCODE.teleflora.com
 
@@ -53,6 +57,5 @@ echo "${OS}7-$POSTYPE-$SHOPCODE instance is ready!"
 echo "---"
 docker exec $CONTAINER /usr/local/bin/bin/updateos.pl --version
 docker exec $CONTAINER cat /etc/redhat-release
-rm -f ~/.ssh/known_hosts
 echo "---"
 exit 0

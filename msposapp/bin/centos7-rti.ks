@@ -264,7 +264,7 @@ cd /usr/local/bin
 chmod +x /usr/local/bin/*.sh
 chmod +x /usr/local/bin/*.pl
 
-/usr/bin/chage -d 0 root
+#/usr/bin/chage -d 0 root
 
 # Post configure tasks for Docker
 

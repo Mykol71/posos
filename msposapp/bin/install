@@ -13,7 +13,7 @@ HOST_USER=centos
 
 #install required packages
 yum clean all
-yum -y install net-tools yum-langpacks gtk3 ksh wget firewalld tigervnc-server-minimal mailx nmap time bridge-utils docker device-mapper-libs device-mapper-event-libs ntp lorax anaconda-tui unzip
+yum -y install net-tools yum-langpacks gtk3 ksh wget firewalld tigervnc-server-minimal mailx nmap time bridge-utils docker device-mapper-libs device-mapper-event-libs ntp lorax anaconda-tui unzip expect
 
 # sync time
 ntpdate pool.ntp.org
