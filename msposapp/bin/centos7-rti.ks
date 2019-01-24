@@ -162,7 +162,7 @@ echo "bbj 8 installed......"
 cd /usr/local/bin
 echo "Installing bbj 15......"
 chmod +x /usr/local/bin/update_bbj_15.pl
-/usr/local/bin/update_bbj_15.pl --bbj15
+/usr/local/bin/update_bbj_15.pl --bbj 15
 echo "Fixing init.d service files....."
 sed -i '1s/^/#\!\/usr\/bin\/ksh\n/' /etc/init.d/blm
 sed -i '1s/^/#\!\/usr\/bin\/ksh\n/' /etc/init.d/bbj
@@ -176,6 +176,8 @@ cd /mnt
 ./install_rti-16.1.5.pl --nobbxt /usr2/bbx
 /usr2/ostools/bin/updateos.pl --samba-set-passdb
 umount /mnt
+systemctl enable blm
+systemctl enable bbj
 systemctl enable rti
 echo "Installing RTI Florist Directory...."
 wget http://tposlinux.blob.core.windows.net/rti-edir/rti-edir-tel-latest.patch
@@ -194,7 +196,7 @@ chown tfsupport:root /home/tfsupport/.ssh/authorized_keys
 rm -f /etc/cron.d/nightly-backup
 rm -f /usr/local/bin/rtibackup.pl
 cd /usr/local/bin
-./bin/install-ostools.pl ./ostools-1.15-latest.tar.gz
+./bin/install-ostools.pl ./ostools-1.15-latest.tar.gz --noharden-linux
 echo "Installing the backups.config file to exclude files during restore...."
 wget http://rtihardware.homelinux.com/ostools/backups.config.rhel7
 cp /usr2/bbx/config/backups.config /usr2/bbx/config/backups.config.save

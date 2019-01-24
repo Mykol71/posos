@@ -35,7 +35,6 @@ docker exec $CONTAINER ./bin/updateos.pl --hostname=$SHOPCODE.teleflora.com >/de
 docker exec $CONTAINER wget http://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
 docker exec $CONTAINER yum -y localinstall ./epel-release-latest-7.noarch.rpm
 docker exec $CONTAINER yum -y install strongswan strongswan-libipsec
-docker exec $CONTAIENR yum -y install Network-Manager
 
 #create main store vpn if desired
 echo -n "Create Primary VPN for this POS? (y/n): "
