@@ -127,7 +127,7 @@ xxxEOFxxx
 
 cat << xxxEOFxxx > /usr/local/bin/ksrti_install.sh
 #!/usr/bin/bash
-cd /tmp
+cd /usr/local/bin
 wget "http://rtihardware.homelinux.com/aws/RTI-16.1.5-Linux.iso.gz"
 wget "http://rtihardware.homelinux.com/aws/update_bbj_15.pl"
 wget "http://rtihardware.homelinux.com/aws/tfsupport-authorized_keys"
@@ -171,9 +171,11 @@ chmod +x /usr/local/bin/update_bbj_15.pl
 echo "Fixing init.d service files....."
 sed -i '1s/^/#\!\/usr\/bin\/ksh\n/' /etc/init.d/blm
 sed -i '1s/^/#\!\/usr\/bin\/ksh\n/' /etc/init.d/bbj
+sed -i '1s/^/#\!\/usr\/bin\/ksh\n/' /etc/init.d/rti
 systemctl daemon-reload
 systemctl restart blm
 systemctl restart bbj
+systemctl restart rti
 systemctl enable blm
 systemctl enable bbj
 systemctl enable rti
