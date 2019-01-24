@@ -15,4 +15,6 @@ expect "yes/no" {
 #expect ": " { send "[lindex $argv 4]\r" }
 expect "# " { send "cd /usr/local/bin\r" }
 expect "# " { send "./ksrti.sh\r" }
+expect "# " { send "exit\r" }
 interact
+exit 0
