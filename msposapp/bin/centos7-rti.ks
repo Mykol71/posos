@@ -127,7 +127,7 @@ xxxEOFxxx
 
 cat << xxxEOFxxx > /usr/local/bin/ksrti_install.sh
 #!/usr/bin/bash
-cd /usr/local/bin
+cd /tmp
 wget "http://rtihardware.homelinux.com/aws/RTI-16.1.5-Linux.iso.gz"
 wget "http://rtihardware.homelinux.com/aws/update_bbj_15.pl"
 wget "http://rtihardware.homelinux.com/aws/tfsupport-authorized_keys"
@@ -135,8 +135,6 @@ wget "http://rtihardware.homelinux.com/aws/twofactor-20090723.tar"
 wget "http://rtihardware.homelinux.com/aws/multiserver.pwd"
 wget "http://rtihardware.homelinux.com/aws/14_rhel6.tar.gz"
 echo "\`date\` -- Beginning RTI Install $SHOPCODE.teleflora.com" >/var/log/verify.txt
-mkdir /usr/local/pam
-cp /etc/pam.d/* /usr/local/bin/pam/.
 cd /usr/local/bin
 echo "Extracting files...."
 tar xvfz /usr/local/bin/14_rhel6.tar.gz
@@ -159,7 +157,14 @@ mkdir /usr2/bbx/bin
 ln -s /usr2/ostools/bin/rtiuser.pl /usr2/bbx/bin/rtiuser.pl
 echo "bbj 8 installed......"
 
+echo "Installing RTI...."
 cd /usr/local/bin
+mount -o loop /usr/local/bin/RTI-16.1.5-Linux.iso /mnt
+cd /mnt
+./install_rti-16.1.5.pl --nobbxt /usr2/bbx
+/usr2/ostools/bin/updateos.pl --samba-set-passdb
+umount /mnt
+
 echo "Installing bbj 15......"
 chmod +x /usr/local/bin/update_bbj_15.pl
 /usr/local/bin/update_bbj_15.pl --bbj 15
@@ -169,20 +174,16 @@ sed -i '1s/^/#\!\/usr\/bin\/ksh\n/' /etc/init.d/bbj
 systemctl daemon-reload
 systemctl restart blm
 systemctl restart bbj
-
-echo "Installing RTI...."
-mount -o loop /usr/local/bin/RTI-16.1.5-Linux.iso /mnt
-cd /mnt
-./install_rti-16.1.5.pl --nobbxt /usr2/bbx
-/usr2/ostools/bin/updateos.pl --samba-set-passdb
-umount /mnt
 systemctl enable blm
 systemctl enable bbj
 systemctl enable rti
+
 echo "Installing RTI Florist Directory...."
+cd /usr/local/bin
 wget http://tposlinux.blob.core.windows.net/rti-edir/rti-edir-tel-latest.patch
 wget http://tposlinux.blob.core.windows.net/rti-edir/applypatch.pl
 ./applypatch.pl ./rti-edir-tel-latest.patch
+
 echo "Installing tfsupport authorized keys...."
 mkdir /home/tfsupport/.ssh
 chmod 700 /home/tfsupport/.ssh
@@ -197,6 +198,7 @@ rm -f /etc/cron.d/nightly-backup
 rm -f /usr/local/bin/rtibackup.pl
 cd /usr/local/bin
 ./bin/install-ostools.pl ./ostools-1.15-latest.tar.gz --noharden-linux
+
 echo "Installing the backups.config file to exclude files during restore...."
 wget http://rtihardware.homelinux.com/ostools/backups.config.rhel7
 cp /usr2/bbx/config/backups.config /usr2/bbx/config/backups.config.save
@@ -216,9 +218,6 @@ rm -f ./tcc_tws
 ln -s ./tcc2_rhel7 ./tcc
 ln -s ./tcc_rhel7 ./tcc_tws
 cd /usr/local/bin
-
-# work around because of something rti install script does
-cp -f /usr/local/bin/pam/* /etc/pam.d/*
 
 echo "Installing Kaseya....."
 wget http://rtihardware.homelinux.com/support/KcsSetup.sh
