@@ -128,16 +128,16 @@ xxxEOFxxx
 cat << xxxEOFxxx > /usr/local/bin/ksrti_install.sh
 #!/usr/bin/bash
 cd /usr/local/bin
-wget "http://rtihardware.homelinux.com/aws/RTI-16.1.5-Linux.iso.gz"
+#wget "http://rtihardware.homelinux.com/aws/RTI-16.1.5-Linux.iso.gz"
 wget "http://rtihardware.homelinux.com/aws/update_bbj_15.pl"
 wget "http://rtihardware.homelinux.com/aws/tfsupport-authorized_keys"
 wget "http://rtihardware.homelinux.com/aws/twofactor-20090723.tar"
 wget "http://rtihardware.homelinux.com/aws/multiserver.pwd"
-wget "http://rtihardware.homelinux.com/aws/14_rhel6.tar.gz"
+#wget "http://rtihardware.homelinux.com/aws/14_rhel6.tar.gz"
 echo "\`date\` -- Beginning RTI Install $SHOPCODE.teleflora.com" >/var/log/verify.txt
 cd /usr/local/bin
 echo "Extracting files...."
-tar xvfz /usr/local/bin/14_rhel6.tar.gz
+#tar xvfz /usr/local/bin/14_rhel6.tar.gz
 gunzip /usr/local/bin/RTI-16.1.5-Linux.iso.gz
 export TERM=linux
 /usr2/ostools/bin/updateos.pl --rti14
@@ -145,8 +145,8 @@ sed -i '1s/^/#\!\/usr\/bin\/ksh\n/' /etc/init.d/blm
 sed -i '1s/^/#\!\/usr\/bin\/ksh\n/' /etc/init.d/bbj
 echo "bbj 8 installed......"
 systemctl daemon-reload
-systemctl start blm
-systemctl start bbj
+systemctl restart blm
+systemctl restart bbj
 sleep 3
 ps -ef | grep basis
 echo ; echo ; echo
@@ -172,13 +172,12 @@ echo "Fixing init.d service files....."
 sed -i '1s/^/#\!\/usr\/bin\/ksh\n/' /etc/init.d/blm
 sed -i '1s/^/#\!\/usr\/bin\/ksh\n/' /etc/init.d/bbj
 sed -i '1s/^/#\!\/usr\/bin\/ksh\n/' /etc/init.d/rti
-systemctl daemon-reload
-systemctl restart blm
-systemctl restart bbj
-systemctl restart rti
 systemctl enable blm
 systemctl enable bbj
 systemctl enable rti
+systemctl restart blm
+systemctl restart bbj
+systemctl restart rti
 
 echo "Installing RTI Florist Directory...."
 cd /usr/local/bin

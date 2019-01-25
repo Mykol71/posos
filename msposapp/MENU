@@ -125,7 +125,7 @@ printf '\u2517''\u2501''\n'
 		;;
 	15)
 		cd $ROOTDIR/bin
-		./test_printer 192.168.222.233 root password
+		./test_printer 172.17.0.2 root password
 		echo -ne "${CYAN}Press enter to continue..${NC}"
 		read
 		cd -
