@@ -11,9 +11,10 @@ else
   echo "No Running Container!"
   exit 1
 fi
+[ ./.posip ] && POSIP="`cat ./.posip`"
 
 # gather user input
-INPUTS="LOCATION_NAME POS_CLOUD_NETWORK MAINSTORE_PUBLIC MAINSTORE_NET PRESHAREDKEY"
+INPUTS="LOCATION_NAME STORE_PUBLIC STORE_NET PRESHAREDKEY"
 POS_CLOUD_PUBLIC=`wget -qO- http://ipv4.icanhazip.com`
 SHOPCODE=`cat .shopcode`
 
@@ -50,9 +51,9 @@ conn $LOCATION_NAME
   authby=secret
   left=%defaultroute
   leftid=${POS_CLOUD_PUBLIC}
-  leftsubnet="${POS_CLOUD_NETWORK}/24"
-  right=${MAINSTORE_PUBLIC}
-  rightsubnet="${MAINSTORE_NET}/24"
+  leftsubnet="${POSIP}/24"
+  right=${STORE_PUBLIC}
+  rightsubnet="${STORE_NET}/24"
   ike=aes128-sha1-modp1024!
   esp=aes128-sha1-modp1024!
   keyingtries=0
@@ -67,7 +68,7 @@ EOF
 cat >> ipsec.secrets <<EOF
 # ipsec.secrets - strongSwan IPsec secrets file
 # source destination secret
-${POS_CLOUD_PUBLIC} ${MAINSTORE_PUBLIC} : PSK "${PRESHAREDKEY}"
+${POS_CLOUD_PUBLIC} ${STORE_PUBLIC} : PSK "${PRESHAREDKEY}"
 EOF
 
 # set passphrase file perms
