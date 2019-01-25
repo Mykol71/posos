@@ -1,0 +1,33 @@
+#!/usr/bin/expect
+
+#Usage sshsudologin.expect <host> <ssh user> <ssh password> <su user> <su password>
+
+set timeout 60
+
+spawn sftp [lindex $argv 1]@[lindex $argv 0]
+
+expect "yes/no" { 
+	send "yes\r"
+	expect "*?assword" { send "[lindex $argv 2]\r" }
+	} "*?assword" { send "[lindex $argv 2]\r" }
+
+expect "# " { send "mput *star*\r" }
+expect "# " { send "cp istar.ppd /etc/cups/ppd\r" }
+expect "# " { send "rpm -i /root/istar.rpm\r" }
+expect "# " { send "exit\r" }
+interact
+
+spawn ssh [lindex $argv 1]@[lindex $argv 0]
+
+expect "yes/no" { 
+	send "yes\r"
+	expect "*?assword" { send "[lindex $argv 2]\r" }
+	} "*?assword" { send "[lindex $argv 2]\r" }
+
+#expect "# " { send "su - [lindex $argv 3]\r" }
+#expect ": " { send "[lindex $argv 4]\r" }
+#expect "# " { send "cd /usr/local/bin\r" }
+expect "# " { send "lpr -P istar sample.txt\r" }
+expect "# " { send "exit\r" }
+interact
+exit 0

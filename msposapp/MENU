@@ -36,7 +36,7 @@ printf '\u2503''\033[1m'" 11.\033[0m List Images"'\n'
 printf '\u2503''\033[1m'" 12.\033[0m Build OS Media"'\n'
 printf '\u2503''\033[1m'" 13.\033[0m Stage POS"'\n'
 printf '\u2503''\033[1m'" 14.\033[0m Delete Image(s)"'\n'
-printf '\u2503''\033[1m'" 15.\033[0m POS Snapshot"'\n'
+printf '\u2503''\033[1m'" 15.\033[0m Test Print"'\n'
 printf '\u2503''\n'
 printf '\u2503''\033[1m'" 111.\033[0m VPN Status"'\n'
 printf '\u2503''\033[1m'" 112.\033[0m Create VPN"'\n'
@@ -123,7 +123,7 @@ printf '\u2517''\u2501''\n'
 		;;
 	15)
 		cd $ROOTDIR/bin
-		time ./snapshot_instance
+		./test_printer 192.168.222.233 root password
 		echo -ne "${CYAN}Press enter to continue..${NC}"
 		read
 		cd -
