@@ -7,6 +7,8 @@ ID=$(/usr/bin/id -u)
 ROOTDIR="$(pwd)"
 export ROOTDIR
 
+CONTAINER=`cat ./bin/.container 2>/dev/null`
+
 trap '' 2
 while :; do
 	clear
@@ -27,6 +29,10 @@ echo -e "\u2503${GREY} Status: ${NC}${LGGRN}`docker ps --format "{{.Status}}" 2>
 echo -e "\u2503${GREY} Type  : ${NC}${LGGRN}`dmidecode | grep Product | grep -v Not | cut -d: -f2 | sed -e 's/\ //'`${NC}"
 echo -e "\u2503${GREY} POS IP: ${NC}${LGGRN}`cat ./bin/.posip 2>/dev/null`${NC}"
 echo -e "\u2503${GREY} Free  : ${NC}${LGGRN}`df -h / | tail -1 | awk '{print $4}'`${NC}"
+echo -e "\u2503${GREY} Patchd: ${NC}${LGGRN}`date -r /var/log/yum.log`${NC}"
+printf '\u2503''\n'
+echo -e "\u2503${GREY} VPNs:${NC}"
+echo -e "\u2503${LGGRN}`docker exec $CONTAINER strongswan status | tail -1`${NC}"
 printf '\u2503''\n'
 printf '\u2503''\033[1m'" 1.\033[0m POS Status"'\n'
 printf '\u2503''\033[1m'" 2.\033[0m Start POS"'\n'
