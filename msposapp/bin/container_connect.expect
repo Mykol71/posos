@@ -2,7 +2,7 @@
 
 #Usage sshsudologin.expect <host> <ssh user> <ssh password> <su user> <su password>
 
-#set timeout 600
+set timeout 600
 
 spawn ssh [lindex $argv 1]@[lindex $argv 0]
 
@@ -13,8 +13,8 @@ expect "yes/no" {
 
 #expect "# " { send "su - [lindex $argv 3]\r" }
 #expect ": " { send "[lindex $argv 4]\r" }
+expect "? " { send "cd y\r" }
 expect "# " { send "cd /usr/local/bin\r" }
 expect "# " { send "./ksrti.sh\r" }
 expect "# " { send "exit\r" }
-exit 0
 interact
