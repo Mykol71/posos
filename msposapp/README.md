@@ -42,6 +42,129 @@ Requirements
 - Ipsec site-to-site VPN connection information for each remote location wanting to use this server.
 
 
+Installation
+-----------------------
+
+1. Launch a CentOS7 EC2 instance in AWS with the following configuration options:
+
+	- A second network interface (eth1) assigned to the VM.
+	- 100GB of disk space.
+	- 2 Elastic IPs. Each assigned to each NIC. (One for the Docker host, one for the container.)
+		- Leave the 1st NIC (eth0) an auto-assigned (DHCP) IP. 
+		- Assign the 2nd NIC (eth1) an IP of 192.168.222.233/24.
+	- Ports to be opened inbound to host (elastic bound to eth0): ssh (22).
+	- Ports to be opened inbound to container (elastic bound to eth1): None (Block all inbound ___initiated___ connections).
+
+ 2. Download these menus; run MENU; Select "i. I/C/U Deps" to install,  assign an IP, and assign to a customer.
+
+```
+yum install git
+git clone https://github.com/mykol71/MSCloudServer.git
+cd ./MSCloudServer/msposapp
+sudo ./MENU
+
+02/01/2019 12:08 AM
+┏━━━━━━━━━
+┃🌷 POS Cloud Menu 
+┣━
+┃ Not Installed
+┃ 
+┃
+┃ Status: 
+┃ Type  : m5d.xlarge
+┃ POS IP: 
+┃ Free  : 78G
+┃ Patchd: Tue Jan 29 07:51:25 CST 2019
+┃
+┃ VPNs:
+┃
+┃ 1. POS Status
+┃ 2. Start POS
+┃ 3. Stop POS
+┃ 4. Connect to POS
+┃ 5. Restore POS Data
+┃
+┃ 11. List Images
+┃ 12. Build OS Media
+┃ 13. Stage POS
+┃ 14. Delete Image(s)
+┃ 15. Test Print
+┃
+┃ 111. VPN Status
+┃ 112. Create VPN
+┃ 113. Start VPN(s)
+┃ 114. Stop VPN(s)
+┃ 115. Delete VPN(s)
+┃
+┃ p. Purge All
+┃ i. I/C/U Deps
+┃ r. Readme
+┃ x. Exit
+┗━
+Enter selection: i 
+
+Env Name: Mike's Store of Stuff
+POS IP Adress: 192.168.222.222
+POS Shop Code: 12345678
+Loaded plugins: fastestmirror, langpacks
+Cleaning repos: base epel extras updates
+Loaded plugins: fastestmirror, langpacks
+Determining fastest mirrors
+epel/x86_64/metalink                                                                               |  15 kB  00:00:00
+...
+..
+.
+No packages marked for update
+
+Done!
+
+real	1m17.415s
+user	0m4.812s
+sys	0m1.089s
+Press enter to continue.
+
+ 02/01/2019 12:14 AM
+┏━━━━━━━━━
+┃🌷 POS Cloud Menu 
+┣━
+┃ Mike's Store of Stuff
+┃ 12345678
+┃
+┃ Status: 
+┃ Type  : m5d.xlarge
+┃ POS IP: 192.168.222.222
+┃ Free  : 78G
+┃ Patchd: Tue Jan 29 07:51:25 CST 2019
+┃
+┃ VPNs:
+┃
+┃ 1. POS Status
+┃ 2. Start POS
+┃ 3. Stop POS
+┃ 4. Connect to POS
+┃ 5. Restore POS Data
+┃
+┃ 11. List Images
+┃ 12. Build OS Media
+┃ 13. Stage POS
+┃ 14. Delete Image(s)
+┃ 15. Test Print
+┃
+┃ 111. VPN Status
+┃ 112. Create VPN
+┃ 113. Start VPN(s)
+┃ 114. Stop VPN(s)
+┃ 115. Delete VPN(s)
+┃
+┃ p. Purge All
+┃ i. I/C/U Deps
+┃ r. Readme
+┃ x. Exit
+┗━
+
+```
+
+- Next, build the OS media (12), stage an instance (13), restore data (5 if desired), then start the Point of Sale server (2).
 
 Design
 ------------------------
@@ -54,7 +177,7 @@ The solution can be considered in 4 peices (Each having different compliance imp
 
 
   ```
-01/18/2019 10:09 AM
+ 02/01/2019 12:14 AM
 ┏━━━━━━━━━
 ┃🌷 POS Cloud Menu 
 ┣━
@@ -62,7 +185,12 @@ The solution can be considered in 4 peices (Each having different compliance imp
 ┃ 12345678
 ┃
 ┃ Status: 
-┃ POS IP: 192.168.222.233
+┃ Type  : m5d.xlarge
+┃ POS IP: 192.168.222.222
+┃ Free  : 78G
+┃ Patchd: Tue Jan 29 07:51:25 CST 2019
+┃
+┃ VPNs:
 ┃
 ┃ 1. POS Status
 ┃ 2. Start POS
@@ -74,7 +202,7 @@ The solution can be considered in 4 peices (Each having different compliance imp
 ┃ 12. Build OS Media
 ┃ 13. Stage POS
 ┃ 14. Delete Image(s)
-┃ 15. POS Snapshot
+┃ 15. Test Print
 ┃
 ┃ 111. VPN Status
 ┃ 112. Create VPN
@@ -156,13 +284,13 @@ Press enter to continue..
   ```
 
 
-2. Staging (Assign to a customer, install OS, and run application installation from media):
+2. Staging (Install OS, and run application installation from media):
 
 	Prepare the linux boot volume, combine with added required pieces needed for deployment from managed services for the application installation, run through the installation process, then commit to the resulting container.
 
 
   ```
-01/18/2019 10:27 AM
+02/01/2019 12:17 AM
 ┏━━━━━━━━━
 ┃🌷 POS Cloud Menu 
 ┣━
@@ -170,7 +298,12 @@ Press enter to continue..
 ┃ 12345678
 ┃
 ┃ Status: 
-┃ POS IP: 192.168.222.233
+┃ Type  : m5d.xlarge
+┃ POS IP: 192.168.222.222
+┃ Free  : 78G
+┃ Patchd: Tue Jan 29 07:51:25 CST 2019
+┃
+┃ VPNs:
 ┃
 ┃ 1. POS Status
 ┃ 2. Start POS
@@ -182,7 +315,7 @@ Press enter to continue..
 ┃ 12. Build OS Media
 ┃ 13. Stage POS
 ┃ 14. Delete Image(s)
-┃ 15. POS Snapshot
+┃ 15. Test Print
 ┃
 ┃ 111. VPN Status
 ┃ 112. Create VPN
@@ -197,15 +330,15 @@ Press enter to continue..
 ┗━
 Enter selection: 13
 daisy or rti?: rti
-	--2018-11-15 00:43:25--  http://rtihardware.homelinux.com/ostools/ostools-1.15-latest.tar.gz
-	Resolving rtihardware.homelinux.com (rtihardware.homelinux.com)... 209.141.208.120
-	Connecting to rtihardware.homelinux.com (rtihardware.homelinux.com)|209.141.208.120|:80... connected.
-	HTTP request sent, awaiting response... 200 OK
-	Length: 367453 (359K) [application/x-gzip]
-	Saving to: 'ostools-1.15-latest.tar.gz'
-	
-	     0K .......... .......... .......... .......... .......... 13%  394K 1s
-	    50K .......... .......... .......... .......... .......... 27%  726K 1s
+--2018-11-15 00:43:25--  http://rtihardware.homelinux.com/ostools/ostools-1.15-latest.tar.gz
+Resolving rtihardware.homelinux.com (rtihardware.homelinux.com)... 209.141.208.120
+Connecting to rtihardware.homelinux.com (rtihardware.homelinux.com)|209.141.208.120|:80... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 367453 (359K) [application/x-gzip]
+Saving to: 'ostools-1.15-latest.tar.gz'
+
+     0K .......... .......... .......... .......... .......... 13%  394K 1s
+    50K .......... .......... .......... .......... .......... 27%  726K 1s
 ...
 ..
 .
@@ -218,9 +351,8 @@ Complete!
 Create Primary VPN for this POS? (y/n): y
 Gathering required information....
 Enter LOCATION_NAME: phonehome
-Enter POS_CLOUD_NETWORK: 192.168.222.0  
-Enter MAINSTORE_PUBLIC: 70.175.163.115
-Enter MAINSTORE_NET: 192.168.22.0
+Enter STORE_PUBLIC: 70.175.163.115
+Enter STORE_NET: 192.168.22.0
 Enter PRESHAREDKEY: Telefl0ra1
 ipsec VPN Connection about to be created:
 --------------------
@@ -235,8 +367,10 @@ y
   tzdata.noarch 0:2018i-1.el7                                                   
   tzdata-java.noarch 0:2018i-1.el7                                              
 
-Complete!
-sha256:29cfbc5289cb096e5238aaf4b8b5379fdaba5f30c290e71d43ff743d4cc90721
+[root@12345678 bin]# exit
+logout
+Connection to 172.17.0.2 closed.
+sha256:44253f97a7faf0868157af3f7a66c6068734bbdb3731469207c446fcdb127e8a
 ---
 centos7-rti-12345678 instance is ready!
 ---
@@ -245,22 +379,29 @@ updateos.pl: $Revision: 1.347 $
 CentOS Linux release 7.6.1810 (Core) 
 ---
 
-real    5m8.698s
-user    0m0.228s
-sys     0m0.277s
+real	41m46.817s
+user	0m4.282s
+sys	0m6.427s
 Press enter to continue..
+
 ```
 
 ```
-01/18/2019  2:26 PM
+ 02/01/2019  1:16 AM
 ┏━━━━━━━━━
 ┃🌷 POS Cloud Menu 
 ┣━
 ┃ Mike's Store of Stuff
 ┃ 12345678
 ┃
-┃ Status: Up 2 minutes
-┃ POS IP: 192.168.222.233
+┃ Status: Up 43 minutes
+┃ Type  : m5d.xlarge
+┃ POS IP: 192.168.222.222
+┃ Free  : 69G
+┃ Patchd: Tue Jan 29 07:51:25 CST 2019
+┃
+┃ VPNs:
+┃     remote1{1}:   192.168.222.0/24 === 192.168.22.0/24
 ┃
 ┃ 1. POS Status
 ┃ 2. Start POS
@@ -272,7 +413,7 @@ Press enter to continue..
 ┃ 12. Build OS Media
 ┃ 13. Stage POS
 ┃ 14. Delete Image(s)
-┃ 15. POS Snapshot
+┃ 15. Test Print
 ┃
 ┃ 111. VPN Status
 ┃ 112. Create VPN
@@ -286,6 +427,7 @@ Press enter to continue..
 ┃ x. Exit
 ┗━
 Enter selection: 
+
 ```
 
 ```
@@ -309,41 +451,6 @@ Security Associations (1 up, 0 connecting):
    phonehome{1}:   192.168.222.0/24 === 192.168.22.0/24
 Press enter to continue..
 ```
-Run staging script:
-
-  ```
-	Enter selection: 4
-	The authenticity of host '172.17.0.2 (172.17.0.2)' can't be established.
-	ECDSA key fingerprint is SHA256:TJc4LTltNe5sjUKuOcGxXaQvpO2iuGcCCd3iL6tgU40.
-	ECDSA key fingerprint is MD5:a4:28:54:8d:b6:b6:fd:54:19:4f:d2:cd:78:f7:21:e0.
-	Are you sure you want to continue connecting (yes/no)? yes
-	Warning: Permanently added '172.17.0.2' (ECDSA) to the list of known hosts.
-	root@172.17.0.2's password: 
-
-	[root@12345678 ~]# netstat -rn
-	Kernel IP routing table
-	Destination     Gateway         Genmask         Flags   MSS Window  irtt Iface
-	0.0.0.0         192.168.222.1   0.0.0.0         UG        0 0          0 eth1
-	172.17.0.0      0.0.0.0         255.255.0.0     U         0 0          0 eth0
-	192.168.222.0   0.0.0.0         255.255.255.0   U         0 0          0 eth1
-	
-	[root@12345678 ~]# cd /usr/local/bin
-	[root@12345678 ~]# ./ksrti.sh
-...
-..
-.
-```
-You will need a valid Basis license and key.
-```
-.
-..
-...
-Basis License Install Screen here
-...
-..
-.
-end of commands here
-```
 
 
 3. Deployment (with data):
@@ -352,15 +459,21 @@ end of commands here
 
 
 ```
-01/18/2019  2:26 PM
+ 02/01/2019  1:16 AM
 ┏━━━━━━━━━
 ┃🌷 POS Cloud Menu 
 ┣━
 ┃ Mike's Store of Stuff
 ┃ 12345678
 ┃
-┃ Status: Up 3 hours
-┃ POS IP: 192.168.222.233
+┃ Status: Up 43 minutes
+┃ Type  : m5d.xlarge
+┃ POS IP: 192.168.222.222
+┃ Free  : 69G
+┃ Patchd: Tue Jan 29 07:51:25 CST 2019
+┃
+┃ VPNs:
+┃     remote1{1}:   192.168.222.0/24 === 192.168.22.0/24
 ┃
 ┃ 1. POS Status
 ┃ 2. Start POS
@@ -372,7 +485,7 @@ end of commands here
 ┃ 12. Build OS Media
 ┃ 13. Stage POS
 ┃ 14. Delete Image(s)
-┃ 15. POS Snapshot
+┃ 15. Test Print
 ┃
 ┃ 111. VPN Status
 ┃ 112. Create VPN
@@ -385,7 +498,9 @@ end of commands here
 ┃ r. Readme
 ┃ x. Exit
 ┗━
+Enter selection: 
 ```
+
 ```
 Enter selection: 111
 Security Associations (1 up, 0 connecting):
@@ -394,6 +509,7 @@ Security Associations (1 up, 0 connecting):
    phonehome{1}:   192.168.222.0/24 === 192.168.22.0/24
 Press enter to continue..
 ```
+
 ```
 Enter selection: 5
 
@@ -411,146 +527,7 @@ Enter selection: 5
 The resulting container will be hardened, as well as address the gaps covered by the PCI references below. It will run the linux POS application in a container that is built with the same processes as the physical servers offered to the florists now. There will be a 1-to-1 container to host ratio to allow all host resources to be used by the point of sale application, as well as simplify the segregation of customer data per PA-DSS requirements. The point of sale instance will be connected by VPN connection to the florist's network(s), and route all traffic through the florist via that VPN tunnel (one VPN tunnel per remote location). Or "spoke and wheel" VPN configuration. This allows us to block all ports inbound to the container itself because we are using the POS application server as the VPN client, who ___initiates___ the connection(s).
 
 
-
-Installation
-------------------------
-
-1. Launch a CentOS7 EC2 instance in AWS with the following configuration options:
-
-	- A second network interface (eth1) assigned to the VM.
-	- 100GB of disk space.
-	- 2 Elastic IPs. Each assigned to each NIC. (One for the Docker host, one for the container.)
-		- Leave the 1st NIC (eth0) an auto-assigned (DHCP) IP. 
-		- Assign the 2nd NIC (eth1) an IP of 192.168.222.233/24.
-	- Ports to be opened inbound to host (elastic bound to eth0): ssh (22).
-	- Ports to be opened inbound to container (elastic bound to eth1): None (Block all inbound ___initiated___ connections).
-
-2. Download and install cloud admin menus:
-
-Login to the CentOS instance as centos; 
-
-  ```
-yum install git
-git clone https://github.com/mykol71/MSCloudServer.git
-cd MSCloudServer; sudo ./MENU
-
-01/18/2019 10:39 AM
-┏━━━━━━━━
-┃🌷 MS Cloud Menu
-┣━
-┃ 1. Backup Service
-┃ 2. POS Service
-┃ 3. CentOS Repo
-┃ 4. Admin Tasks
-┃
-┃ r. Readme
-┃ x. Exit
-┗━
-Enter selection: 2
-
-
- 01/18/2019 10:02 AM
-┏━━━━━━━━━
-┃🌷 POS Cloud Menu 
-┣━
-┃ Not Installed
-┃ 
-┃
-┃ Status: 
-┃ POS IP: 
-┃
-┃ 1. POS Status
-┃ 2. Start POS
-┃ 3. Stop POS
-┃ 4. Connect to POS
-┃ 5. Restore POS Data
-┃
-┃ 11. List Images
-┃ 12. Build OS Media
-┃ 13. Stage POS
-┃ 14. Delete Image(s)
-┃ 15. POS Snapshot
-┃
-┃ 111. VPN Status
-┃ 112. Create VPN
-┃ 113. Start VPN(s)
-┃ 114. Stop VPN(s)
-┃ 115. Delete VPN(s)
-┃
-┃ p. Purge All
-┃ i. I/C/U Deps
-┃ r. Readme
-┃ x. Exit
-┗━
-Enter selection: i
-
-Env Name: Mike's Store of Stuff
-POS IP Adress: 192.168.222.233
-POS Shop Code: 12345678
-
-Loaded plugins: fastestmirror, langpacks
-Cleaning repos: base epel extras updates
-Loaded plugins: fastestmirror, langpacks
-Determining fastest mirrors
-...
-..
-.
-Loaded plugins: fastestmirror, langpacks
-Loading mirror speeds from cached hostfile
- * base: mirror.calgah.com
- * epel: fedora-epel.mirrors.tds.net
- * extras: mirror.calgah.com
- * updates: mirror.calgah.com
-No packages marked for update
-
-Done!
-
-real    0m34.189s
-user    0m3.633s
-sys     0m0.686s
-Press enter to continue..
-
-01/18/2019 10:09 AM
-┏━━━━━━━━━
-┃🌷 POS Cloud Menu 
-┣━
-┃ Mike's Store of Stuff
-┃ 12345678
-┃
-┃ Status: 
-┃ POS IP: 192.168.222.233
-┃
-┃ 1. POS Status
-┃ 2. Start POS
-┃ 3. Stop POS
-┃ 4. Connect to POS
-┃ 5. Restore POS Data
-┃
-┃ 11. List Images
-┃ 12. Build OS Media
-┃ 13. Stage POS
-┃ 14. Delete Image(s)
-┃ 15. POS Snapshot
-┃
-┃ 111. VPN Status
-┃ 112. Create VPN
-┃ 113. Start VPN(s)
-┃ 114. Stop VPN(s)
-┃ 115. Delete VPN(s)
-┃
-┃ p. Purge All
-┃ i. I/C/U Deps
-┃ r. Readme
-┃ x. Exit
-┗━
-Enter selection:
-  ```
-
-- Next, build the OS media (12), stage an instance (13), restore data (5 if desired), then start the Point of Sale server (2).
-
-
-
-Costs
+Pricing
 ------------------------
 
 __Small Server Option:__
