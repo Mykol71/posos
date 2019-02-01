@@ -1,0 +1,34 @@
+FROM scratch
+ADD centos7-daisy-docker.tar.xz /
+LABEL org.label-schema.schema-version = "1.0" \
+    org.label-schema.name="CentOS - Daisy Base Image" \
+    org.label-schema.vendor="CentOS" \
+    org.label-schema.license="GPLv2" \
+    org.label-schema.build-date="20180527"
+MAINTAINER “Mike Green" <mgreen@teleflora.com>
+ENV container centos7-daisy-florist
+RUN yum -y install systemd ; yum clean all; \
+(cd /lib/systemd/system/sysinit.target.wants/; for i in *; do [ $i == \
+systemd-tmpfiles-setup.service ] || rm -f $i; done); \
+rm -f /lib/systemd/system/multi-user.target.wants/*;\
+rm -f /etc/systemd/system/*.wants/*;\
+rm -f /lib/systemd/system/local-fs.target.wants/*; \
+rm -f /lib/systemd/system/sockets.target.wants/*udev*; \
+rm -f /lib/systemd/system/sockets.target.wants/*initctl*; \
+rm -f /lib/systemd/system/basic.target.wants/*;\
+rm -f /usr/lib/tmpfiles.d/systemd-nologin.conf;\
+rm -f /lib/systemd/system/anaconda.target.wants/*;
+RUN yum -y install systemd openssh-server pam iptables cups samba nfs net-tools telnet wget curl perl java nfs-utils libnfsidmap perl-Digest perl-Digest-MD5 perl-Time-Piece perl-core expect
+VOLUME /sys/fs/cgroup
+RUN systemctl enable sshd
+RUN systemctl enable cups
+RUN systemctl enable smb
+RUN systemctl enable rpcbind
+RUN mknod /dev/loop0 b 7 0
+EXPOSE 22
+EXPOSE 111
+EXPOSE 15022
+EXPOSE 9100
+EXPOSE 445
+EXPOSE 631
+CMD [“/usr/bin/bash”]
