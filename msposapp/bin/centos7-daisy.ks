@@ -118,13 +118,13 @@ deltarpm
 %end
 %post --log=/anaconda-post.log
 
-cat << xxxEOFxxx > /usr/local/bin/ksdaisy.sh
+cat << xxxEOFxxx > /usr/local/bin/ksrti.sh
 #!/usr/bin/bash
 LOG="/var/log/ksdaisy.sh.log"
-/usr/local/bin/ksdaisy_install.sh 2>&1 | tee -a \$LOG
+/usr/local/bin/ksrti_install.sh 2>&1 | tee -a \$LOG
 xxxEOFxxx
 
-cat << xxxEOFxxx > /usr/local/bin/ksdaisy_install.sh
+cat << xxxEOFxxx > /usr/local/bin/ksrti_install.sh
 #!/usr/bin/bash
 cd /usr/local/bin
 #Download Daisy specific media
@@ -225,6 +225,9 @@ xxxEOFxxx
 cd /usr/local/bin
 chmod +x /usr/local/bin/*.sh
 chmod +x /usr/local/bin/*.pl
+chmod +x /usr/local/bin/ksrti.sh
+chmod +x /usr/local/bin/ksrti_install.sh
+
 
 #/usr/bin/chage -d 0 root
 
