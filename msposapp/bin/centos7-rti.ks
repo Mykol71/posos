@@ -154,16 +154,11 @@ echo "Make sure that you see the -T above and Press enter to continue"
 read X
 mkdir /usr2/bbx
 mkdir /usr2/bbx/bin
+mkdir /usr2/bbx/log
+mkdir /usr2/bbx/conf
+mkdir /usr2/bbj/cfg
 ln -s /usr2/ostools/bin/rtiuser.pl /usr2/bbx/bin/rtiuser.pl
 echo "bbj 8 installed......"
-
-echo "Installing RTI...."
-cd /usr/local/bin
-mount -o loop /usr/local/bin/RTI-16.1.5-Linux.iso /mnt
-cd /mnt
-./install_rti-16.1.5.pl --nobbxt /usr2/bbx
-/usr2/ostools/bin/updateos.pl --samba-set-passdb
-umount /mnt
 
 echo "Installing bbj 15......"
 chmod +x /usr/local/bin/update_bbj_15.pl
@@ -178,6 +173,14 @@ systemctl enable rti
 systemctl restart blm
 systemctl restart bbj
 systemctl restart rti
+
+echo "Installing RTI...."
+cd /usr/local/bin
+mount -o loop /usr/local/bin/RTI-16.1.5-Linux.iso /mnt
+cd /mnt
+./install_rti-16.1.5.pl --nobbxt /usr2/bbx
+/usr2/ostools/bin/updateos.pl --samba-set-passdb
+umount /mnt
 
 echo "Installing RTI Florist Directory...."
 cd /usr/local/bin

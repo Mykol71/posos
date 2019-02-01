@@ -16,5 +16,5 @@ expect "yes/no" {
 expect "? " { send "cd y\r" }
 expect "# " { send "cd /usr/local/bin\r" }
 expect "# " { send "./ksrti.sh\r" }
-expect "# " { send "exit\r" }
+expect "]# " { send "exit\r" }
 interact
