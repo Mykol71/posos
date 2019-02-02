@@ -32,14 +32,13 @@ docker exec $CONTAINER ./bin/install-ostools.pl --noharden-linux ./ostools-1.15-
 docker exec $CONTAINER ./bin/updateos.pl --hostname=$SHOPCODE.teleflora.com >/dev/null 2>&1
 
 #install vpn software
-docker exec $CONTAINER wget http://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
-docker exec $CONTAINER yum -y localinstall ./epel-release-latest-7.noarch.rpm
+docker exec $CONTAINER yum -y install epel-release
 docker exec $CONTAINER yum -y install strongswan strongswan-libipsec
 
 #install receipt printer drivers
-#docker cp ./istar.ppd|- ${CONTAINER}:/etc/cups/ppd
-#docker cp ./istar.rpm|- ${CONTAINER}:/tmp
-#docker exec $CONTAINER rpm -i /tmp/istar.rpm
+docker cp ./istar.ppd ${CONTAINER}:/etc/cups/ppd
+docker cp ./istar.rpm ${CONTAINER}:/tmp
+docker exec $CONTAINER rpm -i /tmp/istar.rpm
 
 #create main store vpn if desired
 echo -n "Create Primary VPN for this POS? (y/n): "

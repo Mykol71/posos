@@ -22,10 +22,8 @@ ntpdate pool.ntp.org
 timedatectl set-timezone America/Chicago
 
 #install vpn client software
-wget http://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
-yum -y localinstall ./epel-release-latest-7.noarch.rpm
+yum -y install epel-release
 yum -y install strongswan xl2tpd NetworkManager-strongswan strongswan-libipsec
-rm -f ./epel-release-latest-7.noarch.rpm
 
 #ip port forwarding
 [ "`grep net.ipv4.ip_forward /etc/sysctl.conf`" == "" ] &&  echo "net.ipv4.ip_forward = 1">>/etc/sysctl.conf &&  sysctl -p /etc/sysctl.conf && systemctl restart network.service
