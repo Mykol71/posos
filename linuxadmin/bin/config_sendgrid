@@ -35,7 +35,7 @@ m4 /etc/mail/sendmail.mc.new > /etc/mail/sendmail.cf
 mv -f /etc/mail/sendmail.mc.new /etc/mail/sendmail.mc
 
 #5. Create authentication file and build authentication db.
-echo "\"AuthInfo:smtp.sendgrid.net\" \"U:apikey\"  \"P:$APIKEY\"   \"M:PLAIN\"">/etc/mail/auth/authinfo
+echo "AuthInfo:smtp.sendgrid.net \"U:apikey\"  \"P:$APIKEY\"   \"M:PLAIN\"">/etc/mail/auth/authinfo
 makemap hash /etc/mail/auth/authinfo < /etc/mail/auth/authinfo
 
 #6. Set permissions on authentication files.
