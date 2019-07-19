@@ -8,7 +8,7 @@ ID=$(/usr/bin/id -u)
 #a. Get API Key.
 echo -n "Enter API Key: "
 read APIKEY
-#
+ 
 #1. Remove postfix if there and install and enable sendmail instead. (Good for RH6 and RH7.)
 yum -y remove postfix
 yum -y install sendmail sendmail-cf
@@ -23,30 +23,49 @@ chmod 777 /etc/mail/auth
 cp -f /etc/mail/sendmail.cf /tmp/sendmail.cf.orig
 cp -f /etc/mail/sendmail.mc /tmp/sendmail.mc.orig
 
-#4. Make changes to sendmail.mc and build new sendmail.cf.
+#4. Create generics table if desired.
+if [ "$1" != "" ]; then
+  EMAIL_FROM_LIST=`echo $1 | cut -d '=' -f 1`
+  EMAIL_TO=`echo $2 | cut -d '=' -f 2` 
+echo $EMAIL_FROM_LIST
+echo $EMAIL_TO
+  NO=1
+  for EMAIL_FROM_ADR in `echo $EMAIL_FROM_LIST | cut -d ',' -f $NO`; do
+echo $EMAIL_FROM_ADR
+     echo "$EMAIL_FROM_ADR    $EMAIL_TO">>/etc/mail/genericstable
+     echo "$EMAIL_FROM_ADR@localhost    $EMAIL_TO">>/etc/mail/genericstable
+     echo "$EMAIL_FROM_ADR@`hostname`    $EMAIL_TO">>/etc/mail/genericstable
+     NO=$(expr $NO + 1)
+  done
+fi
+
+#5. Make changes to sendmail.mc and build new sendmail.cf.
 cp -f /etc/mail/sendmail.mc /etc/mail/sendmail.mc.new
 sed -i '/^MAILER/d' /etc/mail/sendmail.mc.new
 sed -i '/MAILER(cyrusv2)/d' /etc/mail/sendmail.mc.new
 echo "FEATURE(authinfo,\`hash /etc/mail/auth/authinfo')dnl">>/etc/mail/sendmail.mc.new
+echo "FEATURE(\`genericstable')dnl">>/etc/mail/sendmail.mc.new
+echo "GENERICS_DOMAIN(\`localhost')dnl">>/etc/mail/sendmail.mc.new
+echo "GENERICS_DOMAIN(\``hostname`')dnl">>/etc/mail/sendmail.mc.new
 echo "MAILER(smtp)dnl">>/etc/mail/sendmail.mc.new
 echo "MAILER(procmail)dnl">>/etc/mail/sendmail.mc.new
 echo "define(\`SMART_HOST',\`smtp.sendgrid.net')dnl">>/etc/mail/sendmail.mc.new
 m4 /etc/mail/sendmail.mc.new > /etc/mail/sendmail.cf
 mv -f /etc/mail/sendmail.mc.new /etc/mail/sendmail.mc
 
-#5. Create authentication file and build authentication db.
+#6. Create authentication file and build authentication db.
 echo "AuthInfo:smtp.sendgrid.net \"U:apikey\"  \"P:$APIKEY\"   \"M:PLAIN\"">/etc/mail/auth/authinfo
 makemap hash /etc/mail/auth/authinfo < /etc/mail/auth/authinfo
 
-#6. Set permissions on authentication files.
+#7. Set permissions on authentication files.
 chmod 600 /etc/mail/auth/authinfo
 chmod 700 /etc/mail/auth
 
-#7. Restart sendmail.
+#8. Restart sendmail.
 service sendmail restart
 
-#8. Test email.
-#
+#9. Test email.
 #Send a test email now. ex: $mail -s test someone@somewhere.com < /some/filename
 echo "Send a test email now. ex: $mail -s test someone@somewhere.com < /some/filename"
-#-
+
+#
