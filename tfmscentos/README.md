@@ -175,7 +175,7 @@ Installation
 
 ```
 
-[Teleflora Managed Services CentOS 7]
+[TFMSCentOS]
 name=TFMSCentOS
 baseurl=http://centos.myk.green/repos/7/os/x86_64/x86_64
 gpgcheck=0
