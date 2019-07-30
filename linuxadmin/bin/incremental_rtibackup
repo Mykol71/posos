@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # This script will configure rtibackup.pl to run seperate full backups for each day of the week on the same backup device.
-# Note: This script trusts your device is big enough for 7 seperate copies of your backup.
+# Note: This script trusts your device is big enough for 7 seperate 100GB partitions on your backup device.
 # Note2: There will be seven partions on the backup device. The number of the partition corrisponds to the day of the week (Monday=1).
 
 # Find device
@@ -12,9 +12,23 @@ BACKUPDEVICE=`ls $BACKUPDEVICE 2>/dev/null`
 
 # Partition and format device
 echo "Configuring $BACKUPDEVICE..."
-#insert fdisk stuff here
+for part in 1 2 3 4 5 6 7 
+do
+sed -e 's/\s*\([\+0-9a-zA-Z]*\).*/\1/' << EOF | fdisk $BACKUPDEVICE
+ n
+ p
+ 2
+
+ +100G
+ p
+ w
+EOF
+mkfs.ext4 ${BACKUPDEVICE}$part
+done
+echo "$BACKUPDEVICE configured."
 
 # Add new device entry to backups.config
+echo "Changing backups.config...."
 echo "device=$BACKUPDEVICE\`date +\"\%u\"\`">>/usr2/bbx/config/backups.config 
 echo "Done. You should be able to run rtibackup.pl just as before."
 exit 0
