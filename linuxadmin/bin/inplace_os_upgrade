@@ -1,0 +1,25 @@
+# Redhat 6.10 to CentOS 7.6 upgrade
+# must be root to run
+###
+
+#update current system: 
+yum -y update
+
+#enable redhat extra repos: 
+subscription-manager repos --enable rhel-6-server-extra-rpms
+subscription-manager repos --enable rhel-6-server-optional-beta-rpms
+
+#install dependant packages: 
+yum install preupgrade-assistant preupgrade-assistant-el6toel7 redhat-upgrade-tool python-simplejson m2crypto mod_wsgi openscap openscap-engine-sce yum-utils redhat-upgrade-tool
+
+#run preupgrade (an hour or so): 
+#preupg -v
+
+#import CentOS RPM GPG Key: 
+rpm --import http://mirror.centos.org/centos/RPM-GPG-KEY-CentOS-7
+
+#deactivate current repos:
+yum-config-manager --disable \*
+
+#upgrade: 
+redhat-upgrade-tool-cli --network 7.3 --instrepo http://rtihardware.homelinux.com/rhel7.3_64_daisy_usb/ --force
