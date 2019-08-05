@@ -16,10 +16,10 @@ yum install preupgrade-assistant preupgrade-assistant-el6toel7 redhat-upgrade-to
 #preupg -v
 
 #import CentOS RPM GPG Key: 
-rpm --import http://mirror.centos.org/centos/RPM-GPG-KEY-CentOS-7
+rpm --import http://spacewalk.myk.green/pub/RHN-ORG-TRUSTED-SSL-CERT
 
 #deactivate current repos:
 yum-config-manager --disable \*
 
 #upgrade: 
-redhat-upgrade-tool-cli --network 7.3 --instrepo http://rtihardware.homelinux.com/rhel7.3_64_daisy_usb/ --force
+redhat-upgrade-tool-cli --network 7.6 --instrepo http://centos.myk.green/repos/7/os/x86_64/x86_64/ --force
