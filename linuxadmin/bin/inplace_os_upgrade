@@ -16,7 +16,7 @@ yum install preupgrade-assistant preupgrade-assistant-el6toel7 redhat-upgrade-to
 #preupg -v
 
 #import CentOS RPM GPG Key: 
-rpm --import http://spacewalk.myk.green/pub/RHN-ORG-TRUSTED-SSL-CERT
+rpm --import http://centos.myk.green/repos/7/os/x86_64/x86_64/RPM-GPG-KEY-CentOS-7
 
 #deactivate current repos:
 yum-config-manager --disable \*
