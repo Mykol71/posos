@@ -2,7 +2,7 @@
 
 # This script will configure rtibackup.pl to run seperate full backups for each day of the week on the same backup device.
 # Note: This script trusts your device is big enough for 7 seperate 50GB partitions on your backup device.
-# Note2: There will be seven partions on the backup device. The number of the partition corrisponds to the day of the week (Monday=1).
+# Note2: There will be seven partions on the backup device. The number of the partition corrisponds to the day of the week + 3. Example: Mon = /dev/sdb4; Tues = /dev/sdb5; etc.
 
 # Find device
 BACKUPDEVICE=`grep -i ^device= /usr2/bbx/config/backups.config`
