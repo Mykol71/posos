@@ -54,9 +54,9 @@ sed -e 's/\s*\([\+0-9a-zA-Z]*\).*/\1/' << EOF | fdisk $BACKUPDEVICE
  w
 EOF
 done
-sleep 4
 # reread partition table
 partprobe $BACKUPDEVICE
+sleep 4
 # format
 for part in 5 6 7 8 9 10 11
 do
@@ -67,6 +67,6 @@ echo "$BACKUPDEVICE configured."
 
 # Add new device entry to backups.config
 echo "Changing backups.config...."
-[ "`grep -i ^device= /usr2/bbx/config/backups.config`" == "" ] && echo "device=$BACKUPDEVICE\`date +\"\%u\"\`">>/usr2/bbx/config/backups.config 
+[ "`grep -i ^device= /usr2/bbx/config/backups.config`" == "" ] && echo "device=$BACKUPDEVICE\$((\`date +\"%u\"\` + 3))">>/usr2/bbx/config/backups.config 
 echo "Done. You should be able to run rtibackup.pl just as before."
 exit 0
