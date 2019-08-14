@@ -1,34 +1,72 @@
 #!/bin/bash
 
 # This script will configure rtibackup.pl to run seperate full backups for each day of the week on the same backup device.
-# Note: This script trusts your device is big enough for 7 seperate 100GB partitions on your backup device.
+# Note: This script trusts your device is big enough for 7 seperate 50GB partitions on your backup device.
 # Note2: There will be seven partions on the backup device. The number of the partition corrisponds to the day of the week (Monday=1).
 
 # Find device
 BACKUPDEVICE=`grep -i ^device= /usr2/bbx/config/backups.config`
 [ "$BACKUPDEVICE" == "" ] && BACKUPDEVICE=/dev/sdb
 BACKUPDEVICE=`ls $BACKUPDEVICE 2>/dev/null`
+[ "`grep -i ^device=$BACKUPDEVICE /usr2/bbx/config/backups.config`" != "" ] && echo "Backup device already configured." && exit 1
 [ "`echo $?`" == "2" ] && echo "No backup device found." && exit 1
 
 # Partition and format device
+# wipe exisiting partition table
+echo -n "About to format $BACKUPDEVICE. Proceed? (y/n): "
+read CONT
+[ "$CONT" == "n" ] && exit 0
+echo "Wiping partition table on $BACKUPDEVICE ..."
+wipefs -a $BACKUPDEVICE
 echo "Configuring $BACKUPDEVICE..."
-for part in 1 2 3 4 5 6 7 
+# primary partitions
+#for part in 1 2 3
+#do
+#sed -e 's/\s*\([\+0-9a-zA-Z]*\).*/\1/' << EOF | fdisk $BACKUPDEVICE
+# n
+# p 
+# $part
+#
+# +50G
+# w
+#EOF
+#done
+# extended primary partition
+for part in 4
 do
 sed -e 's/\s*\([\+0-9a-zA-Z]*\).*/\1/' << EOF | fdisk $BACKUPDEVICE
  n
- p
- 2
+ e 
+ $part
 
- +100G
- p
+
  w
 EOF
-mkfs.ext4 ${BACKUPDEVICE}$part
 done
+# extended partitions
+for part in 5 6 7 8 9 10 11
+do
+sed -e 's/\s*\([\+0-9a-zA-Z]*\).*/\1/' << EOF | fdisk $BACKUPDEVICE
+ n
+ l
+
+ +50G
+ w
+EOF
+done
+sleep 4
+# reread partition table
+partprobe $BACKUPDEVICE
+# format
+for part in 5 6 7 8 9 10 11
+do
+mkfs.ext4 $BACKUPDEVICE$part
+done
+
 echo "$BACKUPDEVICE configured."
 
 # Add new device entry to backups.config
 echo "Changing backups.config...."
-echo "device=$BACKUPDEVICE\`date +\"\%u\"\`">>/usr2/bbx/config/backups.config 
+[ "`grep -i ^device= /usr2/bbx/config/backups.config`" == "" ] && echo "device=$BACKUPDEVICE\`date +\"\%u\"\`">>/usr2/bbx/config/backups.config 
 echo "Done. You should be able to run rtibackup.pl just as before."
 exit 0
