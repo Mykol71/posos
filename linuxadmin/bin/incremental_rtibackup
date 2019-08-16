@@ -19,18 +19,6 @@ read CONT
 echo "Wiping partition table on $BACKUPDEVICE ..."
 wipefs -a $BACKUPDEVICE
 echo "Configuring $BACKUPDEVICE..."
-# primary partitions
-#for part in 1 2 3
-#do
-#sed -e 's/\s*\([\+0-9a-zA-Z]*\).*/\1/' << EOF | fdisk $BACKUPDEVICE
-# n
-# p 
-# $part
-#
-# +50G
-# w
-#EOF
-#done
 # extended primary partition
 for part in 4
 do
@@ -67,6 +55,6 @@ echo "$BACKUPDEVICE configured."
 
 # Add new device entry to backups.config
 echo "Changing backups.config...."
-[ "`grep -i ^device= /usr2/bbx/config/backups.config`" == "" ] && echo "device=$BACKUPDEVICE\$((\`date +\"%u\"\` + 3))">>/usr2/bbx/config/backups.config 
+[ "`grep -i ^device= /usr2/bbx/config/backups.config`" == "" ] && echo "device=$BACKUPDEVICE\$((\`date +\"%u\"\` + 4))">>/usr2/bbx/config/backups.config 
 echo "Done. You should be able to run rtibackup.pl just as before."
 exit 0
