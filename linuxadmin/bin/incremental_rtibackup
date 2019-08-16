@@ -1,15 +1,21 @@
 #!/bin/bash
 
-# This script will configure rtibackup.pl to run seperate full backups for each day of the week on the same backup device.
-# Note: This script trusts your device is big enough for 7 seperate 50GB partitions on your backup device.
-# Note2: There will be seven partions on the backup device. The number of the partition corrisponds to the day of the week + 3. Example: Mon = /dev/sdb4; Tues = /dev/sdb5; etc.
+# This script will configure rtibackup.pl to run seperate, full backups for each day of the week on the same backup device.
+# Note: This script trusts your device is big enough for 7, seperate, 50GB partitions on your backup device, and that 50GB is large enough for your backup.
+# Note2: There will be seven partions on the backup device. The number of the partition corrisponds to the day of the week + 4. Example: Mon = /dev/sdX5; Tues = /dev/sdX6; etc.
+# Note3: Usage: if the script determines the incremental backup change has already been made to backups.config, it will prompt you asking if you want to format the device only.
 
 # Find device
-BACKUPDEVICE=`grep -i ^device= /usr2/bbx/config/backups.config`
+# check conf file first
+BACKUPDEVICE=`grep -i ^device=/dev/sd /usr2/bbx/config/backups.config`
+# assign default if none in conf file
 [ "$BACKUPDEVICE" == "" ] && BACKUPDEVICE=/dev/sdb
+# verify exists in /dev
 BACKUPDEVICE=`ls $BACKUPDEVICE 2>/dev/null`
-[ "`grep -i ^device=$BACKUPDEVICE /usr2/bbx/config/backups.config`" != "" ] && echo "Backup device already configured." && exit 1
-[ "`echo $?`" == "2" ] && echo "No backup device found." && exit 1
+[ "$BACKUPDEVICE" == "" ] && echo "No backup device found." && exit 1
+# check for incremental installed already and ask for format only if so.
+[ "`grep -i ^device=$BACKUPDEVICE\$((`date +\"%u\"\` + 4))" /usr2/bbx/config/backups.config`" != "" ] && echo "Backup device already configured for incremental. Continue formatting $BACKUPDEVICE?" && read -n RESP
+[ "$RESP" == "n" ] && exit 0
 
 # Partition and format device
 # wipe exisiting partition table
