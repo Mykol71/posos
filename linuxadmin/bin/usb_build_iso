@@ -1,0 +1,83 @@
+USB_DEVICE=/dev/sdb
+#RHEL_REPO=rhel7.2_64_daisy_usb
+RHEL_REPO=rhel7.3_64_daisy_usb
+#RHEL_REPO=rhel6.7_64_daisy_usb
+
+#To create the USB repo.....
+#----
+#Start with a current Redhat Install DVD or kickstart repo
+#Changed RHEL6-DAISY kickstart files...
+# #cdrom
+# hardrive --dir=/ --partition=sda2
+#Changed partition scheme to partition the 2 hard drives (sdb and sdc, because sda will be the usb stick during install)
+#Changed isolinux/isolinux.cfg....
+# #ks=cdrom:/RHEL6-DAISY
+# ks=hd:sda2:/RHEL6-DAISY
+#----
+#To create the USB bootable ISO.....
+#----
+echo "Creating iso...."
+cd /var/www/html/$RHEL_REPO
+#mkisofs -o /home/isos/${RHEL_REPO}.iso -b isolinux/isolinux.bin -c isolinux/boot.cat -no-emul-boot -boot-load-size 4 -boot-info-table -r -R -J -p "Teleflora" -iso-level 4 -T .
+mkisofs -o /home/isos/${RHEL_REPO}.iso -b isolinux/isolinux.bin -c isolinux/boot.cat -no-emul-boot -boot-load-size 4 -boot-info-table -eltorito-alt-boot -e images/efiboot.img -no-emul-boot -R -J -p "Teleflora" -iso-level 4 -T .
+#the isohybrid command is part of the syslinux package....
+#yum -y install syslinux
+echo "Done..."
+echo "Making iso usb bootable..."
+isohybrid /home/isos/${RHEL_REPO}.iso
+echo "Done..."
+#----
+#Copy the iso to the USB stick (In this example /dev/sdb)
+#----
+echo "Coping the iso to usb stick..."
+dd if=/home/isos/${RHEL_REPO}.iso of=$USB_DEVICE
+echo "Done..."
+#The dd above will create an NTFS bootable partition /dev/sdb1...
+#----
+#Use fdisk to add a 2nd 4GB partition for an ext4 filesystem for installation files....
+echo "Creating additional partition..."
+sed -e 's/\s*\([\+0-9a-zA-Z]*\).*/\1/' << EOF | /sbin/fdisk $USB_DEVICE
+ n
+ p
+ 2
+
+ +5G
+ p
+ w
+EOF
+/sbin/mkfs.ext4 ${USB_DEVICE}2
+mount ${USB_DEVICE}2 /mnt
+if [ ! -d "/tmp/rhelusbiso" ]; then
+mkdir /tmp/rhelusbiso
+fi
+mount -o loop /home/isos/${RHEL_REPO}.iso /tmp/rhelusbiso
+echo "Done..."
+echo "Coping files..."
+mkdir /mnt/images
+if [ "`grep Linux /var/www/html/${RHEL_REPO}/media.repo | grep 6.`" != "" ]; then
+#RHEL6
+cp /tmp/rhelusbiso/images/install.img /mnt/images
+cp /tmp/rhelusbiso/images/product.img /mnt/images
+cp /tmp/rhelusbiso/RHEL6* /mnt
+fi
+if [ "`grep Linux /var/www/html/${RHEL_REPO}/media.repo | grep 7.`" != "" ]; then
+#RHEL7
+cp -r /tmp/rhelusbiso/images/* /mnt/images
+cp /tmp/rhelusbiso/RHEL7* /mnt
+fi
+umount /tmp/rhelusbiso
+cp /home/isos/${RHEL_REPO}.iso /mnt
+umount /mnt
+echo "Done..."
+#echo "Creating USB image file...."
+#dd if=${USB_DEVICE} of=/home/isos/${RHEL_REPO}.img
+#echo "Done..."
+echo "Complete...USB media ready."
+#----
+
+#Staging notes:
+# After the OS installation, remove the USB stick and reboot the machine.
+# Wait until the server is booted to reinsert the USB stick. This will ensure the USB is the last HD in the device list of /dev/sd{a,b,c}
+# If you do not remove the USB stick, once the system is rebooted, the USB stick could get assigned /dev/sdb leaving the harddrives as sda and sdc...
+# edit /tmp/ksdaisy_install.sh to enter the correct drive that contains the POS media. I.E. /dev/sdc1 for raided systems, /dev/sdb1 for single drive systems.
+# CDROM="/dev/sdc1"
