@@ -1,6 +1,4 @@
 #!/bin/sh
-# -- $Id: blcheck.xml,v 1.8 2007/06/17 23:38:00 j65nko Exp $ --
-
 # Check if an IP address is listed on one of the following blacklists
 # The format is chosen to make it easy to add or delete
 # The shell will strip multiple whitespace
