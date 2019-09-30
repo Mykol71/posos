@@ -10,12 +10,12 @@
 BACKUPDEVICE=`grep -i ^device=/dev/sd /usr2/bbx/config/backups.config`
 # assign default if none in conf file
 [ "$BACKUPDEVICE" == "" ] && BACKUPDEVICE=/dev/sdb
-# verify exists in /dev
-BACKUPDEVICE=`ls $BACKUPDEVICE 2>/dev/null`
-[ "$BACKUPDEVICE" == "" ] && echo "No backup device found." && exit 1
 # check for incremental installed already and ask for format only if so.
 [ "`grep -i ^device=$BACKUPDEVICE\$((`date +\"%u\"\` + 4))" /usr2/bbx/config/backups.config`" != "" ] && echo "Backup device already configured for incremental. Continue formatting $BACKUPDEVICE?" && read -n RESP
 [ "$RESP" == "n" ] && exit 0
+# verify exists in /dev
+BACKUPDEVICE=`ls $BACKUPDEVICE 2>/dev/null`
+[ "$BACKUPDEVICE" == "" ] && echo "No backup device found." && exit 1
 
 # Partition and format device
 # wipe exisiting partition table
