@@ -1,8 +1,7 @@
 #!/usr/bin/bash
 
 #Set Host User
-HOST_USER=centos
-#HOST_USER=ec2-user
+HOST_USER=`whoami`
 
 #Environment Name
 [ ! -f ../.envtype ] && echo -n "Env Name: " && read ENVTYPE && echo "$ENVTYPE" >../.envtype
@@ -48,30 +47,32 @@ find . -name "*recon.sh" -exec cp -f {} /usr/local/bin/. \;
 
 # make ssh folder if not there, and copy authorized keys from centos user
 [ ! -d /home/tfsupport/.ssh ] && mkdir /home/tfsupport/.ssh && chown -R tfsupport:tfsupport /home/tfsupport/.ssh && chmod 700 /home/tfsupport/.ssh
-[ ! -f /home/tfsupport/.ssh/authorized_keys ] && cp -f /home/$HOST_USER/.ssh/authorized_keys /home/tfsupport/.ssh/authorized_keys && chown tfsupport:tfsupport /home/tfsupport/.ssh/authorized_keys
+[ ! -f /home/tfsupport/.ssh/authorized_keys ] && cp -f /home/centos/.ssh/authorized_keys /home/tfsupport/.ssh/authorized_keys && chown tfsupport:tfsupport /home/tfsupport/.ssh/authorized_keys
  
 # Add tfsupport to sudoers, if not there.
 [ "`grep tfsupport /etc/sudoers`" == "" ] && echo "tfsupport        ALL=(ALL)       NOPASSWD: ALL">>/etc/sudoers
 
-# Add Admin Menu to tfsupports .profile to be exec on login
-#[ "`grep MENU ~/.bash_profile`" == "" ] && echo "sudo ./MENU" >>/home/tfsupport/.bash_profile && echo "exit">>/home/tfsupport/.bash_profile
+# Add Admin Menu to current users .bash_profile to be exec on login
+[ "`grep msposapp /home/centos/.bash_profile`" == "" ] && echo "cd msposapp" >> /home/centos/.bash_profile && echo "sudo ./MENU" >>/home/centos/.bash_profile
 
 # change default home dir to /backups from now on
 # Dont do this unless cloud backup dedicated server as well
 #sed -i 's/\/home/\/backups/' /etc/default/useradd
  
 # add /etc/skel/tfrsync
-cp -f ./tfrsync /etc/skel/.
+#cp -f ./tfrsync /etc/skel/.
  
 # make backups folder if its not there.
-[ ! -d /backups ] && mkdir /backups
+#[ ! -d /backups ] && mkdir /backups
  
-# Copy cloud admin scripts into place for tfsupport..
-#cp -rf /home/$HOST_USER/MSCloudServer/* /home/tfsupport/.
-
 # lastly, update everything
 yum -y update
  
 echo ""
+echo ""
 echo "Done!"
+
+# if the system has not been rebooted after install, then do so.
+[ ! -f _msposapp ] && echo "The system will reboot in 10 secs......please log back in with the same credentials." && touch _msposapp && sleep 10 && reboot
+
 exit 0

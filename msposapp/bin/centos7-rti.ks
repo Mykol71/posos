@@ -1,14 +1,3 @@
-# This is a minimal CentOS kickstart designed for docker.
-# It will not produce a bootable system
-# To use this kickstart, run the following command
-# livemedia-creator --make-tar \
-#   --iso=/path/to/boot.iso  \
-#   --ks=centos-7.ks \
-#   --image-name=centos-root.tar.xz
-#
-# Once the image has been generated, it can be imported into docker
-# by using: cat centos-root.tar.xz | docker import -i imagename
-
 # Basic setup information
 url --url="http://mirrors.kernel.org/centos/7/os/x86_64/"
 install
@@ -128,12 +117,12 @@ xxxEOFxxx
 cat << xxxEOFxxx > /usr/local/bin/ksrti_install.sh
 #!/usr/bin/ksh
 cd /usr/local/bin
-wget "http://rtihardware.homelinux.com/aws/RTI-16.1.5-Linux.iso.gz"
-wget "http://rtihardware.homelinux.com/aws/update_bbj_15.pl"
-wget "http://rtihardware.homelinux.com/aws/tfsupport-authorized_keys"
-wget "http://rtihardware.homelinux.com/aws/twofactor-20090723.tar"
-wget "http://rtihardware.homelinux.com/aws/multiserver.pwd"
-wget "http://rtihardware.homelinux.com/aws/14_rhel6.tar.gz"
+wget -nv "http://rtihardware.homelinux.com/aws/RTI-16.1.5-Linux.iso.gz"
+wget -nv "http://rtihardware.homelinux.com/aws/update_bbj_15.pl"
+wget -nv "http://rtihardware.homelinux.com/aws/tfsupport-authorized_keys"
+wget -nv "http://rtihardware.homelinux.com/aws/twofactor-20090723.tar"
+wget -nv "http://rtihardware.homelinux.com/aws/multiserver.pwd"
+wget -nv "http://rtihardware.homelinux.com/aws/14_rhel6.tar.gz"
 echo "\`date\` -- Beginning RTI Install $SHOPCODE.teleflora.com" >/var/log/verify.txt
 cd /usr/local/bin
 echo "Extracting files...."
@@ -178,14 +167,14 @@ echo "Installing RTI...."
 cd /usr/local/bin
 mount -o loop /usr/local/bin/RTI-16.1.5-Linux.iso /mnt
 cd /mnt
-./install_rti-16.1.5.pl --nobbxt /usr2/bbx
+./install_rti-16.1.5.pl --nobbxt /usr2/bbx 2>/dev/null
 /usr2/ostools/bin/updateos.pl --samba-set-passdb
 umount /mnt
 
 echo "Installing RTI Florist Directory...."
 cd /usr/local/bin
-wget http://tposlinux.blob.core.windows.net/rti-edir/rti-edir-tel-latest.patch
-wget http://tposlinux.blob.core.windows.net/rti-edir/applypatch.pl
+wget -nv http://tposlinux.blob.core.windows.net/rti-edir/rti-edir-tel-latest.patch
+wget -nv http://tposlinux.blob.core.windows.net/rti-edir/applypatch.pl
 ./applypatch.pl ./rti-edir-tel-latest.patch
 
 echo "Installing tfsupport authorized keys...."
@@ -204,7 +193,7 @@ cd /usr/local/bin
 ./bin/install-ostools.pl ./ostools-1.15-latest.tar.gz --noharden-linux
 
 echo "Installing the backups.config file to exclude files during restore...."
-wget http://rtihardware.homelinux.com/ostools/backups.config.rhel7
+wget -nv http://rtihardware.homelinux.com/ostools/backups.config.rhel7
 cp /usr2/bbx/config/backups.config /usr2/bbx/config/backups.config.save
 cp backups.config.rhel7 /usr2/bbx/config/backups.config
 chmod 777 /usr2/bbx/config/backups.config
@@ -215,7 +204,7 @@ cp -f /usr/local/bin/multiserver.pwd /usr2/bbx/config/
 # Install tcc
 echo "Installing tcc....."
 cd /usr2/bbx/bin
-wget http://rtihardware.homelinux.com/support/tcc/tcc-latest_linux.tar.gz
+wget -nv http://rtihardware.homelinux.com/support/tcc/tcc-latest_linux.tar.gz
 tar xvfz ./tcc-latest_linux.tar.gz
 rm -f ./tcc
 rm -f ./tcc_tws
@@ -224,7 +213,7 @@ ln -s ./tcc_rhel7 ./tcc_tws
 cd /usr/local/bin
 
 echo "Installing Kaseya....."
-wget http://rtihardware.homelinux.com/support/KcsSetup.sh
+wget -nv http://rtihardware.homelinux.com/support/KcsSetup.sh
 chmod +x /usr/local/bin/KcsSetup.sh
 /usr/local/bin/KcsSetup.sh
 

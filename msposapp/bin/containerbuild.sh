@@ -1,13 +1,5 @@
 #!/bin/bash
 #--------------------------------------------------------------------
-# Author: Jim Perrin
-# Script: containerbuild.sh
-# Desc: This script generates a rootfs tarball, and base Dockerfile
-#       Run this script from the directory where the kickstarts are
-#       located.
-# Modified: Carl Thompson
-# Update: Updated to use local boot.iso instead of downloading
-# require preperation but is faster in building the image
 # Requires: anaconda lorax
 #--------------------------------------------------------------------
 #### Basic VAR definitions

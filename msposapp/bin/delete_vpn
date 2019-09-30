@@ -15,3 +15,5 @@ fi
 docker exec $CONTAINER strongswan stop
 docker exec $CONTAINER rm /etc/strongswan/ipsec.conf
 docker exec $CONTAINER rm /etc/strongswan/ipsec.secrets
+rm -f ./ipsec.conf
+rm -f ./ipsec.secrets

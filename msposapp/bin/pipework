@@ -1,6 +1,5 @@
 #!/bin/sh
-# This code should (try to) follow Google's Shell Style Guide
-# (https://google.github.io/styleguide/shell.xml)
+
 set -e
 
 case "$1" in
@@ -72,9 +71,6 @@ esac
 }
 
 # Succeed if the given utility is installed. Fail otherwise.
-# For explanations about `which` vs `type` vs `command`, see:
-# http://stackoverflow.com/questions/592620/check-if-a-program-exists-from-a-bash-script/677212#677212
-# (Thanks to @chenhanxiao for pointing this out!)
 installed () {
   command -v "$1" >/dev/null 2>&1
 }

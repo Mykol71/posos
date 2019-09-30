@@ -1,4 +1,4 @@
-#!/usr/bin/bash
+#!/bin/bash
 
 # verify root
 ID=$(/usr/bin/id -u)
@@ -26,13 +26,13 @@ echo -e "\u2503${CYAN} `[ -f .envtype ] && cat .envtype || echo -e Not Installed
 echo -e "\u2503${CYAN} `[ -f ./bin/.shopcode ] && cat ./bin/.shopcode 2>/dev/null`${NC}"
 printf '\u2503''\n'
 echo -e "\u2503${GREY} Status: ${NC}${LGGRN}`docker ps --format "{{.Status}}" 2>/dev/null`${NC}"
-echo -e "\u2503${GREY} Type  : ${NC}${LGGRN}`dmidecode | grep Product | grep -v Not | cut -d: -f2 | sed -e 's/\ //'`${NC}"
+echo -e "\u2503${GREY} Type  : ${NC}${LGGRN}`dmidecode | grep Product | grep -v Not | cut -d: -f2 | sed -e 's/\ //' | head -1`${NC}"
 echo -e "\u2503${GREY} POS IP: ${NC}${LGGRN}`cat ./bin/.posip 2>/dev/null`${NC}"
 echo -e "\u2503${GREY} Free  : ${NC}${LGGRN}`df -h / | tail -1 | awk '{print $4}'`${NC}"
 echo -e "\u2503${GREY} Patchd: ${NC}${LGGRN}`date -r /var/log/yum.log`${NC}"
 printf '\u2503''\n'
 echo -e "\u2503${GREY} VPNs:${NC}"
-[ -f ./bin/.container ] && echo -e "\u2503${LGGRN}`docker exec $CONTAINER strongswan status | sed -e 's/\ //' | grep === 2>/dev/null`${NC}"
+[ -f ./bin/.container ] && echo -e "\u2503${LGGRN} `docker exec $CONTAINER strongswan status | sed -e 's/\ //' | grep === | grep -v Assoc 2>&1` ${NC}"
 printf '\u2503''\n'
 printf '\u2503''\033[1m'" 1.\033[0m POS Status"'\n'
 printf '\u2503''\033[1m'" 2.\033[0m Start POS"'\n'
@@ -131,7 +131,7 @@ printf '\u2517''\u2501''\n'
 		;;
 	15)
 		cd $ROOTDIR/bin
-		./test_printer 172.17.0.2 root password
+		./ssh_sudo.expect 172.17.0.2 root password 'cd /root ; lpr -P istar sample.txt'
 		echo -ne "${CYAN}Press enter to continue..${NC}"
 		read
 		cd -
