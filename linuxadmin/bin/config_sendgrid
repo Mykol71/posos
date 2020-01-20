@@ -26,7 +26,7 @@ cp -f /etc/mail/sendmail.mc /tmp/sendmail.mc.orig
 #4. Create generics table if desired.
 if [ "$1" != "" ]; then
   EMAIL_FROM_LIST=`echo $1 | cut -d '=' -f 1`
-  EMAIL_TO=`echo $2 | cut -d '=' -f 2` 
+  EMAIL_TO=`echo $1 | cut -d '=' -f 2` 
 echo $EMAIL_FROM_LIST
 echo $EMAIL_TO
   NO=1
