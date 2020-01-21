@@ -9,7 +9,21 @@ ID=$(/usr/bin/id -u)
 echo -n "Enter API Key: "
 read APIKEY
  
+#b. Get Email From Address.
+echo -n "Enter Server Email From Address: "
+read EMAIL_FROM
+[ "$EMAIL_FROM" == "" ] && EMAIL_FROM="None"
+
+#c. Be Sure.
+echo "APIKEY: $APIKEY"
+echo "SERVER EMAIL ADDRESS: $EMAIL_FROM"
+echo -n "Are these correct? (Y/N):"
+read REPLY
+[ "$REPLY" != "Y" ] && exit 1
+
 #1. Remove postfix if there and install and enable sendmail instead. (Good for RH6 and RH7.)
+yum repolist
+[ "$?" != "0" ] && echo "Server needs to be registered with Redhat." && exit 1
 yum -y remove postfix
 yum -y install sendmail sendmail-cf
 chkconfig sendmail on
@@ -20,23 +34,23 @@ mkdir /etc/mail/auth
 chmod 777 /etc/mail/auth
 
 #3. Backup config files just in case.
-cp -f /etc/mail/sendmail.cf /tmp/sendmail.cf.orig
-cp -f /etc/mail/sendmail.mc /tmp/sendmail.mc.orig
+cp -f /etc/mail/sendmail.mc /tmp/sendmail.mc.`date +"%m%d%H%M%S"`
+cp -f /etc/mail/sendmail.cf /tmp/sendmail.cf.`date +"%m%d%H%M%S"`
 
-#4. Create generics table if desired.
-if [ "$1" != "" ]; then
-  EMAIL_FROM_LIST=`echo $1 | cut -d '=' -f 1`
-  EMAIL_TO=`echo $1 | cut -d '=' -f 2` 
-echo $EMAIL_FROM_LIST
-echo $EMAIL_TO
-  NO=1
-  for EMAIL_FROM_ADR in `echo $EMAIL_FROM_LIST | cut -d ',' -f $NO`; do
-echo $EMAIL_FROM_ADR
-     echo "$EMAIL_FROM_ADR    $EMAIL_TO">>/etc/mail/genericstable
-     echo "$EMAIL_FROM_ADR@localhost    $EMAIL_TO">>/etc/mail/genericstable
-     echo "$EMAIL_FROM_ADR@`hostname`    $EMAIL_TO">>/etc/mail/genericstable
-     NO=$(expr $NO + 1)
-  done
+#4. Create generics table.
+if [ "$EMAIL_FROM" != "None" ]; then
+     echo "root $EMAIL_FROM">>/etc/mail/genericstable
+     echo "root@localhost $EMAIL_FROM">>/etc/mail/genericstable
+     echo "root@`hostname`    $EMAIL_FROM">>/etc/mail/genericstable
+     echo "root@`hostname`.teleflora.com    $EMAIL_FROM">>/etc/mail/genericstable
+     echo "rti $EMAIL_FROM">>/etc/mail/genericstable
+     echo "rti@localhost $EMAIL_FROM">>/etc/mail/genericstable
+     echo "rti@`hostname`    $EMAIL_FROM">>/etc/mail/genericstable
+     echo "rti@`hostname`.teleflora.com    $EMAIL_FROM">>/etc/mail/genericstable
+     echo "tfsupport $EMAIL_FROM">>/etc/mail/genericstable
+     echo "tfsupport@localhost $EMAIL_FROM">>/etc/mail/genericstable
+     echo "tfsupport@`hostname`    $EMAIL_FROM">>/etc/mail/genericstable
+     echo "tfsupport@`hostname`.teleflora.com    $EMAIL_FROM">>/etc/mail/genericstable
 fi
 
 #5. Make changes to sendmail.mc and build new sendmail.cf.
@@ -47,6 +61,7 @@ echo "FEATURE(authinfo,\`hash /etc/mail/auth/authinfo')dnl">>/etc/mail/sendmail.
 echo "FEATURE(\`genericstable')dnl">>/etc/mail/sendmail.mc.new
 echo "GENERICS_DOMAIN(\`localhost')dnl">>/etc/mail/sendmail.mc.new
 echo "GENERICS_DOMAIN(\``hostname`')dnl">>/etc/mail/sendmail.mc.new
+echo "GENERICS_DOMAIN(\``hostname`.teleflora.com')dnl">>/etc/mail/sendmail.mc.new
 echo "MAILER(smtp)dnl">>/etc/mail/sendmail.mc.new
 echo "MAILER(procmail)dnl">>/etc/mail/sendmail.mc.new
 echo "define(\`SMART_HOST',\`smtp.sendgrid.net')dnl">>/etc/mail/sendmail.mc.new
@@ -65,7 +80,5 @@ chmod 700 /etc/mail/auth
 service sendmail restart
 
 #9. Test email.
-#Send a test email now. ex: $mail -s test someone@somewhere.com < /some/filename
-echo "Send a test email now. ex: $mail -s test someone@somewhere.com < /some/filename"
-
-#
+Send a test email now. ex: $mail -s test someone@somewhere.com < /some/filename
+cho "Send a test email now. ex: $mail -s test someone@somewhere.com < /some/filename"
