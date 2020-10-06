@@ -12,15 +12,21 @@ CONTAINER=`cat ./bin/.container 2>/dev/null`
 trap '' 2
 while :; do
 	clear
-    LGGRN='\033[1;33m'
+#    LGGRN='\033[1;33m'
+    LGGRN=''
     BLUE='\033[1;34m'
-    GREY='\033[0;37m'
-    CYAN='\033[1;36m'
-    NC='\033[0m'
+#   GREY='\033[0;37m'
+    GREY=''
+#   CYAN='\033[1;36m'
+    CYAN=''
+#    NC='\033[0m'
+    NC=''
     clear
-echo -e "${BLUE} $(date +'%x %l:%M %p')${NC}"
+#echo -e "${BLUE} $(date +'%x %l:%M %p')${NC}"
+echo -e " $(date +'%x %l:%M %p')"
 printf '\u250f''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\n'
-echo -e "\u2503🌷${GREY} POS Cloud Menu ${NC}"
+#echo -e "\u2503🌷${GREY} Container Menu ${NC}"
+echo -e "\u2503 Containers ${NC}"
 printf '\u2523''\u2501''\n'
 echo -e "\u2503${CYAN} `[ -f .envtype ] && cat .envtype || echo -e Not Installed`${NC}"
 echo -e "\u2503${CYAN} `[ -f ./bin/.shopcode ] && cat ./bin/.shopcode 2>/dev/null`${NC}"
@@ -34,15 +40,15 @@ printf '\u2503''\n'
 echo -e "\u2503${GREY} VPNs:${NC}"
 [ -f ./bin/.container ] && echo -e "\u2503${LGGRN} `docker exec $CONTAINER strongswan status | sed -e 's/\ //' | grep === | grep -v Assoc 2>&1` ${NC}"
 printf '\u2503''\n'
-printf '\u2503''\033[1m'" 1.\033[0m POS Status"'\n'
-printf '\u2503''\033[1m'" 2.\033[0m Start POS"'\n'
-printf '\u2503''\033[1m'" 3.\033[0m Stop POS"'\n'
-printf '\u2503''\033[1m'" 4.\033[0m Connect to POS"'\n'
-printf '\u2503''\033[1m'" 5.\033[0m Restore POS Data"'\n'
+printf '\u2503''\033[1m'" 1.\033[0m Container Status"'\n'
+printf '\u2503''\033[1m'" 2.\033[0m Start Container"'\n'
+printf '\u2503''\033[1m'" 3.\033[0m Stop Container"'\n'
+printf '\u2503''\033[1m'" 4.\033[0m Connect to Container"'\n'
+#printf '\u2503''\033[1m'" 5.\033[0m Restore Container Data"'\n'
 printf '\u2503''\n'
 printf '\u2503''\033[1m'" 11.\033[0m List Images"'\n'
 printf '\u2503''\033[1m'" 12.\033[0m Build OS Media"'\n'
-printf '\u2503''\033[1m'" 13.\033[0m Stage POS"'\n'
+printf '\u2503''\033[1m'" 13.\033[0m Stage Container"'\n'
 printf '\u2503''\033[1m'" 14.\033[0m Delete Image(s)"'\n'
 printf '\u2503''\033[1m'" 15.\033[0m Test Print"'\n'
 printf '\u2503''\n'

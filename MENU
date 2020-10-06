@@ -11,26 +11,30 @@ export ROOTDIR
 trap '' 2
 while :; do
     LGGRN='\033[1;32m'
-    BLUE='\033[1;34m'
+   BLUE='\033[1;34m'
+#    BLUE=''
     GREY='\033[0;37m'
     CYAN='\033[1;36m'
     NC='\033[0m'
     clear
 
 
-    echo -e "${BLUE} $(date +'%x %l:%M %p')${NC}"
+    echo -e "${GREY} $(date +'%x %l:%M %p')${NC}"
     printf '\u250f''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\n'
-    printf '\u2503'🌷${GREY}' MS Cloud Menu'${NC}'\n'
+#    printf '\u2503'🌷${GREY}' Server Menu'${NC}'\n'
+    printf '\u2503'${BLUE}' @ '${NC}'Server Menu'${NC}'\n'
+    printf '\u2503'${LGGRN}' )~'${NC}'\n'
     printf '\u2523''\u2501''\n'
-    printf '\u2503''\033[1m'" 1.\033[0m Backup Service"'\n'
-    printf '\u2503''\033[1m'" 2.\033[0m POS Service"'\n'
-    printf '\u2503''\033[1m'" 3.\033[0m CentOS Repo"'\n'
+    printf '\u2503''\033[1m'" 1.\033[0m Customer Data"'\n'
+    printf '\u2503''\033[1m'" 2.\033[0m Containers"'\n'
+    printf '\u2503''\033[1m'" 3.\033[0m Repos"'\n'
     printf '\u2503''\033[1m'" 4.\033[0m Admin Tasks"'\n'
     printf '\u2503''\n'
     printf '\u2503''\033[1m'" r.\033[0m Readme"'\n'
     printf '\u2503''\033[1m'" x.\033[0m Exit"'\n'
     printf '\u2517''\u2501''\n'
-	echo -ne "${CYAN}Enter selection:${NC} "
+#	echo -ne "${CYAN}Enter selection:${NC} "
+	echo -ne "Enter selection: "
 	read selection
 	case $selection in
 	1)
