@@ -9,7 +9,7 @@ POSIP=`cat .posip`
 SHOPCODE=`cat .shopcode`
 
 #start container
-CONTAINER=`docker run -d -it --name=$SHOPCODE.teleflora.com --rm --privileged -v "${POSDIR}:/${POSDIR}"  -v /sys/fs/cgroup:/sys/fs/cgroup:ro -w="/usr/local/bin" -i ${OS}7-${POSTYPE}-${VER} /usr/sbin/init`
+CONTAINER=`docker run -d -it --name=$SHOPCODE.teleflora.com --rm --privileged -v "/${POSDIR}:/${POSDIR}"  -v /sys/fs/cgroup:/sys/fs/cgroup:ro -w="/usr/local/bin" -i ${OS}7-${POSTYPE}-${VER} /usr/sbin/init`
 echo $CONTAINER>.container
 
 #configure the second nic for host networking by passing eth1 through to the container
@@ -47,10 +47,6 @@ read PRIMARY_VPN
 
 #update OS
 docker exec $CONTAINER yum -y update
-
-#login to container and run ksrti.sh
-rm -f ~/.ssh/known_hosts
-./ssh_sudo.expect 172.17.0.2 root password ./ksrti.sh
 
 #save/export container
 docker commit $CONTAINER $SHOPCODE.teleflora.com
