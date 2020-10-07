@@ -12,17 +12,26 @@ while :; do
 	clear
 
    LGGRN='\033[1;32m'
-    BLUE='\033[1;34m'
+#    BLUE='\033[1;34m'
+    BLUE=''
     GREY='\033[0;37m'
-    CYAN='\033[1;36m'
+#    CYAN='\033[1;36m'
+    CYAN=''
     NC='\033[0m'
     clear
-echo -e "${BLUE} $(date +'%x %l:%M %p')${NC}"
-printf '\u250f''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\n'
-echo -e "\u2503🌷${GREY} POS Backup Menu ${NC}"
-printf '\u2523''\u2501''\n'
+    echo -e "${GREY} $(date +'%x %l:%M %p')${NC}"
+    printf '\u250f''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\n'
+#    printf '\u2503'�${GREY}' Server Menu'${NC}'\n'
+    printf '\u2503'${BLUE}' @ '${NC}'Backup Menu'${NC}'\n'
+    printf '\u2503'${LGGRN}' )~'${NC}'\n'
+    printf '\u2523''\u2501''\n'
+
+#echo -e "${BLUE} $(date +'%x %l:%M %p')${NC}"
+#printf '\u250f''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\n'
+#echo -e "\u2503🌷${GREY} POS Backup Menu ${NC}"
+#printf '\u2523''\u2501''\n'
 printf '\u2503'"${CYAN} `[ -f .envtype ] && cat .envtype || echo -e Not Installed`${NC}"'\n'
-printf '\u2503'"${GREY} Free Space:${NC} $(df -h /backups | tail -1 | awk '{print $4}')"'\n'
+printf '\u2503'" Free Space:${NC} $(df -h /backups | tail -1 | awk '{print $4}')"'\n'
 printf '\u2503''\n'
 printf '\u2503''\033[1m'" 1.\033[0m List Accounts"'\n'
 printf '\u2503''\033[1m'" 2.\033[0m Create Account"'\n'
