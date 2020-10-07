@@ -19,11 +19,12 @@ while :; do
     NC='\033[0m'
     clear
 
+HOSTNAME=`hostname`
 
-    echo -e "${GREY} $(date +'%x %l:%M %p')${NC}"
+    echo -e "${GREY} $(date +'%x %l:%M %p') ${NC}"
     printf '\u250f''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\n'
-#    printf '\u2503'🌷${GREY}' Server Menu'${NC}'\n'
-    printf '\u2503'${BLUE}' @ '${NC}'Server Menu'${NC}'\n'
+#    printf '\u2503'🌷${GREY}' $(hostname)'${NC}'\n'
+    printf '\u2503'${BLUE}' @ '${NC}${HOSTNAME}${NC}'\n'
     printf '\u2503'${LGGRN}' )~'${NC}'\n'
     printf '\u2523''\u2501''\n'
     printf '\u2503''\033[1m'" 1.\033[0m Customer Data"'\n'
