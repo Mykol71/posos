@@ -1,5 +1,4 @@
 #!/bin/bash
 
-export TERM=linux
 rm -f ~/.ssh/known_hosts
 ssh tfsupport@172.17.0.2
