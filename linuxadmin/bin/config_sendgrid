@@ -80,5 +80,4 @@ chmod 700 /etc/mail/auth
 service sendmail restart
 
 #9. Test email.
-Send a test email now. ex: $mail -s test someone@somewhere.com < /some/filename
-echo "Send a test email now. ex: $mail -s test someone@somewhere.com < /some/filename"
+echo "Done."
