@@ -119,9 +119,6 @@ deltarpm
 %post --log=/anaconda-post.log
 
 mknod /dev/loop0 b 7 0
-curl -O http://rtihardware.homelinux.com/rhel7.7_64_daisy_efi/daisy_uefi.sh
-chmod +x ./daisy_uefi.sh
-./daisy_uefi.sh
 
 #/usr/bin/chage -d 0 root
 
@@ -148,8 +145,8 @@ rm -rf /etc/firewalld
 # Lock roots account, keep roots account password-less.
 #passwd -l root
 
-#LANG="en_US"
-#echo "%_install_lang $LANG" > /etc/rpm/macros.image-language-conf
+LANG="en_US.utf8"
+echo "%_install_lang $LANG" > /etc/rpm/macros.image-language-conf
 
 awk '(NF==0&&!done){print "override_install_langs=en_US.utf8\ntsflags=nodocs";done=1}{print}' \
     < /etc/yum.conf > /etc/yum.conf.new
@@ -158,8 +155,8 @@ echo 'container' > /etc/yum/vars/infra
 
 ##Setup locale properly
 # Commenting out, as this seems to no longer be needed
-#rm -f /usr/lib/locale/locale-archive
-#localedef -v -c -i en_US -f UTF-8 en_US.UTF-8
+rm -f /usr/lib/locale/locale-archive
+localedef -v -c -i en_US -f UTF-8 en_US.UTF-8
 
 ## Remove some things we don't need
 #rm -rf /var/cache/yum/x86_64

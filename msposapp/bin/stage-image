@@ -8,14 +8,22 @@ read POSTYPE
 POSIP=`cat .posip`
 SHOPCODE=`cat .shopcode`
 
+#add POS users
+useradd -b /home tfpos-$SHOPCODE
+useradd -b /home tfpos-$SHOPCODE-tfsupport
+cp -r /backups/tfrsync-$SHOPCODE/home/tfsupport/pserver_xfer.d/cloud.d/id_rsa.pub /home/tfpos-$SHOPCODE/.
+
 #start container
-CONTAINER=`docker run -d -it --name=$SHOPCODE.teleflora.com --rm --privileged -v "/${POSDIR}:/${POSDIR}"  -v /sys/fs/cgroup:/sys/fs/cgroup:ro -w="/usr/local/bin" -i ${OS}7-${POSTYPE}-${VER} /usr/sbin/init`
+CONTAINER=`docker run -d -it --name=$SHOPCODE.teleflora.com --rm --privileged -v "/home/tfpos-${SHOPCODE}/${POSDIR}:/${POSDIR}" -v /sys/fs/cgroup:/sys/fs/cgroup:ro -w="/${POSDIR}" -i ${OS}7-${POSTYPE}-${VER} /usr/sbin/init`
 echo $CONTAINER>.container
 
 #configure the second nic for host networking by passing eth1 through to the container
 ./pipework --direct-phys eth1 $CONTAINER ${POSIP}/24@192.168.222.1
 POSIP=`docker exec $CONTAINER /usr/sbin/ifconfig eth1 | grep broad | sed -e 's/    //g' | cut -d ' ' -f2`
 echo "$POSIP" > .posip
+
+#copy over media
+[ "$POSTYPE" == "daisy" ] && cp /home/daisy/*.iso /home/tfpos-$SHOPCODE/$POSDIR/. && cp /home/daisy/*.gz /home/tfpos-$SHOPCODE/$POSDIR/. &&  cp /home/daisy/*.sh /home/tfpos-$SHOPCODE/$POSDIR/.
 
 #changed from /bin to /usr/bin at some point. Created link to avoid problems with other scripts and programs.
 docker exec $CONTAINER ln -s /usr/bin /bin
@@ -24,21 +32,33 @@ docker exec $CONTAINER ln -s /usr/bin /bin
 docker exec $CONTAINER mknod /dev/loop b 7 0
 
 #install ostools
-docker exec $CONTAINER wget http://rtihardware.homelinux.com/ostools/ostools-1.15-latest.tar.gz
 docker exec $CONTAINER tar xvfz ostools-1.15-latest.tar.gz
-docker exec $CONTAINER ./bin/install-ostools.pl --noharden-linux ./ostools-1.15-latest.tar.gz
+docker exec $CONTAINER ./bin/install-ostools.pl ./ostools-1.15-latest.tar.gz --noharden-linux
 
-#configure system with ostools
+#configure system hostname
 docker exec $CONTAINER ./bin/updateos.pl --hostname=$SHOPCODE.teleflora.com >/dev/null 2>&1
+
+#prepare for daisy
+docker exec $CONTAINER ./bin/updateos.pl --daisy8
+
+#install daisy
+docker exec $CONTAINER mkdir /mnt/cdrom
+docker exec $CONTAINER mount -o loop daisy_10.1.22_rhel7.iso /mnt/cdrom
+docker exec $CONTAINER cp /mnt/cdrom/install-daisy.pl .
+docker exec $CONTAINER ./install-daisy.pl /d/daisy
+docker exec $CONTAINER umount /mnt/cdrom
+
+#move off hosts.deny
+docker exec $CONTAINER mv /etc/hosts.deny /etc/hosts.deny.orig
 
 #install vpn software
 docker exec $CONTAINER yum -y install epel-release
 docker exec $CONTAINER yum -y install strongswan strongswan-libipsec
 
 #install receipt printer drivers
-docker cp ./istar.ppd ${CONTAINER}:/etc/cups/ppd
-docker cp ./istar.rpm ${CONTAINER}:/tmp
-docker exec $CONTAINER rpm -i /tmp/istar.rpm
+#docker cp ./istar.ppd ${CONTAINER}:/etc/cups/ppd
+#docker cp ./istar.rpm ${CONTAINER}:/tmp
+#docker exec $CONTAINER rpm -i /tmp/istar.rpm
 
 #create main store vpn if desired
 echo -n "Create Primary VPN for this POS? (y/n): "
