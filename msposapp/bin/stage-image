@@ -75,7 +75,7 @@ docker commit $CONTAINER $SHOPCODE.teleflora.com
 echo "---"
 echo "${OS}7-$POSTYPE-$SHOPCODE instance is ready!"
 echo "---"
-docker exec $CONTAINER /usr/local/bin/bin/updateos.pl --version
+docker exec $CONTAINER ./bin/updateos.pl --version
 docker exec $CONTAINER cat /etc/redhat-release
 echo "---"
 exit 0

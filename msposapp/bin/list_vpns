@@ -8,4 +8,4 @@ else
   exit 1
 fi
 
-docker exec $CONTAINER strongswan status
+docker exec ${CONTAINER} strongswan status
