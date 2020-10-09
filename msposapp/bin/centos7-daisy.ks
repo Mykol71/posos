@@ -21,7 +21,8 @@ install
 network --bootproto=dhcp --activate --onboot=on
 shutdown
 bootloader --disable
-lang en_US
+#lang en_US.UTF-8
+lang en_US.UTF-8  --addsupport=en_US,en
 auth  --useshadow --passalgo=sha512
 firewall --enabled --ssh  --trust=eth0
 firstboot --disable

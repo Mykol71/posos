@@ -34,7 +34,7 @@ echo -e "\u2503${BLUE} @ ${NC}`[ -f ../.envtype ] && cat ../.envtype || echo -e 
 printf '\u2503'" Free Space:${NC} $(df -h /backups | tail -1 | awk '{print $4}')"'\n'
 ##echo -e "\u2503 Patchd: `date -r /var/log/yum.log`${NC}"
     printf '\u2503''\n'
-    printf '\u2503''\033[1m'"--"'\n'
+    printf '\u2503''\033[1m'"-- Reports"'\n'
     printf '\u2503''\033[1m'" 1.\033[0m Backups Summary"'\n'
     printf '\u2503''\033[1m'" 2.\033[0m Backups Detail"'\n'
 #    printf '\u2503''\033[1m'" 3.\033[0m Repos"'\n'
