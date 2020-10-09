@@ -26,7 +26,7 @@ HOSTNAME=`hostname`
     echo -e "${GREY}${TFCLOUD_VERSION}  -  ${HOSTNAME}  -  $(date +'%x %l:%M %p')  -  Patched: `date -r /var/log/yum.log`  -  `dmidecode | grep Product | grep -v Not | cut -d: -f2 | sed -e 's/\ //' | head -1`  -  ${NC}"
     printf '\u250f''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\n'
 #    printf '\u2503'🌷${GREY}' $(hostname)'${NC}'\n'
-echo -e "\u2503${BLUE} @ ${NC}`[ -f .envtype ] && cat .envtype || echo -e Not Installed`${NC}"
+echo -e "\u2503${BLUE} @ ${NC}`[ -f ../.envtype ] && cat ../.envtype || echo -e Not Installed`${NC}"
     printf '\u2503'${LGGRN}' )~'${NC}'\n'
     printf '\u2523''\u2501''\n'
 #echo -e "\u2503 ${HOSTNAME} ${NC}"
@@ -35,13 +35,12 @@ printf '\u2503'" Free Space:${NC} $(df -h /backups | tail -1 | awk '{print $4}')
 ##echo -e "\u2503 Patchd: `date -r /var/log/yum.log`${NC}"
     printf '\u2503''\n'
     printf '\u2503''\033[1m'"--"'\n'
-    printf '\u2503''\033[1m'" 1.\033[0m Data"'\n'
-    printf '\u2503''\033[1m'" 2.\033[0m Containers"'\n'
-    printf '\u2503''\033[1m'" 3.\033[0m Repos"'\n'
-    printf '\u2503''\033[1m'" 4.\033[0m Admin"'\n'
-    printf '\u2503''\033[1m'" 5.\033[0m Reports"'\n'
+    printf '\u2503''\033[1m'" 1.\033[0m Backups Summary"'\n'
+    printf '\u2503''\033[1m'" 2.\033[0m Backups Detail"'\n'
+#    printf '\u2503''\033[1m'" 3.\033[0m Repos"'\n'
+#    printf '\u2503''\033[1m'" 4.\033[0m Admin"'\n'
+#    printf '\u2503''\033[1m'" 5.\033[0m Reports"'\n'
     printf '\u2503''\n'
-    printf '\u2503''\033[1m'" r.\033[0m Readme"'\n'
     printf '\u2503''\033[1m'" x.\033[0m Exit"'\n'
     printf '\u2517''\u2501''\n'
 #	echo -ne "${CYAN}Enter selection:${NC} "
@@ -49,32 +48,15 @@ printf '\u2503'" Free Space:${NC} $(df -h /backups | tail -1 | awk '{print $4}')
 	read selection
 	case $selection in
 	1)
-		cd $ROOTDIR/msposbackup
-		./MENU
+		./bin/tfcloudaccountstats.sh
+		cat /tmp/TU_STATS_LINUX_Cloud_Backups.txt | more
 		cd -
 		;;
 	2)
-		cd $ROOTDIR/msposapp
-		./MENU
+#		cd $ROOTDIR/../msposbackup/bin
+		./bin/tfcloudaccountdetail.sh
+		cat /tmp/TU_STATS_LINUX_Cloud_Backup_Detail.txt | more
 		cd -
-		;;
-	3)
-		cd $ROOTDIR/tfmscentos
-		./MENU
-		cd -
-		;;
-	4)
-		cd $ROOTDIR/linuxadmin
-		./MENU
-		cd -
-		;;
-	5)
-		cd $ROOTDIR/msposreports
-		./MENU
-		cd -
-		;;
-	r)
-		cat ./README.md | more
 		;;
 	x)	exit
 		;;
