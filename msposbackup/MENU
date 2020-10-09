@@ -19,35 +19,29 @@ while :; do
     CYAN=''
     NC='\033[0m'
     clear
-    echo -e "${GREY} $(date +'%x %l:%M %p') ${NC}"
+    echo -e "${GREY}${HOSTNAME}  -  $(date +'%x %l:%M %p')  -  Patched: `date -r /var/log/yum.log`  -  `dmidecode | grep Product | grep -v Not | cut -d: -f2 | sed -e 's/\ //' | head -1`  -  ${NC}"
     printf '\u250f''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\n'
 #    printf '\u2503'🌷${GREY}' $(hostname)'${NC}'\n'
-echo -e "\u2503${BLUE} @ ${NC}`[ -f .envtype ] && cat .envtype || echo -e Not Installed`${NC}"
+echo -e "\u2503${BLUE} @ ${NC}`[ -f ../.envtype ] && cat ../.envtype || echo -e Not Installed`${NC}"
     printf '\u2503'${LGGRN}' )~'${NC}'\n'
     printf '\u2523''\u2501''\n'
-echo -e "\u2503 ${HOSTNAME} ${NC}"
+#echo -e "\u2503 ${HOSTNAME} ${NC}"
+#echo -e "\u2503 Type      : `dmidecode | grep Product | grep -v Not | cut -d: -f2 | sed -e 's/\ //' | head -1`${NC}"
 printf '\u2503'" Free Space:${NC} $(df -h /backups | tail -1 | awk '{print $4}')"'\n'
+##echo -e "\u2503 Patchd: `date -r /var/log/yum.log`${NC}"
     printf '\u2503''\n'
-
-#echo -e "${BLUE} $(date +'%x %l:%M %p')${NC}"
-#printf '\u250f''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\n'
-#echo -e "\u2503🌷${GREY} POS Backup Menu ${NC}"
-#printf '\u2523''\u2501''\n'
-#printf '\u2503'"${CYAN} `[ -f .envtype ] && cat .envtype || echo -e Not Installed`${NC}"'\n'
-#printf '\u2503'" Free Space:${NC} $(df -h /backups | tail -1 | awk '{print $4}')"'\n'
-#printf '\u2503''\n'
-printf '\u2503''\033[1m'" -\033[0m Data"'\n'
-printf '\u2503''\033[1m'"  1\033[0m List Accounts"'\n'
-printf '\u2503''\033[1m'"  2\033[0m Create Account"'\n'
-printf '\u2503''\033[1m'"  3\033[0m Change Key"'\n'
-printf '\u2503''\033[1m'"  4\033[0m View Key"'\n'
-printf '\u2503''\033[1m'"  5\033[0m Get Key"'\n'
-printf '\u2503''\033[1m'"  6\033[0m Delete Account"'\n'
-printf '\u2503''\033[1m'"  7\033[0m Is Subscriber?"'\n'
+printf '\u2503''\033[1m'" --\033[0m Data"'\n'
+printf '\u2503''\033[1m'" 1.\033[0m List Accounts"'\n'
+printf '\u2503''\033[1m'" 2.\033[0m Create Account"'\n'
+printf '\u2503''\033[1m'" 3.\033[0m Change Key"'\n'
+printf '\u2503''\033[1m'" 4.\033[0m View Key"'\n'
+printf '\u2503''\033[1m'" 5.\033[0m Get Key"'\n'
+printf '\u2503''\033[1m'" 6.\033[0m Delete Account"'\n'
+printf '\u2503''\033[1m'" 7.\033[0m Is Subscriber?"'\n'
 printf '\u2503''\n'
-printf '\u2503''\033[1m'"  i\033[0m I/C/U Deps"'\n'
-printf '\u2503''\033[1m'"  r\033[0m Readme"'\n'
-printf '\u2503''\033[1m'"  x\033[0m Exit"'\n'
+printf '\u2503''\033[1m'" i.\033[0m I/C/U Deps"'\n'
+printf '\u2503''\033[1m'" r.\033[0m Readme"'\n'
+printf '\u2503''\033[1m'" x.\033[0m Exit"'\n'
 printf '\u2517''\u2501''\n'
 	echo -ne "${CYAN}Enter selection:${NC} "
 	read selection

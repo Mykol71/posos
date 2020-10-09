@@ -28,6 +28,9 @@ echo "$POSIP" > .posip
 #changed from /bin to /usr/bin at some point. Created link to avoid problems with other scripts and programs.
 docker exec $CONTAINER ln -s /usr/bin /bin
 
+#lang set
+docker exec $CONTAINER echo LANG=en_US.UTF-8 >/etc/locale.conf
+
 #Make loop back device in container so we can mount isos inside the container
 docker exec $CONTAINER mknod /dev/loop b 7 0
 

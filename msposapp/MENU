@@ -21,25 +21,29 @@ while :; do
     NC='\033[0m'                                                                                                                                                                                                  
     clear                                                                                                                                                                                                         
                                                                                                                                                                                                                   
+    echo -e "${GREY}${HOSTNAME}  -  $(date +'%x %l:%M %p')  -  Patched: `date -r /var/log/yum.log`  -  `dmidecode | grep Product | grep -v Not | cut -d: -f2 | sed -e 's/\ //' | head -1`  -  ${NC}"
+    printf '\u250f''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\n'
+#    printf '\u2503'🌷${GREY}' $(hostname)'${NC}'\n'
+echo -e "\u2503${BLUE} @ ${NC}`[ -f ../.envtype ] && cat ../.envtype || echo -e Not Installed`${NC}"
+    printf '\u2503'${LGGRN}' )~'${NC}'\n'
+    printf '\u2523''\u2501''\n'
+#echo -e "\u2503 ${HOSTNAME} ${NC}"
+#echo -e "\u2503 Type      : `dmidecode | grep Product | grep -v Not | cut -d: -f2 | sed -e 's/\ //' | head -1`${NC}"
+printf '\u2503'" Free Space:${NC} $(df -h /backups | tail -1 | awk '{print $4}')"'\n'
+##echo -e "\u2503 Patchd: `date -r /var/log/yum.log`${NC}"
+    printf '\u2503''\n'
+printf '\u2503''\033[1m'"--\033[0m Containers"'\n'
                                                                                                                                                                                                                   
-    echo -e "${GREY} $(date +'%x %l:%M %p')${NC}"                                                                                                                                                                 
-    printf '\u250f''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\n'                                                                                                                           
-#    printf '\u2503'�${GREY}' Server Menu'${NC}'\n'                                                                                                                                                               
-    printf '\u2503'${BLUE}' @ '${NC}'Containers'${NC}'\n'                                                                                                                                                        
-    printf '\u2503'${LGGRN}' )~'${NC}'\n'                                                                                                                                                                         
-    printf '\u2523''\u2501''\n'                                                                    
-echo -e "\u2503 `[ -f .envtype ] && cat .envtype || echo -e Not Installed`${NC}"
-echo -e "\u2503 `[ -f ./bin/.shopcode ] && cat ./bin/.shopcode 2>/dev/null`${NC}"
+#echo -e "\u2503 Status: `docker ps --format "{{.Status}}" 2>/dev/null`${NC}"
+[ -f ./bin/.container ] && echo -e "\u2503 Status:`docker exec $CONTAINER strongswan status | sed -e 's/\ //' | grep === | grep -v Assoc 2>&1` ${NC}" || echo -e "\u2503 Status: Not running"
+echo -e "\u2503 Shop  : `cat ./bin/.shopcode 2>/dev/null`${NC}"
+echo -e "\u2503 IP    : `cat ./bin/.posip 2>/dev/null`${NC}"
+[ -f ./bin/.container ] && echo -e "\u2503 VPN   :`docker exec $CONTAINER strongswan status | sed -e 's/\ //' | grep === | grep -v Assoc 2>&1` ${NC}" || echo -e "\u2503 VPN   :"
+#echo -e "\u2503 STATUS: `docker exec $CONTAINER strongswan status | sed -e 's/\ //' | grep === | grep -v Assoc 2>&1 2>/dev/null`${NC}"
+#[ -f ./bin/.container ] && echo -e "\u2503 STATUS:`docker exec $CONTAINER strongswan status | sed -e 's/\ //' | grep === | grep -v Assoc 2>&1` ${NC}" || echo -e "\u2503 STATUS: Not running"
 printf '\u2503''\n'
-echo -e "\u2503 Status: `docker ps --format "{{.Status}}" 2>/dev/null`${NC}"
-echo -e "\u2503 Type  : `dmidecode | grep Product | grep -v Not | cut -d: -f2 | sed -e 's/\ //' | head -1`${NC}"
-echo -e "\u2503 POS IP: `cat ./bin/.posip 2>/dev/null`${NC}"
-echo -e "\u2503 Free  : `df -h / | tail -1 | awk '{print $4}'`${NC}"
-echo -e "\u2503 Patchd: `date -r /var/log/yum.log`${NC}"
-printf '\u2503''\n'
-echo -e "\u2503 VPNs:${NC}"
-[ -f ./bin/.container ] && echo -e "\u2503 `docker exec $CONTAINER strongswan status | sed -e 's/\ //' | grep === | grep -v Assoc 2>&1` ${NC}"
-printf '\u2503''\n'
+#echo -e "\u2503 VPNs:${NC}"
+#[ -f ./bin/.container ] && echo -e "\u2503 VPN   :`docker exec $CONTAINER strongswan status | sed -e 's/\ //' | grep === | grep -v Assoc 2>&1` ${NC}" || echo -e "\u2503 VPN   :"
 printf '\u2503''\033[1m'" 1.\033[0m Container Status"'\n'
 printf '\u2503''\033[1m'" 2.\033[0m Start Container"'\n'
 printf '\u2503''\033[1m'" 3.\033[0m Stop Container"'\n'
