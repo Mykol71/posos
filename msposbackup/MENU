@@ -25,14 +25,14 @@ while :; do
     printf '\u250f''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\n'
 #    printf '\u2503'🌷${GREY}' $(hostname)'${NC}'\n'
 echo -e "\u2503${BLUE} @ ${NC}`[ -f ../.envtype ] && cat ../.envtype || echo -e Not Installed`${NC}"
-    printf '\u2503'${LGGRN}' )~'${NC}'\n'
+    printf '\u2503'${LGGRN}' )~ Data''\n'
     printf '\u2523''\u2501''\n'
 #echo -e "\u2503 ${HOSTNAME} ${NC}"
 #echo -e "\u2503 Type      : `dmidecode | grep Product | grep -v Not | cut -d: -f2 | sed -e 's/\ //' | head -1`${NC}"
 printf '\u2503'" Free Space:${NC} $(df -h /backups | tail -1 | awk '{print $4}')"'\n'
 ##echo -e "\u2503 Patchd: `date -r /var/log/yum.log`${NC}"
     printf '\u2503''\n'
-printf '\u2503''\033[1m'" --\033[0m Data"'\n'
+printf '\u2503''\033[1m'"---\033[0m"'\n'
 printf '\u2503''\033[1m'" 1.\033[0m List Accounts"'\n'
 printf '\u2503''\033[1m'" 2.\033[0m Create Account"'\n'
 printf '\u2503''\033[1m'" 3.\033[0m Change Key"'\n'
