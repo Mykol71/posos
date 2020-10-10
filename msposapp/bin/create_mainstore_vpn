@@ -15,7 +15,7 @@ fi
 
 # gather user input
 INPUTS="LOCATION_NAME STORE_PUBLIC STORE_NET PRESHAREDKEY"
-POS_CLOUD_PUBLIC=`wget -qO- http://ipv4.icanhazip.com`
+POS_CLOUD_PUBLIC=`docker exec ${CONTAINER} wget -qO- http://ipv4.icanhazip.com`
 SHOPCODE=`cat .shopcode`
 
 echo "Gathering required information...."
@@ -36,40 +36,37 @@ if [ $REPLY == "n" ]; then
 else
 # configure strongSwan
 echo "Creating VPN Connection......"
-cat >> ipsec.conf <<EOF
-# ipsec.conf - strongSwan IPsec configuration file
 
-# basic configuration
-config setup
-        charondebug="all"
-        uniqueids=yes
-        strictcrlpolicy=no
+echo "# ipsec.conf - strongSwan IPsec configuration file">ipsec.conf
+echo "">>ipsec.conf
+echo "# basic configuration">>ipsec.conf
+echo "config setup">>ipsec.conf
+echo "        charondebug="all"">>ipsec.conf
+echo "        uniqueids=yes">>ipsec.conf
+echo "        strictcrlpolicy=no">>ipsec.conf
+echo "">>ipsec.conf
+echo "# connection to $LOCATION_NAME">>ipsec.conf
+echo "conn ${LOCATION_NAME}">>ipsec.conf
+echo "  keyexchange=ikev1">>ipsec.conf
+echo "  authby=secret">>ipsec.conf
+echo "  left=%defaultroute">>ipsec.conf
+echo "  leftid=${POS_CLOUD_PUBLIC}">>ipsec.conf
+echo "  leftsubnet="192.168.222.0/24"">>ipsec.conf
+echo "  right=${STORE_PUBLIC}">>ipsec.conf
+echo "  rightsubnet="${STORE_NET}/24"">>ipsec.conf
+echo "  ike=aes128-sha1-modp1024!">>ipsec.conf
+echo "  esp=aes128-sha1-modp1024!">>ipsec.conf
+echo "  keyingtries=0">>ipsec.conf
+echo "  ikelifetime=1h">>ipsec.conf
+echo "  lifetime=8h">>ipsec.conf
+echo "  dpddelay=30">>ipsec.conf
+echo "  dpdtimeout=120">>ipsec.conf
+echo "  dpdaction=restart">>ipsec.conf
+echo "  auto=start">>ipsec.conf
 
-# connection to $LOCATION_NAME
-conn $LOCATION_NAME
-  keyexchange=ikev1
-  authby=secret
-  left=%defaultroute
-  leftid=${POS_CLOUD_PUBLIC}
-  leftsubnet="${POSIP}/24"
-  right=${STORE_PUBLIC}
-  rightsubnet="${STORE_NET}/24"
-  ike=aes128-sha1-modp1024!
-  esp=aes128-sha1-modp1024!
-  keyingtries=0
-  ikelifetime=1h
-  lifetime=8h
-  dpddelay=30
-  dpdtimeout=120
-  dpdaction=restart
-  auto=start
-EOF
-
-cat >> ipsec.secrets <<EOF
-# ipsec.secrets - strongSwan IPsec secrets file
-# source destination secret
-${POS_CLOUD_PUBLIC} ${STORE_PUBLIC} : PSK "${PRESHAREDKEY}"
-EOF
+echo "# ipsec.secrets - strongSwan IPsec secrets file">ipsec.secrets
+echo "# source destination secret">>ipsec.secrets
+echo "${POS_CLOUD_PUBLIC} ${STORE_PUBLIC} : PSK "${PRESHAREDKEY}"">>ipsec.secrets
 
 chmod 666 ipsec.*
 
