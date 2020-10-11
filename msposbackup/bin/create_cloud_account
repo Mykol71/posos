@@ -2,7 +2,7 @@
 
 ID=`/usr/bin/id -u`
         [ $ID -ne 0 ]  && echo "You must sudo to run $0." && exit
-echo "Enter Shop Code:"
+echo "Enter Code:"
 read -p ""
 SHOPCODE=$REPLY
 if [ ${#SHOPCODE} != 8 ] ; then
@@ -10,11 +10,9 @@ echo "Shop Code must be 8 characters."
 exit
 fi
 [ -d /backups/tfrsync-$SHOPCODE ] && echo "Cloud account with that shop code already exists!" && exit
-#echo $SHOPCODE
 echo "Enter Public Key:"
 read -p "" 
 KEY=$REPLY
-#echo $KEY
 useradd tfrsync-$SHOPCODE
 mkdir /backups/tfrsync-$SHOPCODE/.ssh
 chown tfrsync-$SHOPCODE:tfrsync-$SHOPCODE /backups/tfrsync-$SHOPCODE/.ssh
