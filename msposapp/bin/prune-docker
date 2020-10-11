@@ -1,5 +1,6 @@
 #!/bin/bash
 
+SHOPCODE="`cat .shopcode`"
 rm -rf /var/tmp/containers
 rm -f /var/tmp/centos7*xz
 rm -f /var/tmp/daisy*xz
@@ -10,3 +11,6 @@ docker system prune --all
 find .. -name ".*" -type f -exec rm -f {} \;
 yum clean all
 systemctl restart docker
+userdel tfpos-${SHOPCODE}-tfsupport
+userdel tfpos-${SHOPCODE}
+rm -rf /home/tfpos*
