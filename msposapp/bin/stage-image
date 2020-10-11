@@ -50,6 +50,9 @@ docker exec $CONTAINER ./bin/updateos.pl --hostname=$SHOPCODE.teleflora.com >/de
 [ "$POSTYPE" == daisy ] docker exec $CONTAINER ./install-daisy.pl /d/daisy
 [ "$POSTYPE" == daisy ] docker exec $CONTAINER umount /mnt/cdrom
 
+#remove console gttys for daisy because this is a cloud server
+[ "$POSTYPE" == daisy ] docker exect $CONTAINER rm -f /etc/systemd/system/*tty* 2>/dev/null
+
 #move off hosts.deny
 docker exec $CONTAINER mv /etc/hosts.deny /etc/hosts.deny.orig
 
