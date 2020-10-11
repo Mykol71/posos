@@ -11,7 +11,6 @@ SHOPCODE=`cat .shopcode`
 #add POS users
 useradd -b /home tfpos-$SHOPCODE
 useradd -b /home tfpos-$SHOPCODE-tfsupport
-cp -r /backups/tfrsync-$SHOPCODE/home/tfsupport/pserver_xfer.d/cloud.d/id_rsa.pub /home/tfpos-$SHOPCODE/.
 
 #start container
 CONTAINER=`docker run -d -it --name=$SHOPCODE.teleflora.com --rm --privileged -v "/home/tfpos-${SHOPCODE}/${POSDIR}:/${POSDIR}" -v /sys/fs/cgroup:/sys/fs/cgroup:ro -w="/${POSDIR}" -i ${OS}7-${POSTYPE}-${VER} /usr/sbin/init`
@@ -66,7 +65,7 @@ docker exec $CONTAINER yum -y install strongswan strongswan-libipsec
 #create main store vpn if desired
 echo -n "Create Primary VPN for this POS? (y/n): "
 read PRIMARY_VPN
-[ "$PRIMARY_VPN" == "y" ] && ./create_mainstore_vpn && docker exec $CONTAINER strongswan start
+[ "$PRIMARY_VPN" == "y" ] && ./create_mainstore_vpn && docker exec ${CONTAINER} strongswan start
 
 #update OS
 docker exec $CONTAINER yum -y update
