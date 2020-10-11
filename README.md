@@ -17,7 +17,8 @@ TO DO -
 - logging and error capturing.
 - Ask for shop code when staging, not installing.
 - Ask for container IP when staging, not installing.
--
+- Patch method of these menus.
+- 
 
 -- For Documentation
 - Pic updates.

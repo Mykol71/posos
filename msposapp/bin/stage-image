@@ -3,10 +3,10 @@
 OS=centos
 echo -n "daisy or rti?: "
 read POSTYPE
-[ "$POSTYPE" == "daisy" ] && VER="10.1.17" && POSDIR="d"
+[ "$POSTYPE" == "daisy" ] && VER="10.1.21" && POSDIR="d"
 [ "$POSTYPE" == "rti" ] && VER="16.1.3" && POSDIR="usr2"
-POSIP=`cat .posip`
-SHOPCODE=`cat .shopcode`
+[ -f ./posip ] && POSIP=`cat .posip` | echo -ne "POS IP: " && read POSIP
+[ -f ./shopcode ] && SHOPCODE=`cat .shopcode` || echo -ne "Shop Code: " && read SHOPCODE
 
 #add POS users
 useradd -b /home tfpos-$SHOPCODE
