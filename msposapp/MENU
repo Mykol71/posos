@@ -94,8 +94,8 @@ printf '\u2517''\u2501''\n'
 	4)
 		cd $ROOTDIR/bin
 		./container_connect
-		echo -ne "${CYAN}Press enter to continue..${NC}"
-		read
+#		echo -ne "${CYAN}Press enter to continue..${NC}"
+#		read
 		cd -
 		;;
 	5)
