@@ -5,12 +5,14 @@ echo -n "daisy or rti?: "
 read POSTYPE
 [ "$POSTYPE" == "daisy" ] && VER="10.1.21" && POSDIR="d"
 [ "$POSTYPE" == "rti" ] && VER="16.1.3" && POSDIR="usr2"
-[ -f ./posip ] && POSIP=`cat .posip` | echo -ne "POS IP: " && read POSIP
-[ -f ./shopcode ] && SHOPCODE=`cat .shopcode` || echo -ne "Shop Code: " && read SHOPCODE
+POSIP="`cat ./.posip`"
+SHOPCODE="`cat ./.shopcode`"
+[ "$POSIP" == "" ] && echo -n "POS IP " && read POSIP
+[ "$SHOPCODE" == "" ] && echo -n "SHOPCODE: " && read SHOPCODE
 
 #add POS users
-useradd -b /home tfpos-$SHOPCODE
-useradd -b /home tfpos-$SHOPCODE-tfsupport
+useradd -b /home tfpos-${SHOPCODE}
+useradd -b /home tfpos-${SHOPCODE}-tfsupport
 
 #start container
 CONTAINER=`docker run -d -it --name=$SHOPCODE.teleflora.com --rm --privileged -v "/home/tfpos-${SHOPCODE}/${POSDIR}:/${POSDIR}" -v /sys/fs/cgroup:/sys/fs/cgroup:ro -w="/${POSDIR}" -i ${OS}7-${POSTYPE}-${VER} /usr/sbin/init`
@@ -18,11 +20,12 @@ echo $CONTAINER>.container
 
 #configure the second nic for host networking by passing eth1 through to the container
 ./pipework --direct-phys eth1 $CONTAINER ${POSIP}/24@192.168.222.1
-POSIP=`docker exec $CONTAINER /usr/sbin/ifconfig eth1 | grep broad | sed -e 's/    //g' | cut -d ' ' -f2`
-echo "$POSIP" > .posip
+#POSIP=`docker exec $CONTAINER /usr/sbin/ifconfig eth1 | grep broad | sed -e 's/    //g' | cut -d ' ' -f2`
+#echo "$POSIP" > .posip
 
 #copy over media
 [ "$POSTYPE" == "daisy" ] && cp /home/daisy/*.iso /home/tfpos-$SHOPCODE/$POSDIR/. && cp /home/daisy/*.gz /home/tfpos-$SHOPCODE/$POSDIR/. &&  cp /home/daisy/*.sh /home/tfpos-$SHOPCODE/$POSDIR/.
+[ "$POSTYPE" == "rti" ] && cp /home/rti/*.iso /home/tfpos-$SHOPCODE/$POSDIR/. && cp /home/rti/*.gz /home/tfpos-$SHOPCODE/$POSDIR/. &&  cp /home/rti/*.sh /home/tfpos-$SHOPCODE/$POSDIR/.
 
 #changed from /bin to /usr/bin at some point. Created link to avoid problems with other scripts and programs.
 docker exec $CONTAINER ln -s /usr/bin /bin

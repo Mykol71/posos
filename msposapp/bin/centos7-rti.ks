@@ -116,144 +116,143 @@ xxxEOFxxx
 
 cat << xxxEOFxxx > /usr/local/bin/ksrti_install.sh
 #!/usr/bin/ksh
-cd /usr/local/bin
-wget -nv "http://rtihardware.homelinux.com/aws/RTI-16.1.5-Linux.iso.gz"
-wget -nv "http://rtihardware.homelinux.com/aws/update_bbj_15.pl"
-wget -nv "http://rtihardware.homelinux.com/aws/tfsupport-authorized_keys"
-wget -nv "http://rtihardware.homelinux.com/aws/twofactor-20090723.tar"
-wget -nv "http://rtihardware.homelinux.com/aws/multiserver.pwd"
-wget -nv "http://rtihardware.homelinux.com/aws/14_rhel6.tar.gz"
+#cd /usr/local/bin
+#wget -nv "http://rtihardware.homelinux.com/aws/RTI-16.1.5-Linux.iso.gz"
+#wget -nv "http://rtihardware.homelinux.com/aws/update_bbj_15.pl"
+#wget -nv "http://rtihardware.homelinux.com/aws/tfsupport-authorized_keys"
+#wget -nv "http://rtihardware.homelinux.com/aws/twofactor-20090723.tar"
+#wget -nv "http://rtihardware.homelinux.com/aws/multiserver.pwd"
+#wget -nv "http://rtihardware.homelinux.com/aws/14_rhel6.tar.gz"
 echo "\`date\` -- Beginning RTI Install $SHOPCODE.teleflora.com" >/var/log/verify.txt
-cd /usr/local/bin
-echo "Extracting files...."
-tar xvfz /usr/local/bin/14_rhel6.tar.gz
-gunzip /usr/local/bin/RTI-16.1.5-Linux.iso.gz
+#echo "Extracting files...."
+#tar xvfz ./14_rhel6.tar.gz
+#gunzip ./RTI-16.1.5-Linux.iso.gz
 export TERM=linux
-/usr2/ostools/bin/updateos.pl --rti14
-sed -i '1s/^/#\!\/usr\/bin\/ksh\n/' /etc/init.d/blm
-sed -i '1s/^/#\!\/usr\/bin\/ksh\n/' /etc/init.d/bbj
-echo "bbj 8 installed......"
-systemctl daemon-reload
-systemctl restart blm
-systemctl restart bbj
-sleep 3
-ps -ef | grep basis
-echo ; echo ; echo
-echo "Make sure that you see the -T above and Press enter to continue"
-read X
-mkdir /usr2/bbx
-mkdir /usr2/bbx/bin
-mkdir /usr2/bbx/log
-mkdir /usr2/bbx/conf
-mkdir /usr2/bbj/cfg
-ln -s /usr2/ostools/bin/rtiuser.pl /usr2/bbx/bin/rtiuser.pl
-echo "bbj 8 installed......"
+#/usr2/ostools/bin/updateos.pl --rti14
+#sed -i '1s/^/#\!\/usr\/bin\/ksh\n/' /etc/init.d/blm
+#sed -i '1s/^/#\!\/usr\/bin\/ksh\n/' /etc/init.d/bbj
+#echo "bbj 8 installed......"
+#systemctl daemon-reload
+#systemctl restart blm
+#systemctl restart bbj
+#sleep 3
+#ps -ef | grep basis
+#echo ; echo ; echo
+#echo "Make sure that you see the -T above and Press enter to continue"
+#read X
+#mkdir /usr2/bbx
+#mkdir /usr2/bbx/bin
+#mkdir /usr2/bbx/log
+#mkdir /usr2/bbx/conf
+#mkdir /usr2/bbj/cfg
+#ln -s /usr2/ostools/bin/rtiuser.pl /usr2/bbx/bin/rtiuser.pl
+#echo "bbj 8 installed......"
 
-echo "Installing bbj 15......"
-chmod +x /usr/local/bin/update_bbj_15.pl
-/usr/local/bin/update_bbj_15.pl --bbj 15
-echo "Fixing init.d service files....."
-sed -i '1s/^/#\!\/usr\/bin\/ksh\n/' /etc/init.d/blm
-sed -i '1s/^/#\!\/usr\/bin\/ksh\n/' /etc/init.d/bbj
-sed -i '1s/^/#\!\/usr\/bin\/ksh\n/' /etc/init.d/rti
-systemctl enable blm
-systemctl enable bbj
-systemctl enable rti
-systemctl restart blm
-systemctl restart bbj
-systemctl restart rti
+#echo "Installing bbj 15......"
+#chmod +x /usr/local/bin/update_bbj_15.pl
+#/usr/local/bin/update_bbj_15.pl --bbj 15
+#echo "Fixing init.d service files....."
+#sed -i '1s/^/#\!\/usr\/bin\/ksh\n/' /etc/init.d/blm
+#sed -i '1s/^/#\!\/usr\/bin\/ksh\n/' /etc/init.d/bbj
+#sed -i '1s/^/#\!\/usr\/bin\/ksh\n/' /etc/init.d/rti
+#systemctl enable blm
+#systemctl enable bbj
+#systemctl enable rti
+#systemctl restart blm
+#systemctl restart bbj
+#systemctl restart rti
 
-echo "Installing RTI...."
-cd /usr/local/bin
-mount -o loop /usr/local/bin/RTI-16.1.5-Linux.iso /mnt
-cd /mnt
-./install_rti-16.1.5.pl --nobbxt /usr2/bbx 2>/dev/null
-/usr2/ostools/bin/updateos.pl --samba-set-passdb
-umount /mnt
+#echo "Installing RTI...."
+#cd /usr/local/bin
+#mount -o loop /usr/local/bin/RTI-16.1.5-Linux.iso /mnt
+#cd /mnt
+#./install_rti-16.1.5.pl --nobbxt /usr2/bbx 2>/dev/null
+#/usr2/ostools/bin/updateos.pl --samba-set-passdb
+#umount /mnt
 
 echo "Installing RTI Florist Directory...."
-cd /usr/local/bin
-wget -nv http://tposlinux.blob.core.windows.net/rti-edir/rti-edir-tel-latest.patch
-wget -nv http://tposlinux.blob.core.windows.net/rti-edir/applypatch.pl
-./applypatch.pl ./rti-edir-tel-latest.patch
+#cd /usr/local/bin
+#wget -nv http://tposlinux.blob.core.windows.net/rti-edir/rti-edir-tel-latest.patch
+#wget -nv http://tposlinux.blob.core.windows.net/rti-edir/applypatch.pl
+#./applypatch.pl ./rti-edir-tel-latest.patch
 
-echo "Installing tfsupport authorized keys...."
-mkdir /home/tfsupport/.ssh
-chmod 700 /home/tfsupport/.ssh
-chown tfsupport:rti /home/tfsupport/.ssh
-tar xvf /usr/local/bin/twofactor-20090723.tar
-chmod +x /usr/local/bin/*.pl
-chmod +x /usr/local/bin/*.sh
-cp /usr/local/bin/tfsupport-authorized_keys /home/tfsupport/.ssh/authorized_keys
-chmod 700 /home/tfsupport/.ssh/authorized_keys
-chown tfsupport:root /home/tfsupport/.ssh/authorized_keys
-rm -f /etc/cron.d/nightly-backup
-rm -f /usr/local/bin/rtibackup.pl
-cd /usr/local/bin
-./bin/install-ostools.pl ./ostools-1.15-latest.tar.gz --noharden-linux
+#echo "Installing tfsupport authorized keys...."
+#mkdir /home/tfsupport/.ssh
+#chmod 700 /home/tfsupport/.ssh
+#chown tfsupport:rti /home/tfsupport/.ssh
+#tar xvf /usr/local/bin/twofactor-20090723.tar
+#chmod +x /usr/local/bin/*.pl
+#chmod +x /usr/local/bin/*.sh
+#cp /usr/local/bin/tfsupport-authorized_keys /home/tfsupport/.ssh/authorized_keys
+#chmod 700 /home/tfsupport/.ssh/authorized_keys
+#chown tfsupport:root /home/tfsupport/.ssh/authorized_keys
+#rm -f /etc/cron.d/nightly-backup
+#rm -f /usr/local/bin/rtibackup.pl
+#cd /usr/local/bin
+#./bin/install-ostools.pl ./ostools-1.15-latest.tar.gz --noharden-linux
 
-echo "Installing the backups.config file to exclude files during restore...."
-wget -nv http://rtihardware.homelinux.com/ostools/backups.config.rhel7
-cp /usr2/bbx/config/backups.config /usr2/bbx/config/backups.config.save
-cp backups.config.rhel7 /usr2/bbx/config/backups.config
-chmod 777 /usr2/bbx/config/backups.config
-chown tfsupport:rtiadmins /usr2/bbx/config/backups.config
-echo "Adding multiserver.pwd fix....."
-cp -f /usr/local/bin/multiserver.pwd /usr2/bbx/config/
+#echo "Installing the backups.config file to exclude files during restore...."
+#wget -nv http://rtihardware.homelinux.com/ostools/backups.config.rhel7
+#cp /usr2/bbx/config/backups.config /usr2/bbx/config/backups.config.save
+#cp backups.config.rhel7 /usr2/bbx/config/backups.config
+#chmod 777 /usr2/bbx/config/backups.config
+#chown tfsupport:rtiadmins /usr2/bbx/config/backups.config
+#echo "Adding multiserver.pwd fix....."
+#cp -f /usr/local/bin/multiserver.pwd /usr2/bbx/config/
 
 # Install tcc
-echo "Installing tcc....."
-cd /usr2/bbx/bin
-wget -nv http://rtihardware.homelinux.com/support/tcc/tcc-latest_linux.tar.gz
-tar xvfz ./tcc-latest_linux.tar.gz
-rm -f ./tcc
-rm -f ./tcc_tws
-ln -s ./tcc2_rhel7 ./tcc
-ln -s ./tcc_rhel7 ./tcc_tws
-cd /usr/local/bin
+#echo "Installing tcc....."
+#cd /usr2/bbx/bin
+#wget -nv http://rtihardware.homelinux.com/support/tcc/tcc-latest_linux.tar.gz
+#tar xvfz ./tcc-latest_linux.tar.gz
+#rm -f ./tcc
+#rm -f ./tcc_tws
+#ln -s ./tcc2_rhel7 ./tcc
+#ln -s ./tcc_rhel7 ./tcc_tws
+#cd /usr/local/bin
 
-echo "Installing Kaseya....."
-wget -nv http://rtihardware.homelinux.com/support/KcsSetup.sh
-chmod +x /usr/local/bin/KcsSetup.sh
-/usr/local/bin/KcsSetup.sh
+#echo "Installing Kaseya....."
+#wget -nv http://rtihardware.homelinux.com/support/KcsSetup.sh
+#chmod +x /usr/local/bin/KcsSetup.sh
+#/usr/local/bin/KcsSetup.sh
 
-echo "Patching OS...."
-/usr2/ostools/bin/updateos.pl --ospatches
+#echo "Patching OS...."
+#/usr2/ostools/bin/updateos.pl --ospatches
 
 echo "Creating /etc/profile.d/term.sh"
 [ ! -f /etc/profile.d/term.sh ] && echo "unicode_stop" > /etc/profile.d/term.sh
 chmod +x /etc/profile.d/term.sh
 xxxEOFxxx
 
-cat << xxxEOFxxx >> /usr/local/bin/verify.sh
-echo "--------------------">>/usr/local/bin/verify.txt
-echo "ifconfig results....">>/usr/local/bin/verify.txt
-ifconfig >>/usr/local/bin/verify.txt
-echo "--------------------">>/usr/local/bin/verify.txt
-echo "etc/hosts ....">>/usr/local/bin/verify.txt
-cat /etc/hosts >>/usr/local/bin/verify.txt
-echo "--------------------">>/usr/local/bin/verify.txt
-echo "etc/resolve.conf .....">>/usr/local/bin/verify.txt
-cat /etc/resolv.conf >>/usr/local/bin/verify.txt
-echo "--------------------">>/usr/local/bin/verify.txt
-echo "netstat results....">>/usr/local/bin/verify.txt
-netstat -rn >>/usr/local/bin/verify.txt
-echo "--------------------">>/usr/local/bin/verify.txt
-echo "etc/samba/smb.conf .....">>/usr/local/bin/verify.txt
-cat /etc/samba/smb.conf >>/usr/local/bin/verify.txt
-echo "--------------------">>/usr/local/bin/verify.txt
-echo "usr2/basis/basis.lic .....">>/usr/local/bin/verify.txt
-cat /usr2/basis/basis.lic >>/usr/local/bin/verify.txt
-echo "--------------------">>/usr/local/bin/verify.txt
-echo "/etc/hosts.allow">>/usr/local/bin/verify.txt
-cat /etc/hosts.allow >>/usr/local/bin/verify.txt
-echo "--------------------">>/usr/local/bin/verify.txt
-mail -s \`hostname\` mgreen@teleflora.com,kpugh@teleflora.com </usr/local/bin/verify.txt
-xxxEOFxxx
+#cat << xxxEOFxxx >> /usr/local/bin/verify.sh
+#echo "--------------------">>/usr/local/bin/verify.txt
+#echo "ifconfig results....">>/usr/local/bin/verify.txt
+#ifconfig >>/usr/local/bin/verify.txt
+#echo "--------------------">>/usr/local/bin/verify.txt
+#echo "etc/hosts ....">>/usr/local/bin/verify.txt
+#cat /etc/hosts >>/usr/local/bin/verify.txt
+#echo "--------------------">>/usr/local/bin/verify.txt
+#echo "etc/resolve.conf .....">>/usr/local/bin/verify.txt
+#cat /etc/resolv.conf >>/usr/local/bin/verify.txt
+#echo "--------------------">>/usr/local/bin/verify.txt
+#echo "netstat results....">>/usr/local/bin/verify.txt
+#netstat -rn >>/usr/local/bin/verify.txt
+#echo "--------------------">>/usr/local/bin/verify.txt
+#echo "etc/samba/smb.conf .....">>/usr/local/bin/verify.txt
+#cat /etc/samba/smb.conf >>/usr/local/bin/verify.txt
+#echo "--------------------">>/usr/local/bin/verify.txt
+#echo "usr2/basis/basis.lic .....">>/usr/local/bin/verify.txt
+#cat /usr2/basis/basis.lic >>/usr/local/bin/verify.txt
+#echo "--------------------">>/usr/local/bin/verify.txt
+#echo "/etc/hosts.allow">>/usr/local/bin/verify.txt
+#cat /etc/hosts.allow >>/usr/local/bin/verify.txt
+#echo "--------------------">>/usr/local/bin/verify.txt
+#mail -s \`hostname\` mgreen@teleflora.com,kpugh@teleflora.com </usr/local/bin/verify.txt
+#xxxEOFxxx
 
-cd /usr/local/bin
-chmod +x /usr/local/bin/*.sh
-chmod +x /usr/local/bin/*.pl
+#cd /usr/local/bin
+#chmod +x /usr/local/bin/*.sh
+#chmod +x /usr/local/bin/*.pl
 
 #/usr/bin/chage -d 0 root
 
@@ -316,6 +315,6 @@ rm /var/run/nologin
 
 echo "\`date\` -- End RTI Install $SHOPCODE.teleflora.com" >>/usr/local/bin/verify.txt
 # Verify
-/usr/local/bin/verify.sh
+#/usr/local/bin/verify.sh
 
 %end

@@ -13,4 +13,5 @@ yum clean all
 systemctl restart docker
 userdel tfpos-${SHOPCODE}-tfsupport
 userdel tfpos-${SHOPCODE}
-rm -rf /home/tfpos*
+rm -rf /home/tfpos-${SHOPCODE}*
+rm -rf /var/mail/tfpos-${SHOPCODE}*
