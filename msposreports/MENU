@@ -50,7 +50,7 @@ printf '\u2503'" Free Space:${NC} $(df -h /backups | tail -1 | awk '{print $4}')
 	1)
 		cd $ROOTDIR/bin
 		./tfcloudaccountstats.sh 
-		cat /tmp/TU_STATS_LINUX_Cloud_Backups.txt
+		tr '|' '\t' < /tmp/TU_STATS_LINUX_Cloud_Backups.txt
                 echo -ne "${CYAN}Press enter to continue..${NC}"
                 read
                 cd -
@@ -58,7 +58,7 @@ printf '\u2503'" Free Space:${NC} $(df -h /backups | tail -1 | awk '{print $4}')
 	2)
 		cd $ROOTDIR/bin
 		./tfcloudaccountdetail.sh
-		cat /tmp/TU_STATS_LINUX_Cloud_Backup_Detail.txt
+		tr '|' '\t' < /tmp/TU_STATS_LINUX_Cloud_Backup_Detail.txt
                 echo -ne "${CYAN}Press enter to continue..${NC}"
 		read
 		cd -
