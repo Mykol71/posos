@@ -35,11 +35,12 @@ printf '\u2503'" Space    :${NC} $(df -h /backups | tail -1 | awk '{print $4}')"
 ##echo -e "\u2503 Patchd: `date -r /var/log/yum.log`${NC}"
 #    printf '\u2503''\n'
 #echo -e "\u2503 Status  : `docker ps --format "{{.Status}}" 2>/dev/null`${NC}"
-    echo -e "\u2503 Hostname : `docker exec ${CONTAINER} hostname`${NC}"
-[ -f ./bin/.container ] && echo -e "\u2503 Status   : `docker ps --format "{{.Status}}" 2>/dev/null`" || echo -e "\u2503 Status: Not running"
+#echo -e "\u2503 Status  : `docker exec ${CONTAINER} hostname 2>/dev/null`${NC}"
+#    echo -e "\u2503 Hostname : `docker exec ${CONTAINER} hostname`${NC}"
+[ -f ./bin/.container ] && echo -e "\u2503 Status   : `docker ps --format "{{.Status}}" 2>/dev/null`" || echo -e "\u2503 Status   : Not running"
 echo -e "\u2503 Snapshot : `ls /home | grep -v tfsupport | grep tfpos | cut -d- -f2 2>/dev/null`${NC}"
 echo -e "\u2503 Terminal : ${BLUE}http://`cat ./bin/.posip 2>/dev/null`${NC}"
-[ -f ./bin/.container ] && echo -e "\u2503 VPN      :`docker exec ${CONTAINER} strongswan status | sed -e 's/\ //' | grep === | grep -v Assoc 2>&1` ${NC}" || echo -e "\u2503 VPN   :"
+[ -f ./bin/.container ] && echo -e "\u2503 VPN      :`docker exec ${CONTAINER} strongswan status | sed -e 's/\ //' | grep === | grep -v Assoc 2>&1` ${NC}" || echo -e "\u2503 VPN      :"
 printf '\u2503''\n'
 printf '\u2503''\033[1m'"---\033[0m Container"'\n'
 printf '\u2503''\033[1m'" 1.\033[0m Status"'\n'
