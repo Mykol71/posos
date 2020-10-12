@@ -1,15 +1,25 @@
 #!/usr/bin/bash
 
+# verify root
+ID=$(/usr/bin/id -u)
+[ $ID -ne 0 ] && echo "You must be root to run $0." && exit 1
+
 #Set Host User
-HOST_USER=`whoami`
+HOST_USER=`echo $SUDO_USER`
+
+# Add tfsupport to sudoers, if not there.
+[ "`grep tfsupport /etc/sudoers`" == "" ] && echo "tfsupport        ALL=(ALL)       NOPASSWD: ALL">>/etc/sudoers
+
+# add tfsupport usr and generate keys folder, if not there.
+[ ! -d /home/tfsupport ] && useradd tfsupport
+[ ! -d /home/tfsupport/keys ] && mkdir /home/tfsupport/keys && chown tfsupport:tfsupport /home/tfsupport/keys
 
 #Environment Name
-[ ! -f ../.envtype ] && echo -n "Env Name: " && read ENVTYPE && echo "$ENVTYPE" >../.envtype && cp ../.envtype ../../.
+[ ! -f ../.envtype ] && echo -n "Env Name: " && read ENVTYPE && echo "$ENVTYPE" >../.envtype && cp -f ../.envtype ../../.
 
-#POS IP
-#[ ! -f .posip ] && echo -n "POS IP Adress: " && read POSIP && echo "$POSIP" >.posip
-#Shopcode
-#[ ! -f .shopcode ] && echo -n "POS Shop Code: " && read SHOPCODE && echo "$SHOPCODE" >.shopcode
+#switch from enforcing to permissive selinux
+sed -i 's/enforcing/permissive/' /etc/selinux/config
+setenforce 0
 
 #install required packages
 yum clean all
@@ -43,20 +53,15 @@ find . -name "*monthname.sh" -exec cp -f {} /usr/local/bin/. \;
 find . -name "*recon.sh" -exec cp -f {} /usr/local/bin/. \;
 find . -name "shellinaboxd" -exec cp -f {} /usr/local/bin/. \;
 
-# add tfsupport usr and generate keys folder, if not there.
-[ ! -d /home/tfsupport ] && useradd tfsupport
-[ ! -d /home/tfsupport/keys ] && mkdir /home/tfsupport/keys && chown tfsupport:tfsupport /home/tfsupport/keys
-
 # make ssh folder if not there, and copy authorized keys from centos user
 [ ! -d /home/tfsupport/.ssh ] && mkdir /home/tfsupport/.ssh && chown -R tfsupport:tfsupport /home/tfsupport/.ssh && chmod 700 /home/tfsupport/.ssh
-[ ! -f /home/tfsupport/.ssh/authorized_keys ] && cp -f /home/${HOST_USER}/.ssh/authorized_keys /home/tfsupport/.ssh/authorized_keys && chown tfsupport:tfsupport /home/tfsupport/.ssh/authorized_keys
+[ ! -f /home/tfsupport/.ssh/authorized_keys ] && cp -f /home/centos/.ssh/authorized_keys /home/tfsupport/.ssh/authorized_keys && chown tfsupport:tfsupport /home/tfsupport/.ssh/authorized_keys
+[ ! -d /home/${SUDO_USER}/.ssh ] && mkdir /home/${SUDO_USER}/.ssh && chown ${SUDO_USER}:${SUDO_USER} /home/${SUDO_USER}/.ssh && chmod 700 /home/${SUDO_USER}/.ssh
+[ ! -f /home/${SUDO_USER}/.ssh/authorized_keys ] && cp -f /home/centos/.ssh/authorized_keys /home/${SUDO_USER}/.ssh/authorized_keys && chown ${SUDO_USER}:${SUDO_USER} /home/${SUDO_USER}/.ssh/authorized_keys
  
-# Add tfsupport to sudoers, if not there.
-[ "`grep tfsupport /etc/sudoers`" == "" ] && echo "tfsupport        ALL=(ALL)       NOPASSWD: ALL">>/etc/sudoers
-[ "`grep ${HOST_USER} /etc/sudoers`" == "" ] && echo "${HOST_USER}        ALL=(ALL)       NOPASSWD: ALL">>/etc/sudoers
-
-# Add Admin Menu to current users .bash_profile to be exec on login
-#[ "`grep msposapp /home/${HOST_USER}/.bash_profile`" == "" ] && echo "cd posos" >> /home/${HOST_USER}/.bash_profile && echo "sudo ./MENU" >>/home/${HOST_USER}/.bash_profile
+# Add Admin Menu to current user and tfsupports .bash_profile to be exec on login
+[ "`grep msposapp /home/${SUDO_USER}/.bash_profile`" == "" ] && echo "cd posos" >> /home/${SUDO_USER}/.bash_profile && echo "sudo ./MENU" >>/home/${SUDO_USER}/.bash_profile
+[ "`grep msposapp /home/tfsupport/.bash_profile`" == "" ] && echo "cd posos" >> /home/tfsupport/.bash_profile && echo "sudo ./MENU" >>/home/tfsupport/.bash_profile
 
 # change default home dir to /backups from now on
 # Dont do this unless cloud backup dedicated server as well
