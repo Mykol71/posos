@@ -6,9 +6,9 @@ HOST_USER=`whoami`
 #Environment Name
 [ ! -f ../.envtype ] && echo -n "Env Name: " && read ENVTYPE && echo "$ENVTYPE" >../.envtype
 #POS IP
-[ ! -f .posip ] && echo -n "POS IP Adress: " && read POSIP && echo "$POSIP" >.posip
+#[ ! -f .posip ] && echo -n "POS IP Adress: " && read POSIP && echo "$POSIP" >.posip
 #Shopcode
-[ ! -f .shopcode ] && echo -n "POS Shop Code: " && read SHOPCODE && echo "$SHOPCODE" >.shopcode
+#[ ! -f .shopcode ] && echo -n "POS Shop Code: " && read SHOPCODE && echo "$SHOPCODE" >.shopcode
 
 #install required packages
 yum clean all
@@ -55,7 +55,7 @@ find . -name "shellinaboxd" -exec cp -f {} /usr/local/bin/. \;
 [ "`grep ${HOST_USER} /etc/sudoers`" == "" ] && echo "${HOST_USER}        ALL=(ALL)       NOPASSWD: ALL">>/etc/sudoers
 
 # Add Admin Menu to current users .bash_profile to be exec on login
-[ "`grep msposapp /home/${HOST_USER}/.bash_profile`" == "" ] && echo "cd posos" >> /home/${HOST_USER}/.bash_profile && echo "sudo ./MENU" >>/home/${HOST_USER}/.bash_profile
+#[ "`grep msposapp /home/${HOST_USER}/.bash_profile`" == "" ] && echo "cd posos" >> /home/${HOST_USER}/.bash_profile && echo "sudo ./MENU" >>/home/${HOST_USER}/.bash_profile
 
 # change default home dir to /backups from now on
 # Dont do this unless cloud backup dedicated server as well

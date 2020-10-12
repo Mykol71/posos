@@ -5,27 +5,29 @@ echo -n "daisy or rti?: "
 read POSTYPE
 [ "$POSTYPE" == "daisy" ] && VER="10.1.21" && POSDIR="d"
 [ "$POSTYPE" == "rti" ] && VER="16.1.3" && POSDIR="usr2"
-POSIP="`cat ./.posip`"
-SHOPCODE="`cat ./.shopcode`"
-[ "$POSIP" == "" ] && echo -n "POS IP " && read POSIP
-[ "$SHOPCODE" == "" ] && echo -n "SHOPCODE: " && read SHOPCODE
+#[ "$POSIP" == "" ] && echo -n "POS IP " && read POSIP
+echo -n "SHOPCODE: "
+read SHOPCODE
+echo ${SHOPCODE}>.shopcode
+
+#get IP
+POSIP=`/usr/sbin/ifconfig eth1 | grep broad | sed -e 's/    //g' | cut -d ' ' -f2`
+echo $POSIP > .posip
 
 #add POS users
 useradd -b /home tfpos-${SHOPCODE}
 useradd -b /home tfpos-${SHOPCODE}-tfsupport
 
 #start container
-CONTAINER=`docker run -d -it --name=$SHOPCODE.teleflora.com --rm --privileged -v "/home/tfpos-${SHOPCODE}/${POSDIR}:/${POSDIR}" -v /sys/fs/cgroup:/sys/fs/cgroup:ro -w="/${POSDIR}" -i ${OS}7-${POSTYPE}-${VER} /usr/sbin/init`
-echo $CONTAINER>.container
+CONTAINER=`docker run -d -it --name=${SHOPCODE}.teleflora.com --rm --privileged -v "/home/tfpos-${SHOPCODE}/${POSDIR}:/${POSDIR}" -v /sys/fs/cgroup:/sys/fs/cgroup:ro -w="/${POSDIR}" -i ${OS}7-${POSTYPE}-${VER} /usr/sbin/init`
+echo ${CONTAINER}>.container
 
 #configure the second nic for host networking by passing eth1 through to the container
-./pipework --direct-phys eth1 $CONTAINER ${POSIP}/24@192.168.222.1
-#POSIP=`docker exec $CONTAINER /usr/sbin/ifconfig eth1 | grep broad | sed -e 's/    //g' | cut -d ' ' -f2`
-#echo "$POSIP" > .posip
+./pipework --direct-phys eth1 ${CONTAINER} ${POSIP}/24@192.168.222.1
 
 #copy over media
 [ "$POSTYPE" == "daisy" ] && cp /home/daisy/*.iso /home/tfpos-$SHOPCODE/$POSDIR/. && cp /home/daisy/*.gz /home/tfpos-$SHOPCODE/$POSDIR/. &&  cp /home/daisy/*.sh /home/tfpos-$SHOPCODE/$POSDIR/.
-[ "$POSTYPE" == "rti" ] && cp /home/rti/*.iso /home/tfpos-$SHOPCODE/$POSDIR/. && cp /home/rti/*.gz /home/tfpos-$SHOPCODE/$POSDIR/. &&  cp /home/rti/*.sh /home/tfpos-$SHOPCODE/$POSDIR/.
+[ "$POSTYPE" == "rti" ] && cp /home/rti/ostools-1.15-latest.tar.gz /home/tfpos-$SHOPCODE/$POSDIR/. 
 
 #changed from /bin to /usr/bin at some point. Created link to avoid problems with other scripts and programs.
 docker exec $CONTAINER ln -s /usr/bin /bin
@@ -37,14 +39,14 @@ docker exec $CONTAINER echo LANG=en_US.UTF-8 >/etc/locale.conf
 docker exec $CONTAINER mknod /dev/loop b 7 0
 
 #install ostools
-docker exec $CONTAINER tar xvfz ostools-1.15-latest.tar.gz
+docker exec $CONTAINER tar xvfz ./ostools-1.15-latest.tar.gz
 docker exec $CONTAINER ./bin/install-ostools.pl ./ostools-1.15-latest.tar.gz --noharden-linux
 
 #configure system hostname
-docker exec $CONTAINER ./bin/updateos.pl --hostname=$SHOPCODE.teleflora.com >/dev/null 2>&1
+docker exec $CONTAINER ./bin/updateos.pl --hostname=${SHOPCODE}.teleflora.com >/dev/null 2>&1
 
 #prepare for daisy
-[ "$POSTYPE" == daisy ] && docker exec $CONTAINER ./bin/updateos.pl --daisy8
+[ "$POSTYPE" == "daisy" ] && docker exec $CONTAINER ./bin/updateos.pl --daisy8
 
 #install daisy
 [ "$POSTYPE" == daisy ] docker exec $CONTAINER mkdir /mnt/cdrom
