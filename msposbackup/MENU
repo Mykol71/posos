@@ -21,7 +21,7 @@ while :; do
     CYAN=''
     NC='\033[0m'
     clear
-    echo -e "${GREY}${TFCLOUD_VERSION}  -  ${HOSTNAME}  -  $(date +'%x %l:%M %p')  -  Patched: `date -r /var/log/yum.log`  -  `dmidecode | grep Product | grep -v Not | cut -d: -f2 | sed -e 's/\ //' | head -1`  -  ${NC}"
+echo -e "${GREY}mspos ${TFCLOUD_VERSION}  -  ${HOSTNAME}  -  $(date +'%x %l:%M %p')  -  Patched: `date -r /var/log/yum.log`  -  `dmidecode | grep Product | grep -v Not | cut -d: -f2 | sed -e 's/\ //' | head -1`  -  `cat /etc/redhat-release`  ${NC}"
     printf '\u250f''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\n'
 #    printf '\u2503'🌷${GREY}' $(hostname)'${NC}'\n'
 echo -e "\u2503${BLUE} @ ${NC}`[ -f ../.envtype ] && cat ../.envtype || echo -e Not Installed`${NC}"
@@ -91,7 +91,7 @@ printf '\u2517''\u2501''\n'
 #		cd -
 #		;;
 	r)
-		cat ./README.md | more
+		cat ./docs/README.md | more
 		;;
 	x)
 		cd ..

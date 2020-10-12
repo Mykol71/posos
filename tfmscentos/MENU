@@ -15,23 +15,26 @@ while :; do
 	clear
 
     LGGRN='\033[1;32m'
-#    BLUE='\033[1;34m'
-    BLUE=''
+    BLUE='\033[1;34m'
+#    BLUE=''
     GREY='\033[0;37m'
 #    CYAN='\033[1;36m'
     CYAN=''
     NC='\033[0m'
     clear
-    echo -e "${GREY} $(date +'%x %l:%M %p')${NC}"
-    printf '\u250f''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\n'
-    printf '\u2503'${BLUE}' @ '${NC}'Repo Menu'${NC}'\n'
+echo -e "${GREY}mspos ${TFCLOUD_VERSION}  -  ${HOSTNAME}  -  $(date +'%x %l:%M %p')  -  Patched: `date -r /var/log/yum.log`  -  `dmidecode | grep Product | grep -v Not | cut -d: -f2 | sed -e 's/\ //' | head -1`  -  `cat /etc/redhat-release`  ${NC}"
+
+printf '\u250f''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\n'
+echo -e "\u2503${BLUE} @ ${NC}`[ -f ../msposapp/.envtype ] && cat ../msposapp/.envtype || echo -e Not Installed`${NC}"
     printf '\u2503'${LGGRN}' )~'${NC}'\n'
     printf '\u2523''\u2501''\n'
+
 echo -e "\u2503 Status: ${NC}`systemctl status httpd 2>/dev/null | grep Active | cut -d" " -f5`"
 printf '\u2503''\n'
-printf '\u2503''\033[1m'" 1.\033[0m Start Repo"'\n'
-printf '\u2503''\033[1m'" 2.\033[0m Stop Repo"'\n'
-printf '\u2503''\033[1m'" 3.\033[0m Create/Update Repo"'\n'
+printf '\u2503''\033[1m'" --\033[0m CentOS Repo"'\n'
+printf '\u2503''\033[1m'" 1.\033[0m Start"'\n'
+printf '\u2503''\033[1m'" 2.\033[0m Stop"'\n'
+printf '\u2503''\033[1m'" 3.\033[0m Create/Update"'\n'
 printf '\u2503''\n'
 printf '\u2503''\033[1m'" i.\033[0m I/C/U Deps"'\n'
 printf '\u2503''\033[1m'" r.\033[0m Readme"'\n'

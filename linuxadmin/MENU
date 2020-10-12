@@ -1,5 +1,7 @@
 #!/usr/bin/bash
 
+TFCLOUD_VERSION=2.0
+
 # verify root
 ID=$(/usr/bin/id -u)
 [ $ID -ne 0 ] && echo "You must be root to run $0." && exit 1
@@ -12,19 +14,21 @@ while :; do
 	clear
 
    LGGRN='\033[1;32m'
-#    BLUE='\033[1;34m'
-    BLUE=''
+    BLUE='\033[1;34m'
+#    BLUE=''
     GREY='\033[0;37m'
 #    CYAN='\033[1;36m'
     CYAN=''
     NC='\033[0m'
     clear
-    echo -e "${GREY} $(date +'%x %l:%M %p')${NC}"
-    printf '\u250f''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\n'
-    printf '\u2503'${BLUE}' @ '${NC}'Admin Task Menu'${NC}'\n'
-    printf '\u2503'${LGGRN}' )~'${NC}'\n'
+echo -e "${GREY}mspos ${TFCLOUD_VERSION}  -  ${HOSTNAME}  -  $(date +'%x %l:%M %p')  -  Patched: `date -r /var/log/yum.log`  -  `dmidecode | grep Product | grep -v Not | cut -d: -f2 | sed -e 's/\ //' | head -1`  -  `cat /etc/redhat-release`  ${NC}"
+
+printf '\u250f''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\n'
+echo -e "\u2503${BLUE} @ ${NC}`[ -f ../msposapp/.envtype ] && cat ../msposapp/.envtype || echo -e Not Installed`${NC}"
+    printf '\u2503'${LGGRN}' )~ Admin tasks'${NC}'\n'
     printf '\u2523''\u2501''\n'
-printf '\u2503''\033[1m'" 1.\033[0m Configure Sendgrid Relay"'\n'
+
+printf '\u2503''\033[1m'" 1.\033[0m Configure Sendgrid"'\n'
 printf '\u2503''\033[1m'" 2.\033[0m Convert to CentOS"'\n'
 printf '\u2503''\033[1m'" 3.\033[0m Daisy Conversion Script"'\n'
 printf '\u2503''\n'

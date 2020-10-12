@@ -43,20 +43,20 @@ docker exec $CONTAINER tar xvfz ./ostools-1.15-latest.tar.gz
 docker exec $CONTAINER ./bin/install-ostools.pl ./ostools-1.15-latest.tar.gz --noharden-linux
 
 #configure system hostname
-docker exec $CONTAINER ./bin/updateos.pl --hostname=${SHOPCODE}.teleflora.com >/dev/null 2>&1
+docker exec $CONTAINER hostnamectl set-hostname ${SHOPCODE}.teleflora.com 2>/dev/null
 
 #prepare for daisy
 [ "$POSTYPE" == "daisy" ] && docker exec $CONTAINER ./bin/updateos.pl --daisy8
 
 #install daisy
-[ "$POSTYPE" == daisy ] docker exec $CONTAINER mkdir /mnt/cdrom
-[ "$POSTYPE" == daisy ] docker exec $CONTAINER mount -o loop daisy_10.1.22_rhel7.iso /mnt/cdrom
-[ "$POSTYPE" == daisy ] docker exec $CONTAINER cp /mnt/cdrom/install-daisy.pl .
-[ "$POSTYPE" == daisy ] docker exec $CONTAINER ./install-daisy.pl /d/daisy
-[ "$POSTYPE" == daisy ] docker exec $CONTAINER umount /mnt/cdrom
+[ "$POSTYPE" == "daisy" ] && docker exec $CONTAINER mkdir /mnt/cdrom
+[ "$POSTYPE" == "daisy" ] && docker exec $CONTAINER mount -o loop daisy_10.1.22_rhel7.iso /mnt/cdrom
+[ "$POSTYPE" == "daisy" ] && docker exec $CONTAINER cp /mnt/cdrom/install-daisy.pl .
+[ "$POSTYPE" == "daisy" ] && docker exec $CONTAINER ./install-daisy.pl /d/daisy
+[ "$POSTYPE" == "daisy" ] && docker exec $CONTAINER umount /mnt/cdrom
 
 #remove console gttys for daisy because this is a cloud server
-[ "$POSTYPE" == daisy ] docker exect $CONTAINER rm -f /etc/systemd/system/*tty* 2>/dev/null
+[ "$POSTYPE" == daisy ] && docker exect $CONTAINER rm -f /etc/systemd/system/*tty* 2>/dev/null
 
 #move off hosts.deny
 docker exec $CONTAINER mv /etc/hosts.deny /etc/hosts.deny.orig

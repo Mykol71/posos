@@ -4,7 +4,8 @@
 HOST_USER=`whoami`
 
 #Environment Name
-[ ! -f ../.envtype ] && echo -n "Env Name: " && read ENVTYPE && echo "$ENVTYPE" >../.envtype
+[ ! -f ../.envtype ] && echo -n "Env Name: " && read ENVTYPE && echo "$ENVTYPE" >../.envtype && cp ../.envtype ../../.
+
 #POS IP
 #[ ! -f .posip ] && echo -n "POS IP Adress: " && read POSIP && echo "$POSIP" >.posip
 #Shopcode
