@@ -32,7 +32,7 @@ printf '\u2503'" Space    :${NC} $(df -h /backups | tail -1 | awk '{print $4}')"
 ##echo -e "\u2503 Patchd: `date -r /var/log/yum.log`${NC}"
 [ -f ./bin/.container ] && echo -e "\u2503 Status   : `docker ps --format "{{.Status}}" 2>/dev/null`" || echo -e "\u2503 Status   : Not running"
 echo -e "\u2503 Snapshot : `ls /home | grep -v tfsupport | grep tfpos | cut -d- -f2 2>/dev/null`${NC}"
-echo -e "\u2503 Terminal : ${BLUE}http://`cat ./bin/.posip 2>/dev/null`${NC}"
+[ -f ./bin/.container ] && echo -e "\u2503 Terminal : ${BLUE}http://iflorist.myk.green${NC}" || echo -e "\u2503 Terminal :"
 #echo -e "\u2503 VPN      : `docker exec ${CONTAINER} strongswan status | sed -e 's/\ //' | grep === | grep -v Assoc 2>&1 ${NC} 2>/dev/null`${NC}"
 [ "$CONTAINER" != "" ] && echo -e "\u2503 VPN      :`docker exec ${CONTAINER} strongswan status | sed -e 's/\ //' | grep === | grep -v Assoc 2>/dev/null`${NC}" || echo -e "\u2503 VPN      :"
 printf '\u2503''\n'
