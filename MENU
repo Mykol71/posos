@@ -76,13 +76,15 @@ printf '\u2503'" Free Space:${NC} $(df -h /backups | tail -1 | awk '{print $4}')
 		;;
 	i)
                 cd $ROOTDIR/msposapp/bin
-                time ./install
+                ./install
                 echo -ne "Press enter to continue..${NC}"
                 read
                 cd -
                 ;;
 	r)
 		cat ./README.md | more
+                echo -ne "Press enter to continue..${NC}"
+                read
 		;;
 	x)	exit
 		;;

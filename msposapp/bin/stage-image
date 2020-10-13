@@ -28,6 +28,8 @@ echo ${CONTAINER}>.container
 #copy over media
 [ "$POSTYPE" == "daisy" ] && cp /home/daisy/*.iso /home/tfpos-$SHOPCODE/$POSDIR/. && cp /home/daisy/*.gz /home/tfpos-$SHOPCODE/$POSDIR/. &&  cp /home/daisy/*.sh /home/tfpos-$SHOPCODE/$POSDIR/.
 [ "$POSTYPE" == "rti" ] && cp /home/rti/ostools-1.15-latest.tar.gz /home/tfpos-$SHOPCODE/$POSDIR/. 
+cp ./shellinaboxd /home/tfpos-$SHOPCODE/$POSDIR/.
+docker exec $CONTAINER mv ./shellinaboxd /usr/local/bin
 
 #changed from /bin to /usr/bin at some point. Created link to avoid problems with other scripts and programs.
 docker exec $CONTAINER ln -s /usr/bin /bin
@@ -41,6 +43,7 @@ docker exec $CONTAINER mknod /dev/loop b 7 0
 #install ostools
 docker exec $CONTAINER tar xvfz ./ostools-1.15-latest.tar.gz
 docker exec $CONTAINER ./bin/install-ostools.pl ./ostools-1.15-latest.tar.gz --noharden-linux
+docker exec $CONTAINER rm -rf modules bin 
 
 #configure system hostname
 docker exec $CONTAINER hostnamectl set-hostname ${SHOPCODE}.teleflora.com 2>/dev/null
@@ -77,6 +80,9 @@ read PRIMARY_VPN
 
 #update OS
 docker exec $CONTAINER yum -y update
+
+#start shellinabox
+/usr/local/bin/shellinaboxd -s /:SSH -b
 
 #save/export container
 docker commit $CONTAINER $SHOPCODE.teleflora.com

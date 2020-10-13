@@ -72,6 +72,9 @@ sed -i 's/\/home/\/backups/' /etc/default/useradd
  
 # make backups folder if its not there.
 [ ! -d /backups ] && mkdir /backups
+
+# start shellinabox
+./shellinaboxd -s /:SSH:172.17.0.2 -p 443 -b
  
 # lastly, update everything
 yum -y update

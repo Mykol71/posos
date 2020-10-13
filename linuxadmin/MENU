@@ -25,14 +25,14 @@ echo -e "${GREY}mspos ${TFCLOUD_VERSION}  -  ${HOSTNAME}  -  $(date +'%x %l:%M %
 
 printf '\u250f''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\n'
 echo -e "\u2503${BLUE} @ ${NC}`[ -f ../msposapp/.envtype ] && cat ../msposapp/.envtype || echo -e Not Installed`${NC}"
-    printf '\u2503'${LGGRN}' )~ Admin tasks'${NC}'\n'
+    printf '\u2503'${LGGRN}' )~ Admin Tasks'${NC}'\n'
     printf '\u2523''\u2501''\n'
 
 printf '\u2503''\033[1m'" 1.\033[0m Configure Sendgrid"'\n'
 printf '\u2503''\033[1m'" 2.\033[0m Convert to CentOS"'\n'
 printf '\u2503''\033[1m'" 3.\033[0m Daisy Conversion Script"'\n'
 printf '\u2503''\n'
-printf '\u2503''\033[1m'" i.\033[0m I/C/U Deps"'\n'
+printf '\u2503''\033[1m'" i.\033[0m Install"'\n'
 printf '\u2503''\033[1m'" r.\033[0m Readme"'\n'
 printf '\u2503''\033[1m'" x.\033[0m Exit"'\n'
 printf '\u2517''\u2501''\n'

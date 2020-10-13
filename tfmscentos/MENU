@@ -1,5 +1,7 @@
 #!/usr/bin/bash
 
+TFCLOUD_VERSION=2.0
+
 # verify root
 ID=$(/usr/bin/id -u)
 [ $ID -ne 0 ] && echo "You must be root to run $0." && exit 1
@@ -26,12 +28,12 @@ echo -e "${GREY}mspos ${TFCLOUD_VERSION}  -  ${HOSTNAME}  -  $(date +'%x %l:%M %
 
 printf '\u250f''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\n'
 echo -e "\u2503${BLUE} @ ${NC}`[ -f ../msposapp/.envtype ] && cat ../msposapp/.envtype || echo -e Not Installed`${NC}"
-    printf '\u2503'${LGGRN}' )~'${NC}'\n'
+    printf '\u2503'${LGGRN}' )~ Repos'${NC}'\n'
     printf '\u2523''\u2501''\n'
 
 echo -e "\u2503 Status: ${NC}`systemctl status httpd 2>/dev/null | grep Active | cut -d" " -f5`"
 printf '\u2503''\n'
-printf '\u2503''\033[1m'" --\033[0m CentOS Repo"'\n'
+printf '\u2503''\033[1m'" --\033[0m CentOS7 Repo"'\n'
 printf '\u2503''\033[1m'" 1.\033[0m Start"'\n'
 printf '\u2503''\033[1m'" 2.\033[0m Stop"'\n'
 printf '\u2503''\033[1m'" 3.\033[0m Create/Update"'\n'
