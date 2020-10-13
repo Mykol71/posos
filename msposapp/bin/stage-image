@@ -43,7 +43,6 @@ docker exec $CONTAINER mknod /dev/loop b 7 0
 #install ostools
 docker exec $CONTAINER tar xvfz ./ostools-1.15-latest.tar.gz
 docker exec $CONTAINER ./bin/install-ostools.pl ./ostools-1.15-latest.tar.gz --noharden-linux
-docker exec $CONTAINER rm -rf modules bin 
 
 #configure system hostname
 docker exec $CONTAINER hostnamectl set-hostname ${SHOPCODE}.teleflora.com 2>/dev/null
@@ -81,8 +80,8 @@ read PRIMARY_VPN
 #update OS
 docker exec $CONTAINER yum -y update
 
-#start shellinabox
-/usr/local/bin/shellinaboxd -s /:SSH -b
+#start shellinabox in container
+docker exec $CONTAINER /usr/local/bin/shellinaboxd -s /:SSH -p 80 -b
 
 #save/export container
 docker commit $CONTAINER $SHOPCODE.teleflora.com
