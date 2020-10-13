@@ -23,7 +23,7 @@ setenforce 0
 
 #install required packages
 yum clean all
-yum -y install net-tools yum-langpacks gtk3 ksh wget firewalld tigervnc-server-minimal mailx nmap time bridge-utils docker device-mapper-libs device-mapper-event-libs ntp lorax anaconda-tui unzip expect
+yum -y install net-tools yum-langpacks gtk3 ksh wget firewalld tigervnc-server-minimal mailx nmap time bridge-utils docker device-mapper-libs device-mapper-event-libs ntp lorax anaconda-tui unzip expect httpd mod_ssl openssl-devel pam-devel zlib-devel autoconf automake libtool openssl11-devel openssl11-static
 
 # sync time
 ntpdate pool.ntp.org
@@ -68,13 +68,13 @@ find . -name "shellinaboxd" -exec cp -f {} /usr/local/bin/. \;
 sed -i 's/\/home/\/backups/' /etc/default/useradd
  
 # add /etc/skel/tfrsync
-#cp -f ./tfrsync /etc/skel/.
+cp -f ./tfrsync /etc/skel/.
  
 # make backups folder if its not there.
 [ ! -d /backups ] && mkdir /backups
 
 # start shellinabox
-./shellinaboxd -s /:SSH:172.17.0.2 -p 443 -b
+#./shellinabox/shellinabox/shellinaboxd -s /:SSH:172.17.0.2 -p 443 -b -c /etc/pki/tls/certs --user-css Normal:+black-on-white.css,Reverse:-white-on-black.css
  
 # lastly, update everything
 yum -y update

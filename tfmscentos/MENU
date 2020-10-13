@@ -29,7 +29,7 @@ echo -e "${GREY}mspos ${TFCLOUD_VERSION}  -  ${HOSTNAME}  -  $(date +'%x %l:%M %
 printf '\u250f''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\n'
 echo -e "\u2503${BLUE} @ ${NC}`[ -f ../msposapp/.envtype ] && cat ../msposapp/.envtype || echo -e Not Installed`${NC}"
     printf '\u2503'${LGGRN}' )~ Repos'${NC}'\n'
-    printf '\u2523''\u2501''\n'
+    printf '\u2503''\u2501''\n'
 
 echo -e "\u2503 Status: ${NC}`systemctl status httpd 2>/dev/null | grep Active | cut -d" " -f5`"
 printf '\u2503''\n'

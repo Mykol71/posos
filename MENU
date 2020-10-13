@@ -28,7 +28,7 @@ HOSTNAME=`hostname`
 #    printf '\u2503'🌷${GREY}' $(hostname)'${NC}'\n'
 echo -e "\u2503${BLUE} @ ${NC}`[ -f ./msposapp/.envtype ] && cat ./msposapp/.envtype || echo -e Not Installed`${NC}"
     printf '\u2503'${LGGRN}' )~'${NC}'\n'
-    printf '\u2523''\u2501''\n'
+    printf '\u2503''\u2501''\n'
 #echo -e "\u2503 ${HOSTNAME} ${NC}"
 #echo -e "\u2503 Type      : `dmidecode | grep Product | grep -v Not | cut -d: -f2 | sed -e 's/\ //' | head -1`${NC}"
 printf '\u2503'" Free Space:${NC} $(df -h /backups | tail -1 | awk '{print $4}')"'\n'
