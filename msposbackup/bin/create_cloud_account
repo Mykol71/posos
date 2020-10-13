@@ -13,7 +13,7 @@ fi
 echo "Enter Public Key:"
 read -p "" 
 KEY=$REPLY
-useradd tfrsync-$SHOPCODE
+useradd -b /backups tfrsync-$SHOPCODE
 mkdir /backups/tfrsync-$SHOPCODE/.ssh
 chown tfrsync-$SHOPCODE:tfrsync-$SHOPCODE /backups/tfrsync-$SHOPCODE/.ssh
 chmod 700 /backups/tfrsync-$SHOPCODE/.ssh 

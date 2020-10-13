@@ -63,13 +63,6 @@ find . -name "shellinaboxd" -exec cp -f {} /usr/local/bin/. \;
 [ "`grep msposapp /home/${SUDO_USER}/.bash_profile`" == "" ] && echo "cd posos" >> /home/${SUDO_USER}/.bash_profile && echo "sudo ./MENU" >>/home/${SUDO_USER}/.bash_profile
 [ "`grep msposapp /home/tfsupport/.bash_profile`" == "" ] && echo "cd posos" >> /home/tfsupport/.bash_profile && echo "sudo ./MENU" >>/home/tfsupport/.bash_profile
 
-# change default home dir to /backups from now on
-# Dont do this unless cloud backup dedicated server as well
-sed -i 's/\/home/\/backups/' /etc/default/useradd
- 
-# add /etc/skel/tfrsync
-cp -f ./tfrsync /etc/skel/.
- 
 # make backups folder if its not there.
 [ ! -d /backups ] && mkdir /backups
 
