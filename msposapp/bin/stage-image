@@ -78,13 +78,19 @@ read PRIMARY_VPN
 [ "$PRIMARY_VPN" == "y" ] && ./create_vpn && docker exec ${CONTAINER} strongswan start
 
 #add container hostname to /etc/hosts
-echo "172.17.0.2	${SHOPCODE} ${SHOPCODE}.teleflora.com">>/etc/hosts
+#echo "172.17.0.2	${SHOPCODE} ${SHOPCODE}.teleflora.com">>/etc/hosts
+
+#start services
+docker exec $CONTAINER systemctl start crond
+docker exec $CONTAINER systemctl start sendmail
+docker exec $CONTAINER chkconfig on crond
+docker exec $CONTAINER chkconfig on sendmail
 
 #update OS
 docker exec $CONTAINER yum -y update
 
 #start shellinabox in container
-docker exec $CONTAINER /usr/local/bin/shellinaboxd -s /:SSH -p 80 -b
+#docker exec $CONTAINER /usr/local/bin/shellinaboxd -s /:SSH -p 80 -b
 
 #save/export container
 docker commit $CONTAINER $SHOPCODE.teleflora.com
