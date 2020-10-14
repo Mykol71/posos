@@ -60,8 +60,8 @@ find . -name "shellinaboxd" -exec cp -f {} /usr/local/bin/. \;
 [ ! -f /home/${SUDO_USER}/.ssh/authorized_keys ] && cp -f /home/centos/.ssh/authorized_keys /home/${SUDO_USER}/.ssh/authorized_keys && chown ${SUDO_USER}:${SUDO_USER} /home/${SUDO_USER}/.ssh/authorized_keys
  
 # Add Admin Menu to current user and tfsupports .bash_profile to be exec on login
-[ "`grep msposapp /home/${SUDO_USER}/.bash_profile`" == "" ] && echo "cd posos" >> /home/${SUDO_USER}/.bash_profile && echo "sudo ./MENU" >>/home/${SUDO_USER}/.bash_profile
-[ "`grep msposapp /home/tfsupport/.bash_profile`" == "" ] && echo "cd posos" >> /home/tfsupport/.bash_profile && echo "sudo ./MENU" >>/home/tfsupport/.bash_profile
+[ "`grep posos /home/${SUDO_USER}/.bash_profile`" == "" ] && echo "cd posos" >> /home/${SUDO_USER}/.bash_profile && echo "sudo ./MENU" >>/home/${SUDO_USER}/.bash_profile
+[ "`grep posos /home/tfsupport/.bash_profile`" == "" ] && echo "cd posos" >> /home/tfsupport/.bash_profile && echo "sudo ./MENU" >>/home/tfsupport/.bash_profile
 
 # make backups folder if its not there.
 [ ! -d /backups ] && mkdir /backups
