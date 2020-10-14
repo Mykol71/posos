@@ -2,4 +2,11 @@
 
 CONTAINER=`cat .container`
 docker exec $CONTAINER docker commit
+rm -f ./ipsec*
 docker container stop $(docker container ps -a -q)
+systemctl restart docker
+userdel tfpos-${SHOPCODE}-tfsupport
+userdel tfpos-${SHOPCODE}
+rm -rf /home/tfpos-${SHOPCODE}*
+rm -rf /var/mail/tfpos-${SHOPCODE}*
+rm .container
