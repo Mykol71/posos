@@ -17,9 +17,9 @@ firstboot --disable
 logging --level=info
 
 # Repositories to use
-repo --name="CentOS" --baseurl=http://mirrors.kernel.org/centos/8/os/x86_64/ --cost=100
+repo --name="CentOS" --baseurl=http://mirrors.kernel.org/centos/8/kickstart/x86_64/os/ --cost=100
 ## Uncomment for rolling builds
-repo --name="CentOS Updates" --baseurl=http://mirror.centos.org/centos/8/updates/x86_64/ --cost=100
+repo --name="CentOS Updates" --baseurl=http://mirror.centos.org/centos/8/BaseOS/x86_64/os/ --cost=100
 
 # Disk setup
 zerombr
