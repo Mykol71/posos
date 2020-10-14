@@ -2,18 +2,21 @@
 
 echo -n "daisy or rti?: "
 read POSTYPE
+echo -n "7 or 8?: "
+read VERSION
+echo $VERSION > .osversion
 
 rm -rf /var/tmp/containers
 rm -f /var/tmp/centos*xz
 
 if [ "$POSTYPE" == "rti" ]; then
-./containerbuild.sh centos7-rti.ks 2>/tmp/build-rti-container.error.log
-docker image save centos7:latest > /var/tmp/centos7-rti.tar.xz
+./containerbuild.sh centos${VERSION}-rti.ks 2>/tmp/build-rti-container.error.log
+docker image save centos${VERSION}:latest > /var/tmp/centos${VERSION}-rti.tar.xz
 ./create-rti-image 2>/tmp/create-rti-image.error.log
 fi
 
 if [ "$POSTYPE" == "daisy" ]; then
-./containerbuild.sh centos7-daisy.ks 2>/tmp/build-daisy-container.error.log
-docker image save centos7:latest > /var/tmp/centos7-daisy.tar.xz
+./containerbuild.sh centos${VERSION}-daisy.ks 2>/tmp/build-daisy-container.error.log
+docker image save centos${VERSION}:latest > /var/tmp/centos${VERSION}-daisy.tar.xz
 ./create-daisy-image 2>/tmp/create-daisy-image.error.log
 fi

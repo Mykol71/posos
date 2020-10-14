@@ -1,7 +1,8 @@
 #!/usr/bin/bash
+VERSION=`cat .osversion`
 
-cp -f ./centos7-rti-dockerfile /var/tmp/containers/`date +%Y%m%d`/centos7-rti/docker/Dockerfile
-cp -f /var/tmp/centos7-rti-docker.tar.xz /var/tmp/containers/`date +%Y%m%d`/centos7-rti/docker
-cd /var/tmp/containers/`date +%Y%m%d`/centos7-rti/docker
-docker build --rm -t centos7-rti-16.1.3 .
+cp -f ./centos${VERSION}-rti-dockerfile /var/tmp/containers/`date +%Y%m%d`/centos${VERSION}-rti/docker/Dockerfile
+cp -f /var/tmp/centos${VERSION}-rti-docker.tar.xz /var/tmp/containers/`date +%Y%m%d`/centos${VERSION}-rti/docker
+cd /var/tmp/containers/`date +%Y%m%d`/centos${VERSION}-rti/docker
+docker build --rm -t centos${VERSION}-rti-16.1.3 .
 cd -

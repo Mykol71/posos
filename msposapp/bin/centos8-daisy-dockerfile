@@ -1,7 +1,7 @@
 FROM scratch
 ADD centos8-daisy-docker.tar.xz /
 LABEL org.label-schema.schema-version = "1.0" \
-    org.label-schema.name="CentOS - Daisy Base Image" \
+    org.label-schema.name="CentOS 8 - Daisy Base Image" \
     org.label-schema.vendor="CentOS" \
     org.label-schema.license="GPLv2" \
     org.label-schema.build-date="20200527"

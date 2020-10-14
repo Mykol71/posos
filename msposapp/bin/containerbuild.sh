@@ -9,6 +9,7 @@ KSNAME=${KICKSTART%.*}
 BUILDDATE=$(date +%Y%m%d)
 BUILDROOT=/var/tmp/containers/$BUILDDATE/$KSNAME
 CONT_ARCH=$(uname -m)
+VERSION=`cat .osversion`
 
 #### Test for script requirements
 # Did we get passed a kickstart
@@ -46,8 +47,8 @@ fi
 # Build the rootfs
 time livemedia-creator --logfile=/tmp/"$KSNAME"-"$BUILDDATE".log \
      --no-virt --make-tar --ks "$KICKSTART" \
-     --image-name="$KSNAME"-docker.tar.xz --project "CentOS 7 Docker" \
-     --releasever "7"
+     --image-name="$KSNAME"-docker.tar.xz --project "CentOS ${VERSION} Docker" \
+     --releasever "${VERSION}"
 
 # Put the rootfs someplace
 mkdir -p $BUILDROOT/docker
