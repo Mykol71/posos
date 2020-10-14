@@ -77,6 +77,9 @@ echo -n "Create Primary VPN for this POS? (y/n): "
 read PRIMARY_VPN
 [ "$PRIMARY_VPN" == "y" ] && ./create_vpn && docker exec ${CONTAINER} strongswan start
 
+#add container hostname to /etc/hosts
+echo "172.17.0.2	${SHOPCODE} ${SHOPCODE}.teleflora.com">>/etc/hosts
+
 #update OS
 docker exec $CONTAINER yum -y update
 

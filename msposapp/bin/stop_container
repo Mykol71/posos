@@ -1,7 +1,7 @@
 #!/usr/bin/bash
 
 CONTAINER=`cat .container`
-docker exec $CONTAINER docker commit
+#docker exec $CONTAINER docker commit
 rm -f ./ipsec*
 docker container stop $(docker container ps -a -q)
 systemctl restart docker
