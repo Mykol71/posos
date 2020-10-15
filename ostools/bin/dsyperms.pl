@@ -48,7 +48,7 @@ if ($HELP) {
 
 # --version
 if ($VERSION) {
-	print "OSTools Version: 1.15.0\n";
+	print "OSTools Version: 1.15.a\n";
 	print "$PROGNAME: $CVS_REVISION\n";
 	exit(0);
 }
@@ -468,6 +468,7 @@ sub assign_pabp_permissions
 		dsy
 		errors
 		export
+		reports
 		log
 		pospool
 		recv
@@ -493,7 +494,12 @@ sub assign_pabp_permissions
 		    }
 		    else {
 			system("chown tfsupport:daisy $dsydir/$thisdir");
+         system("chown -R daisy:daisy $dsydir/$thisdir/*");
 			system("chmod 770 $dsydir/$thisdir");
+         # Process subdirectories and files under these too
+			system("find $dsydir/$thisdir" . ' -type d -exec chmod 770 {} \;');
+			system("find $dsydir/$thisdir" . ' -type f -exec chmod 660 {} \;');
+
 		    }
 		    next;
 		}
@@ -512,6 +518,20 @@ sub assign_pabp_permissions
 			system("chmod 750 $dsydir/$thisdir");
 		    }
 		    next;
+		}
+
+		if ($thisdir eq "reports") {
+		    if ($DRY_RUN) {
+			dry_run_chown("daisy", "daisy", "$dsydir/$thisdir");
+			dry_run_chmod("750", "$dsydir/$thisdir");
+		    }
+		    else {
+			system("chown -R daisy:daisy $dsydir/$thisdir");
+			system("chmod 770 $dsydir/$thisdir");
+			system("find $dsydir/$thisdir" . ' -type d -exec chmod 770 {} \;');
+			system("find $dsydir/$thisdir" . ' -type f -exec chmod 660 {} \;');
+			}
+			next;
 		}
 
 		if ($thisdir eq "config") {
@@ -638,11 +658,13 @@ sub assign_pabp_permissions
 	# Executable files in daisy db dir
 	my @dsy_bin_files = qw(
 		0branch
+		actions
 		convpos crd crdmenu crdpos crdterm crunch custpro
 		daisy data dayend dcom delvmgr delvzip designer dove dpos drawer dump
-		fileutil edir einvoice
+		fileutil edir einvoice eroa
 		glexport
 		invlist invoice import
+		actionbot logevent
 		marketpr map
 		payroll pool poolmain pos posctrl poslist posmerc posxfer pzlookup
 		qrest

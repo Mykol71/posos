@@ -2683,7 +2683,7 @@ sub tfr_exit_strerror
 {
     my ($errno) = @_;
 
-    my $rc = (defined($ExitTable{errno})) ? $ExitTable{errno} : $EMPTY_STR;
+    my $rc = (defined($ExitTable{$errno})) ? $ExitTable{$errno} : $EMPTY_STR;
 
     return($rc);
 }
@@ -4649,7 +4649,7 @@ sub tfr_luks_device_get_uuid
     my $ml = '[luks_device_get_uuid]';
 
     my $luks_uuid = $EMPTY_STR;
-    my $blkid_cmd = "blkid $device";
+    my $blkid_cmd = "/usr/sbin/blkid $device";
     loginfo("$ml $blkid_cmd");
     if (open(my $pipe, q{-|}, $blkid_cmd)) {
 	my $blkid_out = <$pipe>;
@@ -4717,7 +4717,7 @@ sub tfr_luks_device_format
     my $luks_key_file_path = tfr_luks_device_key_file();
     if ($luks_key_file_path) {
 
-	my $luks_cmd = "cryptsetup -q luksFormat $device $luks_key_file_path";
+	my $luks_cmd = "/usr/sbin/cryptsetup -q luksFormat $device $luks_key_file_path";
 	loginfo("$ml $luks_cmd");
 	system("$luks_cmd >> $LOGFILE 2>> $LOGFILE");
 	if ($? == 0) {
@@ -4757,7 +4757,7 @@ sub tfr_luks_device_open
 
 	my $luks_name = tfr_luks_device_get_name($device);
 	if ($luks_name) {
-	    my $luks_cmd = "cryptsetup luksOpen $device $luks_name --key-file $luks_key_file_path";
+	    my $luks_cmd = "/usr/sbin/cryptsetup luksOpen $device $luks_name --key-file $luks_key_file_path";
 	    loginfo("$ml LUKS cmd: $luks_cmd");
 	    my $exit_status = system("$luks_cmd >> $LOGFILE 2>> $LOGFILE");
 	    if ($exit_status == 0 ) {
@@ -4799,7 +4799,7 @@ sub tfr_luks_device_close
 
     my $luks_name = tfr_luks_device_get_name($device);
     if ($luks_name) {
-	my $luks_cmd = "cryptsetup luksClose $luks_name";
+	my $luks_cmd = "/usr/sbin/cryptsetup luksClose $luks_name";
 	loginfo("$ml LUKS cmd: $luks_cmd");
 	my $exit_status = system("$luks_cmd >> $LOGFILE 2>> $LOGFILE");
 	if ($exit_status == 0) {
@@ -4898,7 +4898,7 @@ sub tfr_luks_device_is_luks
     my $rc = 1;
     my $ml = '[luks_device_is_luks]';
 
-    my $luks_cmd = "cryptsetup isLuks";
+    my $luks_cmd = "/usr/sbin/cryptsetup isLuks";
     loginfo("$ml cmd: $luks_cmd $device");
     my $exit_status = system ("$luks_cmd $device > /dev/null 2>&1");
     if ($exit_status == 0) {
@@ -4922,7 +4922,7 @@ sub tfr_luks_device_get_status
     if (tfr_luks_device_open($device)) {
 	my $luks_name = tfr_luks_device_get_name($device);
 	if ($luks_name) {
-	    my $luks_cmd = "cryptsetup status $luks_name";
+	    my $luks_cmd = "/usr/sbin/cryptsetup status $luks_name";
 	    loginfo("$ml cmd: $luks_cmd");
 	    my $exit_status = system ("$luks_cmd");
 	    if ($exit_status != 0) {
@@ -4957,7 +4957,7 @@ sub tfr_luks_device_verify
 
     my $rc = 1;
 
-    my $luks_cmd = "cryptsetup luksDump $device";
+    my $luks_cmd = "/usr/sbin/cryptsetup luksDump $device";
     loginfo("[luks_device_verify] $luks_cmd");
     system ("$luks_cmd $device > /dev/null 2>&1");
     if ($? == 0) {
