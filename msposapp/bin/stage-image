@@ -18,6 +18,10 @@ echo $POSIP > .posip
 useradd -b /home tfpos-${SHOPCODE}
 useradd -b /home tfpos-${SHOPCODE}-tfsupport
 
+#add profile changes to outerhost
+[ "`grep 172.17.0.2 /home/tfpos-${SHOPCODE}/.bash_profile`" == "" ] && echo "ssh daisy@172.17.0.2" >> /home/tfpos-${SHOPCODE}/.bash_profile
+[ "`grep 172.17.0.2 /home/tfpos-${SHOPCODE}-tfsupport/.bash_profile`" == "" ] && echo "ssh tfsupport@172.17.0.2" >> /home/tfpos-${SHOPCODE}-tfsupport/.bash_profile
+
 #start container
 CONTAINER=`docker run -d -it --name=${SHOPCODE}.teleflora.com --rm --privileged -v "/home/tfpos-${SHOPCODE}/${POSDIR}:/${POSDIR}" -v /sys/fs/cgroup:/sys/fs/cgroup:ro -w="/${POSDIR}" -i ${OS}7-${POSTYPE}-${VER} /usr/sbin/init`
 echo ${CONTAINER}>.container
