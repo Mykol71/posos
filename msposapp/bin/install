@@ -51,7 +51,6 @@ systemctl enable docker
 # add custom cloud backup server scripts to /usr/local/bin
 find . -name "*monthname.sh" -exec cp -f {} /usr/local/bin/. \;
 find . -name "*recon.sh" -exec cp -f {} /usr/local/bin/. \;
-find . -name "shellinaboxd" -exec cp -f {} /usr/local/bin/. \;
 
 # make ssh folder if not there, and copy authorized keys from centos user
 [ ! -d /home/tfsupport/.ssh ] && mkdir /home/tfsupport/.ssh && chown -R tfsupport:tfsupport /home/tfsupport/.ssh && chmod 700 /home/tfsupport/.ssh
@@ -67,7 +66,6 @@ find . -name "shellinaboxd" -exec cp -f {} /usr/local/bin/. \;
 [ ! -d /backups ] && mkdir /backups
 
 # start shellinabox
-#./shellinabox/shellinabox/shellinaboxd -s /:SSH:172.17.0.2 -p 443 -b -c /etc/pki/tls/certs --user-css Normal:+black-on-white.css,Reverse:-white-on-black.css
  
 # lastly, update everything
 yum -y update
