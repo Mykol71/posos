@@ -1,0 +1,5 @@
+- Still need tags added for RHEL8 in all scripts and modules in otools.
+- --rti14 of updateos.pl still tries to install bbj8 first. We have been just upgrading after that. However basis doesnt support that old version anymore. Needs to start at a newer version.
+--- Ideally, the one above, would be a completely silent install. Or at the very least txt prompts or reads from a config file the settings to install bbj.
+- Kevin and Scott have made some fixes to tfrsync.pl that need to be merged in with the base. I have those.
+- 
