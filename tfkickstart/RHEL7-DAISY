@@ -1,0 +1,448 @@
+#platform=x86, AMD64, or Intel EM64T
+#key --skip
+# System authorization information
+auth  --useshadow --passalgo=sha512 
+# System bootloader configuration
+#bootloader --location=mbr
+# Clear the Master Boot Record
+zerombr
+# Partition clearing information
+#clearpart --linux --initlabel --drives=sda
+# Use text mode install
+text
+# Firewall configuration
+#firewall --enabled --ssh  --trust=eth0
+# Run the Setup Agent on first boot
+firstboot --disable
+# System keyboard
+keyboard us
+# System language
+lang en_US
+# Installation logging level
+logging --level=info
+# Use network installation
+cdrom
+#harddrive --dir=/ --partition=sdc
+#url --url=http://192.168.1.7/rhel6.1_64_daisy
+# Network information
+network --bootproto=dhcp --device=eth0 --onboot=on
+# Reboot after installation
+#reboot
+#Root password
+rootpw --iscrypted $1$b2bDwXkz$ZpKi4Jx7tox779nrUdt8h1
+
+# SELinux configuration
+selinux --permissive
+# Do not configure the X Window System
+skipx
+# System timezone
+timezone  America/Chicago
+# Install OS instead of upgrade
+install
+# Disk partitioning information
+%include /tmp/fslayout
+
+%packages
+@Base
+#@Core
+samba
+cups
+#compat-libtermcap.x86_64
+minicom
+elinks
+telnet
+mc
+glibc
+mutt
+samba-client
+slang
+#compat-libstdc++-33
+curl
+sendmail
+glibc.i686
+strace
+dvd+rw-tools
+dialog
+firstboot
+mtools
+cdrecord
+fetchmail
+net-snmp
+vlock
+sysstat
+ntp
+procps
+e2fsprogs
+audit
+expect
+ksh
+nmap
+uuid
+libuuid
+screen
+dos2unix
+unix2dos
+yum-presto
+ncurses-term
+boost
+biosdevname
+iptables-services
+perl-Digest
+perl-Digest-MD5
+-chrony
+
+%end
+
+%pre 
+DEVICE=""
+
+find_passport ()
+{
+	passport_device=""
+
+	dev_names=(sda sdb sdc sdd sde)
+
+	for thisdev in ${dev_names[@]}
+	do
+
+		# WD (Western Digital) is the vendor
+		found=0
+		vendor_file="/sys/block/$thisdev/device/vendor"
+		if [ -f $vendor_file ]
+		then
+			exec < $vendor_file
+			while read line
+			do
+				if [[ $line =~ "WD" ]]
+				then
+					found=1
+					break
+				fi
+			done
+		fi
+		if [ $found -eq 0 ]
+		then
+			continue
+		fi
+
+		# ... AND Model is correct.
+		# Note it is important to look at the model. Some shops
+		# could have internal Western digital HDDs. If we were
+		# to only look for "WD" drive, and not look for this particular
+		# model, then, we could inadvertently use the "real" device
+		# as the "backup" device, which would be catastrophic.
+
+		model_file="/sys/block/$thisdev/device/model"
+		if [ -f $model_file ]
+		then
+			exec < $model_file
+			while read line
+			do
+				if [[ $line =~ "My Passport" ]]
+				then
+					found=1
+					break
+				fi
+			done
+		fi
+		if [ $found -eq 0 ]
+		then
+			continue
+		fi
+
+		# found a match
+		passport_device="/dev/$thisdev"
+		break
+	done
+
+	DEVICE=$passport_device
+}
+
+
+if [ -d "/sys/block" ]
+then
+	find_passport
+fi
+
+if [ $DEVICE = "/dev/sda" -o \
+	$DEVICE = "/dev/sdb" -o \
+	$DEVICE = "/dev/sdc" -o \
+	$DEVICE = "/dev/sdd" -o \
+	$DEVICE = "/dev/sde" ]
+then
+	# use separate virtual console for output
+	VCON=3
+	exec < /dev/tty$VCON > /dev/tty$VCON 2>/dev/tty$VCON
+	chvt $VCON
+
+	echo
+	echo "**********************************************************"
+	echo 'Starting Teleflora Kickstart $Revision: 1.18 $'
+	echo "**********************************************************"
+	echo
+	echo
+	echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+	echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+	echo "!!!!"
+	echo "!!!! ERROR! Passport Drive is plugged in as device $DEVICE."
+	echo "!!!! Since the assumption is that the passport drive contains"
+	echo "!!!! backup data and that data could be destroyed by the"
+	echo "!!!! installation, the installation will not proceed."
+	echo "!!!!"
+	echo "!!!! Please unplug the Western Digital Passport device and"
+	echo "!!!! then re-try this kickstart."
+	echo "!!!!"
+	echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+	echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+	echo
+	echo
+	echo "Sleeping for 10 seconds... and then rebooting."
+	echo
+	sleep 10
+	reboot
+fi
+# Partition Layout....
+set $(list-harddrives)
+let numd=$#/2
+d1=$1
+d2=$3
+
+if [ ! -z $d2 ]
+then
+  # insert raid filesystem partitions
+  echo "clearpart --all --initlabel --drives=sda,sdb">/tmp/fslayout
+  echo "bootloader --location=mbr --driveorder=sda,sdb">>/tmp/fslayout
+  echo "part raid.01 --ondisk=sda --asprimary --size=30000">>/tmp/fslayout
+  echo "part raid.11 --ondisk=sda --asprimary --size=100 --grow">>/tmp/fslayout
+  echo "part swap    --ondisk=sda --asprimary --recommended">>/tmp/fslayout
+  echo "">>/tmp/fslayout
+  echo "part raid.02 --ondisk=sdb --asprimary --size=30000">>/tmp/fslayout
+  echo "part raid.12 --ondisk=sdb --asprimary --size=100 --grow">>/tmp/fslayout
+  echo "part swap    --ondisk=sdb --asprimary --recommended">>/tmp/fslayout
+  echo "">>/tmp/fslayout
+  echo "">>/tmp/fslayout
+  echo "raid / --level=RAID1 --device=md0 --fstype=xfs raid.01 raid.02">>/tmp/fslayout
+  echo "raid /teleflora --level=RAID1 --device=md1 --fstype=xfs raid.11 raid.12">>/tmp/fslayout
+#  CDROM="/dev/sdc1"
+else
+  # insert non-raid partitions
+  echo "clearpart --all --initlabel --drives=sda">/tmp/fslayout
+  echo "bootloader --location=mbr --driveorder=sda">>/tmp/fslayout
+  echo "part / --ondisk=sda --asprimary --fstype=xfs --size=30000">>/tmp/fslayout
+  echo "part /teleflora --ondisk=sda --asprimary --fstype=xfs --size=100 --grow">>/tmp/fslayout
+  echo "part swap    --ondisk=sda --asprimary --recommended">>/tmp/fslayout
+#  CDROM="/dev/sdb1"
+fi
+
+
+%end
+%post 
+
+cat << xxxEOFxxx > /tmp/ksdaisy.sh
+#!/bin/bash
+LOG="/tmp/ksdaisy.sh.log"
+/tmp/ksdaisy_install.sh \$1 \$2 \$3 \$4 \$5 2>&1 | tee -a \$LOG
+xxxEOFxxx
+
+cat << xxxEOFxxx > /tmp/ksdaisy_install.sh
+#!/bin/bash
+# Script to run, just after a kickstart, which will start things rolling.
+#CDROM="/dev/sr0"
+## change below line to /dev/sdb1 if single harddrive ###
+CDROM="/dev/sdc1"
+if [ \$# -eq 0 ]; then
+	echo "Below is the usage info. Please note only the hostname is required."
+        echo "Usage ksdaisy.sh {hostname} {ipaddr} {dnsaddr} {gateway} {netmask}"
+        exit 1
+fi
+if [ "\$2" == "" ]; then
+	new_ip="192.168.1.21"
+else
+	new_ip="\$2"
+fi
+if [ "\$3" == "" ]; then
+	new_dns="192.168.1.1"
+else
+	new_dns="\$3"
+fi
+if [ "\$4" == "" ]; then
+	new_gateway="192.168.1.1"
+else
+	new_gateway="\$4"
+fi
+if [ "\$5" == "" ]; then
+	new_netmask="255.255.255.0"
+else
+	new_netmask="\$5"
+fi
+mount \$CDROM /mnt
+if [ \$? -eq 0 ]; then
+	umount \$CDROM
+	echo "CDROM mounting ok.....continuing"
+else
+	echo "CDROM could not be mounted.....exiting"
+	exit 1
+fi
+ping -c 5 google.com
+if [ \$? -eq 0 ]; then
+	echo "Internet connection working.....continuing"
+else
+	echo "Internet connection down.....exiting"
+	exit 1
+fi
+echo "\`date\` -- Beginning Daisy Install \${1}.teleflora.com" >/tmp/verify.txt
+cd /tmp
+wget http://rtihardware.homelinux.com/ostools/ostools-1.15-latest.tar.gz
+tar xvfz ostools-1.15-latest.tar.gz
+./bin/install-ostools.pl ./ostools-1.15-latest.tar.gz --noharden-linux
+/teleflora/ostools/bin/updateos.pl --ipaddr="\$new_ip" --gateway="\$new_gateway" --netmask="\$new_netmask" --hostname=\$1
+service network restart
+sleep 4
+/teleflora/ostools/bin/updateos.pl --nameserver="\$new_dns"
+ping -c 5 google.com
+if [ \$? -eq 0 ]; then
+	echo "Internet connection working.....continuing"
+else
+	echo "Internet connection down.....exiting"
+	exit 1
+fi
+systemctl disable firewalld
+systemctl enable iptables
+yum -y remove firewalld
+/teleflora/ostools/bin/harden_linux.pl --iptables
+mount \$CDROM /mnt
+cp /mnt/daisy_9.3.17_rhel7.iso /tmp
+#cp /etc/sysconfig/i18n /etc/sysconfig/i18n-orig
+#cp /mnt/redhat-i18n /etc/sysconfig/i18n
+cp /mnt/daisy7-mig.sh /tmp
+#cp /mnt/install_daisy6.pl /tmp
+#cp /mnt/*.service /etc/systemd/system
+umount /mnt
+#for x in {01..12}
+#do
+#systemctl enable getty@tty$x.service
+#done
+cd /tmp
+/teleflora/ostools/bin/updateos.pl --baremetal
+/teleflora/ostools/bin/updateos.pl --ospatches
+/teleflora/ostools/bin/updateos.pl --daisy8
+mkdir /mnt/cdrom
+mount -o loop /tmp/daisy_9.3.17_rhel7.iso /mnt/cdrom
+cd /mnt/cdrom
+systemctl disable getty@tty1
+./install-daisy.pl /d/daisy
+cd /tmp
+#wget http://rtihardware.homelinux.com/support/install_daisy6.pl
+#chmod 777 /tmp/install_daisy6.pl
+#./install_daisy6.pl /d/daisy
+umount /mnt/cdrom
+mkdir /home/tfsupport/.ssh
+chmod 700 /home/tfsupport/.ssh
+chown tfsupport:daisy /home/tfsupport/.ssh
+wget http://rtihardware.homelinux.com/t1800/tfsupport-authorized_keys
+wget http://rtihardware.homelinux.com/t1800/twofactor-20090723.tar
+tar xvf /tmp/twofactor-20090723.tar
+chmod +x /tmp/*.pl
+cp /tmp/tfsupport-authorized_keys /home/tfsupport/.ssh/authorized_keys
+chmod 700 /home/tfsupport/.ssh/authorized_keys
+chown tfsupport:root /home/tfsupport/.ssh/authorized_keys
+rm -f /etc/cron.d/nightly-backup
+rm -f /tmp/rtibackup.pl
+echo "Installing Kaseya....."
+wget http://rtihardware.homelinux.com/support/KcsSetup.sh
+chmod +x /tmp/KcsSetup.sh
+/tmp/KcsSetup.sh
+echo "Installing base edir....."
+cd /tmp
+rm -f /tmp/edir_installbase.pl
+wget http://rtihardware.homelinux.com/daisy/edir_installbase.pl
+chmod +x /tmp/edir_installbase.pl
+wget http://rtihardware.homelinux.com/daisy/edir_base_latest.tar.gz
+/tmp/edir_installbase.pl /tmp/edir_base_latest.tar.gz
+echo "edir base installed....."
+cd /d/daisy
+./rbl 20
+cd /d/startup
+cd /tmp
+tar xvfz ./ostools-1.15-latest.tar.gz
+./bin/install-ostools.pl ./ostools-1.15-latest.tar.gz
+echo "Enabling Virtual Consoles...."
+for x in {1..12}
+do
+systemctl enable getty@tty\$x.service
+done
+echo "\`date\` -- End Daisy Install \${1}.teleflora.com" >>/tmp/verify.txt
+# Verify
+/tmp/verify.sh
+echo "Remove the DVD from the drive"
+echo "Please reboot the system......ctl-alt-del"
+xxxEOFxxx
+
+cat << xxxEOFxxx > /tmp/dset.sh
+#!/usr/bin/expect
+spawn /tmp/delldset_v2.0.0.119_A00.bin
+expect "to proceed"
+send "q";
+expect "of this license? (y/n):"
+send "y";
+expect "to quit:"
+send "4"
+expect "new directory path:"
+send "\n";
+expect "Create? (y/n):"
+send "y";
+interact
+xxxEOFxxx
+
+if [[ ! -e /etc/profile.d/term.sh ]]; then
+cat << xxxEOFxxx > /etc/profile.d/term.sh
+unicode_stop
+xxxEOFxxx
+fi
+
+cat << xxxEOFxxx >> /tmp/verify.sh
+echo "--------------------">>/tmp/verify.txt
+echo "ifconfig results....">>/tmp/verify.txt
+ifconfig >>/tmp/verify.txt
+echo "--------------------">>/tmp/verify.txt
+echo "etc/hosts ....">>/tmp/verify.txt
+cat /etc/hosts >>/tmp/verify.txt
+echo "--------------------">>/tmp/verify.txt
+echo "etc/resolve.conf .....">>/tmp/verify.txt
+cat /etc/resolv.conf >>/tmp/verify.txt
+echo "--------------------">>/tmp/verify.txt
+echo "netstat results....">>/tmp/verify.txt
+netstat -rn >>/tmp/verify.txt
+echo "--------------------">>/tmp/verify.txt
+echo "etc/samba/smb.conf .....">>/tmp/verify.txt
+cat /etc/samba/smb.conf >>/tmp/verify.txt
+echo "--------------------">>/tmp/verify.txt
+echo "/etc/hosts.allow">>/tmp/verify.txt
+cat /etc/hosts.allow >>/tmp/verify.txt
+echo "--------------------">>/tmp/verify.txt
+mail -s \`hostname\` mgreen@teleflora.com,kpugh@teleflora.com,sjackson@teleflora.com </tmp/verify.txt
+xxxEOFxxx
+
+cd /tmp
+chmod +x /tmp/*.sh
+chmod +x /tmp/*.pl
+
+/usr/bin/chage -d 0 root
+
+memory=`cat /proc/meminfo | grep MemTotal | cut -d':' -f2 | cut -d'k' -f1`
+memory="${memory#"${memory%%[![:space:]]*}"}"    # remove leading spaces
+memory="${memory%"${memory##*[![:space:]]}"}"    # remove trailing spaces
+memoryG=$((memory/1024/1024))  #memory in gig
+memoryG2=$((memoryG+2))        #memory in gig + 2gig
+remainder=`expr $memoryG2 % 2`
+ram=$((memoryG+remainder))     #ram in gig
+javaram=$((ram/2))	       #jvm max memory in gig
+if [ "$ram" -lt 4 ] ; then
+        swap="4096"
+else
+        swap=$((ram*1024+2048))
+fi
+javaram=$((javaram*1024))
+echo "ram=$ram gig,swap=$swap meg,jvm_max=$javaram meg">/tmp/memoryinfo
+
+%end

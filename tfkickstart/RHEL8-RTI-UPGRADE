@@ -1,0 +1,340 @@
+#platform=x86, AMD64, or Intel EM64T
+#key --skip
+# System authorization information
+auth  --useshadow  --enablemd5 
+# System bootloader configuration
+bootloader --location=mbr
+# Clear the Master Boot Record
+zerombr
+# Partition clearing information
+#clearpart --linux --initlabel --drives=sda
+# Use text mode install
+text
+# Firewall configuration
+firewall --enabled --ssh  --trust=eth0
+# Run the Setup Agent on first boot
+firstboot --enable
+# System keyboard
+keyboard us
+# System language
+lang en_US
+# Installation logging level
+logging --level=info
+# Use network installation
+#url --url=http://192.168.1.7/rhel6.1_64
+# Network information
+#network --bootproto=dhcp --device=eth0 --onboot=on
+# Reboot after installation
+reboot
+#Root password
+rootpw --iscrypted $1$b2bDwXkz$ZpKi4Jx7tox779nrUdt8h1
+
+# SELinux configuration
+selinux --permissive
+# Do not configure the X Window System
+skipx
+# System timezone
+timezone  America/Chicago
+# Install OS instead of upgrade
+install
+cdrom
+# Disk partitioning information
+part / --fstype="ext3" --onpart=/dev/sda1
+part swap --onpart=/dev/sda2
+part /usr2 --fstype="ext3" --onpart=/dev/sda3 --noformat
+
+%pre 
+DEVICE=""
+
+find_passport ()
+{
+	passport_device=""
+
+	dev_names=(sda sdb sdc sdd sde)
+
+	for thisdev in ${dev_names[@]}
+	do
+
+		# WD (Western Digital) is the vendor
+		found=0
+		vendor_file="/sys/block/$thisdev/device/vendor"
+		if [ -f $vendor_file ]
+		then
+			exec < $vendor_file
+			while read line
+			do
+				if [[ $line =~ "WD" ]]
+				then
+					found=1
+					break
+				fi
+			done
+		fi
+		if [ $found -eq 0 ]
+		then
+			continue
+		fi
+
+		# ... AND Model is correct.
+		# Note it is important to look at the model. Some shops
+		# could have internal Western digital HDDs. If we were
+		# to only look for "WD" drive, and not look for this particular
+		# model, then, we could inadvertently use the "real" device
+		# as the "backup" device, which would be catastrophic.
+
+		model_file="/sys/block/$thisdev/device/model"
+		if [ -f $model_file ]
+		then
+			exec < $model_file
+			while read line
+			do
+				if [[ $line =~ "My Passport" ]]
+				then
+					found=1
+					break
+				fi
+			done
+		fi
+		if [ $found -eq 0 ]
+		then
+			continue
+		fi
+
+		# found a match
+		passport_device="/dev/$thisdev"
+		break
+	done
+
+	DEVICE=$passport_device
+}
+
+
+if [ -d "/sys/block" ]
+then
+	find_passport
+fi
+
+if [ $DEVICE = "/dev/sda" -o \
+	$DEVICE = "/dev/sdb" -o \
+	$DEVICE = "/dev/sdc" -o \
+	$DEVICE = "/dev/sdd" -o \
+	$DEVICE = "/dev/sde" ]
+then
+	# use separate virtual console for output
+	VCON=3
+	exec < /dev/tty$VCON > /dev/tty$VCON 2>/dev/tty$VCON
+	chvt $VCON
+
+	echo
+	echo "**********************************************************"
+	echo 'Starting Teleflora Kickstart $Revision: 1.18 $'
+	echo "**********************************************************"
+	echo
+	echo
+	echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+	echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+	echo "!!!!"
+	echo "!!!! ERROR! Passport Drive is plugged in as device $DEVICE."
+	echo "!!!! Since the assumption is that the passport drive contains"
+	echo "!!!! backup data and that data could be destroyed by the"
+	echo "!!!! installation, the installation will not proceed."
+	echo "!!!!"
+	echo "!!!! Please unplug the Western Digital Passport device and"
+	echo "!!!! then re-try this kickstart."
+	echo "!!!!"
+	echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+	echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+	echo
+	echo
+	echo "Sleeping for 10 seconds... and then rebooting."
+	echo
+	sleep 10
+	reboot
+fi
+
+%end
+%post 
+
+#Run ksrti.sh on first boot
+
+cat << xxxEOFxxx > /tmp/ksrti.sh
+#!/bin/bash
+LOG="/tmp/ksrti.sh.log"
+/tmp/ksrti_upgrade.sh 2>&1 | tee -a \$LOG
+xxxEOFxxx
+
+cat << xxxEOFxxx > /tmp/ksrti_upgrade.sh
+#!/bin/bash
+# Script to run, just after a kickstart, which will start things rolling.
+cp -fP /usr2/upgrade/localtime /etc/localtime
+cp -f /usr2/upgrade/resolv.conf /etc/resolv.conf
+cp -f /usr2/upgrade/ifcfg-eth0 /etc/sysconfig/network-scripts/.
+cp -f /usr2/upgrade/ifcfg-eth1 /etc/sysconfig/network-scripts/.
+service network restart
+ping -c 1 google.com
+if [ \$? -eq 0 ]; then
+	echo "Internet connection working.....continuing"
+else
+	echo "Internet connection down.....exiting"
+	exit 1
+fi
+echo "\`date\` -- Beginning RTI Upgrade " >/tmp/verify.txt
+mail -s \`cat /usr2/upgrade/hostname\` mgreen@teleflora.com,kpugh@teleflora.com,tshilling@teleflora.com,JMonazym@teleflora.com,tnapier@teleflora.com </tmp/verify.txt
+echo "unicode_stop">/etc/profile.d/term.sh
+chmod +x /etc/profile.d/term.sh
+cd /tmp
+wget http://rtihardware.homelinux.com/ostools/ostools-1.16-latest.tar.gz
+wget http://rtihardware.homelinux.com/t1800/install_java.sh
+wget http://rtihardware.homelinux.com/t1800/backups.config.cloud
+tar xvfz ostools-1.16-latest.tar.gz
+chmod +x /tmp/install_java.sh
+./bin/install-ostools.pl ./ostools-1.16-latest.tar.gz
+/usr2/ostools/bin/rtiuser.pl --add tfsupport
+/usr2/ostools/bin/rtibackup.pl --restore=all --force --upgrade --device=/usr2/upgrade/upgrade_backup.img  --configfile=/tmp/backups.config.cloud
+/tmp/install_java.sh
+/usr2/ostools/bin/updateos.pl --sub-mgr-reg
+/usr/sbin/subscription-manager subscribe
+/usr2/ostools/bin/updateos.pl --configure-grub2
+/usr2/ostools/bin/updateos.pl --ups
+/usr2/ostools/bin/updateos.pl --cupsconf
+# RHEL6 :9100 removal
+sed -i 's/\:9100//g' /etc/cups/printers.conf
+/usr2/ostools/bin/harden_linux.pl --pam
+/usr2/ostools/bin/harden_linux.pl --logging
+/usr2/ostools/bin/harden_linux.pl --ids
+/usr2/ostools/bin/harden_linux.pl --services
+/usr2/ostools/bin/updateos.pl --ospatches
+cd /etc/systemd/system
+wget http://rtihardware.homelinux.com/t1800/blm.service
+wget http://rtihardware.homelinux.com/t1800/bbj.service
+rm -f /etc/init.d/blm
+rm -f /etc/init.d/bbj
+systemctl enable blm.service
+systemctl enable bbj.service
+systemctl enable rti.service
+/usr2/ostools/bin/updateos.pl --hostname=`cat /usr2/upgrade/hostname`
+cp -f /usr2/upgrade/hosts /etc/hosts
+service network restart
+if [[ -s /etc/resolv.conf ]] ; then
+	echo "Fix /etc/resolv.conf"
+fi
+echo "Installing Kaseya....."
+cd /tmp
+wget http://rtihardware.homelinux.com/support/KcsSetup.sh
+chmod +x /tmp/KcsSetup.sh
+/tmp/KcsSetup.sh
+echo "Kaseya installed..."
+systemctl enable smb.service
+systemctl disable NetworkManager.service
+echo "Restoring backups.config...."
+cd /usr2/bbx/config
+cp backups.config.save backups.config
+#wget http://rtihardware.homelinux.com/t1800/termcap
+cd /tmp
+echo "backups.config restored...."
+/usr2/bbx/bin/rtiperms.pl /usr2/bbx
+chmod 700 /home/tfsupport/.ssh
+chown tfsupport:root /home/tfsupport/.ssh/authorized_keys
+chown tfsupport:root /home/tfsupport/.ssh/known_hosts
+chmod 700 /home/tfsupport/.ssh/authorized_keys
+chown tfsupport:rti /home/tfsupport/.*
+rm -f /etc/init.d/os_upgrade
+
+/bin/cat /etc/crontab | /bin/grep -v ksrti > /etc/crontab.tmp
+/bin/rm -f /etc/crontab
+/bin/mv /etc/crontab.tmp /etc/crontab
+rm -f $0
+
+echo "\`date\` -- End RTI Upgrade " >>/tmp/verify.txt
+/tmp/verify.sh
+sleep 30
+reboot
+xxxEOFxxx
+
+cat << xxxEOFxxx >> /tmp/verify.sh
+echo "--------------------">>/tmp/verify.txt
+echo "ifconfig results....">>/tmp/verify.txt
+ifconfig >>/tmp/verify.txt
+echo "--------------------">>/tmp/verify.txt
+echo "etc/hosts ....">>/tmp/verify.txt
+cat /etc/hosts >>/tmp/verify.txt
+echo "--------------------">>/tmp/verify.txt
+echo "etc/resolve.conf .....">>/tmp/verify.txt
+cat /etc/resolv.conf >>/tmp/verify.txt
+echo "--------------------">>/tmp/verify.txt
+echo "netstat results....">>/tmp/verify.txt
+netstat -rn >>/tmp/verify.txt
+echo "--------------------">>/tmp/verify.txt
+echo "etc/samba/smb.conf .....">>/tmp/verify.txt
+cat /etc/samba/smb.conf >>/tmp/verify.txt
+echo "--------------------">>/tmp/verify.txt
+echo "usr2/basis/basis.lic .....">>/tmp/verify.txt
+cat /usr2/basis/basis.lic >>/tmp/verify.txt
+echo "--------------------">>/tmp/verify.txt
+echo "/etc/hosts.allow">>/tmp/verify.txt
+cat /etc/hosts.allow >>/tmp/verify.txt
+echo "--------------------">>/tmp/verify.txt
+mail -s \`cat /usr2/upgrade/hostname\` mgreen@teleflora.com,kpugh@teleflora.com,tshilling@teleflora.com,JMonazym@teleflora.com,tnapier@teleflora </tmp/verify.txt
+xxxEOFxxx
+
+cd /tmp
+chmod +x /tmp/*.sh
+chmod +x /tmp/*.pl
+
+#/usr/bin/chage -d 0 root
+echo "@reboot root /bin/bash /tmp/ksrti.sh" >> /etc/crontab
+
+%end
+
+%packages
+@Base
+#@Core
+java
+samba
+cups
+#compat-libtermcap.x86_64
+minicom
+elinks
+telnet
+mc
+glibc
+mutt
+samba-client
+slang
+#compat-libstdc++-33
+curl
+sendmail
+glibc.i686
+strace
+dvd+rw-tools
+dialog
+firstboot
+mtools
+cdrecord
+fetchmail
+net-snmp
+vlock
+sysstat
+ntp
+procps
+e2fsprogs
+audit
+expect
+ksh
+nmap
+uuid
+libuuid
+screen
+dos2unix
+unix2dos
+yum-presto
+ncurses-term
+boost
+biosdevname
+iptables-services
+perl-Digest
+perl-Digest-MD5
+-chrony
+firewalld
+
+%end
