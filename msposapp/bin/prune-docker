@@ -6,13 +6,14 @@ rm -f /var/tmp/centos7*xz
 rm -f /var/tmp/daisy*xz
 rm -f /var/tmp/rti*xz
 rm -f ./ipsec*
-docker container stop $(docker container ps -a -q)
+[ -f .container ] && docker container stop $(docker container ps -a -q)
 docker system prune --all
-find ../.. -name ".*" -type f -exec rm -f {} \;
+find . -name ".*" -type f -exec rm -f {} \;
+find ../.. -name ".envtype" -type f -exec rm -f {} \;
 yum clean all
 systemctl restart docker
-userdel tfpos-${SHOPCODE}-tfsupport
-userdel tfpos-${SHOPCODE}
+[ -d /home/tfpos-${SHOPUSER}-tfsupport ] && userdel tfpos-${SHOPCODE}-tfsupport
+[ -d /home/tfpos-${SHOPUSER} ] && userdel tfpos-${SHOPCODE}
 rm -rf /home/tfpos-${SHOPCODE}*
 rm -rf /var/mail/tfpos-${SHOPCODE}*
 [ -f .container ] && rm .container
