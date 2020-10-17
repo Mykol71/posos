@@ -1,11 +1,9 @@
 #!/bin/bash
 
 TFCLOUD_VERSION="2.0"
-
 # verify root
 ID=$(/usr/bin/id -u)
 [ $ID -ne 0 ] && echo "You must be root to run $0." && exit 1
-
 ROOTDIR="$(pwd)"
 export ROOTDIR
 [ ! -d /backups ] && mkdir /backups
@@ -13,27 +11,18 @@ export ROOTDIR
 trap '' 2
 while :; do
     LGGRN='\033[1;32m'
-   BLUE='\033[1;34m'
-#    BLUE=''
+    BLUE='\033[1;34m'
     GREY='\033[0;37m'
-#    CYAN='\033[1;36m'
     CYAN=''
     NC='\033[0m'
     clear
-
-HOSTNAME=`hostname`
-
-#    echo -e "${GREY}mspos ${TFCLOUD_VERSION}  -  ${HOSTNAME}  -  $(date +'%x %l:%M %p')  -  Patched: `date -r /var/log/yum.log`  -  `dmidecode | grep Product | grep -v Not | cut -d: -f2 | sed -e 's/\ //' | head -1`  -  `cat /etc/redhat-release`  ${NC}"
-echo -e "${GREY}$(date +'%x %l:%M %p')${NC}"
+    HOSTNAME=`hostname`
+    echo -e "${GREY}$(date +'%x %l:%M %p')${NC}"
     printf '\u250f''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\n'
-#    printf '\u2503'🌷${GREY}' $(hostname)'${NC}'\n'
-echo -e "\u2503${BLUE} @ ${NC}`[ -f ./msposapp/.envtype ] && cat ./msposapp/.envtype || echo -e Not Installed`${NC}"
+    echo -e "\u2503${BLUE} @ ${NC}`[ -f ./msposapp/.envtype ] && cat ./msposapp/.envtype || echo -e Not Installed`${NC}"
     printf '\u2503'${LGGRN}' )~ '${GREY}`dmidecode | grep Product | grep -v Not | cut -d: -f2 | sed -e 's/\ //'`${NC}'\n'
     printf '\u2503''\u2501''\n'
-#echo -e "\u2503 ${HOSTNAME} ${NC}"
-#echo -e "\u2503 Type      : `dmidecode | grep Product | grep -v Not | cut -d: -f2 | sed -e 's/\ //' | head -1`${NC}"
-printf '\u2503'" Free Space:${NC} $(df -h /backups | tail -1 | awk '{print $4}')"'\n'
-##echo -e "\u2503 Patchd: `date -r /var/log/yum.log`${NC}"
+    printf '\u2503'" Free Space:${NC} $(df -h /backups | tail -1 | awk '{print $4}')"'\n'
     printf '\u2503''\n'
     printf '\u2503''\033[1m'"---"'\n'
     printf '\u2503''\033[1m'" 1.\033[0m Data"'\n'
@@ -46,7 +35,6 @@ printf '\u2503'" Free Space:${NC} $(df -h /backups | tail -1 | awk '{print $4}')
     printf '\u2503''\033[1m'" r.\033[0m Readme"'\n'
     printf '\u2503''\033[1m'" x.\033[0m Exit"'\n'
     printf '\u2517''\u2501''\n'
-#	echo -ne "${CYAN}Enter selection:${NC} "
 	echo -ne "Enter selection: "
 	read selection
 	case $selection in
