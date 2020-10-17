@@ -48,6 +48,7 @@ profile = pci-dss
 @Base
 samba
 cups
+bash
 minicom
 elinks
 telnet
