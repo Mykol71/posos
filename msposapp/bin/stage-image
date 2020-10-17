@@ -5,12 +5,11 @@ echo -n "daisy or rti?: "
 read POSTYPE
 [ "$POSTYPE" == "daisy" ] && VER="10.1.21" && POSDIR="d"
 [ "$POSTYPE" == "rti" ] && VER="16.1.3" && POSDIR="usr2"
-#[ "$POSIP" == "" ] && echo -n "POS IP " && read POSIP
 echo -n "SHOPCODE: "
 read SHOPCODE
 echo ${SHOPCODE}>.shopcode
 
-#get IP
+#get POS IP
 POSIP=`/usr/sbin/ifconfig eth1 | grep broad | sed -e 's/    //g' | cut -d ' ' -f2`
 echo $POSIP > .posip
 
@@ -18,7 +17,7 @@ echo $POSIP > .posip
 useradd -b /home tfpos-${SHOPCODE}
 useradd -b /home tfpos-${SHOPCODE}-tfsupport
 
-#add profile changes to outerhost
+#add profile changes to container
 [ "`grep 172.17.0.2 /home/tfpos-${SHOPCODE}/.bash_profile`" == "" ] && echo "ssh daisy@172.17.0.2" >> /home/tfpos-${SHOPCODE}/.bash_profile
 [ "`grep 172.17.0.2 /home/tfpos-${SHOPCODE}-tfsupport/.bash_profile`" == "" ] && echo "ssh tfsupport@172.17.0.2" >> /home/tfpos-${SHOPCODE}-tfsupport/.bash_profile
 
@@ -26,14 +25,13 @@ useradd -b /home tfpos-${SHOPCODE}-tfsupport
 CONTAINER=`docker run -d -it --name=${SHOPCODE}.teleflora.com --rm --privileged -v "/home/tfpos-${SHOPCODE}/${POSDIR}:/${POSDIR}" -v /sys/fs/cgroup:/sys/fs/cgroup:ro -w="/${POSDIR}" -i ${OS}7-${POSTYPE}-${VER} /usr/sbin/init`
 echo ${CONTAINER}>.container
 
-#configure the second nic for host networking by passing eth1 through to the container
+#isolate POS IP to the container
 ./pipework --direct-phys eth1 ${CONTAINER} ${POSIP}/24@192.168.222.1
 
-#copy over media
+#copy over staging media
 [ "$POSTYPE" == "daisy" ] && cp /home/daisy/*.iso /home/tfpos-$SHOPCODE/$POSDIR/. && cp /home/daisy/*.gz /home/tfpos-$SHOPCODE/$POSDIR/. &&  cp /home/daisy/*.sh /home/tfpos-$SHOPCODE/$POSDIR/.
 [ "$POSTYPE" == "rti" ] && cp /home/rti/ostools-1.15-latest.tar.gz /home/tfpos-$SHOPCODE/$POSDIR/. 
 
-#changed from /bin to /usr/bin at some point. Created link to avoid problems with other scripts and programs.
 docker exec $CONTAINER ln -s /usr/bin /bin
 
 #lang set
@@ -65,7 +63,7 @@ docker exec $CONTAINER hostnamectl set-hostname ${SHOPCODE}.teleflora.com 2>/dev
 #move off hosts.deny
 docker exec $CONTAINER mv /etc/hosts.deny /etc/hosts.deny.orig
 
-#install vpn software
+#install vpn software into container
 docker exec $CONTAINER yum -y install epel-release
 docker exec $CONTAINER yum -y install strongswan NetworkManager-strongswan strongswan-libipsec xl2tpd shellinabox
 
@@ -74,30 +72,27 @@ docker exec $CONTAINER yum -y install strongswan NetworkManager-strongswan stron
 #docker cp ./istar.rpm ${CONTAINER}:/tmp
 #docker exec $CONTAINER rpm -i /tmp/istar.rpm
 
-#create store vpn if desired
+#create container vpn if desired
 echo -n "Create Primary VPN for this POS? (y/n): "
 read PRIMARY_VPN
 [ "$PRIMARY_VPN" == "y" ] && ./create_vpn
 
-#add container hostname to /etc/hosts
-#echo "172.17.0.2	${SHOPCODE} ${SHOPCODE}.teleflora.com">>/etc/hosts
-
-#start services
+#start services on container
 docker exec $CONTAINER systemctl start crond
 docker exec $CONTAINER systemctl start sendmail
 docker exec $CONTAINER chkconfig on crond
 docker exec $CONTAINER chkconfig on sendmail
 
-#update OS
+#update OS on container
 docker exec $CONTAINER yum -y update
 
-#start shellinabox in container
+#start shellinabox on container
 #docker exec $CONTAINER /usr/local/bin/shellinaboxd -s /:SSH -p 80 -b
 
-#save/export container
+#save container
 docker commit $CONTAINER $SHOPCODE.teleflora.com
 
-#Done
+#done
 echo "---"
 echo "${OS}7-$POSTYPE-$SHOPCODE instance is ready!"
 echo "---"
