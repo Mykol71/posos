@@ -69,7 +69,7 @@ docker exec $CONTAINER mv /etc/hosts.deny /etc/hosts.deny.orig
 
 #install vpn software
 docker exec $CONTAINER yum -y install epel-release
-docker exec $CONTAINER yum -y install strongswan strongswan-libipsec
+docker exec $CONTAINER yum -y install strongswan strongswan-libipsec xl2tpd
 
 #install receipt printer drivers
 #docker cp ./istar.ppd ${CONTAINER}:/etc/cups/ppd
@@ -79,7 +79,7 @@ docker exec $CONTAINER yum -y install strongswan strongswan-libipsec
 #create store vpn if desired
 echo -n "Create Primary VPN for this POS? (y/n): "
 read PRIMARY_VPN
-[ "$PRIMARY_VPN" == "y" ] && ./create_vpn && docker exec ${CONTAINER} strongswan start
+[ "$PRIMARY_VPN" == "y" ] && ./create_vpn
 
 #add container hostname to /etc/hosts
 #echo "172.17.0.2	${SHOPCODE} ${SHOPCODE}.teleflora.com">>/etc/hosts

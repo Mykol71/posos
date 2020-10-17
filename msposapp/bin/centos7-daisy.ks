@@ -22,7 +22,7 @@ network --bootproto=dhcp --activate --onboot=on
 shutdown
 bootloader --disable
 #lang en_US.UTF-8
-lang en_US.UTF-8  --addsupport=en_US,en
+lang en_US  --addsupport=en_US:UTF-8,en
 auth  --useshadow --passalgo=sha512
 firewall --enabled --ssh  --trust=eth0
 firstboot --disable
@@ -46,32 +46,6 @@ profile = pci-dss
 # Package setup
 %packages --excludedocs --instLangs=en --nocore
 @Base
-bind-utils
-bash
-yum
-vim-minimal
-centos-release
-less
--kernel*
--*firmware
--firewalld-filesystem
--os-prober
--gettext*
--GeoIP
--bind-license
--freetype
-iputils
-iproute
-systemd
-rootfiles
--libteam
--teamd
-tar
-passwd
-yum-utils
-yum-plugin-ovl
-firewalld
-java
 samba
 cups
 minicom
@@ -114,7 +88,6 @@ biosdevname
 iptables-services
 perl-Digest
 perl-Digest-MD5
-deltarpm
 -chrony
 %end
 %post --log=/anaconda-post.log
@@ -166,8 +139,8 @@ localedef -v -c -i en_US -f UTF-8 en_US.UTF-8
 #rm -rf /tmp/ks-script*
 #rm -rf /etc/sysconfig/network-scripts/ifcfg-*
 # do we really need a hardware database in a container?
-rm -rf /etc/udev/hwdb.bin
-rm -rf /usr/lib/udev/hwdb.d/*
+#rm -rf /etc/udev/hwdb.bin
+#rm -rf /usr/lib/udev/hwdb.d/*
 
 ## Systemd fixes
 # no machine-id by default.

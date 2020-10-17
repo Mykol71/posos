@@ -73,9 +73,13 @@ chmod 666 ipsec.*
 # copy produced config files to container
 docker cp ipsec.conf "${CONTAINER}:/etc/strongswan/ipsec.conf"
 docker cp ipsec.secrets "${CONTAINER}:/etc/strongswan/ipsec.secrets"
+docker cp vpn_client.sh "${CONTAINER}:/etc/strongswan/vpn_client.sh"
 docker exec ${CONTAINER} chmod 600 /etc/strongswan/ipsec.secrets
+docker exec ${CONTAINER} /etc/strongswan/vpn_client.sh init
 
-echo "VPN Connection Created."
+# starting vpn connection in container.
+docker exec ${CONTAINER} /etc/strongswan/vpn_client.sh start
+echo "VPN Connection Started."
 fi
 else
 echo "Nothing to do."

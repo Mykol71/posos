@@ -10,6 +10,4 @@ else
   exit 1
 fi
 
-docker exec $CONTAINER strongswan start
-
-#wget -qO- http://ipv4.icanhazip.com; echo
+docker exec $CONTAINER /etc/strongswan/vpn_client.sh start

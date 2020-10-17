@@ -15,5 +15,6 @@ fi
 docker exec $CONTAINER strongswan stop
 docker exec $CONTAINER rm /etc/strongswan/ipsec.conf
 docker exec $CONTAINER rm /etc/strongswan/ipsec.secrets
+docker exec $CONTAINER rm /etc/strongswan/vpn_client.sh
 rm -f ./ipsec.conf
 rm -f ./ipsec.secrets
