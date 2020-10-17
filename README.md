@@ -12,11 +12,22 @@ TO DO -
 -------
 
 - tfsupport CS keys and auth style?
+- create isos repo
+- admin maintenance menu
+- Patch method of these menus.
+- add restore snapshot link stuff.
+- match rti staging added packages to daisys.
+- install; set server hostname.
+- tfrsync.pl change to not require only numbers for 8 char ID.
+- ostools RH8 work around for now?
+- add RH8 build repo option.
+- install; add tfsupport ssh keys.
+- 
 
 
 - Replace daisy console screens with pts equivs.
 - POS instance user removal upon shutdown.
-- Updated ipsec.conf format for Strongswan.
+- Updated Strongswan config for ipsec.
 - Scrub and condence code.
 - shellinabox config.
 - missing character map piece for daisy.
@@ -28,15 +39,29 @@ TO DO -
 - Add istar rpm to both POS systems.
 - Daisy function keys.
 - logging and error capturing.
-- Ask for shop code when staging, not installing.
-- Ask for container IP when staging, not installing.
-- Patch method of these menus.
 - 
 
 -- For Documentation
 - Pic updates.
 - Add custom data import.
 -  
+
+-- Credits
+- GET LINKS
+- shellinabox
+- pipework
+- ksstuff
+- docker
+- centos
+- teleflora
+- epel
+- 
+
+-- information
+- Security related
+- PCI council
+- openscap
+- 
 
 
 SOME DAY:
