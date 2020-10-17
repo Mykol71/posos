@@ -2,28 +2,24 @@
 
 ID=`/usr/bin/id -u`
         [ $ID -ne 0 ]  && echo "You must sudo to run $0." && exit
-echo "Enter Code:"
+echo "Name (Ex: mykdev-202001010400):"
 read -p ""
 SHOPCODE=$REPLY
-if [ ${#SHOPCODE} != 8 ] ; then
-echo "Shop Code must be 8 characters."
-exit
-fi
-[ -d /backups/tfrsync-$SHOPCODE ] && echo "Cloud account with that shop code already exists!" && exit
+[ -d /backups/$SHOPCODE ] && echo "Cloud account already exists!" && exit
 echo "Enter Public Key:"
 read -p "" 
 KEY=$REPLY
-useradd -b /backups tfrsync-$SHOPCODE
-mkdir /backups/tfrsync-$SHOPCODE/.ssh
-chown tfrsync-$SHOPCODE:tfrsync-$SHOPCODE /backups/tfrsync-$SHOPCODE/.ssh
-chmod 700 /backups/tfrsync-$SHOPCODE/.ssh 
-echo "command=\"/backups/tfrsync-$SHOPCODE/tfrsync\" $KEY">/backups/tfrsync-$SHOPCODE/.ssh/authorized_keys
-chown tfrsync-$SHOPCODE:tfrsync-$SHOPCODE /backups/tfrsync-$SHOPCODE/.ssh/authorized_keys
-chmod 644 /backups/tfrsync-$SHOPCODE/.ssh/authorized_keys
-echo "Cloud account tfrsync-$SHOPCODE created."
+useradd -b /backups $SHOPCODE
+mkdir /backups/$SHOPCODE/.ssh
+chown $SHOPCODE:$SHOPCODE /backups/$SHOPCODE/.ssh
+chmod 700 /backups/$SHOPCODE/.ssh 
+echo "command=\"/backups/$SHOPCODE/tfrsync\" $KEY">/backups/$SHOPCODE/.ssh/authorized_keys
+chown $SHOPCODE:$SHOPCODE /backups/$SHOPCODE/.ssh/authorized_keys
+chmod 644 /backups/$SHOPCODE/.ssh/authorized_keys
+echo "Cloud account $SHOPCODE created."
 echo "Is Subscriber? y/n"
 read -p ""
 if [ "$REPLY" == "y" ] ; then
-touch /backups/tfrsync-$SHOPCODE/paying_customer
-echo "Cloud account tfrsync-$SHOPCODE is now a subscriber."
+touch /backups/$SHOPCODE/paying_customer
+echo "Cloud account $SHOPCODE is now a subscriber."
 fi
