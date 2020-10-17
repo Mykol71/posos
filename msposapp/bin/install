@@ -20,9 +20,9 @@ ID=$(/usr/bin/id -u)
 [ ! -d /home/daisy ] && useradd daisy
 [ ! -d /home/rti ] && useradd rti
 cd ../../ostools
-tar cvfz ./ostools-1.15-latest.tar.gz .
-cp ./ostools-1.15-latest.tar.gz /home/daisy
-cp ./ostools-1.15-latest.tar.gz /home/rti
+tar cvfz ./ostools-1.15-latest.tar.gz ..
+cp ../ostools-1.15-latest.tar.gz /home/daisy
+cp ../ostools-1.15-latest.tar.gz /home/rti
 cd -
 
 # add POS media to POS users home folders
