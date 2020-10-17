@@ -21,9 +21,9 @@ TO DO -
 - tfsupport CS keys and auth style?
 - create isos repo
 - admin maintenance menu
-- Patch method of these menus.
+- Patch method for these menus.
 - add restore snapshot link stuff.
-- match rti staging added packages to daisys.
+- match rti staging added packages to daisy.
 - install; set server hostname.
 - tfrsync.pl change to not require only numbers for 8 char ID.
 - ostools RH8 work around for now?
@@ -42,7 +42,7 @@ TO DO -
 - Scrub and condence code.
 - shellinabox config.
 - missing character map piece for daisy.
-- Combine ks files from both POS systems into one.
+- Combine base OS ks files from both POS systems into one.
 - Sanity checks. EX: don't allow selection of stage if one is already staged.
 - examples of cron jobs to backup for different situations.
 - Build RTI QA example for management.
