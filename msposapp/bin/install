@@ -4,7 +4,12 @@
 ID=$(/usr/bin/id -u)
 [ $ID -ne 0 ] && echo "You must be root to run $0." && exit 1
 
+#get environment name
+[ ! -f ../.envtype ] && echo -n "Env Name: " && read ENVTYPE && echo "$ENVTYPE" >../.envtype && cp -f ../.envtype ../../.
+
+#switch from enforcing to permissive selinux
 # Add tfsupport to sudoers, if not there.
+[ "`ls /home | grep tfsupport`" == "" ] && useradd tfsupport
 [ "`grep tfsupport /etc/sudoers`" == "" ] && echo "tfsupport        ALL=(ALL)       NOPASSWD: ALL">>/etc/sudoers
 
 # add tfsupport usr and generate keys folder, if not there.
@@ -24,9 +29,6 @@ cd -
 cp -f ../isos/*daisy* /home/daisy
 cp -f ../isos/*rti* /home/rti
 
-#Environment Name
-[ ! -f ../.envtype ] && echo -n "Env Name: " && read ENVTYPE && echo "$ENVTYPE" >../.envtype && cp -f ../.envtype ../../.
-
 #switch from enforcing to permissive selinux
 sed -i 's/enforcing/permissive/' /etc/selinux/config
 setenforce 0
@@ -34,7 +36,7 @@ setenforce 0
 #make sure password auth is on
 sed -i 's/PasswordAuthentication\ no/PasswordAuthentication\ yes/' /etc/ssh/sshd_config
 
-#install required packages
+#install required base packages
 yum clean all
 yum -y install net-tools yum-langpacks gtk3 ksh wget firewalld tigervnc-server-minimal mailx nmap time bridge-utils docker device-mapper-libs device-mapper-event-libs ntp lorax anaconda-tui unzip expect httpd mod_ssl openssl-devel pam-devel zlib-devel autoconf automake libtool openssl11-devel openssl11-static 
 
@@ -72,7 +74,14 @@ find . -name "*recon.sh" -exec cp -f {} /usr/local/bin/. \;
 # make backups folder if its not there.
 [ ! -d /backups ] && mkdir /backups
 
-# configure and start shellinabox
+# configure and start shellinabox (browser based ssh)
+echo "USER=shellinabox">/etc/sysconfig/shellinaboxd
+echo "GROUP=shellinabox">>/etc/sysconfig/shellinaboxd
+echo "CERTDIR=/var/lib/shellinabox">>/etc/sysconfig/shellinaboxd
+echo "PORT=15022">>/etc/sysconfig/shellinaboxd
+echo "OPTS="-s /:SSH --user-css Reverse:-black-on-white.css,Normal:+green-on-black.css"">>/etc/sysconfig/shellinaboxd
+systemctl start shellinaboxd
+systemctl enable shellinaboxd
  
 # lastly, update everything
 yum -y update
