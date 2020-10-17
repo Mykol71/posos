@@ -53,10 +53,10 @@ find . -name "*monthname.sh" -exec cp -f {} /usr/local/bin/. \;
 find . -name "*recon.sh" -exec cp -f {} /usr/local/bin/. \;
 
 # make ssh folder if not there, and copy authorized keys from centos user
-[ ! -d /home/tfsupport/.ssh ] && mkdir /home/tfsupport/.ssh && chown -R tfsupport:tfsupport /home/tfsupport/.ssh && chmod 700 /home/tfsupport/.ssh
-[ ! -f /home/tfsupport/.ssh/authorized_keys ] && cp -f /home/centos/.ssh/authorized_keys /home/tfsupport/.ssh/authorized_keys && chown tfsupport:tfsupport /home/tfsupport/.ssh/authorized_keys
+[ -d /home/centos ] && mkdir /home/tfsupport/.ssh && chown -R tfsupport:tfsupport /home/tfsupport/.ssh && chmod 700 /home/tfsupport/.ssh
+[ -f /home/centos/.ssh/authorized_keys ] && cp -f /home/centos/.ssh/authorized_keys /home/tfsupport/.ssh/authorized_keys && chown tfsupport:tfsupport /home/tfsupport/.ssh/authorized_keys
 [ ! -d /home/${SUDO_USER}/.ssh ] && mkdir /home/${SUDO_USER}/.ssh && chown ${SUDO_USER}:${SUDO_USER} /home/${SUDO_USER}/.ssh && chmod 700 /home/${SUDO_USER}/.ssh
-[ ! -f /home/${SUDO_USER}/.ssh/authorized_keys ] && cp -f /home/centos/.ssh/authorized_keys /home/${SUDO_USER}/.ssh/authorized_keys && chown ${SUDO_USER}:${SUDO_USER} /home/${SUDO_USER}/.ssh/authorized_keys
+[ ! -f /home/centos/.ssh/authorized_keys ] && cp -f /home/centos/.ssh/authorized_keys /home/${SUDO_USER}/.ssh/authorized_keys && chown ${SUDO_USER}:${SUDO_USER} /home/${SUDO_USER}/.ssh/authorized_keys
  
 # Add Admin Menu to current user and tfsupports .bash_profile to be exec on login
 [ "`grep posos /home/${SUDO_USER}/.bash_profile`" == "" ] && echo "cd posos" >> /home/${SUDO_USER}/.bash_profile && echo "sudo ./MENU" >>/home/${SUDO_USER}/.bash_profile
@@ -75,6 +75,6 @@ echo ""
 echo "Done!"
 
 # if the system has not been rebooted after install, then do so.
-[ ! -f _msposapp ] && echo "The system will reboot in 10 secs......please log back in with the same credentials." && touch _msposapp && sleep 10 && reboot
+[ "`ifconfig | grep eth1`" == "" ] && echo "The system will reboot in 10 secs......please log back in with the same credentials." && touch _msposapp && sleep 10 && reboot
 
 exit 0
