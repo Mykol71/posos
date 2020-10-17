@@ -19,11 +19,8 @@ ID=$(/usr/bin/id -u)
 # add pos system users, packages ostools, and copy ostools archive into place.
 [ ! -d /home/daisy ] && useradd daisy
 [ ! -d /home/rti ] && useradd rti
-cd ../../ostools
-tar cvfz ostools-1.15-latest.tar.gz *
-cp -f ostools-1.15-latest.tar.gz /home/daisy
-cp -f ostools-1.15-latest.tar.gz /home/rti
-cd -
+cp -f ../../ostools/ostools-1.15-latest.tar.gz /home/daisy
+cp -f ../../ostools/ostools-1.15-latest.tar.gz /home/rti
 
 # add POS media to POS users home folders
 cp -f ../isos/*daisy* /home/daisy

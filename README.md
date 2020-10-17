@@ -14,6 +14,32 @@ Sample crontab for daily backups, rotating each week:
 
 0 0 * * 7 tfrsync.pl --cloud --backup=all --rsync-account=tfrsync-00000007 --cloud-server=iflorist.myk.green --force-rsync-account
 
+Sample tfrsync account scenerios:
+---
+[tfsupport@01222222 ~]$ ls -ltr /home
+
+total 4
+
+drwx------. 3 daisy               daisy                165 Oct 17 09:32 daisy
+
+drwx------. 5 tfsupport           daisy               4096 Oct 17 09:37 tfsupport
+
+drwx------. 3 sunday-01202001     sunday-01202001       88 Oct 17 09:43 sunday-01202001
+
+drwx------. 3 monday-01202001     monday-01202001       88 Oct 17 09:47 monday-01202001
+
+drwx------. 3 tuesday-01202001    tuesday-01202001      88 Oct 17 09:48 tuesday-01202001
+
+drwx------. 3 wednesday-01202001  wednesday-01202001    88 Oct 17 09:48 wednesday-01202001
+
+drwx------. 3 wednesday-012020010 wednesday-012020010   88 Oct 17 09:49 wednesday-012020010
+
+drwx------. 3 mykdev-20201017     mykdev-20201017       88 Oct 17 09:50 mykdev-20201017
+
+drwx------. 3 mykdev-01222222     mykdev-01222222       88 Oct 17 09:51 mykdev-01222222
+
+[tfsupport@01222222 ~]$ 
+
 
 TO DO -
 -------
