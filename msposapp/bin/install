@@ -4,9 +4,6 @@
 ID=$(/usr/bin/id -u)
 [ $ID -ne 0 ] && echo "You must be root to run $0." && exit 1
 
-#Set Host User
-HOST_USER=`echo $SUDO_USER`
-
 # Add tfsupport to sudoers, if not there.
 [ "`grep tfsupport /etc/sudoers`" == "" ] && echo "tfsupport        ALL=(ALL)       NOPASSWD: ALL">>/etc/sudoers
 
@@ -18,15 +15,14 @@ HOST_USER=`echo $SUDO_USER`
 [ ! -d /home/daisy ] && useradd daisy
 [ ! -d /home/rti ] && useradd rti
 cd ../../ostools
-tar cvfz ./ostools-latest.tar.gz .
-cp ./ostools-latest.tar.gz /home/daisy
-cp ./ostools-latest.tar.gz /home/rti
+tar cvfz ./ostools-1.15-latest.tar.gz .
+cp ./ostools-1.15-latest.tar.gz /home/daisy
+cp ./ostools-1.15-latest.tar.gz /home/rti
 cd -
-cp ../isos/*daisy* /home/daisy
-cp ../isos/*rti* /home/rti
 
 # add POS media to POS users home folders
-# DO THIS
+cp -f ../isos/*daisy* /home/daisy
+cp -f ../isos/*rti* /home/rti
 
 #Environment Name
 [ ! -f ../.envtype ] && echo -n "Env Name: " && read ENVTYPE && echo "$ENVTYPE" >../.envtype && cp -f ../.envtype ../../.
@@ -40,7 +36,7 @@ sed -i 's/PasswordAuthentication\ no/PasswordAuthentication\ yes/' /etc/ssh/sshd
 
 #install required packages
 yum clean all
-yum -y install net-tools yum-langpacks gtk3 ksh wget firewalld tigervnc-server-minimal mailx nmap time bridge-utils docker device-mapper-libs device-mapper-event-libs ntp lorax anaconda-tui unzip expect httpd mod_ssl openssl-devel pam-devel zlib-devel autoconf automake libtool openssl11-devel openssl11-static
+yum -y install net-tools yum-langpacks gtk3 ksh wget firewalld tigervnc-server-minimal mailx nmap time bridge-utils docker device-mapper-libs device-mapper-event-libs ntp lorax anaconda-tui unzip expect httpd mod_ssl openssl-devel pam-devel zlib-devel autoconf automake libtool openssl11-devel openssl11-static 
 
 # sync time
 ntpdate pool.ntp.org
@@ -76,7 +72,7 @@ find . -name "*recon.sh" -exec cp -f {} /usr/local/bin/. \;
 # make backups folder if its not there.
 [ ! -d /backups ] && mkdir /backups
 
-# start shellinabox
+# configure and start shellinabox
  
 # lastly, update everything
 yum -y update

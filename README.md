@@ -29,6 +29,10 @@ TO DO -
 - ostools RH8 work around for now?
 - add RH8 build repo option.
 - install; add tfsupport ssh keys.
+- physical media iso creation/download option?
+- add spacewalk setup/integration.
+- check on security/cvs info on patches and notifications with spacewalk.
+- migrate kickstart files to spacewalk.
 - 
 
 
