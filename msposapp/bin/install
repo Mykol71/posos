@@ -21,6 +21,9 @@ HOST_USER=`echo $SUDO_USER`
 sed -i 's/enforcing/permissive/' /etc/selinux/config
 setenforce 0
 
+#make sure password auth is on
+sed -i 's/PasswordAuthentication\ no/PasswordAuthentication\ yes/' /etc/ssh/sshd_config
+
 #install required packages
 yum clean all
 yum -y install net-tools yum-langpacks gtk3 ksh wget firewalld tigervnc-server-minimal mailx nmap time bridge-utils docker device-mapper-libs device-mapper-event-libs ntp lorax anaconda-tui unzip expect httpd mod_ssl openssl-devel pam-devel zlib-devel autoconf automake libtool openssl11-devel openssl11-static
@@ -64,11 +67,9 @@ find . -name "*recon.sh" -exec cp -f {} /usr/local/bin/. \;
 # lastly, update everything
 yum -y update
  
-echo ""
-echo ""
 echo "Done!"
 
 # if the system has not been rebooted after install, then do so.
-[ "`ifconfig | grep eth1`" == "" ] && echo "The system will reboot in 10 secs......please log back in with the same credentials." && touch _msposapp && sleep 10 && reboot
+[ ! -f _msposapp ] && echo "The system will reboot in 10 secs......please log back in with the same credentials." && touch _msposapp && sleep 10 && reboot
 
 exit 0
