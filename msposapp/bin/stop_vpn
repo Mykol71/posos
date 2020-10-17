@@ -11,4 +11,4 @@ else
 fi
 
 # disconnect
-docker exec $CONTAINER strongswan stop
+docker exec $CONTAINER /etc/strongswan/vpn_client.sh stop
