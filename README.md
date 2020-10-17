@@ -11,6 +11,9 @@ Sample crontab for daily backups, rotating each week:
 TO DO -
 -------
 
+- tfsupport CS keys and auth style?
+
+
 - Replace daisy console screens with pts equivs.
 - POS instance user removal upon shutdown.
 - Updated ipsec.conf format for Strongswan.

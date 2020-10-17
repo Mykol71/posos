@@ -14,6 +14,20 @@ HOST_USER=`echo $SUDO_USER`
 [ ! -d /home/tfsupport ] && useradd tfsupport
 [ ! -d /home/tfsupport/keys ] && mkdir /home/tfsupport/keys && chown tfsupport:tfsupport /home/tfsupport/keys
 
+# add pos system users, packages ostools, and copy ostools archive into place.
+[ ! -d /home/daisy ] && useradd daisy
+[ ! -d /home/rti ] && useradd rti
+cd ../../ostools
+tar cvfz ./ostools-latest.tar.gz .
+cp ./ostools-latest.tar.gz /home/daisy
+cp ./ostools-latest.tar.gz /home/rti
+cd -
+cp ../isos/*daisy* /home/daisy
+cp ../isos/*rti* /home/rti
+
+# add POS media to POS users home folders
+# DO THIS
+
 #Environment Name
 [ ! -f ../.envtype ] && echo -n "Env Name: " && read ENVTYPE && echo "$ENVTYPE" >../.envtype && cp -f ../.envtype ../../.
 

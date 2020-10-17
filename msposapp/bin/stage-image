@@ -32,8 +32,6 @@ echo ${CONTAINER}>.container
 #copy over media
 [ "$POSTYPE" == "daisy" ] && cp /home/daisy/*.iso /home/tfpos-$SHOPCODE/$POSDIR/. && cp /home/daisy/*.gz /home/tfpos-$SHOPCODE/$POSDIR/. &&  cp /home/daisy/*.sh /home/tfpos-$SHOPCODE/$POSDIR/.
 [ "$POSTYPE" == "rti" ] && cp /home/rti/ostools-1.15-latest.tar.gz /home/tfpos-$SHOPCODE/$POSDIR/. 
-cp ./shellinaboxd /home/tfpos-$SHOPCODE/$POSDIR/.
-docker exec $CONTAINER mv ./shellinaboxd /usr/local/bin
 
 #changed from /bin to /usr/bin at some point. Created link to avoid problems with other scripts and programs.
 docker exec $CONTAINER ln -s /usr/bin /bin
