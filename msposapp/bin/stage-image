@@ -65,7 +65,7 @@ docker exec $CONTAINER mv /etc/hosts.deny /etc/hosts.deny.orig
 
 #install vpn software into container
 docker exec $CONTAINER yum -y install epel-release
-docker exec $CONTAINER yum -y install strongswan NetworkManager-strongswan strongswan-libipsec xl2tpd shellinabox
+docker exec $CONTAINER yum -y install strongswan NetworkManager-strongswan strongswan-libipsec xl2tpd shellinabox libreswan
 
 #install receipt printer drivers
 #docker cp ./istar.ppd ${CONTAINER}:/etc/cups/ppd
@@ -80,8 +80,8 @@ read PRIMARY_VPN
 #start services on container
 docker exec $CONTAINER systemctl start crond
 docker exec $CONTAINER systemctl start sendmail
-docker exec $CONTAINER chkconfig on crond
-docker exec $CONTAINER chkconfig on sendmail
+docker exec $CONTAINER systemctl enable  crond
+docker exec $CONTAINER chkconfig enable sendmail
 
 #update OS on container
 docker exec $CONTAINER yum -y update

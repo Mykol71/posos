@@ -103,6 +103,7 @@ printf '\u2517''\u2501''\n'
 	p)
 		cd $ROOTDIR/bin
 		./prune-docker
+		CONTAINER=`cat ./bin/.container 2>/dev/null`
 		echo -ne "${CYAN}Press enter to continue..${NC}"
 		read
 		cd -

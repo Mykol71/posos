@@ -6,6 +6,8 @@ rm -f /var/tmp/centos7*xz
 rm -f /var/tmp/daisy*xz
 rm -f /var/tmp/rti*xz
 rm -f ./ipsec*
+rm -f ./xl2tpd.conf
+rm -f ./options.xl2tpd
 [ -f .container ] && docker container stop $(docker container ps -a -q)
 docker system prune --all
 find . -name ".*" -type f -exec rm -f {} \;

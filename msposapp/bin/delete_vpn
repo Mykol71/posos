@@ -12,9 +12,10 @@ else
   exit 1
 fi
 
-docker exec $CONTAINER strongswan stop
+docker exec $CONTAINER /etc/strongswan/vpn_client.sh stop
 docker exec $CONTAINER rm /etc/strongswan/ipsec.conf
 docker exec $CONTAINER rm /etc/strongswan/ipsec.secrets
-docker exec $CONTAINER rm /etc/strongswan/vpn_client.sh
 rm -f ./ipsec.conf
 rm -f ./ipsec.secrets
+rm -f ./xl2tpd.conf
+rm -f ./options.xl2tpd
