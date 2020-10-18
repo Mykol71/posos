@@ -75,7 +75,7 @@ find . -name "*recon.sh" -exec cp -f {} /usr/local/bin/. \;
 echo "USER=shellinabox">/etc/sysconfig/shellinaboxd
 echo "GROUP=shellinabox">>/etc/sysconfig/shellinaboxd
 echo "CERTDIR=/var/lib/shellinabox">>/etc/sysconfig/shellinaboxd
-echo "PORT=15022">>/etc/sysconfig/shellinaboxd
+echo "PORT=443">>/etc/sysconfig/shellinaboxd
 echo "OPTS="-s /:SSH --user-css Reverse:-black-on-white.css,Normal:+green-on-black.css"">>/etc/sysconfig/shellinaboxd
 systemctl start shellinaboxd
 systemctl enable shellinaboxd

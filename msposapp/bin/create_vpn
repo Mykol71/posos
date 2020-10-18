@@ -86,7 +86,7 @@ pppoptfile = /etc/ppp/options.xl2tpd
 length bit = yes 
 xxxEOFxxx
 
-cat << xxxEOF > options.xl2tpd
+cat << xxxEOFxxx > options.xl2tpd
 ipcp-accept-local
 ipcp-accept-remote
 ms-dns  8.8.8.8
@@ -105,12 +105,12 @@ xxxEOFxxx
 chmod 666 ipsec.*
 
 # copy produced config files to container
-docker cp ipsec.conf "${CONTAINER}:/etc/strongswan/ipsec.conf"
-docker cp ipsec.secrets "${CONTAINER}:/etc/strongswan/ipsec.secrets"
-docker cp xl2tpd.conf "${CONTAINER}:/etc/strongswan/xl2tpd.conf"
-docker cp options.xl2tpd "${CONTAINER}:/etc/strongswan/options.xl2tpd"
+docker cp ./ipsec.conf "${CONTAINER}:/etc/strongswan/ipsec.conf"
+docker cp ./ipsec.secrets "${CONTAINER}:/etc/strongswan/ipsec.secrets"
+docker cp ./xl2tpd.conf "${CONTAINER}:/etc/strongswan/xl2tpd.conf"
+docker cp ./options.xl2tpd "${CONTAINER}:/etc/strongswan/options.xl2tpd"
 docker exec ${CONTAINER} chmod 600 /etc/strongswan/ipsec.secrets
-docker cp vpn_client.sh "${CONTAINER}:/etc/strongswan/vpn_client.sh"
+docker cp ./vpn_client.sh "${CONTAINER}:/etc/strongswan/vpn_client.sh"
 
 # configure vpn connections.
 docker exec ${CONTAINER} /etc/strongswan/vpn_client.sh init
