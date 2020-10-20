@@ -152,6 +152,7 @@ TO DO -
 -- Scripts
 X fix backup scripts for account name.
 - tfsupport CS keys and auth style?
+- match daisy package installation timing to rti's.
 X create isos repo
 - admin maintenance menu
 - Patch method for these menus.
@@ -172,7 +173,7 @@ X POS instance user removal upon shutdown.
 ---> Updated Strongswan config for ipsec.
 - Scrub and condence code.
 0 shellinabox config.
-- missing character map piece for daisy.
+- missing lang setting for daisy.
 - Combine base OS ks files from both POS systems into one.
 - Sanity checks. EX: don't allow selection of stage if one is already staged.
 X examples of cron jobs to backup for different situations.
@@ -182,9 +183,16 @@ X Test install on physical hardware. (It should not matter if it is an AWS insta
 - Daisy function keys.
 - logging and error capturing.
 X create ostools subrepo.
-- optional server-wide repo (instead of rtihardware.homelinux.com)
+- optional server-wide local repo (instead of rtihardware.homelinux.com)
 X create kickstart file repo. 
 - add ostools documentation (perldoc).
+- admin scripts; add usb_build_media and dvd_build scripts.
+- 
+
+-- ostools
+- bbj8 install upgrade during --rti14 of updateos.pl.
+- rhel/centos8 awareness.
+- configure perdoc for documentation.
 - 
 
 -- Documentation
