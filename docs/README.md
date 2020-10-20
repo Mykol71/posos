@@ -119,9 +119,10 @@ Press enter to continue..
 ```
 
 
-Sample container crontab for daily backups, rotating each week:
----
 ```
+Sample container crontab for daily backups, rotating each week -
+----------------------------------------------------------------
+
 0 0 * * 1 tfrsync.pl --cloud --backup=all --rsync-account=tfrsync-00000001 --cloud-server=iflorist.myk.green --force-rsync-account
 0 0 * * 2 tfrsync.pl --cloud --backup=all --rsync-account=tfrsync-00000002 --cloud-server=iflorist.myk.green --force-rsync-account
 0 0 * * 3 tfrsync.pl --cloud --backup=all --rsync-account=tfrsync-00000003 --cloud-server=iflorist.myk.green --force-rsync-account
@@ -131,9 +132,10 @@ Sample container crontab for daily backups, rotating each week:
 0 0 * * 7 tfrsync.pl --cloud --backup=all --rsync-account=tfrsync-00000007 --cloud-server=iflorist.myk.green --force-rsync-account
 ```
 
-Sample account name scenerios:
----
 ```
+Sample account name scenerios -
+-------------------------------
+
 drwx------. 3 sunday-01202001     sunday-01202001       88 Oct 17 09:43 sunday-01202001
 drwx------. 3 monday-01202001     monday-01202001       88 Oct 17 09:47 monday-01202001
 drwx------. 3 tuesday-01202001    tuesday-01202001      88 Oct 17 09:48 tuesday-01202001
@@ -181,8 +183,8 @@ X Test install on physical hardware. (It should not matter if it is an AWS insta
 X create ostools subrepo.
 - optional server-wide repo (instead of rtihardware.homelinux.com)
 X create kickstart file repo. 
--
-
+- add ostools documentation (perldoc).
+- 
 
 -- Documentation
 - Pic updates.
