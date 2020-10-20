@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# 
+# CREATE_VPN.SH
+#  
 # verify root
 ID=`/usr/bin/id -u`
 [ $ID -ne 0 ] && echo "You must be root to run $0." && exit 1
@@ -13,7 +16,8 @@ else
 fi
 [ ./.posip ] && POSIP="`cat ./.posip`"
 
-# gather user input
+# gather user input.
+## example padss requirement info.
 INPUTS="LOCATION_NAME STORE_PUBLIC STORE_NET PRESHAREDKEY"
 POS_CLOUD_PUBLIC=`docker exec ${CONTAINER} wget -qO- http://ipv4.icanhazip.com`
 SHOPCODE=`cat .shopcode`
@@ -102,13 +106,21 @@ proxyarp
 connect-delay 5000
 xxxEOFxxx
 
+cat << xxxEOFxxx > strongswan.conf
+charon {
+  	load = random nonce aes sha1 sha2 curve25519 hmac stroke kernel-netlink socket-default updown
+        load_modular = yes
+        plugins {
+                include strongswan.d/charon/*.conf
+        }
+}
+xxxEOFxxx
+
 chmod 666 ipsec.*
 
-# copy produced config files to container
+# copy produced config files and vpn_client.sh to container.
 docker cp ./ipsec.conf "${CONTAINER}:/etc/strongswan/ipsec.conf"
 docker cp ./ipsec.secrets "${CONTAINER}:/etc/strongswan/ipsec.secrets"
-docker cp ./xl2tpd.conf "${CONTAINER}:/etc/strongswan/xl2tpd.conf"
-docker cp ./options.xl2tpd "${CONTAINER}:/etc/strongswan/options.xl2tpd"
 docker exec ${CONTAINER} chmod 600 /etc/strongswan/ipsec.secrets
 docker cp ./vpn_client.sh "${CONTAINER}:/etc/strongswan/vpn_client.sh"
 

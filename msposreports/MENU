@@ -32,6 +32,10 @@ while :; do
     printf '\u2503''\033[1m'" 1.\033[0m Summary"'\n'
     printf '\u2503''\033[1m'" 2.\033[0m Detail"'\n'
     printf '\u2503''\n'
+    printf '\u2503''\033[1m'"--- POSOS"'\n'
+    printf '\u2503''\033[1m'" 11.\033[0m Script Tasks"'\n'
+    printf '\u2503''\033[1m'" 12.\033[0m PA-DSS Specific Changes"'\n'
+    printf '\u2503''\n'
     printf '\u2503''\033[1m'" x.\033[0m Exit"'\n'
     printf '\u2517''\u2501''\n'
 	echo -ne "Enter selection: "
@@ -49,6 +53,20 @@ while :; do
 		cd $ROOTDIR/bin
 		./tfcloudaccountdetail.sh
 		tr '|' '\t' < /tmp/TU_STATS_LINUX_Cloud_Backup_Detail.txt
+                echo -ne "${CYAN}Press enter to continue..${NC}"
+		read
+		cd -
+		;;
+	11)
+		cd $ROOTDIR/bin
+		./posos_tasks.sh 
+                echo -ne "${CYAN}Press enter to continue..${NC}"
+                read
+                cd -
+                ;;
+	12)
+		cd $ROOTDIR/bin
+		./posos_padss.sh
                 echo -ne "${CYAN}Press enter to continue..${NC}"
 		read
 		cd -
