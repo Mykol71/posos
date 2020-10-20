@@ -188,6 +188,8 @@ printf '\u2517''\u2501''\n'
 		;;
 	r)
 		cat ./README.md | more
+		echo -ne "Press enter to continue..${NC}"
+		read
 		;;
 	x) exit ;;
 	*) ;;
