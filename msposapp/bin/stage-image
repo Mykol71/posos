@@ -9,90 +9,86 @@ echo -n "SHOPCODE: "
 read SHOPCODE
 echo ${SHOPCODE}>.shopcode
 
-#get POS IP
+# get POS IP
 POSIP=`/usr/sbin/ifconfig eth1 | grep broad | sed -e 's/    //g' | cut -d ' ' -f2`
 echo $POSIP > .posip
 
-#add POS users
+# add POS users
 useradd -b /home tfpos-${SHOPCODE}
 useradd -b /home tfpos-${SHOPCODE}-tfsupport
 
-#add profile changes to container
+# add profile changes to container
 [ "`grep 172.17.0.2 /home/tfpos-${SHOPCODE}/.bash_profile`" == "" ] && echo "ssh daisy@172.17.0.2" >> /home/tfpos-${SHOPCODE}/.bash_profile
 [ "`grep 172.17.0.2 /home/tfpos-${SHOPCODE}-tfsupport/.bash_profile`" == "" ] && echo "ssh tfsupport@172.17.0.2" >> /home/tfpos-${SHOPCODE}-tfsupport/.bash_profile
 
-#start container
+# start container
 CONTAINER=`docker run -d -it --name=${SHOPCODE}.teleflora.com --rm --privileged -v "/home/tfpos-${SHOPCODE}/${POSDIR}:/${POSDIR}" -v /sys/fs/cgroup:/sys/fs/cgroup:ro -w="/${POSDIR}" -i ${OS}7-${POSTYPE}-${VER} /usr/sbin/init`
 echo ${CONTAINER}>.container
 
-#isolate POS IP to the container
+# isolate POS IP to the container
 ./pipework --direct-phys eth1 ${CONTAINER} ${POSIP}/24@192.168.222.1
 
-#copy over staging media
+# copy over staging media
 [ "$POSTYPE" == "daisy" ] && cp /home/daisy/*.iso /home/tfpos-$SHOPCODE/$POSDIR/. && cp /home/daisy/*.gz /home/tfpos-$SHOPCODE/$POSDIR/. &&  cp /home/daisy/*.sh /home/tfpos-$SHOPCODE/$POSDIR/.
 [ "$POSTYPE" == "rti" ] && cp /home/rti/ostools-1.15-latest.tar.gz /home/tfpos-$SHOPCODE/$POSDIR/. 
 
 docker exec $CONTAINER ln -s /usr/bin /bin
 
-#lang set
+# lang set
 docker exec $CONTAINER echo LANG=en_US.UTF-8 >/etc/locale.conf
 
-#Make loop back device in container so we can mount isos inside the container
-docker exec $CONTAINER mknod /dev/loop b 7 0
-
-#install ostools
+# install ostools
 docker exec $CONTAINER tar xvfz ./ostools-1.15-latest.tar.gz
 docker exec $CONTAINER ./bin/install-ostools.pl ./ostools-1.15-latest.tar.gz --noharden-linux
 
-#configure system hostname
+# configure system hostname
 docker exec $CONTAINER hostnamectl set-hostname ${SHOPCODE}.teleflora.com 2>/dev/null
 
-#prepare for daisy
+# prepare for daisy
 [ "$POSTYPE" == "daisy" ] && docker exec $CONTAINER ./bin/updateos.pl --daisy8
 
-#install daisy
+# install daisy
 [ "$POSTYPE" == "daisy" ] && docker exec $CONTAINER mkdir /mnt/cdrom
 [ "$POSTYPE" == "daisy" ] && docker exec $CONTAINER mount -o loop daisy_10.1.22_rhel7.iso /mnt/cdrom
 [ "$POSTYPE" == "daisy" ] && docker exec $CONTAINER cp /mnt/cdrom/install-daisy.pl .
 [ "$POSTYPE" == "daisy" ] && docker exec $CONTAINER ./install-daisy.pl /d/daisy
 [ "$POSTYPE" == "daisy" ] && docker exec $CONTAINER umount /mnt/cdrom
 
-#remove console gttys for daisy because this is a cloud server
+# remove console gttys for daisy because this is a cloud server
 [ "$POSTYPE" == daisy ] && docker exect $CONTAINER rm -f /etc/systemd/system/*tty* 2>/dev/null
 
-#move off hosts.deny
+# move off hosts.deny
 docker exec $CONTAINER mv /etc/hosts.deny /etc/hosts.deny.orig
 
-#install vpn software into container
+# install vpn software into container
 docker exec $CONTAINER yum -y install epel-release
-docker exec $CONTAINER yum -y install strongswan NetworkManager-strongswan strongswan-libipsec shellinabox libreswan
+docker exec $CONTAINER yum -y install strongswan strongswan-libipsec shellinabox libreswan
 
-#install receipt printer drivers
-#docker cp ./istar.ppd ${CONTAINER}:/etc/cups/ppd
-#docker cp ./istar.rpm ${CONTAINER}:/tmp
-#docker exec $CONTAINER rpm -i /tmp/istar.rpm
+# install receipt printer drivers
+docker cp ./istar.ppd ${CONTAINER}:/etc/cups/ppd
+docker cp ./istar.rpm ${CONTAINER}:/tmp
+docker exec $CONTAINER rpm -i /tmp/istar.rpm
 
-#create container vpn if desired
+# create container vpn if desired
 echo -n "Create Primary VPN for this POS? (y/n): "
 read PRIMARY_VPN
 [ "$PRIMARY_VPN" == "y" ] && ./create_vpn
 
-#start services on container
+# start services on container
 docker exec $CONTAINER systemctl start crond
 docker exec $CONTAINER systemctl start sendmail
 docker exec $CONTAINER systemctl enable  crond
 docker exec $CONTAINER systemctl enable sendmail
 
-#update OS on container
+# update OS on container
 docker exec $CONTAINER yum -y update
 
-#start shellinabox on container
+# start shellinabox on container
 #docker exec $CONTAINER /usr/local/bin/shellinaboxd -s /:SSH -p 80 -b
 
-#save container
+# save container
 docker commit $CONTAINER $SHOPCODE.teleflora.com
 
-#done
 echo "---"
 echo "${OS}7-$POSTYPE-$SHOPCODE instance is ready!"
 echo "---"
