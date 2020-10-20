@@ -10,5 +10,5 @@ userdel tfpos-${SHOPCODE}-tfsupport
 userdel tfpos-${SHOPCODE}
 rm -rf /home/tfpos-${SHOPCODE}*
 rm -rf /var/mail/tfpos-${SHOPCODE}*
-rm .container
-rm .shopcode
+rm -f .container
+rm -f .shopcode
