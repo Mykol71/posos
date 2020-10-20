@@ -71,7 +71,7 @@ while :; do
                 cd -
                 ;;
 	r)
-		cat ./README.md | more
+		cat ./docs/README.md | more
                 echo -ne "Press enter to continue..${NC}"
                 read
 		;;
