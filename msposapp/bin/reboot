@@ -1,6 +1,0 @@
-#!/usr/bin/bash
-
-docker container stop $(docker container ps -a -q)
-docker container prune
-rm -f .container
-shutdown -r now

@@ -146,6 +146,8 @@ drwx------. 3 mykdev-01222222     mykdev-01222222       88 Oct 17 09:51 mykdev-0
 ```
 TO DO -
 -------
+
+-- Scripts
 X fix backup scripts for account name.
 - tfsupport CS keys and auth style?
 X create isos repo
@@ -180,21 +182,19 @@ X create ostools subrepo.
 - optional server-wide repo (instead of rtihardware.homelinux.com)
 X create kickstart file repo. 
 -
-```
 
 
--- For Documentation
+-- Documentation
 - Pic updates.
 - Add custom data import information.
 - Update design diagram. (genericize cloude/physical server)
 -  
+```
 
 
-
-Dependancies -
+Dependencies -
 --------------
 
-- GET LINKS
 - shellinabox
 - pipework
 - ksstuff
@@ -213,20 +213,24 @@ Information -
 - PCI council
 - openscap
 - Strongswan ipsec/ikev1 example configuration: 
+
 https://www.strongswan.org/testing/testresults/ikev1/net2net-psk/
+
 -  
 
 
 
-SOME DAY -
-----------
+SOME DAY / PIPEDREAM -
+----------------------
 
 -- Linux
 - Multiple containers on the same host.
 - Promote it all to CentOS8.
 - Integrate with its own CentOS repo if desired.
+- Build container from hosts anaconda.ks file.
+-
 
--- Windows?
+-- Windows
 - Hyper-V config for running Windows.
 - Windows installation.
 - Dove POS installation.
