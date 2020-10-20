@@ -31,7 +31,7 @@ sed -i 's/enforcing/permissive/' /etc/selinux/config
 setenforce 0
 
 #make sure password auth is on
-sed -i 's/PasswordAuthentication\ no/PasswordAuthentication\ yes/' /etc/ssh/sshd_config
+#sed -i 's/PasswordAuthentication\ no/PasswordAuthentication\ yes/' /etc/ssh/sshd_config
 
 #install required base packages
 yum clean all
