@@ -31,31 +31,18 @@ function getVPNGateWay(){
 GW_ADDR=$(getGateWay)  
 
 function init(){
-	cp ./ipsec.conf /etc/strongswan/strongswan.d/charon/.
-	cp ./ipsec.secrets /etc/
+	cp /etc/strongswan/ipsec.conf /etc/.
+	cp /etc/strongswan/ipsec.secrets /etc/.
 }
 
 function start(){
-#sed -i "s/^lns =.*/lns = $VPN_ADDR/g" /etc/xl2tpd/xl2tpd.conf
-#sed -i "s/plutoopts=.*/plutoopts=\"--interface=$IFACE\"/g" /etc/ipsec.conf
-#sed -i "s/left=.*$/left=$(getIP $IFACE)/g" /etc/ipsec.conf
-#sed -i "s/right=.*$/right=$VPN_ADDR/g" /etc/ipsec.conf
-#sed -i "s/^.*: PSK/$(getIP $IFACE) $VPN_ADDR : PSK/g" /etc/ipsec.secrets
 	systemctl start strongswan
-	sleep 2    #delay to ensure that IPsec is started before overlaying L2TP
-
-	ipsec auto --up L2TP-PSK                        
-#echo "c vpn-connection" > /var/run/xl2tpd/l2tp-control     
-	sleep 2    #delay again to make that the PPP connection is up.
-
 #ip route add $VPN_ADDR via $GW_ADDR dev $IFACE
 #ip route add default via $(getIP ppp0)
 #ip route del default via $GW_ADDR
 }
 
 function stop(){
-#ipsec auto --down L2TP-PSK
-#echo "d vpn-connection" > /var/run/xl2tpd/l2tp-control
 	systemctl stop strongswan
 	
 	VPN_GW=$(getVPNGateWay)

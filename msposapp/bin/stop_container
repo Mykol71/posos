@@ -1,5 +1,6 @@
 #!/usr/bin/bash
 
+SHOPCODE=`cat .shopcode`
 CONTAINER=`cat .container`
 #docker exec $CONTAINER docker commit
 rm -f ./ipsec*
@@ -10,3 +11,4 @@ userdel tfpos-${SHOPCODE}
 rm -rf /home/tfpos-${SHOPCODE}*
 rm -rf /var/mail/tfpos-${SHOPCODE}*
 rm .container
+rm .shopcode

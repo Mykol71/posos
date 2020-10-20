@@ -155,6 +155,7 @@ X fix backup scripts for account name.
 X create isos repo
 - admin maintenance menu
 - Patch method for these menus.
+X push all package installs to ks portion (except VPN software).
 - add restore snapshot link stuff.
 X match rti staging added packages to daisy.
 X install; set server hostname.
@@ -190,7 +191,8 @@ X create kickstart file repo.
 - Pic updates.
 - Add custom data import information.
 - Update design diagram. (genericize cloude/physical server)
--  
+X Script steps report. 
+-
 ```
 
 

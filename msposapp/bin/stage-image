@@ -81,7 +81,7 @@ read PRIMARY_VPN
 docker exec $CONTAINER systemctl start crond
 docker exec $CONTAINER systemctl start sendmail
 docker exec $CONTAINER systemctl enable  crond
-docker exec $CONTAINER chkconfig enable sendmail
+docker exec $CONTAINER systemctl enable sendmail
 
 #update OS on container
 docker exec $CONTAINER yum -y update

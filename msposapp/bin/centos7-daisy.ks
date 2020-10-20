@@ -44,7 +44,7 @@ profile = pci-dss
 %end
 
 # Package setup
-%packages --excludedocs --instLangs=en --nocore
+%packages --excludedocs --instLangs=en,en_US:UTF-8 --nocore
 @Base
 samba
 cups
@@ -90,6 +90,25 @@ iptables-services
 perl-Digest
 perl-Digest-MD5
 -chrony
+systemd
+openssh-server
+pam
+iptables
+cups
+samba
+net-tools
+ncurses
+ncurses-static
+sudo
+telnet
+wget
+curl
+perl
+java
+libnfsidmap
+perl-Time-Piece
+perl-core
+expect
 %end
 %post --log=/anaconda-post.log
 
