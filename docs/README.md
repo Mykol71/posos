@@ -18,6 +18,105 @@ For users hosting this in AWS or another cloud provider, posos will also create 
 Then, allows you to switch the running container to any of the preproduced rsync backups on that same server within seconds.
 Lastly, for security, compliance, etc., the only 2 repos that are enabled are the core CentOS updates, and the epel repo only long enough to install strongswan (VPN software). No compilers, dev packages etc.
 
+10/19/2020 10:56 PM
+┏━━━━━━━━
+┃ @ Mike's Devel
+┃ )~ m5d.large
+┃━
+┃ Free Space: 994G
+┃
+┃---
+┃ 1. Data
+┃ 2. Containers
+┃ 3. Repos
+┃ 4. Admin
+┃ 5. Reports
+┃
+┃ i. Install
+┃ r. Readme
+┃ x. Exit
+┗━
+Enter selection:
+
+10/19/2020 10:57 PM
+┏━━━━━━━━
+┃ @ Mike's Devel
+┃ )~ Data
+┃━
+┃ Free Space: 994G
+┃
+┃---
+┃ 1. List Accounts
+┃ 2. Create Account
+┃ 3. Change Key
+┃ 4. View Key
+┃ 5. Get Key
+┃ 6. Delete Account
+┃ 7. Is Subscriber?
+┃
+┃ r. Readme
+┃ x. Exit
+┗━
+Enter selection: 1
+tfrsync-01222222 - Daisy   - CentOS - Size on disk: 169M
+tfrsync-00000003 - Daisy   - CentOS - Size on disk: 174M
+tfrsync-00000001 - Daisy   - CentOS - Size on disk: 171M
+tfrsync-00000002 - Daisy   - CentOS - Size on disk: 171M
+tfrsync-00000004 - Daisy   - CentOS - Size on disk: 180M
+tfrsync-00000005 - Daisy   - CentOS - Size on disk: 181M
+tfrsync-00000006 - Daisy   - CentOS - Size on disk: 171M
+tfrsync-00000007 - Daisy   - CentOS - Size on disk: 171M
+Press enter to continue..
+
+10/19/2020 10:59 PM
+┏━━━━━━━━
+┃ @ Mike's Devel
+┃ )~ Containers
+┃━
+┃ Space    : 994G
+┃ Status   : Up 46 hours
+┃ Shopcode : 01222222
+┃ Terminal :
+┃ VPN      :
+┃
+┃--- Container
+┃ 1. Status
+┃ 2. Stop
+┃ 3. Connect
+┃ 4. Print
+┃
+┃---- Images
+┃ 11. List
+┃ 12. Build
+┃ 13. Stage
+┃ 14. Delete
+┃ 15. Data
+┃
+┃----- VPNs
+┃ 111. Status
+┃ 112. Create
+┃ 113. Start
+┃ 114. Stop
+┃ 115. Delete
+┃
+┃--- System
+┃ p. Purge
+┃ i. Install
+┃ r. Readme
+┃ x. Exit
+┗━
+Enter selection: 1
+CONTAINER ID        IMAGE                   COMMAND             CREATED             STATUS              PORTS                                                                               NAMES
+c4bea2f23075        centos7-daisy-10.1.21   "/usr/sbin/init"    46 hours ago        Up 46 hours         22/tcp, 80/tcp, 111/tcp, 443/tcp, 445/tcp, 631/tcp, 4200/tcp, 9100/tcp, 15022/tcp   01222222.teleflora.com
+Press enter to continue..
+
+Enter selection: 11
+REPOSITORY               TAG                 IMAGE ID            CREATED             SIZE
+01222222.teleflora.com   latest              95e26c77178a        46 hours ago        1.71 GB
+centos7-daisy-10.1.21    latest              a6b75ad1fbb2        46 hours ago        1.51 GB
+Press enter to continue..
+
+
 
 Sample container crontab for daily backups, rotating each week:
 ---
@@ -36,7 +135,7 @@ Sample container crontab for daily backups, rotating each week:
 0 0 * * 7 tfrsync.pl --cloud --backup=all --rsync-account=tfrsync-00000007 --cloud-server=iflorist.myk.green --force-rsync-account
 
 
-Sample tfrsync account scenerios:
+Sample account name scenerios:
 ---
 drwx------. 3 sunday-01202001     sunday-01202001       88 Oct 17 09:43 sunday-01202001
 
