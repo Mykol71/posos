@@ -10,6 +10,7 @@ ROOTDIR="$(pwd)"
 export ROOTDIR
 
 CONTAINER=`cat ./bin/.container 2>/dev/null`
+POSIP=`cat ./bin/.posip 2>/dev/null`
 
 trap '' 2
 while :; do
@@ -28,7 +29,7 @@ while :; do
     printf '\u2503'" Space    :${NC} $(df -h /backups | tail -1 | awk '{print $4}')"'\n'
     [ -f ./bin/.container ] && echo -e "\u2503 Status   : `docker ps --format "{{.Status}}" 2>/dev/null`" || echo -e "\u2503 Status   : Not running"
     echo -e "\u2503 Shopcode : `ls /home | grep -v tfsupport | grep tfpos | cut -d- -f2 2>/dev/null`${NC}"
-    [ -f ./bin/.container ] && echo -e "\u2503 Terminal : ${BLUE}https://iflorist.myk.green${NC}" || echo -e "\u2503 Terminal :"
+    [ -f ./bin/.container ] && echo -e "\u2503 Terminal : ${BLUE}http://${POSIP}/${NC}" || echo -e "\u2503 Terminal :"
     [ "$CONTAINER" != "" ] && echo -e "\u2503 VPN      :`docker exec ${CONTAINER} strongswan status | sed -e 's/\ //' | grep === | grep -v Assoc 2>/dev/null`${NC}" || echo -e "\u2503 VPN      :"
 printf '\u2503''\n'
 printf '\u2503''\033[1m'"---\033[0m Container"'\n'
