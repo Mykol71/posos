@@ -18,9 +18,7 @@ while :; do
    CYAN=''
    NC='\033[0m'
    clear
-
     HOSTNAME=`hostname`
-
     echo -e "${GREY}$(date +'%x %l:%M %p')${NC}"
     printf '\u250f''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\n'
     echo -e "\u2503${BLUE} @ ${NC}`[ -f ../msposapp/.envtype ] && cat ../msposapp/.envtype || echo -e Not Installed`${NC}"
@@ -28,11 +26,11 @@ while :; do
     printf '\u2503''\u2501''\n'
     printf '\u2503'" Free Space:${NC} $(df -h /backups | tail -1 | awk '{print $4}')"'\n'
     printf '\u2503''\n'
-    printf '\u2503''\033[1m'"-- Backups"'\n'
+    printf '\u2503''\033[1m'"---\033[0m Backups"'\n'
     printf '\u2503''\033[1m'" 1.\033[0m Summary"'\n'
     printf '\u2503''\033[1m'" 2.\033[0m Detail"'\n'
     printf '\u2503''\n'
-    printf '\u2503''\033[1m'"--- POSOS"'\n'
+    printf '\u2503''\033[1m'"---\033[0m POSOS"'\n'
     printf '\u2503''\033[1m'" 11.\033[0m Script Tasks"'\n'
     printf '\u2503''\033[1m'" 12.\033[0m PA-DSS Specific Changes"'\n'
     printf '\u2503''\n'

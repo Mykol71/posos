@@ -155,7 +155,7 @@ X fix backup scripts for account name.
 - match daisy package installation timing to rti's.
 X create isos repo
 - admin maintenance menu
-- Patch method for these menus.
+- patch method for these menus.
 X push all package installs to ks portion (except VPN software).
 - add restore snapshot link stuff.
 X match rti staging added packages to daisy.
@@ -185,22 +185,21 @@ X Test install on physical hardware. (It should not matter if it is an AWS insta
 X create ostools subrepo.
 - optional server-wide local repo (instead of rtihardware.homelinux.com)
 X create kickstart file repo. 
-- add ostools documentation (perldoc).
 - admin scripts; add usb_build_media and dvd_build scripts.
 - 
 
 -- ostools
 - bbj8 install upgrade during --rti14 of updateos.pl.
 - rhel/centos8 awareness.
-- configure perdoc for documentation.
+- configure perldoc for documentation.
 - 
 
 -- Documentation
-- Pic updates.
 - Add custom data import information.
 - Update design diagram. (genericize cloude/physical server)
 X Script steps report. 
--
+- Seperate readme for each app.
+- 
 ```
 
 
@@ -232,8 +231,8 @@ https://www.strongswan.org/testing/testresults/ikev1/net2net-psk/
 
 
 
-SOME DAY / PIPEDREAM -
-----------------------
+Some Day -
+----------
 
 -- Linux
 - Multiple containers on the same host.
