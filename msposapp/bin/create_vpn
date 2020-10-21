@@ -40,35 +40,40 @@ else
 # configure strongSwan
 echo "Creating VPN Connection......"
 
-echo "# ipsec.conf - strongSwan IPsec configuration file">ipsec.conf
-echo "">>ipsec.conf
-echo "# basic configuration">>ipsec.conf
-echo "config setup">>ipsec.conf
-echo "        charondebug="all"">>ipsec.conf
-echo "        uniqueids=yes">>ipsec.conf
-echo "        strictcrlpolicy=no">>ipsec.conf
-echo "">>ipsec.conf
-echo "# connection to $LOCATION_NAME">>ipsec.conf
-echo "conn ${LOCATION_NAME}">>ipsec.conf
-echo "  keyexchange=ikev1">>ipsec.conf
-echo "  authby=secret">>ipsec.conf
-echo "  left=${POS_CLOUD_PUBLIC}">>ipsec.conf
-echo "  leftsubnet="192.168.222.0/24"">>ipsec.conf
-echo "  right=${STORE_PUBLIC}">>ipsec.conf
-echo "  rightsubnet="${STORE_NET}/24"">>ipsec.conf
-echo "  ike=aes128-sha1-modp1024!">>ipsec.conf
-echo "  esp=aes128-sha1-modp1024!">>ipsec.conf
-echo "  keyingtries=0">>ipsec.conf
-echo "  ikelifetime=1h">>ipsec.conf
-echo "  lifetime=8h">>ipsec.conf
-echo "  dpddelay=30">>ipsec.conf
-echo "  dpdtimeout=120">>ipsec.conf
-echo "  dpdaction=restart">>ipsec.conf
-echo "  auto=start">>ipsec.conf
+cat << xxxEOFxxx > ipsec.conf
+#ipsec.conf - strongSwan IPsec configuration file
 
-echo "# ipsec.secrets - strongSwan IPsec secrets file">ipsec.secrets
-echo "# source destination secret">>ipsec.secrets
-echo "${POS_CLOUD_PUBLIC} ${STORE_PUBLIC} : PSK "${PRESHAREDKEY}"">>ipsec.secrets
+config setup
+
+conn %default
+	ikelifetime=60m
+	keylife=20m
+	rekeymargin=3m
+	keyingtries=1
+	keyexchange=ikev1
+	authby=secret
+
+conn ${LOCATION_NAME}
+	leftid=${POS_CLOUD_PUBLIC}
+	left=192.168.222.1
+	leftsubnet=192.168.222.0/24
+	leftfirewall=yes
+	rightid=${STORE_PUBLIC}
+	right=192.168.22.1
+	rightsubnet=${STORE_NET}
+	ike=aes128-sha1-modp1024!
+	esp=aes128-sha1-modp1024!
+	dpddelay=30
+	dpdtimeout=120
+	dpdaction=restart
+	auto=start
+xxxEOFxxx
+
+cat << xxxEOFxxx > ipsec.secrets
+#ipsec.secrets - strongSwan IPsec secrets file
+
+${POS_CLOUD_PUBLIC} ${STORE_PUBLIC} : PSK "${PRESHAREDKEY}"
+xxxEOFxxx
 
 cat << xxxEOFxxx > strongswan.conf
 charon {
