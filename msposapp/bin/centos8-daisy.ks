@@ -10,7 +10,7 @@
 # by using: cat centos-root.tar.xz | docker import -i imagename
 
 # Basic setup information
-url --url="http://mirrors.kernel.org/centos/8/os/x86_64/"
+url --url="http://mirrors.kernel.org/centos/8/kickstart/x86_64/os/"
 install
 keyboard us
 rootpw --iscrypted $1$b2bDwXkz$ZpKi4Jx7tox779nrUdt8h1

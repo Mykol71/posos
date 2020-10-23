@@ -150,6 +150,9 @@ TO DO -
 -------
 
 -- Scripts
+- add podman suport for RH/CentOS8.
+- local repo for RH/CentOS8.
+- make package/repo changes for RH8/CentOS8.
 X fix backup scripts for account name.
 - tfsupport CS keys and auth style?
 - match daisy package installation timing to rti's.

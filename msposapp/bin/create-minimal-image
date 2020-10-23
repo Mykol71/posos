@@ -1,0 +1,8 @@
+#!/usr/bin/bash
+VERSION=`cat .osversion`
+
+cp -f ./centos${VERSION}-minimal-dockerfile /var/tmp/containers/`date +%Y%m%d`/centos${VERSION}-minimal/docker/Dockerfile
+cp -f /var/tmp/centos${VERSION}-minimal-docker.tar.xz /var/tmp/containers/`date +%Y%m%d`/centos${VERSION}-minimal/docker
+cd /var/tmp/containers/`date +%Y%m%d`/centos${VERSION}-minimal/docker
+docker build --rm -t centos${VERSION}-minimal-10.1.21 .
+cd -

@@ -1,0 +1,34 @@
+FROM scratch
+ADD centos8-minimal-docker.tar.xz /
+LABEL org.label-schema.schema-version = "1.0" \
+    org.label-schema.name="CentOS 8 - Minimal Base Image" \
+    org.label-schema.vendor="CentOS" \
+    org.label-schema.license="GPLv2" \
+    org.label-schema.build-date="20201027"
+MAINTAINER “Mike Green" <mgreen@teleflora.com>
+ENV container centos8-minimal-florist
+RUN yum -y install systemd ; yum clean all; \
+(cd /lib/systemd/system/sysinit.target.wants/; for i in *; do [ $i == \
+systemd-tmpfiles-setup.service ] || rm -f $i; done); \
+rm -f /lib/systemd/system/multi-user.target.wants/*;\
+rm -f /etc/systemd/system/*.wants/*;\
+rm -f /lib/systemd/system/local-fs.target.wants/*; \
+rm -f /lib/systemd/system/sockets.target.wants/*udev*; \
+rm -f /lib/systemd/system/sockets.target.wants/*initctl*; \
+rm -f /lib/systemd/system/basic.target.wants/*;\
+rm -f /usr/lib/tmpfiles.d/systemd-nologin.conf;\
+rm -f /lib/systemd/system/anaconda.target.wants/*;
+RUN yum -y install systemd openssh-server pam iptables cups samba net-tools ncurses ncurses-term sudo telnet wget curl perl java nfs-utils libnfsidmap perl-Digest perl-Digest-MD5 perl-Time-Piece perl-core expect
+VOLUME /sys/fs/cgroup
+VOLUME /d
+RUN systemctl enable sshd
+RUN systemctl enable cups
+RUN systemctl enable smb
+RUN systemctl enable rpcbind
+EXPOSE 22
+EXPOSE 111
+EXPOSE 15022
+EXPOSE 9100
+EXPOSE 445
+EXPOSE 631
+CMD [“/usr/bin/bash”]

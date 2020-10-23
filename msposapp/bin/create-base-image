@@ -1,6 +1,6 @@
 #!/usr/bin/bash
 
-echo -n "daisy or rti?: "
+echo -n "daisy, rti, or minimal?: "
 read POSTYPE
 echo -n "7 or 8?: "
 read VERSION
@@ -19,4 +19,9 @@ if [ "$POSTYPE" == "daisy" ]; then
 ./containerbuild.sh centos${VERSION}-daisy.ks 2>/tmp/build-daisy-container.error.log
 docker image save centos${VERSION}:latest > /var/tmp/centos${VERSION}-daisy.tar.xz
 ./create-daisy-image 2>/tmp/create-daisy-image.error.log
+fi
+if [ "$POSTYPE" == "minimal" ]; then
+./containerbuild.sh centos${VERSION}-minimal.ks 2>/tmp/build-minimal-container.error.log
+docker image save centos${VERSION}:latest > /var/tmp/centos${VERSION}-minimal.tar.xz
+./create-minimal-image 2>/tmp/create-minimal-image.error.log
 fi
