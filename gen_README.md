@@ -15,17 +15,21 @@ So not only have they managed to get their hooks back into development because t
 
 I asked our Windows Architect how he did something to handle that there is no persisted data with containers and he swore there was because he thought Microsoft's blob storage offering was using containers because they name (or use) "container" and a GUID as their ID for blob space. He didnt understand that they are merely using containers and some internal code to access their datastores, to produce the blob storage offering.
 
+So where is the opensource, free, secure, development environment for the OS configuration and installation that has all the nice perks that virtualization brings?
+
 TO DO
 -----
 
 - Genericize server deployment.
+- create seperate volumes for each user in /home and /backups. (so can be preserved of host os upgrades.)
 - Windows vms.
 - Mac vms.
---centos/rh containers.
---ubuntu containers.
---freebsd containers.
+-- command line vm management.
+--centos/rh minimal containers.
+--ubuntu minimal containers.
+--freebsd minimal containers.
 - host-side rhel/centos8 support.
 - package and repo info for rhel/centos8.
-- replace tfrsync.pl with generic rsync commands, or filesystem snapshots.
-- each users container or vm on own filesystem
-
+- replace tfrsync.pl with generic rsync commands, and/or filesystem snapshots.
+- auto schedule backups to self of container?
+- 
