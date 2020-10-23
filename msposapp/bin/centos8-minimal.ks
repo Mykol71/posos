@@ -1,7 +1,7 @@
 # Basic setup information
 install
 keyboard us
-rootpw --lock --iscrypted locked
+rootpw --iscrypted $1$b2bDwXkz$ZpKi4Jx7tox779nrUdt8h1
 timezone --isUtc --nontp UTC
 selinux --enforcing
 firewall --disabled

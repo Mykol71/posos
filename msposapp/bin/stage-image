@@ -1,10 +1,14 @@
 #!/bin/bash
 
-OS=centos
-echo -n "daisy or rti?: "
+
+OSVERSION=`cat .osversion`
+OS="centos${OSVERSION}"
+echo -n "daisy, rti, or minimal?: "
+OSVERSION=`cat .osversion`
 read POSTYPE
-[ "$POSTYPE" == "daisy" ] && VER="10.1.21" && POSDIR="d"
-[ "$POSTYPE" == "rti" ] && VER="16.1.3" && POSDIR="usr2"
+[ "$POSTYPE" == "daisy" ] && VER="-10.1.22" && POSDIR="d"
+[ "$POSTYPE" == "rti" ] && VER="-16.1.3" && POSDIR="usr2"
+[ "$POSTYPE" == "minimal" ] && VER="" && POSDIR="minimal"
 echo -n "SHOPCODE: "
 read SHOPCODE
 echo ${SHOPCODE}>.shopcode
@@ -22,7 +26,7 @@ useradd -b /home tfpos-${SHOPCODE}-tfsupport
 [ "`grep 172.17.0.2 /home/tfpos-${SHOPCODE}-tfsupport/.bash_profile`" == "" ] && echo "ssh tfsupport@172.17.0.2" >> /home/tfpos-${SHOPCODE}-tfsupport/.bash_profile
 
 # start container
-CONTAINER=`docker run -d -it --name=${SHOPCODE}.teleflora.com --rm --privileged -v "/home/tfpos-${SHOPCODE}/${POSDIR}:/${POSDIR}" -v /sys/fs/cgroup:/sys/fs/cgroup:ro -w="/${POSDIR}" -i ${OS}7-${POSTYPE}-${VER} /usr/sbin/init`
+CONTAINER=`docker run -d -it --name=${SHOPCODE}.teleflora.com --rm --privileged -v "/home/tfpos-${SHOPCODE}/${POSDIR}:/${POSDIR}" -v /sys/fs/cgroup:/sys/fs/cgroup:ro -w="/${POSDIR}" -i ${OS}-${POSTYPE}${VER} /usr/sbin/init`
 echo ${CONTAINER}>.container
 
 # isolate POS IP to the container
@@ -38,8 +42,8 @@ docker exec $CONTAINER ln -s /usr/bin /bin
 docker exec $CONTAINER echo LANG=en_US.UTF-8 >/etc/locale.conf
 
 # install ostools
-docker exec $CONTAINER tar xvfz ./ostools-1.15-latest.tar.gz
-docker exec $CONTAINER ./bin/install-ostools.pl ./ostools-1.15-latest.tar.gz --noharden-linux
+[ "$POSTYPE" != "minimal" ] && docker exec $CONTAINER tar xvfz ./ostools-1.15-latest.tar.gz
+[ "$POSTYPE" != "minimal" ] && docker exec $CONTAINER ./bin/install-ostools.pl ./ostools-1.15-latest.tar.gz --noharden-linux
 
 # configure system hostname
 docker exec $CONTAINER hostnamectl set-hostname ${SHOPCODE}.teleflora.com 2>/dev/null
@@ -58,16 +62,16 @@ docker exec $CONTAINER hostnamectl set-hostname ${SHOPCODE}.teleflora.com 2>/dev
 [ "$POSTYPE" == daisy ] && docker exect $CONTAINER rm -f /etc/systemd/system/*tty* 2>/dev/null
 
 # move off hosts.deny
-docker exec $CONTAINER mv /etc/hosts.deny /etc/hosts.deny.orig
+[ "$POSTYPE" != "minimal" ] && docker exec $CONTAINER mv /etc/hosts.deny /etc/hosts.deny.orig
 
 # install vpn software into container
 docker exec $CONTAINER yum -y install epel-release
-docker exec $CONTAINER yum -y install strongswan strongswan-libipsec shellinabox libreswan
+docker exec $CONTAINER yum -y install strongswan strongswan-libipsec libreswan
 
 # install receipt printer drivers
-docker cp ./istar.ppd ${CONTAINER}:/etc/cups/ppd
-docker cp ./istar.rpm ${CONTAINER}:/tmp
-docker exec $CONTAINER rpm -i /tmp/istar.rpm
+#docker cp ./istar.ppd ${CONTAINER}:/etc/cups/ppd
+#docker cp ./istar.rpm ${CONTAINER}:/tmp
+#docker exec $CONTAINER rpm -i /tmp/istar.rpm
 
 # create container vpn if desired
 echo -n "Create Primary VPN for this POS? (y/n): "
@@ -75,10 +79,10 @@ read PRIMARY_VPN
 [ "$PRIMARY_VPN" == "y" ] && ./create_vpn
 
 # start services on container
-docker exec $CONTAINER systemctl start crond
-docker exec $CONTAINER systemctl start sendmail
-docker exec $CONTAINER systemctl enable  crond
-docker exec $CONTAINER systemctl enable sendmail
+[ "$POSTYPE" != "minimal" ] && docker exec $CONTAINER systemctl start crond
+[ "$POSTYPE" != "minimal" ] && docker exec $CONTAINER systemctl start sendmail
+[ "$POSTYPE" != "minimal" ] && docker exec $CONTAINER systemctl enable  crond
+[ "$POSTYPE" != "minimal" ] && docker exec $CONTAINER systemctl enable sendmail
 
 # update OS on container
 docker exec $CONTAINER yum -y update
@@ -92,7 +96,7 @@ docker commit $CONTAINER $SHOPCODE.teleflora.com
 echo "---"
 echo "${OS}7-$POSTYPE-$SHOPCODE instance is ready!"
 echo "---"
-docker exec $CONTAINER ./bin/updateos.pl --version
+[ "$POSTYPE" != "minimal" ] && docker exec $CONTAINER ./bin/updateos.pl --version
 docker exec $CONTAINER cat /etc/redhat-release
 echo "---"
 exit 0
