@@ -83,9 +83,6 @@ systemctl enable shellinaboxd
 # lastly, update everything
 yum -y update
  
-echo "Done!"
-
-# if the system has not been rebooted after install, then do so.
-[ ! -f _msposapp ] && echo "The system will reboot in 10 secs......please log back in with the same credentials." && touch _msposapp && sleep 10 && reboot
+echo "Done. If this was the first install on this machine, please reboot."
 
 exit 0
