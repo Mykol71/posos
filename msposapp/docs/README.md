@@ -75,4 +75,4 @@ Information
 ![](pics/POS%20Cloud.png)
 
 ---------------------------------
-Mike Green - mgreen@teleflora.org
+Mike Green - mgreen@teleflora.com
