@@ -45,12 +45,12 @@ TO DO -
 -------
 
 -- Scripts
-- add podman suport for RH/CentOS8.
+- add podman suport for host-side RH/CentOS8.
 - local repo for RH/CentOS8.
-- make package/repo changes for RH8/CentOS8.
+X make package/repo changes for RH8/CentOS8.
 X fix backup scripts for account name.
 - tfsupport CS keys and auth style?
-- match daisy package installation timing to rti's.
+X match daisy package installation timing to rti's.
 X create isos repo
 - admin maintenance menu
 - patch method for these menus.
@@ -66,12 +66,12 @@ X add RH8 build repo option.
 - add spacewalk setup/integration.
 - check on security/cvs info on patches and notifications with spacewalk.
 - migrate kickstart files to spacewalk.
-- Replace daisy console screens with pts equivs.
+0 Replace daisy console screens with pts equivs.
 X POS instance user removal upon shutdown.
 ---> Updated Strongswan config for ipsec.
-- Scrub and condence code.
+~ Scrub and condence code.
 0 shellinabox config.
-- missing lang setting for daisy.
+X missing lang setting for daisy.
 - Combine base OS ks files from both POS systems into one.
 - Sanity checks. EX: don't allow selection of stage if one is already staged.
 X examples of cron jobs to backup for different situations.
@@ -96,7 +96,7 @@ X create kickstart file repo.
 - Add custom data import information.
 - Update design diagram. (genericize cloude/physical server)
 X Script steps report. 
-- Seperate readme for each app.
+X Seperate readme for each app.
 - 
 ```
 
