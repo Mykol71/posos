@@ -56,7 +56,7 @@ conn %default
 conn ${LOCATION_NAME}
 	leftid=${POS_CLOUD_PUBLIC}
 	left=192.168.222.1
-	leftsubnet=192.168.222.0/24
+	leftsubnet=192.168.222.0
 	leftfirewall=yes
 	rightid=${STORE_PUBLIC}
 	right=192.168.22.1
