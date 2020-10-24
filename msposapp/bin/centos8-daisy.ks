@@ -10,7 +10,6 @@
 # by using: cat centos-root.tar.xz | docker import -i imagename
 
 # Basic setup information
-url --url="http://mirrors.kernel.org/centos/8/kickstart/x86_64/os/"
 install
 keyboard us
 rootpw --iscrypted $1$b2bDwXkz$ZpKi4Jx7tox779nrUdt8h1
@@ -23,15 +22,15 @@ shutdown
 bootloader --disable
 #lang en_US.UTF-8
 lang en_US.UTF-8  --addsupport=en_US,en
-auth  --useshadow --passalgo=sha512
-firewall --enabled --ssh  --trust=eth0
+#auth  --useshadow --passalgo=sha512
+firewall --disable
 firstboot --disable
 logging --level=info
 
-# Repositories to use
-repo --name="CentOS" --baseurl=http://mirrors.kernel.org/centos/8/kickstart/x86_64/os/ --cost=100
-## Uncomment for rolling builds
-repo --name="Updates" --baseurl=http://mirror.centos.org/centos/8/BaseOS/x86_64/os/ --cost=100
+# Repos
+url --url="https://mirrors.edge.kernel.org/centos/8/BaseOS/x86_64/kickstart/"
+repo --name="CentOS" --baseurl=https://mirrors.edge.kernel.org/centos/8/BaseOS/x86_64/kickstart/ --cost=100
+repo --name="Updates" --baseurl=https://mirrors.edge.kernel.org/centos/8/BaseOS/x86_64/os/ --cost=100
 
 # Disk setup
 zerombr
@@ -44,78 +43,38 @@ profile = pci-dss
 %end
 
 # Package setup
-%packages --excludedocs --instLangs=en --nocore
-@Base
-bind-utils
-bash
-yum
-vim-minimal
+%packages --excludedocs --instLangs=en_US --nocore
 centos-release
-less
--kernel*
--*firmware
--firewalld-filesystem
--os-prober
--gettext*
--GeoIP
--bind-license
--freetype
-iputils
-iproute
-systemd
+binutils
+-brotli
+bash
+hostname
 rootfiles
--libteam
--teamd
+coreutils-single
+glibc-minimal-langpack
+vim-minimal
+less
+-gettext*
+-firewalld
+-os-prober*
 tar
-passwd
-yum-utils
-yum-plugin-ovl
-firewalld
-java
-samba
-cups
-minicom
-elinks
-telnet
-mc
-glibc
-mutt
-samba-client
-slang
-curl
-sendmail
-glibc.i686
-strace
-dvd+rw-tools
-dialog
-firstboot
-mtools
-cdrecord
-fetchmail
-net-snmp
-vlock
-sysstat
-ntp
-procps
-e2fsprogs
-audit
-expect
-ksh
-nmap
-uuid
-libuuid
-screen
-dos2unix
-unix2dos
-yum-presto
-ncurses-term
-boost
-biosdevname
-iptables-services
-perl-Digest
-perl-Digest-MD5
-deltarpm
--chrony
+-iptables
+iputils
+-kernel
+-dosfstools
+-e2fsprogs
+-fuse-libs
+-gnupg2-smime
+-libss
+-pinentry
+-shared-mime-info
+-trousers
+-xkeyboard-config
+-xfsprogs
+-qemu-guest-agent
+yum
+-grub\*
+
 %end
 %post --log=/anaconda-post.log
 

@@ -18,13 +18,12 @@ rm -f /lib/systemd/system/sockets.target.wants/*initctl*; \
 rm -f /lib/systemd/system/basic.target.wants/*;\
 rm -f /usr/lib/tmpfiles.d/systemd-nologin.conf;\
 rm -f /lib/systemd/system/anaconda.target.wants/*;
-RUN yum -y install systemd openssh-server pam iptables cups samba nfs net-tools ncurses ncurses-term ncurses-static sudo telnet wget curl perl java nfs-utils libnfsidmap perl-Digest perl-Digest-MD5 perl-Time-Piece perl-core expect
+RUN yum -y install systemd openssh-server pam iptables cups samba net-tools ncurses ncurses-term sudo telnet wget curl perl java libnfsidmap perl-Digest perl-Digest-MD5 perl-Time-Piece perl-core expect
 VOLUME /sys/fs/cgroup
 VOLUME /d
 RUN systemctl enable sshd
 RUN systemctl enable cups
 RUN systemctl enable smb
-RUN systemctl enable rpcbind
 EXPOSE 22
 EXPOSE 111
 EXPOSE 15022
