@@ -6,6 +6,7 @@ OS="centos${OSVERSION}"
 echo -n "daisy, rti, or minimal?: "
 OSVERSION=`cat .osversion`
 read POSTYPE
+[ "$POSTYPE" == "" ] && exit 0
 [ "$POSTYPE" == "daisy" ] && VER="-10.1" && POSDIR="d"
 [ "$POSTYPE" == "rti" ] && VER="-16.1" && POSDIR="usr2"
 [ "$POSTYPE" == "minimal" ] && VER="" && POSDIR="minimal"
@@ -29,6 +30,8 @@ useradd -b /home tfpos-${SHOPCODE}-tfsupport
 CONTAINER=`docker run -d -it --name=${SHOPCODE}.teleflora.com --rm --privileged -v "/home/tfpos-${SHOPCODE}/${POSDIR}:/${POSDIR}" -v /sys/fs/cgroup:/sys/fs/cgroup:ro -w="/${POSDIR}" -i ${OS}-${POSTYPE}${VER} /usr/sbin/init`
 echo ${CONTAINER}>.container
 
+docker exec ${CONTAINER} ln -sf /run/systemd/journal/dev-log /dev/log
+
 # isolate POS IP to the container
 ./pipework --direct-phys eth1 ${CONTAINER} ${POSIP}/24@192.168.222.1
 
@@ -40,6 +43,10 @@ docker exec $CONTAINER ln -s /usr/bin /bin
 
 # lang set
 docker exec $CONTAINER echo LANG=en_US.UTF-8 >/etc/locale.conf
+
+# work around to fool ostools and pos app installs into thinking centos8 is 7.
+[ "$POSTYPE" == "daisy" ] && [ "$OSVERSION" == "8" ] && docker exec ${CONTAINER} cp /etc/centos-release /etc/centos-release.orig
+[ "$POSTYPE" == "daisy" ] && [ "$OSVERSION" == "8" ] && docker cp ./redhat-release-7 ${CONTAINER}:/etc/centos-release 
 
 # install ostools
 [ "$POSTYPE" != "minimal" ] && docker exec $CONTAINER tar xvfz ./ostools-1.15-latest.tar.gz
@@ -58,16 +65,17 @@ docker exec $CONTAINER hostnamectl set-hostname ${SHOPCODE}.teleflora.com 2>/dev
 [ "$POSTYPE" == "daisy" ] && docker exec $CONTAINER cp /mnt/cdrom/install-daisy.pl .
 [ "$POSTYPE" == "daisy" ] && docker exec $CONTAINER ./install-daisy.pl /d/daisy
 [ "$POSTYPE" == "daisy" ] && docker exec $CONTAINER umount /mnt/cdrom
+[ "$POSTYPE" == "daisy" ] && [ "$OSVERSION" == "8" ] && docker exec cp /etc/centos-release.orig /etc/centos-release
 
 # remove console gttys for daisy because this is a cloud server
-[ "$POSTYPE" == daisy ] && docker exect $CONTAINER rm -f /etc/systemd/system/*tty* 2>/dev/null
+[ "$POSTYPE" == "daisy" ] && docker exec $CONTAINER rm -f /etc/systemd/system/*tty* 2>/dev/null
 
 # move off hosts.deny
 [ "$POSTYPE" != "minimal" ] && docker exec $CONTAINER mv /etc/hosts.deny /etc/hosts.deny.orig
 
 # install vpn software into container
 docker exec $CONTAINER yum -y install epel-release
-docker exec $CONTAINER yum -y install strongswan strongswan-libipsec libreswan
+docker exec $CONTAINER yum -y install strongswan strongswan-libipsec libreswan rpm
 
 # install receipt printer drivers
 #docker cp ./istar.ppd ${CONTAINER}:/etc/cups/ppd

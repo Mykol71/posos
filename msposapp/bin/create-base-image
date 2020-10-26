@@ -2,6 +2,7 @@
 
 echo -n "daisy, rti, or minimal?: "
 read POSTYPE
+[ "$POSTYPE" == "" ] && exit 0
 echo -n "7 or 8?: "
 read VERSION
 echo $VERSION > .osversion

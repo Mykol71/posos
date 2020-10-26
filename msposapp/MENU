@@ -70,9 +70,10 @@ printf '\u2517''\u2501''\n'
 		;;
 	2)
 		cd $ROOTDIR/bin
+		./stop_container
 		echo -ne "${CYAN}Press enter to continue..${NC}"
 		read
-		./stop_container
+		cd -
 		;;
 	3)
 		cd $ROOTDIR/bin

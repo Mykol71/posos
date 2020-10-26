@@ -72,6 +72,7 @@ iputils
 -xkeyboard-config
 -xfsprogs
 -qemu-guest-agent
+rpm
 yum
 -grub\*
 
@@ -79,6 +80,8 @@ yum
 %post --log=/anaconda-post.log
 
 mknod /dev/loop0 b 7 0
+
+ln -sf /run/systemd/journal/dev-log /dev/log
 
 #/usr/bin/chage -d 0 root
 

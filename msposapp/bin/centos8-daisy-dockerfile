@@ -21,6 +21,7 @@ rm -f /lib/systemd/system/anaconda.target.wants/*;
 RUN yum -y install systemd openssh-server pam iptables cups samba net-tools ncurses ncurses-term sudo telnet wget curl perl java libnfsidmap perl-Digest perl-Digest-MD5 perl-Time-Piece perl-core expect
 VOLUME /sys/fs/cgroup
 VOLUME /d
+RUN ln -sf /run/systemd/journal/dev-log /dev/log
 RUN systemctl enable sshd
 RUN systemctl enable cups
 RUN systemctl enable smb
