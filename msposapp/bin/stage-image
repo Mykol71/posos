@@ -18,6 +18,9 @@ echo ${SHOPCODE}>.shopcode
 POSIP=`/usr/sbin/ifconfig eth1 | grep broad | sed -e 's/    //g' | cut -d ' ' -f2`
 echo $POSIP > .posip
 
+# get GW
+DEFAULT_GW=`route -n | grep 'UG[ \t]' | awk '{print $2}'`
+
 # add POS users
 useradd -b /home tfpos-${SHOPCODE}
 useradd -b /home tfpos-${SHOPCODE}-tfsupport
@@ -33,7 +36,7 @@ echo ${CONTAINER}>.container
 docker exec ${CONTAINER} ln -sf /run/systemd/journal/dev-log /dev/log
 
 # isolate POS IP to the container
-./pipework --direct-phys eth1 ${CONTAINER} ${POSIP}/24@192.168.222.1
+./pipework --direct-phys eth1 ${CONTAINER} ${POSIP}/24@$DEFAULT_GW
 
 # copy over staging media
 [ "$POSTYPE" == "daisy" ] && cp /home/daisy/*.iso /home/tfpos-$SHOPCODE/$POSDIR/. && cp /home/daisy/*.gz /home/tfpos-$SHOPCODE/$POSDIR/. &&  cp /home/daisy/*.sh /home/tfpos-$SHOPCODE/$POSDIR/.
