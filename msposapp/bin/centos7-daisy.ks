@@ -21,7 +21,6 @@ install
 network --bootproto=dhcp --activate --onboot=on
 shutdown
 bootloader --disable
-#lang en_US.UTF-8
 lang en_US  --addsupport=en_US:UTF-8,en
 auth  --useshadow --passalgo=sha512
 firewall --enabled --ssh  --trust=eth0
@@ -44,11 +43,11 @@ profile = pci-dss
 %end
 
 # Package setup
-%packages --excludedocs --instLangs=en,en_US:UTF-8 --nocore
+%packages --excludedocs --instLangs=en,en_US --nocore
 @Base
 samba
+unicode-ucd
 cups
-bash
 minicom
 elinks
 telnet
@@ -85,30 +84,17 @@ unix2dos
 yum-presto
 ncurses-term
 boost
+boost-locale
 biosdevname
 iptables-services
 perl-Digest
 perl-Digest-MD5
--chrony
 systemd
 openssh-server
 pam
-iptables
-cups
-samba
-net-tools
-ncurses
-ncurses-static
+-chrony
 sudo
-telnet
-wget
-curl
-perl
-java
-libnfsidmap
-perl-Time-Piece
-perl-core
-expect
+yum-langpacks
 %end
 %post --log=/anaconda-post.log
 
@@ -139,18 +125,18 @@ rm -rf /etc/firewalld
 # Lock roots account, keep roots account password-less.
 #passwd -l root
 
-LANG="en_US.utf8"
+LANG="en_US"
 echo "%_install_lang $LANG" > /etc/rpm/macros.image-language-conf
 
-awk '(NF==0&&!done){print "override_install_langs=en_US.utf8\ntsflags=nodocs";done=1}{print}' \
+awk '(NF==0&&!done){print "override_install_langs=en_US\ntsflags=nodocs";done=1}{print}' \
     < /etc/yum.conf > /etc/yum.conf.new
 mv /etc/yum.conf.new /etc/yum.conf
 echo 'container' > /etc/yum/vars/infra
 
 ##Setup locale properly
 # Commenting out, as this seems to no longer be needed
-rm -f /usr/lib/locale/locale-archive
-localedef -v -c -i en_US -f UTF-8 en_US.UTF-8
+#rm -f /usr/lib/locale/locale-archive
+#localedef -v -c -i en_US -f en en_US.UTF-8
 
 ## Remove some things we don't need
 #rm -rf /var/cache/yum/x86_64

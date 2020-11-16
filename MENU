@@ -20,7 +20,8 @@ while :; do
     echo -e "${GREY}$(date +'%x %l:%M %p')${NC}"
     printf '\u250f''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\n'
     echo -e "\u2503${BLUE} @ ${NC}`[ -f ./msposapp/.envtype ] && cat ./msposapp/.envtype || echo -e Not Installed`${NC}"
-    printf '\u2503'${LGGRN}' )~ '${GREY}`dmidecode | grep Product | grep -v Not | cut -d: -f2 | sed -e 's/\ //'`${NC}'\n'
+#    printf '\u2503'${LGGRN}' )~ '${GREY}`dmidecode | grep Product | grep -v Not | cut -d: -f2 | sed -e 's/\ //'`${NC}'\n'
+    printf '\u2503'${LGGRN}' )~ ''\n'
     printf '\u2503''\u2501''\n'
     printf '\u2503'" Free Space:${NC} $(df -h /backups | tail -1 | awk '{print $4}')"'\n'
     printf '\u2503'${GREY}" $(cat /etc/redhat-release | cut -d" " -f1,4)"${NC}'\n'
