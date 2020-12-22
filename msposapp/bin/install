@@ -3,6 +3,9 @@
 ID=$(/usr/bin/id -u)
 [ $ID -ne 0 ] && echo "You must be root to run $0." && exit 1
 
+# set environment name if doesnt exist
+[ ! -f ../.envtype ] && echo -n "Env Name: " && read ENVTYPE && echo "$ENVTYPE" >../.envtype && cp -f ../.envtype ../../.
+
 # Add tfsupport to sudoers, if not there.
 [ "`ls /home | grep tfsupport`" == "" ] && useradd tfsupport
 [ "`grep tfsupport /etc/sudoers`" == "" ] && echo "tfsupport        ALL=(ALL)       NOPASSWD: ALL">>/etc/sudoers

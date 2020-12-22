@@ -45,6 +45,9 @@ TO DO -
 -------
 
 -- Scripts
+- github CLI auth changes.
+- msposapp; data - restore data from backups section to live container.
+- mash code.
 - add podman suport for host-side RH/CentOS8.
 - local repo for RH/CentOS8.
 X make package/repo changes for RH8/CentOS8.
@@ -59,20 +62,15 @@ X push all package installs to ks portion (except VPN software).
 X match rti staging added packages to daisy.
 X install; set server hostname.
 X tfrsync.pl change to not require only numbers for 8 char ID.
-- ostools RH8 work around for now?
 X add RH8 build repo option.
 - install; add tfsupport ssh keys.
 - physical media iso creation/download option?
-- add spacewalk setup/integration.
-- check on security/cvs info on patches and notifications with spacewalk.
 - migrate kickstart files to spacewalk.
 0 Replace daisy console screens with pts equivs.
 X POS instance user removal upon shutdown.
 ---> Updated Strongswan config for ipsec.
-~ Scrub and condence code.
 0 shellinabox config.
 X missing lang setting for daisy.
-- Combine base OS ks files from both POS systems into one.
 - Sanity checks. EX: don't allow selection of stage if one is already staged.
 X examples of cron jobs to backup for different situations.
 - Build RTI QA example for management.
@@ -95,8 +93,9 @@ X create kickstart file repo.
 -- Documentation
 - Add custom data import information.
 - Update design diagram. (genericize cloude/physical server)
-X Script steps report. 
-X Seperate readme for each app.
+- Seperate readme for each app.
+- Document how-tos for backup configuration.
+- Document data import logic.
 - 
 ```
 

@@ -164,7 +164,7 @@ printf '\u2517''\u2501''\n'
 	i)
 		cd $ROOTDIR/bin
 		echo -e "${CYAN}"
-		time ./install_rootless
+		time ./install
 		echo -ne "Press enter to continue..${NC}"
 		read
 		cd -

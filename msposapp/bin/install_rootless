@@ -1,4 +1,4 @@
-#!/usr/bin/bash
+#!/bin/bash
 
 # get environment name
 [ ! -f ../.envtype ] && echo -n "Env Name: " && read ENVTYPE && echo "$ENVTYPE" >../.envtype && cp -f ../.envtype ../../.
