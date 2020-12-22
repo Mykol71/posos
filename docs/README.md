@@ -40,66 +40,6 @@ Lastly, for security, compliance, etc., the only 2 repos that are enabled are th
 Enter selection:
 ```
 
-```
-TO DO -
--------
-
--- Scripts
-- github CLI auth changes.
-- msposapp; data - restore data from backups section to live container.
-- mash code.
-- add podman suport for host-side RH/CentOS8.
-- local repo for RH/CentOS8.
-X make package/repo changes for RH8/CentOS8.
-X fix backup scripts for account name.
-- tfsupport CS keys and auth style?
-X match daisy package installation timing to rti's.
-X create isos repo
-- admin maintenance menu
-- patch method for these menus.
-X push all package installs to ks portion (except VPN software).
-- add restore snapshot link stuff.
-X match rti staging added packages to daisy.
-X install; set server hostname.
-X tfrsync.pl change to not require only numbers for 8 char ID.
-X add RH8 build repo option.
-- install; add tfsupport ssh keys.
-- physical media iso creation/download option?
-- migrate kickstart files to spacewalk.
-0 Replace daisy console screens with pts equivs.
-X POS instance user removal upon shutdown.
----> Updated Strongswan config for ipsec.
-0 shellinabox config.
-X missing lang setting for daisy.
-- Sanity checks. EX: don't allow selection of stage if one is already staged.
-X examples of cron jobs to backup for different situations.
-- Build RTI QA example for management.
-X Test install on physical hardware. (It should not matter if it is an AWS instance or not.)
-- Add istar rpm to both POS systems.
-- Daisy function keys.
-- logging and error capturing.
-X create ostools subrepo.
-- optional server-wide local repo (instead of rtihardware.homelinux.com)
-X create kickstart file repo. 
-- admin scripts; add usb_build_media and dvd_build scripts.
-- 
-
--- ostools
-- bbj8 install upgrade during --rti14 of updateos.pl.
-- rhel/centos8 awareness.
-- configure perldoc for documentation.
-- 
-
--- Documentation
-- Add custom data import information.
-- Update design diagram. (genericize cloude/physical server)
-- Seperate readme for each app.
-- Document how-tos for backup configuration.
-- Document data import logic.
-- 
-```
-
-
 Dependencies -
 --------------
 
@@ -113,7 +53,6 @@ Dependencies -
 - 
 
 
-
 Information -
 -------------
 
@@ -123,25 +62,3 @@ Information -
 - Strongswan ipsec/ikev1 example configuration: 
 
 https://www.strongswan.org/testing/testresults/ikev1/net2net-psk/
-
--  
-
-
-
-Some Day -
-----------
-
--- Linux
-- Multiple containers on the same host.
-- Promote it all to CentOS8.
-- Integrate with its own CentOS repo if desired.
-- Build container from hosts anaconda.ks file.
--
-
--- Windows
-- Hyper-V config for running Windows.
-- Windows installation.
-- Dove POS installation.
-- Web based rdp client.
-- Software VPN
--
