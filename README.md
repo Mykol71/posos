@@ -1,6 +1,14 @@
 posos
 -----
 
+Development Rquirements -
+-------------------------
+- Store mirrors of all dependancies locally (Repos), and work from those mirrors. In the event a dependancy becomes unavailable, remove the external check during the install. (These will become action items to remedy for this app.)
+- Keep "functions" of this app in individual bash scripts. (To simplfy CLI, API, and Web support.)
+- "Public facing" documentation is stored in the docs folder for each application.
+- Internal documentation is in the README in the applications root folder. (Example root folder: ~/posos/msposapp)
+-  
+
 TO DO -
 -------
 
@@ -18,4 +26,7 @@ X create isos repo
 X Test install on physical hardware. (It should not matter if it is an AWS instance or not.)
 - logging and error capturing.
 X create ostools subrepo.
--
+- Seperate server installation routines by app.
+- Prepare for use during an OS migration.
+- Setup ostools documentation.
+-    

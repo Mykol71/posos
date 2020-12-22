@@ -13,4 +13,8 @@ TODO:
 - RTI fix for bbj8.
 - "Data" menu selection.
 - Remove sudo expect dependancies.
+- Support multiple containers on one system.
+- Upgrade strongswan config to latest version requirements.
+- RH8; podman instead of docker.
+- Docker rootless install.
 -  
