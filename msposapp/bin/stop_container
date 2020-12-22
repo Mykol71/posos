@@ -1,10 +1,8 @@
 #!/usr/bin/bash
 
-SHOPCODE=`cat .shopcode`
-CONTAINER=`cat .container`
-#docker exec $CONTAINER docker commit
-rm -f ./ipsec*
-docker container stop $(docker container ps -a -q)
+[ -f .shopcode ] && SHOPCODE=`cat .shopcode`
+[ -f .container ] && CONTAINER=`cat .container`
+docker container stop $CONTAINER
 systemctl restart docker
 userdel tfpos-${SHOPCODE}-tfsupport
 userdel tfpos-${SHOPCODE}

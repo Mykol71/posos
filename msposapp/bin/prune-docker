@@ -1,7 +1,6 @@
 #!/bin/bash
 
-SHOPCODE="`cat .shopcode`"
-CONTAINER="`cat .container`"
+[ -f .shopcode ] && SHOPCODE="`cat .shopcode`"
 rm -rf /var/tmp/containers
 rm -f /var/tmp/centos7*xz
 rm -f /var/tmp/daisy*xz
@@ -19,4 +18,3 @@ systemctl restart docker
 [ -d /home/tfpos-${SHOPCODE} ] && userdel tfpos-${SHOPCODE}
 rm -rf /home/tfpos-${SHOPCODE}*
 rm -rf /var/mail/tfpos-${SHOPCODE}*
-[ -f .container ] && rm .container

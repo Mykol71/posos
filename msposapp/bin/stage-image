@@ -7,9 +7,9 @@ echo -n "daisy, rti, or minimal?: "
 OSVERSION=`cat .osversion`
 read POSTYPE
 [ "$POSTYPE" == "" ] && exit 0
-[ "$POSTYPE" == "daisy" ] && VER="-10.1" && POSDIR="d"
-[ "$POSTYPE" == "rti" ] && VER="-16.1" && POSDIR="usr2"
-[ "$POSTYPE" == "minimal" ] && VER="" && POSDIR="minimal"
+[ "$POSTYPE" == "daisy" ] && POSDIR="d"
+[ "$POSTYPE" == "rti" ] && POSDIR="usr2"
+[ "$POSTYPE" == "minimal" ] && POSDIR="minimal"
 echo -n "SHOPCODE: "
 read SHOPCODE
 echo ${SHOPCODE}>.shopcode
@@ -30,7 +30,7 @@ useradd -b /home tfpos-${SHOPCODE}-tfsupport
 [ "`grep 172.17.0.2 /home/tfpos-${SHOPCODE}-tfsupport/.bash_profile`" == "" ] && echo "ssh tfsupport@172.17.0.2" >> /home/tfpos-${SHOPCODE}-tfsupport/.bash_profile
 
 # start container
-CONTAINER=`docker run -d -it --name=${SHOPCODE}.teleflora.com --rm --privileged -v "/home/tfpos-${SHOPCODE}/${POSDIR}:/${POSDIR}" -v /sys/fs/cgroup:/sys/fs/cgroup:ro -w="/${POSDIR}" -i ${OS}-${POSTYPE}${VER} /usr/sbin/init`
+CONTAINER=`docker run -d -it --name=${SHOPCODE}.teleflora.com --rm --privileged -v "/home/tfpos-${SHOPCODE}/${POSDIR}:/${POSDIR}" -v /sys/fs/cgroup:/sys/fs/cgroup:ro -w="/${POSDIR}" -i ${OS}-${POSTYPE} /usr/sbin/init`
 echo ${CONTAINER}>.container
 
 docker exec ${CONTAINER} ln -sf /run/systemd/journal/dev-log /dev/log

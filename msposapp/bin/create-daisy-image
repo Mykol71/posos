@@ -1,8 +1,0 @@
-#!/usr/bin/bash
-VERSION=`cat .osversion`
-
-cp -f ./centos${VERSION}-daisy-dockerfile /var/tmp/containers/`date +%Y%m%d`/centos${VERSION}-daisy/docker/Dockerfile
-cp -f /var/tmp/centos${VERSION}-daisy-docker.tar.xz /var/tmp/containers/`date +%Y%m%d`/centos${VERSION}-daisy/docker
-cd /var/tmp/containers/`date +%Y%m%d`/centos${VERSION}-daisy/docker
-docker build --rm -t centos${VERSION}-daisy-10.1 .
-cd -

@@ -1,0 +1,9 @@
+#!/usr/bin/bash
+VERSION=`cat .osversion`
+POSTYPE=`cat .postype`
+
+cp -f ./centos${VERSION}-${POSTYPE}-dockerfile /var/tmp/containers/`date +%Y%m%d`/centos${VERSION}-${POSTYPE}/docker/Dockerfile
+cp -f /var/tmp/centos${VERSION}-${POSTYPE}-docker.tar.xz /var/tmp/containers/`date +%Y%m%d`/centos${VERSION}-${POSTYPE}/docker
+cd /var/tmp/containers/`date +%Y%m%d`/centos${VERSION}-${POSTYPE}/docker
+docker build --rm -t centos${VERSION}-${POSTYPE} .
+cd -

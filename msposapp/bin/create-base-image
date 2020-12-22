@@ -1,28 +1,16 @@
 #!/usr/bin/bash
 
-echo -n "daisy, rti, or minimal?: "
-read POSTYPE
-[ "$POSTYPE" == "" ] && exit 0
-echo -n "7 or 8?: "
+POSTYPE=minimal
+echo -n "Type: daisy, rti, or minimal? "
+read POSTYPE 
+echo $POSTYPE > .postype
+echo -n "Version: 7 or 8? "
 read VERSION
 echo $VERSION > .osversion
 
 rm -rf /var/tmp/containers
 rm -f /var/tmp/centos*xz
 
-if [ "$POSTYPE" == "rti" ]; then
-./containerbuild.sh centos${VERSION}-rti.ks 2>/tmp/build-rti-container.error.log
-docker image save centos${VERSION}:latest > /var/tmp/centos${VERSION}-rti.tar.xz
-./create-rti-image 2>/tmp/create-rti-image.error.log
-fi
-
-if [ "$POSTYPE" == "daisy" ]; then
-./containerbuild.sh centos${VERSION}-daisy.ks 2>/tmp/build-daisy-container.error.log
-docker image save centos${VERSION}:latest > /var/tmp/centos${VERSION}-daisy.tar.xz
-./create-daisy-image 2>/tmp/create-daisy-image.error.log
-fi
-if [ "$POSTYPE" == "minimal" ]; then
-./containerbuild.sh centos${VERSION}-minimal.ks 2>/tmp/build-minimal-container.error.log
-docker image save centos${VERSION}:latest > /var/tmp/centos${VERSION}-minimal.tar.xz
-./create-minimal-image 2>/tmp/create-minimal-image.error.log
-fi
+./containerbuild.sh centos${VERSION}-${POSTYPE}.ks 2>/tmp/build-${POSTYPE}-container.error.log
+docker image save centos${VERSION}:latest > /var/tmp/centos${VERSION}-${POSTYPE}.tar.xz
+./create-image 2>/tmp/create-image.error.log
