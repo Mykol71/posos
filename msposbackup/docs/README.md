@@ -62,20 +62,3 @@ drwx------. 3 wednesday-012020010 wednesday-012020010   88 Oct 17 09:49 wednesda
 drwx------. 3 mykdev-20201017     mykdev-20201017       88 Oct 17 09:50 mykdev-20201017
 drwx------. 3 mykdev-01222222     mykdev-01222222       88 Oct 17 09:51 mykdev-01222222
 ```
-
-```
-TO DO -
--------
-
-X fix backup scripts for account name.
-- add restore snapshot link stuff.
-X tfrsync.pl change to not require only numbers for 8 char ID.
-- Scrub and condence code.
-X examples of cron jobs to backup for different situations.
-- 
-
--- Documentation
-- Add custom data import information.
-- Seperate readme for each app.
-- 
-```

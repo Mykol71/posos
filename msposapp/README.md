@@ -5,6 +5,7 @@ TODO:
 
 - Remove VPN from staging process.
 - Remove VPN software installation unless in VPN config.
+- Fix pipework command.
 - Genericize ks files.
 - Documentation.
 - Remove image upon container stop.
