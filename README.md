@@ -1,10 +1,22 @@
 posos
 -----
 
+Babble -
+--------
+Aaas/EAaas do not exist yet. Why? Because architects are too busy handling the work load from all the new tools and services there are to; virtualize, standardize, configure, compile, deploy, network, protect, comply with, support, access, train, ... you see my point.
+
+With virtualization and cloud, big business has latched on and is providing and developing new and quicker ways to do each of the individual architectual reposibilities at a very rapid pace. And, of course, these businesses will happily sell you training and/or certification in using those tools, feeding their bottom line with hungry to be accepted up-coming admins that desperately want those jobs with the companies that have those awesome new tools the soonest. So, now they can dictate the resourceneeds as well, at also a staggerling faster rate.
+
+....
+
+
+
+
+
 Development Rquirements -
 -------------------------
 - Store mirrors of all dependancies locally (Repos), and work from those mirrors. In the event a dependancy becomes unavailable, remove the external check during the install. (These will become action items to remedy for this app.)
-- Keep "functions" of this app in individual bash scripts. (To simplfy CLI, API, and Web support.)
+- Keep "functions" of this app in individual bash scripts. (To simplfy CLI, API, Voice, and Web support.)
 - "Public facing" documentation is stored in the docs folder for each application.
 - Internal documentation is in the README in the applications root folder. (Example root folder: ~/posos/msposapp)
 -  
