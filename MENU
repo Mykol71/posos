@@ -67,7 +67,7 @@ while :; do
 		cd -
 		;;
 	i)
-                cd $ROOTDIR/msposapp/bin
+                cd $ROOTDIR/bin
                 ./install
                 echo -ne "Press enter to continue..${NC}"
                 read

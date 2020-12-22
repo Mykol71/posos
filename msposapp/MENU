@@ -2,10 +2,6 @@
 
 TFCLOUD_VERSION="2.0"
 
-# verify root
-ID=$(/usr/bin/id -u)
-[ $ID -ne 0 ] && echo "You must be root to run $0." && exit 1
-
 ROOTDIR="$(pwd)"
 export ROOTDIR
 
@@ -168,7 +164,7 @@ printf '\u2517''\u2501''\n'
 	i)
 		cd $ROOTDIR/bin
 		echo -e "${CYAN}"
-		time ./install
+		time ./install_rootless
 		echo -ne "Press enter to continue..${NC}"
 		read
 		cd -

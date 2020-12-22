@@ -1,8 +1,13 @@
-#!/usr/bin/bash 
+#!/usr/bin/bash
+
 # verify root
 ID=$(/usr/bin/id -u)
 [ $ID -ne 0 ] && echo "You must be root to run $0." && exit 1
 
+#get environment name
+[ ! -f ../.envtype ] && echo -n "Env Name: " && read ENVTYPE && echo "$ENVTYPE" >../.envtype && cp -f ../.envtype ../../.
+
+#switch from enforcing to permissive selinux
 # Add tfsupport to sudoers, if not there.
 [ "`ls /home | grep tfsupport`" == "" ] && useradd tfsupport
 [ "`grep tfsupport /etc/sudoers`" == "" ] && echo "tfsupport        ALL=(ALL)       NOPASSWD: ALL">>/etc/sudoers
@@ -30,7 +35,7 @@ setenforce 0
 
 #install required base packages
 yum clean all
-yum -y install net-tools yum-langpacks gtk3 ksh wget firewalld tigervnc-server-minimal mailx nmap time bridge-utils device-mapper-libs device-mapper-event-libs ntp lorax anaconda-tui unzip expect httpd mod_ssl libtool
+yum -y install net-tools yum-langpacks gtk3 ksh wget firewalld tigervnc-server-minimal mailx nmap time bridge-utils docker device-mapper-libs device-mapper-event-libs ntp lorax anaconda-tui unzip expect httpd mod_ssl libtool
 
 # sync time
 ntpdate pool.ntp.org
@@ -38,28 +43,43 @@ ntpdate pool.ntp.org
 # set timezone
 timedatectl set-timezone America/Chicago
 
+#install epel software
+#yum -y install epel-release
+#yum -y install shellinabox
+
 #ip port forwarding
 [ "`grep net.ipv4.ip_forward /etc/sysctl.conf`" == "" ] &&  echo "net.ipv4.ip_forward = 1">>/etc/sysctl.conf &&  sysctl -p /etc/sysctl.conf && systemctl restart network.service
-
-# docker rootless reqs
-# user namespace bump
-[ "`grep user.max_user_namespaces /etc/sysctl.conf`" == "" ] && echo "user.max_user_namespaces=28633" >> /etc/sysctl.conf
-# ping fix
-[ "`grep net.ipv4.ping_group_range /etc/sysctl.conf`" == "" ] && echo "net.ipv4.ping_group_range = 0 2147483647" >> /etc/sysctl.conf
-sysctl --system
 
 #disable consistant network naming
 rpm -qa | grep -e '^systemd-[0-9]\+\|^udev-[0-9]\+'
 sed -i '/^GRUB\_CMDLINE\_LINUX/s/\"$/\ net\.ifnames\=0\"/' /etc/default/grub
 grub2-mkconfig -o /boot/grub2/grub.cfg
 
+#copy in port forwrd config for docker
+cp -f ./99-docker.conf /usr/lib/sysctl.d/99-docker.conf
+systemctl restart docker 2>/dev/null
+systemctl enable docker
+
 # add custom cloud backup server scripts to /usr/local/bin
 find . -name "*monthname.sh" -exec cp -f {} /usr/local/bin/. \;
 find . -name "*recon.sh" -exec cp -f {} /usr/local/bin/. \;
 
+# Add Admin Menu to current user and tfsupports .bash_profile to be exec on login
+[ "`grep posos /home/${SUDO_USER}/.bash_profile`" == "" ] && echo "cd posos" >> /home/${SUDO_USER}/.bash_profile && echo "sudo ./MENU" >>/home/${SUDO_USER}/.bash_profile
+[ "`grep posos /home/tfsupport/.bash_profile`" == "" ] && echo "cd posos" >> /home/tfsupport/.bash_profile && echo "sudo ./MENU" >>/home/tfsupport/.bash_profile
+
 # make backups folder if its not there.
 [ ! -d /backups ] && mkdir /backups
 
+# configure and start shellinabox (browser based ssh)
+#echo "USER=shellinabox">/etc/sysconfig/shellinaboxd
+#echo "GROUP=shellinabox">>/etc/sysconfig/shellinaboxd
+#echo "CERTDIR=/var/lib/shellinabox">>/etc/sysconfig/shellinaboxd
+#echo "PORT=443">>/etc/sysconfig/shellinaboxd
+#echo "OPTS="-s /:SSH --user-css Reverse:-black-on-white.css,Normal:+green-on-black.css"">>/etc/sysconfig/shellinaboxd
+#systemctl start shellinaboxd
+#systemctl enable shellinaboxd
+ 
 # lastly, update everything
 yum -y update
  

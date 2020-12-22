@@ -1,0 +1,20 @@
+#!/usr/bin/bash
+
+# get environment name
+[ ! -f ../.envtype ] && echo -n "Env Name: " && read ENVTYPE && echo "$ENVTYPE" >../.envtype && cp -f ../.envtype ../../.
+
+# install docker
+curl -fsSL https://get.docker.com/rootless | sh
+
+# setup env
+export PATH=/home/$(whoami)/bin:$PATH
+export PATH=$PATH:/sbin
+export DOCKER_HOST=unix:///run/user/1001/docker.sock
+
+# start doker
+systemctl --user start docker
+
+# add users dockers to startup on system start
+systemctl --user enable docker
+
+exit 0
