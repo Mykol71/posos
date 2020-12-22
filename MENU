@@ -27,7 +27,7 @@ while :; do
     printf '\u2503'${GREY}" $(cat /etc/redhat-release | cut -d" " -f1,4)"${NC}'\n'
     printf '\u2503'${GREY}' posos v2.0'${NC}'\n'
     printf '\u2503''\n'
-    printf '\u2503''\033[1m'"---\033[0m Server"'\n'
+    printf '\u2503''\033[1m'"---\033[0m System"'\n'
     printf '\u2503''\033[1m'" 1.\033[0m Data"'\n'
     printf '\u2503''\033[1m'" 2.\033[0m Containers"'\n'
     printf '\u2503''\033[1m'" 3.\033[0m Repos"'\n'
