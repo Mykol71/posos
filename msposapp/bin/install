@@ -33,7 +33,7 @@ setenforce 0
 
 #install required base packages
 yum clean all
-yum -y install net-tools yum-langpacks gtk3 ksh wget firewalld tigervnc-server-minimal mailx nmap time bridge-utils device-mapper-libs device-mapper-event-libs ntp lorax anaconda-tui unzip expect httpd mod_ssl libtool
+yum -y install docker net-tools yum-langpacks gtk3 ksh wget firewalld tigervnc-server-minimal mailx nmap time bridge-utils device-mapper-libs device-mapper-event-libs ntp lorax anaconda-tui unzip expect httpd mod_ssl libtool
 
 # sync time
 ntpdate pool.ntp.org

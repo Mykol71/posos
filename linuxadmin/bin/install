@@ -10,8 +10,11 @@ subscription-manager register --org=4508688 --auto-attach 2>/dev/null
 subscription-manager repos --enable=rhel-7-server-rpms
 subscription-manager repos --enable=rhel-7-server-extras-rpms
 
+#enable docker repo
+yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+
 #install required packages
-yum -y install net-tools yum-langpacks gtk3 ksh wget firewalld tigervnc-server-minimal mailx nmap time bridge-utils docker device-mapper-libs device-mapper-event-libs ntp lorax anaconda-tui unzip
+yum -y install net-tools yum-langpacks gtk3 ksh wget firewalld tigervnc-server-minimal mailx nmap time bridge-utils device-mapper-libs device-mapper-event-libs ntp lorax anaconda-tui unzip
 
 # sync time
 ntpdate pool.ntp.org
@@ -19,9 +22,13 @@ ntpdate pool.ntp.org
 # set timezone
 timedatectl set-timezone America/Chicago
 
+# install dcoker
+wget https://download.docker.com/linux/rhel/docker-ce.repo
+mv docker-ce.repo /etc/yum.repos.d
+yum -y install docker-ce docker-ce-cli containerd.io
+
 #install vpn client software
 wget http://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
-yum -y localinstall ./epel-release-latest-7.noarch.rpm
 yum -y install strongswan xl2tpd NetworkManager-strongswan strongswan-libipsec
 rm -f ./epel-release-latest-7.noarch.rpm
 
