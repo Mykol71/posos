@@ -16,15 +16,13 @@ while :; do
     CYAN=''
     NC='\033[0m'
     clear
-    HOSTNAME=`hostname`
-    echo -e "${GREY}$(date +'%x %l:%M %p')${NC}"
+    echo -e "${GREY}$(date +'%x %l:%M %p') -- $(cat /etc/redhat-release) ${NC}"
     printf '\u250f''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\n'
     echo -e "\u2503${BLUE} @ ${NC}`[ -f ./msposapp/.envtype ] && cat ./msposapp/.envtype || echo -e Not Installed`${NC}"
-#    printf '\u2503'${LGGRN}' )~ '${GREY}`dmidecode | grep Product | grep -v Not | cut -d: -f2 | sed -e 's/\ //'`${NC}'\n'
     printf '\u2503'${LGGRN}' )~ ''\n'
     printf '\u2503''\u2501''\n'
     printf '\u2503'" Free Space:${NC} $(df -h /backups | tail -1 | awk '{print $4}')"'\n'
-    printf '\u2503'${GREY}" $(cat /etc/redhat-release | cut -d" " -f1,4)"${NC}'\n'
+    printf '\u2503'${GREY}" $(hostname)"${NC}'\n'
     printf '\u2503'${GREY}' posos v2.0'${NC}'\n'
     printf '\u2503''\n'
     printf '\u2503''\033[1m'"---\033[0m System"'\n'
@@ -34,7 +32,6 @@ while :; do
     printf '\u2503''\033[1m'" 4.\033[0m Admin"'\n'
     printf '\u2503''\033[1m'" 5.\033[0m Reports"'\n'
     printf '\u2503''\n'
-#    printf '\u2503''\033[1m'" i.\033[0m Install"'\n'
     printf '\u2503''\033[1m'" r.\033[0m Readme"'\n'
     printf '\u2503''\033[1m'" x.\033[0m Exit"'\n'
     printf '\u2517''\u2501''\n'
