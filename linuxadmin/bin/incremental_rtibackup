@@ -57,7 +57,7 @@ done
 echo "$BACKUPDEVICE configured."
 
 # Add new device entry to backups.config
-echo "Changing backups.config...."
-[ "`grep -i ^device= /usr2/bbx/config/backups.config`" == "" ] && echo "device=$BACKUPDEVICE\$((\`date +\"%u\"\` + 4))">>/usr2/bbx/config/backups.config 
-echo "Done. You should be able to run rtibackup.pl just as before."
+# echo "Changing backups.config...."
+# [ "`grep -i ^device= /usr2/bbx/config/backups.config`" == "" ] && echo "device=$BACKUPDEVICE\$((\`date +\"%u\"\` + 4))">>/usr2/bbx/config/backups.config 
+# echo "Done. You should be able to run rtibackup.pl just as before."
 exit 0
