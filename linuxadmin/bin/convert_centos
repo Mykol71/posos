@@ -1,24 +1,26 @@
 #!/bin/bash
 
 #
-#--Convert system to CentOS
+#--Convert RHEL7 system to CentOS7
 cd /etc/yum.repos.d
 #a. Cleanup.
 rm -f /etc/yum.repos.d/CentOS*
 rm -f /etc/yum.repos.d/tfmscentos*
 #
-#1. Disable Redhat repos.
+#1. Disable Redhat repos if there under yum.repos.d.
 sed -i 's/enabled = 1/enabled = 0/g' redhat.repo
 
-#2. Install CentOS repo provided by Teleflora.
-wget http://centos.myk.green/repos/7/os/x86_64/x86_64/tfmscentos.repo
-echo "enabled=1">>/etc/yum.repos.d/tfmscentos.repo
+#2. Grab CentOS7 release package.
+## Uncomment for rolling builds
+#repo --name="CentOS Updates" --baseurl=http://mirror.centos.org/centos/7/updates/x86_64/ --cost=100
+cd /tmp
+wget http://mirrors.kernel.org/centos/7/os/x86_64/centos-release-7-9.2009.0.el7.centos.x86_64.rpm
 
 #3. Replace redhat-release with centos-release
 rpm -e --nodeps redhat-release-server
 rm -rf /usr/share/doc/redhat*
 rm -rf /usr/share/redhat-release*
-yum -y install centos-release
+yum -y localinstall ./centos-release-7-9.2009.0.el7.centos.x86_64.rpm
 
 #4. Update everything.
 yum -y update
