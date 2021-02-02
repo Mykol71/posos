@@ -29,3 +29,5 @@ yum -y update
 cat /etc/redhat-release
 cd -
 #-
+
+exit 0
