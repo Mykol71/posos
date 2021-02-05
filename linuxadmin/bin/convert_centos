@@ -14,7 +14,7 @@ sed -i 's/enabled = 1/enabled = 0/g' redhat.repo
 ## Uncomment for rolling builds
 #repo --name="CentOS Updates" --baseurl=http://mirror.centos.org/centos/7/updates/x86_64/ --cost=100
 cd /tmp
-wget http://mirrors.kernel.org/centos/7/os/x86_64/centos-release-7-9.2009.0.el7.centos.x86_64.rpm
+wget http://mirrors.kernel.org/centos/7/os/x86_64/Packages/centos-release-7-9.2009.0.el7.centos.x86_64.rpm
 
 #3. Replace redhat-release with centos-release
 rpm -e --nodeps redhat-release-server
@@ -29,3 +29,5 @@ yum -y update
 cat /etc/redhat-release
 cd -
 #-
+
+exit 0
