@@ -53,9 +53,9 @@ timedatectl set-timezone America/Chicago
 sysctl --system
 
 #disable consistant network naming
-rpm -qa | grep -e '^systemd-[0-9]\+\|^udev-[0-9]\+'
-sed -i '/^GRUB\_CMDLINE\_LINUX/s/\"$/\ net\.ifnames\=0\"/' /etc/default/grub
-grub2-mkconfig -o /boot/grub2/grub.cfg
+#rpm -qa | grep -e '^systemd-[0-9]\+\|^udev-[0-9]\+'
+#sed -i '/^GRUB\_CMDLINE\_LINUX/s/\"$/\ net\.ifnames\=0\"/' /etc/default/grub
+#grub2-mkconfig -o /boot/grub2/grub.cfg
 
 # add custom cloud backup server scripts to /usr/local/bin
 find . -name "*monthname.sh" -exec cp -f {} /usr/local/bin/. \;
@@ -67,6 +67,6 @@ find . -name "*recon.sh" -exec cp -f {} /usr/local/bin/. \;
 # lastly, update everything
 yum -y update
  
-echo "Done. If this was the first install on this machine, please reboot."
+echo "Done." 
 
 exit 0
