@@ -52,6 +52,11 @@ timedatectl set-timezone America/Chicago
 [ "`grep net.ipv4.ping_group_range /etc/sysctl.conf`" == "" ] && echo "net.ipv4.ping_group_range = 0 2147483647" >> /etc/sysctl.conf
 sysctl --system
 
+#copy in port forwrd config for docker
+cp -f ./99-docker.conf /usr/lib/sysctl.d/99-docker.conf
+systemctl restart docker 2>/dev/null
+systemctl enable docker
+
 #disable consistant network naming
 #rpm -qa | grep -e '^systemd-[0-9]\+\|^udev-[0-9]\+'
 #sed -i '/^GRUB\_CMDLINE\_LINUX/s/\"$/\ net\.ifnames\=0\"/' /etc/default/grub
