@@ -26,11 +26,11 @@ yum -y localinstall ./centos-release-7-9.2009.0.el7.centos.x86_64.rpm
 # yum -y update
 
 #5. Register with Foreman/Katello install.
-curl --insecure --output katello-ca-consumer-latest.noarch.rpm https://dev.myk.green/pub/katello-ca-consumer-latest.noarch.rpm
-yum localinstall katello-ca-consumer-latest.noarch.rpm
-subscription-manager register --org="MS" --activationkey="TF CentOS 7 Updates"
-yum -y install rsh
-yum -y install katello-host-tools
+#curl --insecure --output katello-ca-consumer-latest.noarch.rpm https://dev.myk.green/pub/katello-ca-consumer-latest.noarch.rpm
+#yum localinstall katello-ca-consumer-latest.noarch.rpm
+#subscription-manager register --org="MS" --activationkey="TF CentOS 7 Updates"
+#yum -y install rsh
+#yum -y install katello-host-tools
 
 #5. Done.
 cat /etc/redhat-release
