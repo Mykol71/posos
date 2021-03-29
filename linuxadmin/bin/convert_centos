@@ -21,9 +21,10 @@ rpm -e --nodeps redhat-release-server
 rm -rf /usr/share/doc/redhat*
 rm -rf /usr/share/redhat-release*
 yum -y localinstall ./centos-release-7-9.2009.0.el7.centos.x86_64.rpm
+yum -y install system-release
 
 #4. Update everything.
-# yum -y update
+yum -y update
 
 #5. Register with Foreman/Katello install.
 #curl --insecure --output katello-ca-consumer-latest.noarch.rpm https://dev.myk.green/pub/katello-ca-consumer-latest.noarch.rpm
