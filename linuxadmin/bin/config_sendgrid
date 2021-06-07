@@ -19,7 +19,7 @@ echo "APIKEY: $APIKEY"
 echo "SERVER EMAIL ADDRESS: $EMAIL_FROM"
 echo -n "Are these correct? (Y/N):"
 read REPLY
-[ "$REPLY" != "Y" ] && exit 1
+[ "$REPLY^^" != "Y" ] && exit 1
 
 #1. Remove postfix if there and install and enable sendmail instead. (Good for RH6 and RH7.)
 yum repolist
